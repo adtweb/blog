@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use ArrayAccess;
 use Winter\Storm\Extension\Extendable;
@@ -8,6 +6,7 @@ use Winter\Storm\Extension\Extendable;
 /**
  * Parent class for PHP classes created for layout and page code sections.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class CodeBase extends Extendable implements ArrayAccess
@@ -29,10 +28,9 @@ class CodeBase extends Extendable implements ArrayAccess
 
     /**
      * Creates the object instance.
-     *
-     * @param  \Cms\Classes\Page  $page  Specifies the CMS page.
-     * @param  \Cms\Classes\Layout  $layout  Specifies the CMS layout.
-     * @param  \Cms\Classes\Controller  $controller  Specifies the CMS controller.
+     * @param \Cms\Classes\Page $page Specifies the CMS page.
+     * @param \Cms\Classes\Layout $layout Specifies the CMS layout.
+     * @param \Cms\Classes\Controller $controller Specifies the CMS controller.
      */
     public function __construct($page, $layout, $controller)
     {
@@ -47,19 +45,25 @@ class CodeBase extends Extendable implements ArrayAccess
      * This event is triggered when all components are initialized and before AJAX is handled.
      * The layout's onInit method triggers before the page's onInit method.
      */
-    public function onInit() {}
+    public function onInit()
+    {
+    }
 
     /**
      * This event is triggered in the beginning of the execution cycle.
      * The layout's onStart method triggers before the page's onStart method.
      */
-    public function onStart() {}
+    public function onStart()
+    {
+    }
 
     /**
      * This event is triggered in the end of the execution cycle, but before the page is displayed.
      * The layout's onEnd method triggers after the page's onEnd method.
      */
-    public function onEnd() {}
+    public function onEnd()
+    {
+    }
 
     /**
      * ArrayAccess implementation
@@ -95,9 +99,8 @@ class CodeBase extends Extendable implements ArrayAccess
 
     /**
      * Dynamically handle calls into the controller instance.
-     *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -114,7 +117,6 @@ class CodeBase extends Extendable implements ArrayAccess
      * so to avoid $this->page->page this method will proxy there. This is also
      * used as a helper for accessing controller variables/components easier
      * in the page code, eg. $this->foo instead of $this['foo']
-     *
      * @param  string  $name
      * @return void
      */
@@ -137,9 +139,8 @@ class CodeBase extends Extendable implements ArrayAccess
 
     /**
      * This will set a property on the CMS Page object.
-     *
      * @param  string  $name
-     * @param  mixed  $value
+     * @param  mixed   $value
      * @return void
      */
     public function __set($name, $value)
@@ -149,8 +150,7 @@ class CodeBase extends Extendable implements ArrayAccess
 
     /**
      * This will check if a property is set on the CMS Page object.
-     *
-     * @param  string  $name
+     * @param string $name
      * @return bool
      */
     public function __isset($name)

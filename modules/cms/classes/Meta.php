@@ -1,12 +1,11 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use Yaml;
 
 /**
  * The CMS meta file class, used for interacting with YAML files within the Halcyon datasources
  *
+ * @package winter\wn-cms-module
  * @author Luke Towers
  */
 class Meta extends CmsObject
@@ -32,7 +31,7 @@ class Meta extends CmsObject
     protected $defaultExtension = 'yaml';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function __construct(array $attributes = [])
     {
@@ -49,7 +48,6 @@ class Meta extends CmsObject
 
     /**
      * Processes the content attribute to an array of menu data.
-     *
      * @return array|null
      */
     protected function parseContent()
@@ -60,7 +58,7 @@ class Meta extends CmsObject
 
         $parsedData = Yaml::parse($this->content);
 
-        if (! is_array($parsedData)) {
+        if (!is_array($parsedData)) {
             return null;
         }
 
@@ -69,7 +67,6 @@ class Meta extends CmsObject
 
     /**
      * Renders the meta data as a content string in YAML format.
-     *
      * @return string
      */
     protected function renderContent()
@@ -79,7 +76,6 @@ class Meta extends CmsObject
 
     /**
      * Compile the content for this CMS object, used by the theme logger.
-     *
      * @return string
      */
     public function toCompiled()

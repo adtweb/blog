@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Controllers;
+<?php namespace Cms\Controllers;
 
 use ApplicationException;
 use Artisan;
@@ -27,7 +25,9 @@ use Winter\Storm\Support\Str;
 /**
  * Theme selector controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class Themes extends Controller
 {
@@ -56,7 +56,7 @@ class Themes extends Controller
          * Custom redirect for unauthorized request
          */
         $this->bindEvent('page.beforeDisplay', function () {
-            if (! $this->user->hasAccess('cms.manage_themes')) {
+            if (!$this->user->hasAccess('cms.manage_themes')) {
                 return Backend::redirect('cms/themeoptions/update');
             }
         });
@@ -79,7 +79,7 @@ class Themes extends Controller
         CmsTheme::setActiveTheme(post('theme'));
 
         return [
-            '#theme-list' => $this->makePartial('theme_list'),
+            '#theme-list' => $this->makePartial('theme_list')
         ];
     }
 
@@ -88,7 +88,6 @@ class Themes extends Controller
         ThemeManager::instance()->deleteTheme(post('theme'));
 
         Flash::success(Lang::get('cms::lang.theme.delete_theme_success'));
-
         return Redirect::refresh();
     }
 
@@ -134,7 +133,6 @@ class Themes extends Controller
     public function index_onLoadCreateForm()
     {
         $this->vars['widget'] = $this->makeCreateFormWidget();
-
         return $this->makePartial('theme_create_form');
     }
 
@@ -147,11 +145,11 @@ class Themes extends Controller
 
         $data = array_except($data, 'dir_name');
 
-        if (! strlen(trim(array_get($data, 'name')))) {
+        if (!strlen(trim(array_get($data, 'name')))) {
             throw new ValidationException(['name' => Lang::get('cms::lang.theme.create_theme_required_name')]);
         }
 
-        if (! preg_match('/^[a-z0-9\_\-]+$/i', $newDirName)) {
+        if (!preg_match('/^[a-z0-9\_\-]+$/i', $newDirName)) {
             throw new ValidationException(['dir_name' => Lang::get('cms::lang.theme.dir_name_invalid')]);
         }
 
@@ -173,7 +171,7 @@ class Themes extends Controller
                 try {
                     Artisan::call('create:theme', [
                         'theme' => $newDirName,
-                        'scaffold' => $data['scaffold'],
+                        'scaffold' => $data['scaffold']
                     ]);
                 } catch (\Exception $ex) {
                     throw new ApplicationException($ex->getMessage());
@@ -187,7 +185,6 @@ class Themes extends Controller
         $theme->writeConfig($data);
 
         Flash::success(Lang::get('cms::lang.theme.create_theme_success'));
-
         return Redirect::refresh();
     }
 
@@ -236,7 +233,7 @@ class Themes extends Controller
         $sourcePath = $theme->getPath();
         $destinationPath = themes_path().'/'.$newDirName;
 
-        if (! preg_match('/^[a-z0-9\_\-]+$/i', $newDirName)) {
+        if (!preg_match('/^[a-z0-9\_\-]+$/i', $newDirName)) {
             throw new ValidationException(['new_dir_name' => Lang::get('cms::lang.theme.dir_name_invalid')]);
         }
 
@@ -246,11 +243,10 @@ class Themes extends Controller
 
         File::copyDirectory($sourcePath, $destinationPath);
         $newTheme = CmsTheme::load($newDirName);
-        $newName = $newTheme->getConfigValue('name').' - Copy';
+        $newName = $newTheme->getConfigValue('name') . ' - Copy';
         $newTheme->writeConfig(['name' => $newName]);
 
         Flash::success(Lang::get('cms::lang.theme.duplicate_theme_success'));
-
         return Redirect::refresh();
     }
 
@@ -282,9 +278,9 @@ class Themes extends Controller
     {
         try {
             $this->pageTitle = 'Download theme export archive';
-
             return ThemeExport::download($name, $outputName);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->handleError($ex);
         }
     }
@@ -330,7 +326,6 @@ class Themes extends Controller
         $model->import($theme, $widget->getSaveData(), $widget->getSessionKey());
 
         Flash::success(Lang::get('cms::lang.theme.import_theme_success'));
-
         return Redirect::refresh();
     }
 
@@ -355,7 +350,7 @@ class Themes extends Controller
             $name = post('theme');
         }
 
-        if (! $name || (! $theme = CmsTheme::load($name))) {
+        if (!$name || (!$theme = CmsTheme::load($name))) {
             throw new ApplicationException(Lang::get('cms::lang.theme.not_found_name', ['name' => $name]));
         }
 

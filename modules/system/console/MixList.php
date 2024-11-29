@@ -1,10 +1,8 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use File;
-use System\Classes\MixAssets;
 use Winter\Storm\Console\Command;
+use System\Classes\MixAssets;
 
 class MixList extends Command
 {
@@ -33,7 +31,6 @@ class MixList extends Command
 
         if (count($packages) === 0) {
             $this->info('No packages have been registered.');
-
             return 0;
         }
 
@@ -43,12 +40,12 @@ class MixList extends Command
         foreach ($packages as $name => $package) {
             $rows[] = [
                 'name' => $name,
-                'active' => ! $package['ignored'],
+                'active' => !$package['ignored'],
                 'path' => $package['path'],
                 'configuration' => $package['mix'],
             ];
 
-            if (! File::exists($package['mix'])) {
+            if (!File::exists($package['mix'])) {
                 $errors[] = "The mix file for $name doesn't exist, try running artisan mix:install";
             }
         }
@@ -61,13 +58,12 @@ class MixList extends Command
             $this->line('');
             $this->table(['Name', 'Active', 'Path', 'Configuration'], array_map(function ($row) {
                 $row['active'] = ($row['active']) ? '<info>Yes</info>' : '<fg=red>No</>';
-
                 return $row;
             }, $rows));
             $this->line('');
         }
 
-        if (! empty($errors)) {
+        if (!empty($errors)) {
             foreach ($errors as $error) {
                 $this->error($error);
             }

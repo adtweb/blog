@@ -1,13 +1,12 @@
-<?php
+<?php namespace Cms\Twig;
 
-namespace Cms\Twig;
-
-use Twig\Compiler as TwigCompiler;
 use Twig\Node\Node as TwigNode;
+use Twig\Compiler as TwigCompiler;
 
 /**
  * Represents a flash node
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class FlashNode extends TwigNode
@@ -20,7 +19,7 @@ class FlashNode extends TwigNode
     /**
      * Compiles the node to PHP.
      *
-     * @param  TwigCompiler  $compiler  A TwigCompiler instance
+     * @param TwigCompiler $compiler A TwigCompiler instance
      */
     public function compile(TwigCompiler $compiler)
     {
@@ -28,23 +27,26 @@ class FlashNode extends TwigNode
 
         $compiler
             ->write('$_type = isset($context["type"]) ? $context["type"] : null;')
-            ->write('$_message = isset($context["message"]) ? $context["message"] : null;');
+            ->write('$_message = isset($context["message"]) ? $context["message"] : null;')
+        ;
 
         if ($attrib == 'all') {
             $compiler
                 ->addDebugInfo($this)
                 ->write('foreach (Flash::getMessages() as $type => $messages) {'.PHP_EOL)
                 ->indent()
-                ->write('foreach ($messages as $message) {'.PHP_EOL)
-                ->indent()
-                ->write('$context["type"] = $type;')
-                ->write('$context["message"] = $message;')
-                ->subcompile($this->getNode('body'))
+                    ->write('foreach ($messages as $message) {'.PHP_EOL)
+                    ->indent()
+                        ->write('$context["type"] = $type;')
+                        ->write('$context["message"] = $message;')
+                        ->subcompile($this->getNode('body'))
+                    ->outdent()
+                    ->write('}'.PHP_EOL)
                 ->outdent()
                 ->write('}'.PHP_EOL)
-                ->outdent()
-                ->write('}'.PHP_EOL);
-        } else {
+            ;
+        }
+        else {
             $compiler
                 ->addDebugInfo($this)
                 ->write('$context["type"] = ')
@@ -54,14 +56,16 @@ class FlashNode extends TwigNode
                 ->raw($attrib)
                 ->write('() as $message) {'.PHP_EOL)
                 ->indent()
-                ->write('$context["message"] = $message;')
-                ->subcompile($this->getNode('body'))
+                    ->write('$context["message"] = $message;')
+                    ->subcompile($this->getNode('body'))
                 ->outdent()
-                ->write('}'.PHP_EOL);
+                ->write('}'.PHP_EOL)
+            ;
         }
 
         $compiler
             ->write('$context["type"] = $_type;')
-            ->write('$context["message"] = $_message;');
+            ->write('$context["message"] = $_message;')
+        ;
     }
 }

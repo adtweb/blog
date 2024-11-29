@@ -7,7 +7,7 @@ class DbBackendAddUsersGroupsDeleteAt extends Migration
 {
     public function up()
     {
-        if (! Schema::hasColumn('backend_users_groups', 'deleted_at')) {
+        if (!Schema::hasColumn('backend_users_groups', 'deleted_at')) {
             Schema::table('backend_users_groups', function (Blueprint $table) {
                 $table->timestamp('deleted_at')->nullable()->after('user_group_id');
             });

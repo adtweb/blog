@@ -13,6 +13,7 @@
  *     Event::listen('system.beforeRoute', function () {
  *         // your code here
  *     });
+ *
  */
 Event::fire('system.beforeRoute');
 
@@ -35,5 +36,6 @@ Route::get('resizer/{identifier}/{encodedUrl}', 'System\Classes\SystemController
  *     Event::listen('system.route', function () {
  *         // your code here
  *     });
+ *
  */
 Event::fire('system.route');

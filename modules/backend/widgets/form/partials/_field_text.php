@@ -1,7 +1,7 @@
 <!-- Text -->
-<?php if ($this->previewMode) { ?>
+<?php if ($this->previewMode): ?>
     <span class="form-control"><?= $field->value ? e($field->value) : '&nbsp;' ?></span>
-<?php } else { ?>
+<?php else: ?>
     <input
         type="text"
         name="<?= $field->getName() ?>"
@@ -12,4 +12,4 @@
         autocomplete="off"
         <?= $field->getAttributes() ?>
     />
-<?php } ?>
+<?php endif ?>

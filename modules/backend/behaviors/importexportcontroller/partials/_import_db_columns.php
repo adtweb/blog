@@ -1,9 +1,9 @@
 <div class="import-db-columns" id="importDbColumns">
     <ul>
-        <?php foreach ($importDbColumns as $column => $label) { ?>
+        <?php foreach ($importDbColumns as $column => $label): ?>
             <?php
                 $isRequired = $this->importIsColumnRequired($column);
-            $iconName = $isRequired ? 'icon-asterisk' : 'icon-link';
+                $iconName = $isRequired ? 'icon-asterisk' : 'icon-link';
             ?>
             <li
                 class="<?= $isRequired ? 'is-required' : '' ?>"
@@ -14,7 +14,7 @@
                 </span>
                 <input type="hidden" data-column-match-input />
             </li>
-        <?php } ?>
+        <?php endforeach ?>
     </ul>
 </div>
 

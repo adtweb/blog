@@ -1,15 +1,14 @@
-<?php
-
-namespace System\Traits;
+<?php namespace System\Traits;
 
 use Response;
-use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
  * Response Maker Trait
  * Stores attributes the can be used to prepare a response from the server.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait ResponseMaker
@@ -31,8 +30,7 @@ trait ResponseMaker
 
     /**
      * Sets the status code for the current web response.
-     *
-     * @param  int  $code  Status code
+     * @param int $code Status code
      * @return $this
      */
     public function setStatusCode($code)
@@ -42,9 +40,8 @@ trait ResponseMaker
         return $this;
     }
 
-    /**
+     /**
      * Returns the status code for the current web response.
-     *
      * @return int Status code
      */
     public function getStatusCode()
@@ -55,8 +52,7 @@ trait ResponseMaker
     /**
      * Sets the response for the current page request cycle, this value takes priority
      * over the standard response prepared by the controller.
-     *
-     * @param  mixed  $response  Response object or string
+     * @param mixed $response Response object or string
      * @return $this
      */
     public function setResponse($response)
@@ -71,7 +67,7 @@ trait ResponseMaker
      *
      * @param  string  $key
      * @param  array|string  $values
-     * @param  bool  $replace
+     * @param  bool    $replace
      * @return $this
      */
     public function setResponseHeader($key, $values, $replace = true)
@@ -108,7 +104,6 @@ trait ResponseMaker
 
     /**
      * Get the header response bag
-     *
      * @return Symfony\Component\HttpFoundation\ResponseHeaderBag|null
      */
     public function getResponseHeaders()
@@ -118,8 +113,7 @@ trait ResponseMaker
 
     /**
      * Prepares a response that considers overrides and custom responses.
-     *
-     * @param  mixed  $contents
+     * @param mixed $contents
      * @return mixed
      */
     public function makeResponse($contents)

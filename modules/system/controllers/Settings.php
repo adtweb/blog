@@ -1,24 +1,24 @@
-<?php
+<?php namespace System\Controllers;
 
-namespace System\Controllers;
-
-use ApplicationException;
-use Backend;
-use Backend\Classes\Controller;
-use BackendMenu;
-use Config;
-use Exception;
-use Flash;
-use Lang;
 use Mail;
+use Lang;
+use Flash;
+use Config;
 use Request;
-use System\Behaviors\SettingsModel;
+use Backend;
+use BackendMenu;
 use System\Classes\SettingsManager;
+use System\Behaviors\SettingsModel;
+use Backend\Classes\Controller;
+use ApplicationException;
+use Exception;
 
 /**
  * Settings controller
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class Settings extends Controller
 {
@@ -75,7 +75,7 @@ class Settings extends Controller
         $this->vars['parentLabel'] = Lang::get('system::lang.settings.menu_label');
 
         try {
-            if (! $item = $this->findSettingItem($author, $plugin, $code)) {
+            if (!$item = $this->findSettingItem($author, $plugin, $code)) {
                 throw new ApplicationException(Lang::get('system::lang.settings.not_found'));
             }
 
@@ -88,7 +88,8 @@ class Settings extends Controller
 
             $model = $this->createModel($item);
             $this->initWidgets($model);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->handleError($ex);
         }
     }
@@ -156,7 +157,7 @@ class Settings extends Controller
      */
     public function formRender($options = [])
     {
-        if (! $this->formWidget) {
+        if (!$this->formWidget) {
             throw new ApplicationException(Lang::get('backend::lang.form.behavior_not_ready'));
         }
 
@@ -200,12 +201,11 @@ class Settings extends Controller
      */
     protected function createModel($item)
     {
-        if (! isset($item->class) || ! strlen($item->class)) {
+        if (!isset($item->class) || !strlen($item->class)) {
             throw new ApplicationException(Lang::get('system::lang.settings.missing_model'));
         }
 
         $class = $item->class;
-
         return $class::instance();
     }
 
@@ -214,9 +214,10 @@ class Settings extends Controller
      *
      * If none of the parameters are provided, they will be auto-guessed from the URL.
      *
-     * @param  string|null  $author
-     * @param  string|null  $plugin
-     * @param  string|null  $code
+     * @param string|null $author
+     * @param string|null $plugin
+     * @param string|null $code
+     *
      * @return array
      */
     protected function findSettingItem($author = null, $plugin = null, $code = null)
@@ -231,8 +232,8 @@ class Settings extends Controller
         $moduleCode = $plugin;
         $item = $manager->findSettingItem($moduleOwner, $moduleCode);
 
-        if (! $item) {
-            $pluginOwner = $author.'.'.$plugin;
+        if (!$item) {
+            $pluginOwner = $author . '.' . $plugin;
             $pluginCode = $code;
             $item = $manager->findSettingItem($pluginOwner, $pluginCode);
         }
@@ -249,7 +250,7 @@ class Settings extends Controller
     {
         $segments = Request::segments();
 
-        if (! empty(Config::get('cms.backendUri', 'backend'))) {
+        if (!empty(Config::get('cms.backendUri', 'backend'))) {
             array_splice($segments, 0, 4);
         } else {
             array_splice($segments, 0, 3);

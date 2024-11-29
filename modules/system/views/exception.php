@@ -32,7 +32,7 @@
                 </li>
             </ul>
 
-            <pre class="brush: php"><?php foreach ($exception->getHighlightLines() as $line) { ?><?= $line ?><?php } ?></pre>
+            <pre class="brush: php"><?php foreach ($exception->getHighlightLines() as $line): ?><?= $line ?><?php endforeach ?></pre>
 
             <h3><i class="icon-code-fork warning"></i> Stack trace</h3>
 
@@ -46,16 +46,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($exception->getCallStack() as $stackItem) { ?>
+                    <?php foreach ($exception->getCallStack() as $stackItem): ?>
                         <tr>
                             <td class="right"><?= $stackItem->id ?></td>
                             <td>
-                                <?= $stackItem->code ?>(<?php if ($stackItem->args) { ?><abbr title="<?= $stackItem->args ?>">&hellip;</abbr><?php } ?>)
+                                <?= $stackItem->code ?>(<?php if ($stackItem->args): ?><abbr title="<?= $stackItem->args ?>">&hellip;</abbr><?php endif ?>)
                             </td>
                             <td><?= $stackItem->file ?></td>
                             <td class="right"><?= $stackItem->line ?></td>
                         </tr>
-                    <?php } ?>
+                    <?php endforeach ?>
                 </tbody>
             </table>
         </div>
@@ -64,7 +64,7 @@
             SyntaxHighlighter.defaults['toolbar'] = false;
             SyntaxHighlighter.defaults['quick-code'] = false;
             SyntaxHighlighter.defaults['html-script'] = true;
-            SyntaxHighlighter.defaults['first-line'] = <?= $exception->getHighlight()->startLine + 1 ?>;
+            SyntaxHighlighter.defaults['first-line'] = <?= $exception->getHighlight()->startLine+1 ?>;
             SyntaxHighlighter.defaults['highlight'] = <?= $exception->getLine() ?>;
             SyntaxHighlighter.all()
         </script>

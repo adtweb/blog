@@ -2,13 +2,13 @@
 
 namespace Cms\Tests\Classes;
 
+use System\Tests\Bootstrap\TestCase;
 use Cms\Classes\CodeParser;
 use Cms\Classes\ComponentManager;
 use Cms\Classes\Controller;
 use Cms\Classes\Layout;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
-use System\Tests\Bootstrap\TestCase;
 
 class ComponentManagerTest extends TestCase
 {
@@ -16,13 +16,14 @@ class ComponentManagerTest extends TestCase
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/MainMenu.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/ContentBlock.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Comments.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/classes/Users.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/MainMenu.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/ContentBlock.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Comments.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/classes/Users.php';
     }
+
 
     public function testListComponents()
     {
@@ -97,7 +98,7 @@ class ComponentManagerTest extends TestCase
 
     public function testMakeComponent()
     {
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
 
         $pageObj = $this->spoofPageCode();
 
@@ -116,7 +117,7 @@ class ComponentManagerTest extends TestCase
 
     public function testDefineProperties()
     {
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
         $manager = ComponentManager::instance();
         $object = $manager->makeComponent('testArchive');
         $details = $object->componentDetails();
@@ -136,7 +137,6 @@ class ComponentManagerTest extends TestCase
         $controller = new Controller($theme);
         $parser = new CodeParser($page);
         $pageObj = $parser->source($page, $layout, $controller);
-
         return $pageObj;
     }
 }

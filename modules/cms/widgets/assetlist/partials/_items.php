@@ -1,23 +1,23 @@
 <?php
 $searchMode = $this->isSearchMode();
 
-if (($upPath = $this->getUpPath()) !== null && ! $searchMode) {
+if (($upPath = $this->getUpPath()) !== null && !$searchMode):
     ?>
     <p class="parent">
         <a href="<?= $upPath ?>" data-path="<?= $upPath ?>" class="link"><?= $this->getCurrentRelativePath() ?></a>
     </p>
-<?php } ?>
+<?php endif ?>
 <div class="list-container animate">
-    <?php if ($items) { ?>
+    <?php if ($items): ?>
         <ul class="list">
-            <?php foreach ($items as $item) {
+            <?php foreach ($items as $item):
                 $dataId = 'asset-'.$this->theme->getDirName().'-'.ltrim($item->path, '/');
                 ?>
                 <li
                     class="<?= $item->type ?>"
-                    <?php if ($item->editable) { ?>
+                    <?php if ($item->editable): ?>
                         data-editable
-                    <?php } ?>
+                    <?php endif ?>
                     data-item-path="<?= e(ltrim($item->path, '/')) ?>"
                     data-item-theme="<?= e($this->theme->getDirName()) ?>"
                     data-item-type="asset" data-id="<?= e($dataId) ?>"
@@ -25,11 +25,11 @@ if (($upPath = $this->getUpPath()) !== null && ! $searchMode) {
                     <a class="link" target="_blank" data-path="<?= $item->path ?>" href="<?= $this->getThemeFileUrl($item->path) ?>">
                         <?= e($item->name) ?>
 
-                        <?php if ($searchMode) { ?>
+                        <?php if ($searchMode): ?>
                             <span class="description">
                                 <?= e(dirname($item->path)) ?>
                             </span>
-                        <?php } ?>
+                        <?php endif ?>
                     </a>
 
                     <div class="controls">
@@ -57,13 +57,13 @@ if (($upPath = $this->getUpPath()) !== null && ! $searchMode) {
                     </div>
 
                 </li>
-            <?php } ?>
+            <?php endforeach ?>
         </ul>
-    <?php } else { ?>
+    <?php else: ?>
         <p class="no-data"><?= e(trans($this->noRecordsMessage)) ?></p>
-    <?php } ?>
+    <?php endif ?>
 </div>
 
-<?php if (! isset($nested)) { ?>
+<?php if (!isset($nested)): ?>
     <input type="hidden" name="theme" value="<?= e($this->theme->getDirName()) ?>">
-<?php } ?>
+<?php endif ?>

@@ -1,9 +1,7 @@
-<?php
+<?php namespace Backend\Behaviors;
 
-namespace Backend\Behaviors;
-
-use Backend\Models\UserPreference;
 use System\Behaviors\SettingsModel;
+use Backend\Models\UserPreference;
 
 /**
  * User Preferences model extension, identical to System\Behaviors\SettingsModel
@@ -14,6 +12,7 @@ use System\Behaviors\SettingsModel;
  *     public $implement = ['Backend.Behaviors.UserPreferencesModel'];
  *     public $settingsCode = 'author.plugin::code';
  *     public $settingsFields = 'fields.yaml';
+ *
  */
 class UserPreferencesModel extends SettingsModel
 {
@@ -41,7 +40,7 @@ class UserPreferencesModel extends SettingsModel
             return self::$instances[$this->recordCode];
         }
 
-        if (! $item = $this->getSettingsRecord()) {
+        if (!$item = $this->getSettingsRecord()) {
             $this->model->initSettingsData();
             $item = $this->model;
         }
@@ -59,7 +58,6 @@ class UserPreferencesModel extends SettingsModel
 
     /**
      * Returns the raw Model record that stores the settings.
-     *
      * @return Model
      */
     public function getSettingsRecord()
@@ -80,7 +78,7 @@ class UserPreferencesModel extends SettingsModel
     public function beforeModelSave()
     {
         $preferences = UserPreference::forUser();
-        [$namespace, $group, $item] = $preferences->parseKey($this->recordCode);
+        list($namespace, $group, $item) = $preferences->parseKey($this->recordCode);
         $this->model->item = $item;
         $this->model->group = $group;
         $this->model->namespace = $namespace;
@@ -114,7 +112,6 @@ class UserPreferencesModel extends SettingsModel
     {
         $item = UserPreference::forUser();
         $userId = $item->userContext ? $item->userContext->id : 0;
-
         return $this->recordCode.'-userpreference-'.$userId;
     }
 }

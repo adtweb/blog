@@ -1,11 +1,9 @@
-<?php
+<?php namespace Backend\FormWidgets;
 
-namespace Backend\FormWidgets;
-
+use Config;
+use Carbon\Carbon;
 use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
-use Carbon\Carbon;
-use Config;
 use System\Helpers\DateTime as DateTimeHelper;
 use Winter\Storm\Exception\ApplicationException;
 
@@ -13,6 +11,7 @@ use Winter\Storm\Exception\ApplicationException;
  * Date picker
  * Renders a date picker field.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class DatePicker extends FormWidgetBase
@@ -33,25 +32,25 @@ class DatePicker extends FormWidgetBase
 
     /**
      * @var string the minimum/earliest date that can be selected.
-     *             eg: 2000-01-01
+     * eg: 2000-01-01
      */
     public $minDate;
 
     /**
      * @var string the maximum/latest date that can be selected.
-     *             eg: 2020-12-31
+     * eg: 2020-12-31
      */
     public $maxDate;
 
     /**
      * @var string number of years either side or array of upper/lower range
-     *             eg: 10 or [1900,1999]
+     * eg: 10 or [1900,1999]
      */
     public $yearRange;
 
     /**
      * @var int first day of the week
-     *          eg: 0 (Sunday), 1 (Monday), 2 (Tuesday), etc.
+     * eg: 0 (Sunday), 1 (Monday), 2 (Tuesday), etc.
      */
     public $firstDay = 0;
 
@@ -70,12 +69,12 @@ class DatePicker extends FormWidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'datepicker';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -106,7 +105,7 @@ class DatePicker extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
@@ -127,10 +126,10 @@ class DatePicker extends FormWidgetBase
         if ($value = $this->getLoadValue()) {
             $value = DateTimeHelper::makeCarbon($value, false);
 
-            if (! ($value instanceof Carbon)) {
+            if (!($value instanceof Carbon)) {
                 $this->vars['error'] = (sprintf('"%s" is not a valid date / time value.', $value));
             } else {
-                if ($this->mode === 'date' && ! $this->ignoreTimezone) {
+                if ($this->mode === 'date' && !$this->ignoreTimezone) {
                     $backendTimeZone = \Backend\Models\Preference::get('timezone');
                     $value->setTimezone($backendTimeZone);
                     $value->setTime(0, 0, 0);
@@ -161,7 +160,7 @@ class DatePicker extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
@@ -169,7 +168,7 @@ class DatePicker extends FormWidgetBase
             return FormField::NO_SAVE_DATA;
         }
 
-        if (! strlen($value)) {
+        if (!strlen($value)) {
             return null;
         }
 
@@ -197,9 +196,11 @@ class DatePicker extends FormWidgetBase
 
         if ($this->mode == 'time') {
             return 'time';
-        } elseif ($this->mode == 'date') {
+        }
+        elseif ($this->mode == 'date') {
             return 'dateLong';
-        } else {
+        }
+        else {
             return 'dateTimeLong';
         }
     }

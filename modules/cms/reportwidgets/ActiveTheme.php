@@ -1,18 +1,17 @@
-<?php
+<?php namespace Cms\ReportWidgets;
 
-namespace Cms\ReportWidgets;
-
-use ApplicationException;
-use Backend\Classes\ReportWidgetBase;
+use Lang;
 use BackendAuth;
 use Cms\Classes\Theme;
 use Cms\Models\MaintenanceSetting;
+use Backend\Classes\ReportWidgetBase;
+use ApplicationException;
 use Exception;
-use Lang;
 
 /**
  * Active theme report widget.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ActiveTheme extends ReportWidgetBase
@@ -29,7 +28,8 @@ class ActiveTheme extends ReportWidgetBase
     {
         try {
             $this->loadData();
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->vars['error'] = $ex->getMessage();
         }
 
@@ -40,17 +40,17 @@ class ActiveTheme extends ReportWidgetBase
     {
         return [
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'default' => 'cms::lang.dashboard.active_theme.widget_title_default',
-                'type' => 'string',
+                'title'             => 'backend::lang.dashboard.widget_title_label',
+                'default'           => 'cms::lang.dashboard.active_theme.widget_title_default',
+                'type'              => 'string',
                 'validationPattern' => '^.+$',
                 'validationMessage' => 'backend::lang.dashboard.widget_title_error',
-            ],
+            ]
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {
@@ -59,8 +59,8 @@ class ActiveTheme extends ReportWidgetBase
 
     protected function loadData()
     {
-        if (! $theme = Theme::getActiveTheme()) {
-            throw new ApplicationException(Lang::get('cms::lang.theme.not_found_name', ['name' => Theme::getActiveThemeCode()]));
+        if (!$theme = Theme::getActiveTheme()) {
+            throw new ApplicationException(Lang::get('cms::lang.theme.not_found_name', ['name'=>Theme::getActiveThemeCode()]));
         }
 
         $this->vars['theme'] = $theme;

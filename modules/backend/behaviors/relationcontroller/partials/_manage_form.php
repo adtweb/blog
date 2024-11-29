@@ -1,10 +1,10 @@
 <div id="<?= $relationManageWidget->getId('managePopup') ?>">
-    <?php if ($relationManageId) { ?>
+    <?php if ($relationManageId): ?>
 
         <?= Form::ajax('onRelationManageUpdate', [
             'data-popup-load-indicator' => true,
             'sessionKey' => $newSessionKey,
-            'data-request-success' => "$.wn.relationBehavior.changed('".e($relationField)."', 'updated')",
+            'data-request-success' => "$.wn.relationBehavior.changed('" . e($relationField) . "', 'updated')",
         ]) ?>
 
             <!-- Passable fields -->
@@ -30,12 +30,12 @@
 
         <?= Form::close() ?>
 
-    <?php } else { ?>
+    <?php else: ?>
 
         <?= Form::ajax('onRelationManageCreate', [
             'data-popup-load-indicator' => true,
-            'data-request-success' => "$.wn.relationBehavior.changed('".e($relationField)."', 'created')",
-            'sessionKey' => $newSessionKey,
+            'data-request-success' => "$.wn.relationBehavior.changed('" . e($relationField) . "', 'created')",
+            'sessionKey' => $newSessionKey
         ]) ?>
 
             <!-- Passable fields -->
@@ -59,12 +59,12 @@
             </div>
         <?= Form::close() ?>
 
-    <?php } ?>
+    <?php endif ?>
 
 </div>
 
 <script>
-    $.wn.relationBehavior.bindToPopups('#<?= $relationManageWidget->getId('managePopup') ?>', {
+    $.wn.relationBehavior.bindToPopups('#<?= $relationManageWidget->getId("managePopup") ?>', {
         _relation_field: '<?= $relationField ?>',
         _relation_mode: 'form'
     })

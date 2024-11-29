@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Models;
+<?php namespace Cms\Models;
 
 use BackendAuth;
 use Cms\Classes\Theme;
@@ -12,14 +10,13 @@ use Winter\Storm\Halcyon\Model as HalcyonModel;
 /**
  * Model for changes made to the theme
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeLog extends Model
 {
     const TYPE_CREATE = 'create';
-
     const TYPE_UPDATE = 'update';
-
     const TYPE_DELETE = 'delete';
 
     /**
@@ -31,7 +28,7 @@ class ThemeLog extends Model
      * @var array Relations
      */
     public $belongsTo = [
-        'user' => \Backend\Models\User::class,
+        'user' => \Backend\Models\User::class
     ];
 
     protected $themeCache;
@@ -55,15 +52,15 @@ class ThemeLog extends Model
      */
     public static function add(HalcyonModel $template, ?string $type = null): ?self
     {
-        if (! LogSetting::hasDatabaseTable()) {
+        if (!LogSetting::hasDatabaseTable()) {
             return null;
         }
 
-        if (! LogSetting::get('log_theme')) {
+        if (!LogSetting::get('log_theme')) {
             return null;
         }
 
-        if (! $type) {
+        if (!$type) {
             $type = self::TYPE_UPDATE;
         }
 
@@ -74,7 +71,7 @@ class ThemeLog extends Model
         $newContent = $template->toCompiled();
         $oldContent = $template->getOriginal('content');
 
-        if ($newContent === $oldContent && $templateName === $oldTemplateName && ! $isDelete) {
+        if ($newContent === $oldContent && $templateName === $oldTemplateName && !$isDelete) {
             return null;
         }
 
@@ -102,7 +99,7 @@ class ThemeLog extends Model
     {
         $code = $this->theme;
 
-        if (! isset($this->themeCache[$code])) {
+        if (!isset($this->themeCache[$code])) {
             $this->themeCache[$code] = Theme::load($code);
         }
 
@@ -116,7 +113,7 @@ class ThemeLog extends Model
         return [
             self::TYPE_CREATE => 'cms::lang.theme_log.type_create',
             self::TYPE_UPDATE => 'cms::lang.theme_log.type_update',
-            self::TYPE_DELETE => 'cms::lang.theme_log.type_delete',
+            self::TYPE_DELETE => 'cms::lang.theme_log.type_delete'
         ];
     }
 

@@ -1,14 +1,14 @@
-<?php
-
-namespace System\Traits;
+<?php namespace System\Traits;
 
 use Event;
 
 /**
  * Adds system event related features to any class.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
+
 trait EventEmitter
 {
     use \Winter\Storm\Support\Traits\Emitter;
@@ -28,9 +28,9 @@ trait EventEmitter
      *
      *     Event::fire('backend.list.myEvent', [$this, 'myvalue'], true);
      *
-     * @param  string  $event  Event name
-     * @param  array  $params  Event parameters
-     * @param  bool  $halt  Halt after first non-null result
+     * @param string $event Event name
+     * @param array $params Event parameters
+     * @param boolean $halt Halt after first non-null result
      * @return mixed
      */
     public function fireSystemEvent($event, $params = [], $halt = true)
@@ -74,8 +74,8 @@ trait EventEmitter
      *
      *     <?= $this->fireViewEvent('backend.auth.extendSigninView') ?>
      *
-     * @param  string  $event  Event name
-     * @param  array  $params  Event parameters
+     * @param string $event Event name
+     * @param array $params Event parameters
      * @return string
      */
     public function fireViewEvent($event, $params = [])

@@ -1,13 +1,12 @@
-<?php
+<?php namespace Cms\Twig;
 
-namespace Cms\Twig;
-
-use Twig\Compiler as TwigCompiler;
 use Twig\Node\Node as TwigNode;
+use Twig\Compiler as TwigCompiler;
 
 /**
  * Represents a content node
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ContentNode extends TwigNode
@@ -20,7 +19,7 @@ class ContentNode extends TwigNode
     /**
      * Compiles the node to PHP.
      *
-     * @param  TwigCompiler  $compiler  A TwigCompiler instance
+     * @param TwigCompiler $compiler A TwigCompiler instance
      */
     public function compile(TwigCompiler $compiler)
     {
@@ -29,10 +28,10 @@ class ContentNode extends TwigNode
         $compiler->write("\$context['__cms_content_params'] = [];\n");
 
         for ($i = 1; $i < count($this->getNode('nodes')); $i++) {
-            $compiler->write("\$context['__cms_content_params']['".$this->getAttribute('names')[$i - 1]."'] = ");
+            $compiler->write("\$context['__cms_content_params']['".$this->getAttribute('names')[$i-1]."'] = ");
             $compiler->write('twig_escape_filter($this->env, ');
             $compiler->subcompile($this->getNode('nodes')->getNode($i));
-            $compiler->write(')');
+            $compiler->write(")");
             $compiler->write(";\n");
         }
 
@@ -40,8 +39,9 @@ class ContentNode extends TwigNode
             ->write("echo \$this->env->getExtension('Cms\Twig\Extension')->contentFunction(")
             ->subcompile($this->getNode('nodes')->getNode(0))
             ->write(", \$context['__cms_content_params']")
-            ->write(', true')
-            ->write(");\n");
+            ->write(", true")
+            ->write(");\n")
+        ;
 
         $compiler->write("unset(\$context['__cms_content_params']);\n");
     }

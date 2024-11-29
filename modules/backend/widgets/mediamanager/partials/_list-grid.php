@@ -1,5 +1,5 @@
 <?php
-$listElementId = $this->getId('item-list');
+    $listElementId = $this->getId('item-list');
 ?>
 
 <table class="table data">
@@ -8,16 +8,16 @@ $listElementId = $this->getId('item-list');
     <col width="130px" />
 
     <tbody class="icons clickable">
-        <?php if (count($items) > 0 || ! $isRootFolder) { ?>
-            <?php if (! $isRootFolder && ! $searchMode) { ?>
+        <?php if (count($items) > 0 || !$isRootFolder): ?>
+            <?php if (!$isRootFolder && !$searchMode): ?>
                 <tr data-type="media-item" data-item-type="folder" data-root data-path="<?= e(dirname($currentFolder)) ?>" tabindex="0">
                     <td><i class="icon-arrow-turn-up"></i>..</td>
                     <td></td>
                     <td></td>
                 </tr>
-            <?php } ?>
+            <?php endif ?>
 
-            <?php foreach ($items as $item) {
+            <?php foreach ($items as $item):
                 $itemType = $item->getFileType();
                 ?>
 
@@ -38,7 +38,7 @@ $listElementId = $this->getId('item-list');
                         <div class="item-title no-wrap-text">
                             <i class="<?= $this->itemTypeToIconClass($item, $itemType) ?>"></i> <?= e(basename($item->path)) ?>
 
-                            <?php if (! $this->readOnly) { ?>
+                            <?php if (!$this->readOnly): ?>
                                 <a
                                     href="#"
                                     data-rename
@@ -47,24 +47,24 @@ $listElementId = $this->getId('item-list');
                                     data-handler="<?= $this->getEventHandler('onLoadRenamePopup') ?>"
                                     data-z-index="1200"
                                 ><i data-rename-control class="icon-terminal"></i></a>
-                            <?php } ?>
+                            <?php endif; ?>
                         </div>
                     </td>
                     <td><?= e($item->sizeToString()) ?></td>
                     <td><?= e($item->lastModifiedAsString()) ?></td>
-                    <?php if ($searchMode) { ?>
+                    <?php if ($searchMode): ?>
                         <td title="<?= e(dirname($item->path)) ?>">
                             <div class="no-wrap-text"><?= e(dirname($item->path)) ?></div>
                         </td>
-                    <?php } ?>
+                    <?php endif ?>
                 </tr>
-            <?php } ?>
-        <?php } ?>
+            <?php endforeach ?>
+        <?php endif ?>
     </tbody>
 </table>
 
-<?php if (count($items) == 0 && $searchMode) { ?>
+<?php if (count($items) == 0 && $searchMode): ?>
     <p class="no-data">
         <?= e(trans('backend::lang.media.no_files_found')) ?>
     </p>
-<?php } ?>
+<?php endif ?>

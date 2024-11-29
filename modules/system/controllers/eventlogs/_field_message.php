@@ -1,1 +1,1 @@
-<?= e($value, true);
+<?= e($value, true); ?>

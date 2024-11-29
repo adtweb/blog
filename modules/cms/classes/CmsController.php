@@ -1,8 +1,7 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use App;
+use Closure;
 use Illuminate\Routing\Controller as ControllerBase;
 
 /**
@@ -11,7 +10,7 @@ use Illuminate\Routing\Controller as ControllerBase;
  * then the URL is passed to the front-end controller for processing.
  *
  * @see Cms\Classes\Controller Front-end controller class
- *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class CmsController extends ControllerBase
@@ -33,9 +32,8 @@ class CmsController extends ControllerBase
 
     /**
      * Finds and serves the request using the primary controller.
-     *
-     * @param  string  $url  Specifies the requested page URL.
-     *                       If the parameter is omitted, the current URL used.
+     * @param string $url Specifies the requested page URL.
+     * If the parameter is omitted, the current URL used.
      * @return string Returns the processed page content.
      */
     public function run($url = '/')
@@ -46,13 +44,12 @@ class CmsController extends ControllerBase
     public function __call($name, $params)
     {
         if ($name === 'extend') {
-            if (empty($params[0]) || ! is_callable($params[0])) {
+            if (empty($params[0]) || !is_callable($params[0])) {
                 throw new \InvalidArgumentException('The extend() method requires a callback parameter or closure.');
             }
             if ($params[0] instanceof \Closure) {
                 return $params[0]->call($this, $params[1] ?? $this);
             }
-
             return \Closure::fromCallable($params[0])->call($this, $params[1] ?? $this);
         }
 
@@ -66,7 +63,6 @@ class CmsController extends ControllerBase
                 throw new \InvalidArgumentException('The extend() method requires a callback parameter or closure.');
             }
             self::extendableExtendCallback($params[0], $params[1] ?? false, $params[2] ?? null);
-
             return;
         }
 

@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use File;
 use System\Classes\MixAssets;
@@ -41,22 +39,20 @@ class MixWatch extends MixCompile
         $packages = $mixedAssets->getPackages();
         $name = $this->argument('package');
 
-        if (! in_array($name, array_keys($packages))) {
+        if (!in_array($name, array_keys($packages))) {
             $this->error(
                 sprintf('Package "%s" is not a registered package.', $name)
             );
-
             return 1;
         }
 
         $package = $packages[$name];
 
         $relativeMixJsPath = $package['mix'];
-        if (! $this->canCompilePackage($relativeMixJsPath)) {
+        if (!$this->canCompilePackage($relativeMixJsPath)) {
             $this->error(
                 sprintf('Unable to watch "%s", %s was not found in the package.json\'s workspaces.packages property. Try running mix:install first.', $name, $relativeMixJsPath)
             );
-
             return 1;
         }
 
@@ -69,7 +65,6 @@ class MixWatch extends MixCompile
             $this->error(
                 sprintf('Unable to compile package "%s"', $name)
             );
-
             return 1;
         }
 
@@ -95,7 +90,7 @@ class MixWatch extends MixCompile
     protected function createWebpackConfig(string $mixJsPath): void
     {
         $basePath = base_path();
-        $fixture = File::get(__DIR__.'/fixtures/mix.webpack.js.fixture');
+        $fixture = File::get(__DIR__ . '/fixtures/mix.webpack.js.fixture');
 
         $config = str_replace(
             ['%base%', '%notificationInject%', '%mixConfigPath%', '%pluginsPath%', '%appPath%', '%silent%', '%noProgress%'],
@@ -112,7 +107,7 @@ class MixWatch extends MixCompile
     public function handleCleanup(): void
     {
         $this->newLine();
-        $this->info('Cleaning up: '.$this->getWebpackJsPath(base_path($this->mixJsPath)));
+        $this->info('Cleaning up: ' . $this->getWebpackJsPath(base_path($this->mixJsPath)));
         $this->removeWebpackConfig(base_path($this->mixJsPath));
     }
 }

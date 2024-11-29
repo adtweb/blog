@@ -1,18 +1,17 @@
-<?php
+<?php namespace System\Models;
 
-namespace System\Models;
-
+use View;
+use Model;
+use System\Classes\MailManager;
+use Winter\Storm\Mail\MailParser;
 use ApplicationException;
 use Exception;
 use File as FileHelper;
-use Model;
-use System\Classes\MailManager;
-use View;
-use Winter\Storm\Mail\MailParser;
 
 /**
  * Mail partial
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailPartial extends Model
@@ -38,9 +37,9 @@ class MailPartial extends Model
      * @var array Validation rules
      */
     public $rules = [
-        'code' => 'required|unique:system_mail_partials',
-        'name' => 'required',
-        'content_html' => 'required',
+        'code'                  => 'required|unique:system_mail_partials',
+        'name'                  => 'required',
+        'content_html'          => 'required',
     ];
 
     /**
@@ -50,7 +49,7 @@ class MailPartial extends Model
      */
     public function afterFetch()
     {
-        if (! $this->is_custom) {
+        if (!$this->is_custom) {
             $this->fillFromCode();
         }
     }
@@ -58,20 +57,21 @@ class MailPartial extends Model
     /**
      * Find a MailPartial instance by code or create a new instance from a view file.
      *
-     * @param  string  $code
+     * @param string $code
      * @return MailTemplate
      */
     public static function findOrMakePartial($code)
     {
         try {
-            if (! $template = self::whereCode($code)->first()) {
+            if (!$template = self::whereCode($code)->first()) {
                 $template = new self;
                 $template->code = $code;
                 $template->fillFromCode($code);
             }
 
             return $template;
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             return null;
         }
     }
@@ -96,7 +96,7 @@ class MailPartial extends Model
                 continue;
             }
 
-            if (! array_key_exists($code, $partials)) {
+            if (!array_key_exists($code, $partials)) {
                 self::whereCode($code)->delete();
             }
         }
@@ -113,7 +113,7 @@ class MailPartial extends Model
     /**
      * Fill model using a view file retrieved by code.
      *
-     * @param  string|null  $code
+     * @param string|null $code
      * @return void
      */
     public function fillFromCode($code = null)
@@ -124,7 +124,7 @@ class MailPartial extends Model
             $code = $this->code;
         }
 
-        if (! $definition = array_get($definitions, $code)) {
+        if (!$definition = array_get($definitions, $code)) {
             throw new ApplicationException('Unable to find a registered partial with code: '.$code);
         }
 
@@ -134,7 +134,7 @@ class MailPartial extends Model
     /**
      * Fill model using a view file retrieved by path.
      *
-     * @param  string  $path
+     * @param string $path
      * @return void
      */
     public function fillFromView($path)
@@ -149,16 +149,15 @@ class MailPartial extends Model
     /**
      * Get section array from a view file retrieved by code.
      *
-     * @param  string  $code
+     * @param string $code
      * @return array|null
      */
     protected static function getTemplateSections($code)
     {
-        if (! View::exists($code)) {
+        if (!View::exists($code)) {
             return null;
         }
         $view = View::make($code);
-
         return MailParser::parse(FileHelper::get($view->getPath()));
     }
 }

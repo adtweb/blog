@@ -2,21 +2,21 @@
 
 namespace System\Tests\Plugins\Database;
 
+use System\Tests\Bootstrap\PluginTestCase;
 use Database\Tester\Models\Author;
 use Database\Tester\Models\Phone;
 use Database\Tester\Models\User;
 use Model;
-use System\Tests\Bootstrap\PluginTestCase;
 
 class HasOneThroughModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/User.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Phone.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/User.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Phone.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -35,7 +35,7 @@ class HasOneThroughModelTest extends PluginTestCase
         $author->save();
 
         $user = User::with([
-            'phone',
+            'phone'
         ])->find($user->id);
 
         $this->assertEquals($phone->id, $user->phone->id);

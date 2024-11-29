@@ -4,7 +4,7 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <?php Block::put('form-contents') ?>
         <div class="layout">
@@ -48,14 +48,14 @@
     <?php Block::endPut() ?>
 
     <?php Block::put('body') ?>
-        <?= Form::open(['id' => 'brandSettingsForm', 'class' => 'layout stretch']) ?>
+        <?= Form::open(['id' => 'brandSettingsForm', 'class'=>'layout stretch']) ?>
             <?= $this->makeLayout('form-with-sidebar') ?>
         <?= Form::close() ?>
     <?php Block::endPut() ?>
 
-<?php } else { ?>
+<?php else: ?>
 
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
     <p><a href="<?= Backend::url('system/mailtemplates') ?>" class="btn btn-default"><?= e(trans('system::lang.mail_templates.return')) ?></a></p>
 
-<?php } ?>
+<?php endif ?>

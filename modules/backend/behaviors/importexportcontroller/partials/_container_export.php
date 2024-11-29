@@ -2,8 +2,8 @@
 
     <?= $exportFormatFormWidget->render() ?>
 
-    <?php if ($exportOptionsFormWidget) { ?>
+    <?php if ($exportOptionsFormWidget): ?>
         <?= $exportOptionsFormWidget->render() ?>
-    <?php } ?>
+    <?php endif ?>
 
 </div>

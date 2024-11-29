@@ -1,11 +1,11 @@
 <?= Block::put('sidepanel') ?>
-    <?php if (! $this->fatalError) { ?>
+    <?php if (!$this->fatalError): ?>
         <?= $this->makePartial('sidepanel') ?>
-    <?php } ?>
+    <?php endif ?>
 <?= Block::endPut() ?>
 
 <?= Block::put('body') ?>
-    <?php if (! $this->fatalError) { ?>
+    <?php if (!$this->fatalError): ?>
         <div
             data-control="tab"
             data-closable
@@ -25,7 +25,7 @@
             </div>
 
         </div>
-    <?php } else { ?>
+    <?php else: ?>
         <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
-    <?php } ?>
+    <?php endif ?>
 <?= Block::endPut() ?>

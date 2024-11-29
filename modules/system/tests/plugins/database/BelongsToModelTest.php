@@ -2,19 +2,19 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\Author;
-use Database\Tester\Models\Post;
-use Model;
 use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\Post;
+use Database\Tester\Models\Author;
+use Model;
 
 class BelongsToModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -22,7 +22,7 @@ class BelongsToModelTest extends PluginTestCase
     public function testSetRelationValue()
     {
         Model::unguard();
-        $post = Post::create(['title' => 'First post', 'description' => 'Yay!!']);
+        $post = Post::create(['title' => "First post", 'description' => "Yay!!"]);
         $author1 = Author::create(['name' => 'Stevie', 'email' => 'stevie@example.com']);
         $author2 = Author::create(['name' => 'Louie', 'email' => 'louie@example.com']);
         $author3 = Author::make(['name' => 'Charlie', 'email' => 'charlie@example.com']);
@@ -55,7 +55,7 @@ class BelongsToModelTest extends PluginTestCase
     {
         Model::unguard();
         $author = Author::create(['name' => 'Stevie']);
-        $post = Post::make(['title' => 'First post', 'author_id' => $author->id]);
+        $post = Post::make(['title' => "First post", 'author_id' => $author->id]);
         Model::reguard();
 
         $this->assertEquals($author->id, $post->getRelationValue('author'));
@@ -66,7 +66,7 @@ class BelongsToModelTest extends PluginTestCase
         $sessionKey = uniqid('session_key', true);
 
         Model::unguard();
-        $post = Post::make(['title' => 'First post']);
+        $post = Post::make(['title' => "First post"]);
         $author = Author::create(['name' => 'Stevie']);
         Model::reguard();
 

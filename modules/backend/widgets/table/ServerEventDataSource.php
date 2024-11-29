@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Widgets\Table;
+<?php namespace Backend\Widgets\Table;
 
 /**
  * The server-event data source for the Table widget.
@@ -11,11 +9,10 @@ class ServerEventDataSource extends DataSourceBase
 
     /**
      * Return records from the data source.
-     *
-     * @param  int  $offset  Specifies the offset of the first record to return, zero-based.
-     * @param  int  $count  Specifies the number of records to return.
+     * @param integer $offset Specifies the offset of the first record to return, zero-based.
+     * @param integer $count Specifies the number of records to return.
      * @return array Returns the records.
-     *               If there are no more records, returns an empty array.
+     * If there are no more records, returns an empty array.
      */
     public function getRecords($offset, $count)
     {
@@ -32,8 +29,7 @@ class ServerEventDataSource extends DataSourceBase
 
     /**
      * Returns a total number of records in the data source.
-     *
-     * @return int
+     * @return integer
      */
     public function getCount()
     {
@@ -42,7 +38,6 @@ class ServerEventDataSource extends DataSourceBase
 
     /**
      * Updates a record in the data source.
-     *
      * @return void
      */
     public function createRecord($data, $placement, $relativeToKey)
@@ -52,7 +47,6 @@ class ServerEventDataSource extends DataSourceBase
 
     /**
      * Updates a record in the data source.
-     *
      * @return void
      */
     public function updateRecord($key, $data)
@@ -62,7 +56,6 @@ class ServerEventDataSource extends DataSourceBase
 
     /**
      * Removes a record from the data source.
-     *
      * @return array Returns the remaining records.
      */
     public function deleteRecord($key)
@@ -75,19 +68,24 @@ class ServerEventDataSource extends DataSourceBase
      * The method doesn't replace existing records and
      * could be called multiple times in order to fill
      * the data source.
-     *
-     * @param  array  $records  Records to initialize in the data source.
+     * @param array $records Records to initialize in the data source.
      */
-    public function initRecords($records) {}
+    public function initRecords($records)
+    {
+    }
 
     /**
      * Removes all records from the data source.
      */
-    public function purge() {}
+    public function purge()
+    {
+    }
 
     /**
      * Returns all records in the data source.
      * This method is specific only for the client memory data sources.
      */
-    public function getAllRecords() {}
+    public function getAllRecords()
+    {
+    }
 }

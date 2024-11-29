@@ -1,20 +1,20 @@
-<?php
+<?php namespace Cms\Controllers;
 
-namespace Cms\Controllers;
-
-use ApplicationException;
 use Backend;
-use Backend\Classes\Controller;
 use BackendMenu;
-use Cms\Classes\Theme as CmsTheme;
+use ApplicationException;
 use Cms\Models\ThemeData;
-use Exception;
+use Cms\Classes\Theme as CmsTheme;
 use System\Classes\SettingsManager;
+use Backend\Classes\Controller;
+use Exception;
 
 /**
  * Theme customization controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class ThemeOptions extends Controller
 {
@@ -53,7 +53,8 @@ class ThemeOptions extends Controller
             $this->asExtension('FormController')->update($model->id);
 
             $this->vars['hasCustomData'] = $this->hasThemeData($dirName);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->handleError($ex);
         }
     }
@@ -65,7 +66,7 @@ class ThemeOptions extends Controller
 
         // Redirect close requests to the settings index when user doesn't have access
         // to go back to the theme selection page
-        if (! $this->user->hasAccess('cms.manage_themes') && input('close')) {
+        if (!$this->user->hasAccess('cms.manage_themes') && input('close')) {
             $result = Backend::redirect('system/settings');
         }
 
@@ -98,14 +99,15 @@ class ThemeOptions extends Controller
     /**
      * Default to the active theme if user doesn't have access to manage all themes
      *
+     * @param string $dirName
      * @return string
      */
-    protected function getDirName(?string $dirName = null)
+    protected function getDirName(string $dirName = null)
     {
         /*
          * Only the active theme can be managed without this permission
          */
-        if ($dirName && ! $this->user->hasAccess('cms.manage_themes')) {
+        if ($dirName && !$this->user->hasAccess('cms.manage_themes')) {
             $dirName = null;
         }
 
@@ -124,7 +126,6 @@ class ThemeOptions extends Controller
     protected function getThemeData($dirName)
     {
         $theme = $this->findThemeObject($dirName);
-
         return ThemeData::forTheme($theme);
     }
 
@@ -134,7 +135,7 @@ class ThemeOptions extends Controller
             $name = post('theme');
         }
 
-        if (! $name || (! $theme = CmsTheme::load($name))) {
+        if (!$name || (!$theme = CmsTheme::load($name))) {
             throw new ApplicationException(trans('cms::lang.theme.not_found_name', ['name' => $name]));
         }
 

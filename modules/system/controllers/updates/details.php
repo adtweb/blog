@@ -5,20 +5,20 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <div class="scoreboard">
         <div data-control="toolbar">
             <div class="scoreboard-item title-value">
                 <h4><?= e(trans('system::lang.plugin.label')) ?></h4>
                 <p class="wn-<?= $pluginIcon ?>"><?= e(trans($pluginName)) ?></p>
-                <?php if ($pluginHomepage) { ?>
+                <?php if ($pluginHomepage): ?>
                     <p class="description">
                         <a href="<?= e($pluginHomepage) ?>" target="_blank">
                             <?= e(trans('system::lang.updates.details_view_homepage')) ?>
                         </a>
                     </p>
-                <?php } ?>
+                <?php endif ?>
             </div>
             <div class="scoreboard-item title-value">
                 <h4><?= e(trans('system::lang.updates.details_current_version')) ?></h4>
@@ -65,53 +65,53 @@
         <div class="tab-content">
             <div class="tab-pane <?= $activeTab == 'readme' ? 'active' : '' ?>">
                 <div class="plugin-details-content">
-                    <?php if ($readme) { ?>
+                    <?php if ($readme): ?>
                         <?= $readme ?>
-                    <?php } else { ?>
+                    <?php else: ?>
                         <p><?= e(trans('system::lang.updates.details_readme_missing')) ?></p>
-                    <?php } ?>
+                    <?php endif ?>
                 </div>
             </div>
             <div class="tab-pane <?= $activeTab == 'changelog' ? 'active' : '' ?>">
                 <div class="plugin-details-content">
-                    <?php if ($changelog) { ?>
+                    <?php if ($changelog): ?>
                         <dl>
-                            <?php foreach ($changelog as $version => $comments) { ?>
-                                <?php foreach ($comments as $index => $comment) { ?>
-                                    <dt><?= ! $index ? e($version) : '' ?></dt>
+                            <?php foreach ($changelog as $version => $comments): ?>
+                                <?php foreach ($comments as $index => $comment): ?>
+                                    <dt><?= !$index ? e($version): '' ?></dt>
                                     <dd><?= e($comment) ?></dd>
-                                <?php } ?>
-                            <?php } ?>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
                         </dl>
-                    <?php } else { ?>
+                    <?php else: ?>
                         <p><?= e(trans('system::lang.updates.details_changelog_missing')) ?></p>
-                    <?php } ?>
+                    <?php endif ?>
                 </div>
             </div>
             <div class="tab-pane <?= $activeTab == 'upgrades' ? 'active' : '' ?>">
                 <div class="plugin-details-content">
-                    <?php if ($upgrades) { ?>
+                    <?php if ($upgrades): ?>
                         <?= $upgrades ?>
-                    <?php } else { ?>
+                    <?php else: ?>
                         <p><?= e(trans('system::lang.updates.details_upgrades_missing')) ?></p>
-                    <?php } ?>
+                    <?php endif ?>
                 </div>
             </div>
             <div class="tab-pane <?= $activeTab == 'licence' ? 'active' : '' ?>">
                 <div class="plugin-details-content">
-                    <?php if ($licence) { ?>
+                    <?php if ($licence): ?>
                         <?= $licence ?>
-                    <?php } else { ?>
+                    <?php else: ?>
                         <p><?= e(trans('system::lang.updates.details_licence_missing')) ?></p>
-                    <?php } ?>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
     </div>
 
-<?php } else { ?>
+<?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
     <p><a href="<?= Backend::url('system/updates') ?>" class="btn btn-default"><?= e(trans('system::lang.settings.return')) ?></a></p>
 
-<?php } ?>
+<?php endif ?>

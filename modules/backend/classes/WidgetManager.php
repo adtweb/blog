@@ -1,16 +1,15 @@
-<?php
+<?php namespace Backend\Classes;
 
-namespace Backend\Classes;
-
-use BackendAuth;
-use Event;
 use Str;
-use System\Classes\PluginManager;
+use BackendAuth;
 use SystemException;
+use System\Classes\PluginManager;
+use Event;
 
 /**
  * Widget manager
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WidgetManager
@@ -18,7 +17,7 @@ class WidgetManager
     use \Winter\Storm\Support\Traits\Singleton;
 
     /**
-     * @var array An array of form widgets. Stored in the form of ['FormWidgetClass' =>].
+     * @var array An array of form widgets. Stored in the form of ['FormWidgetClass' => $formWidgetInfo].
      */
     protected $formWidgets;
 
@@ -61,7 +60,6 @@ class WidgetManager
 
     /**
      * Returns a list of registered form widgets.
-     *
      * @return array Array keys are class names.
      */
     public function listFormWidgets()
@@ -82,7 +80,7 @@ class WidgetManager
             $plugins = $this->pluginManager->getPlugins();
 
             foreach ($plugins as $plugin) {
-                if (! is_array($widgets = $plugin->registerFormWidgets())) {
+                if (!is_array($widgets = $plugin->registerFormWidgets())) {
                     continue;
                 }
 
@@ -97,20 +95,19 @@ class WidgetManager
 
     /**
      * Registers a single form widget.
-     *
-     * @param  string  $className  Widget class name.
-     * @param  array  $widgetInfo  Registration information, can contain a `code` key.
+     * @param string $className Widget class name.
+     * @param array $widgetInfo Registration information, can contain a `code` key.
      * @return void
      */
     public function registerFormWidget($className, $widgetInfo = null)
     {
-        if (! is_array($widgetInfo)) {
+        if (!is_array($widgetInfo)) {
             $widgetInfo = ['code' => $widgetInfo];
         }
 
         $widgetCode = $widgetInfo['code'] ?? null;
 
-        if (! $widgetCode) {
+        if (!$widgetCode) {
             $widgetCode = Str::getClassId($className);
         }
 
@@ -124,6 +121,7 @@ class WidgetManager
      *     WidgetManager::registerFormWidgets(function ($manager) {
      *         $manager->registerFormWidget('Backend\FormWidgets\CodeEditor', 'codeeditor');
      *     });
+     *
      */
     public function registerFormWidgets(callable $definitions)
     {
@@ -133,8 +131,7 @@ class WidgetManager
     /**
      * Returns a class name from a form widget code
      * Normalizes a class name or converts an code to its class name.
-     *
-     * @param  string  $name  Class name or form widget code.
+     * @param string $name Class name or form widget code.
      * @return string The class name resolved, or the original name.
      */
     public function resolveFormWidget($name)
@@ -163,7 +160,6 @@ class WidgetManager
 
     /**
      * Returns a list of registered report widgets.
-     *
      * @return array Array keys are class names.
      */
     public function listReportWidgets()
@@ -184,7 +180,7 @@ class WidgetManager
             $plugins = $this->pluginManager->getPlugins();
 
             foreach ($plugins as $plugin) {
-                if (! is_array($widgets = $plugin->registerReportWidgets())) {
+                if (!is_array($widgets = $plugin->registerReportWidgets())) {
                     continue;
                 }
 
@@ -207,13 +203,14 @@ class WidgetManager
          *     Event::listen('system.reportwidgets.extendItems', function ($manager) {
          *          $manager->removeReportWidget('Acme\ReportWidgets\YourWidget');
          *     });
+         *
          */
         Event::fire('system.reportwidgets.extendItems', [$this]);
 
         $user = BackendAuth::getUser();
         foreach ($this->reportWidgets as $widget => $config) {
-            if (! empty($config['permissions'])) {
-                if (! $user->hasAccess($config['permissions'], false)) {
+            if (!empty($config['permissions'])) {
+                if (!$user->hasAccess($config['permissions'], false)) {
                     unset($this->reportWidgets[$widget]);
                 }
             }
@@ -224,7 +221,6 @@ class WidgetManager
 
     /**
      * Returns the raw array of registered report widgets.
-     *
      * @return array Array keys are class names.
      */
     public function getReportWidgets()
@@ -249,6 +245,7 @@ class WidgetManager
      *             'context' => 'dashboard'
      *         ]);
      *     });
+     *
      */
     public function registerReportWidgets(callable $definitions)
     {
@@ -257,13 +254,12 @@ class WidgetManager
 
     /**
      * Remove a registered ReportWidget.
-     *
-     * @param  string  $className  Widget class name.
+     * @param string $className Widget class name.
      * @return void
      */
     public function removeReportWidget($className)
     {
-        if (! $this->reportWidgets) {
+        if (!$this->reportWidgets) {
             throw new SystemException('Unable to remove a widget before widgets are loaded.');
         }
 

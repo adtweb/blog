@@ -7,9 +7,9 @@
 
         <div class="form-group">
             <select name="pagelink" class="form-control custom-select" id="pageLink">
-                <?php foreach ($links as $link) { ?>
+                <?php foreach ($links as $link): ?>
                     <option value="<?= array_get($link, 'url') ?>"><?= array_get($link, 'name') ?></option>
-                <?php } ?>
+                <?php endforeach ?>
             </select>
         </div>
 

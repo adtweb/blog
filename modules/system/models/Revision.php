@@ -1,12 +1,11 @@
-<?php
-
-namespace System\Models;
+<?php namespace System\Models;
 
 use Winter\Storm\Database\Models\Revision as RevisionBase;
 
 /**
  * Revision history model
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Revision extends RevisionBase

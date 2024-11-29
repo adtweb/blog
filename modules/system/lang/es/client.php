@@ -31,33 +31,33 @@ return [
         'link' => 'Vínculo',
         'horizontalrule' => 'Insertar Regla Horizontal',
         'fullscreen' => 'Pantalla completa',
-        'preview' => 'Previsualizar',
+        'preview' => 'Previsualizar'
     ],
     'mediamanager' => [
-        'insert_link' => 'Insertar Media Vínculo',
-        'insert_image' => 'Insertar Media Imagen',
-        'insert_video' => 'Insertar Media Video',
-        'insert_audio' => 'Insertar Media Audio',
-        'invalid_file_empty_insert' => 'Por favor seleccione archivo para insertar vínculo.',
-        'invalid_file_single_insert' => 'Por favor seleccione un solo archivo.',
-        'invalid_image_empty_insert' => 'Por favor seleccione una imagen(es) para insertar.',
-        'invalid_video_empty_insert' => 'Por favor seleccione un archivo de video para insertar.',
-        'invalid_audio_empty_insert' => 'Por favor seleccione un archivo de audio para insertar.',
+        'insert_link' => "Insertar Media Vínculo",
+        'insert_image' => "Insertar Media Imagen",
+        'insert_video' => "Insertar Media Video",
+        'insert_audio' => "Insertar Media Audio",
+        'invalid_file_empty_insert' => "Por favor seleccione archivo para insertar vínculo.",
+        'invalid_file_single_insert' => "Por favor seleccione un solo archivo.",
+        'invalid_image_empty_insert' => "Por favor seleccione una imagen(es) para insertar.",
+        'invalid_video_empty_insert' => "Por favor seleccione un archivo de video para insertar.",
+        'invalid_audio_empty_insert' => "Por favor seleccione un archivo de audio para insertar.",
     ],
     'alert' => [
         'confirm_button_text' => 'OK',
-        'cancel_button_text' => 'Cancelar',
+        'cancel_button_text' => 'Cancelar'
     ],
     'datepicker' => [
         'previousMonth' => 'Mes Anterior',
         'nextMonth' => 'Mes Siguiente',
         'months' => ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
         'weekdays' => ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
-        'weekdaysShort' => ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        'weekdaysShort' => ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
     ],
     'filter' => [
         'group' => [
-            'all' => 'todos',
+            'all' => 'todos'
         ],
         'scopes' => [
             'apply_button_text' => 'Aplicar',
@@ -69,7 +69,7 @@ return [
             'reset_button_text' => 'Restablecer',
             'date_placeholder' => 'Fecha',
             'after_placeholder' => 'Desde',
-            'before_placeholder' => 'Hasta',
+            'before_placeholder' => 'Hasta'
         ],
         'numbers' => [
             'all' => 'todos',
@@ -77,7 +77,7 @@ return [
             'reset_button_text' => 'Restablecer',
             'min_placeholder' => 'Mínimo',
             'max_placeholder' => 'Máximo',
-            'number_placeholder' => 'Número',
+            'number_placeholder' => 'Número'
         ],
     ],
     'eventlog' => [
@@ -93,7 +93,7 @@ return [
             'openWith' => 'Abrir con',
             'rememberChoice' => 'Recuerde la opción seleccionada para esta sesión del navegador',
             'open' => 'Abrir',
-            'cancel' => 'Cancelar',
-        ],
-    ],
+            'cancel' => 'Cancelar'
+        ]
+    ]
 ];

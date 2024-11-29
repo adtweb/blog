@@ -2,16 +2,16 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\Post;
 use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\Post;
 
 class PluginModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -20,8 +20,8 @@ class PluginModelTest extends PluginTestCase
     {
         Post::truncate();
         $post = new Post;
-        $post->title = 'First post';
-        $post->description = 'Yay!!';
+        $post->title = "First post";
+        $post->description = "Yay!!";
         $post->save();
         $this->assertEquals(1, $post->id);
     }

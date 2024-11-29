@@ -1,17 +1,16 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use Backend\Behaviors\ImportExportController\TranscodeFilter;
+use Str;
 use Lang;
+use Model;
 use League\Csv\Reader as CsvReader;
 use League\Csv\Statement as CsvStatement;
-use Model;
-use Str;
 
 /**
  * Model used for importing data
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 abstract class ImportModel extends Model
@@ -20,7 +19,6 @@ abstract class ImportModel extends Model
 
     /**
      * The attributes that aren't mass assignable.
-     *
      * @var array
      */
     protected $guarded = [];
@@ -40,7 +38,7 @@ abstract class ImportModel extends Model
         'created' => 0,
         'errors' => [],
         'warnings' => [],
-        'skipped' => [],
+        'skipped' => []
     ];
 
     /**
@@ -52,6 +50,7 @@ abstract class ImportModel extends Model
      *        'db_name2' => 'Another value'
      *    ],
      *    [...]
+     *
      */
     abstract public function importData($results, $sessionKey = null);
 
@@ -73,7 +72,6 @@ abstract class ImportModel extends Model
         $sessionKey = array_get($options, 'sessionKey');
         $path = $this->getImportFilePath($sessionKey);
         $data = $this->processImportData($path, $matches, $options);
-
         return $this->importData($data, $sessionKey);
     }
 
@@ -101,7 +99,7 @@ abstract class ImportModel extends Model
             'delimiter' => null,
             'enclosure' => null,
             'escape' => null,
-            'encoding' => null,
+            'encoding' => null
         ];
 
         $options = array_merge($defaultOptions, $options);
@@ -157,7 +155,6 @@ abstract class ImportModel extends Model
 
     /**
      * Converts a single row of CSV data to the column map.
-     *
      * @return array
      */
     protected function processImportRow($rowData, $matches)
@@ -176,7 +173,6 @@ abstract class ImportModel extends Model
 
     /**
      * Explodes a string using pipes (|) to a single dimension array
-     *
      * @return array
      */
     protected function decodeArrayValue($value, $delimeter = '|')
@@ -185,7 +181,7 @@ abstract class ImportModel extends Model
             return [$value];
         }
 
-        $data = preg_split('~(?<!\\\)'.preg_quote($delimeter, '~').'~', $value);
+        $data = preg_split('~(?<!\\\)' . preg_quote($delimeter, '~') . '~', $value);
         $newData = [];
 
         foreach ($data as $_value) {
@@ -197,7 +193,6 @@ abstract class ImportModel extends Model
 
     /**
      * Returns an attached imported file local path, if available.
-     *
      * @return string
      */
     public function getImportFilePath($sessionKey = null)
@@ -206,9 +201,10 @@ abstract class ImportModel extends Model
             ->import_file()
             ->withDeferred($sessionKey)
             ->orderBy('id', 'desc')
-            ->first();
+            ->first()
+        ;
 
-        if (! $file) {
+        if (!$file) {
             return null;
         }
 
@@ -217,7 +213,6 @@ abstract class ImportModel extends Model
 
     /**
      * Returns all available encodings values from the localization config
-     *
      * @return array
      */
     public function getFormatEncodingOptions()
@@ -241,7 +236,7 @@ abstract class ImportModel extends Model
             'iso-8859-15',
             'Windows-1250',
             'Windows-1251',
-            'Windows-1252',
+            'Windows-1252'
         ];
 
         $translated = array_map(function ($option) {

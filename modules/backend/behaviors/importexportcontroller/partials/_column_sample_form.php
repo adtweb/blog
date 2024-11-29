@@ -10,11 +10,11 @@
     <div class="list-preview">
         <div class="control-simplelist is-divided is-scrollable size-small" data-control="simplelist">
             <ul>
-                <?php foreach ($columnData as $sample) { ?>
+                <?php foreach ($columnData as $sample): ?>
                     <li class="wn-icon-file-o">
                         <?= e($sample) ?>
                     </li>
-                <?php } ?>
+                <?php endforeach ?>
             </ul>
         </div>
     </div>

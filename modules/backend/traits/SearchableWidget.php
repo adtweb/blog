@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Traits;
+<?php namespace Backend\Traits;
 
 use Str;
 
@@ -8,8 +6,10 @@ use Str;
  * Searchable Widget Trait
  * Adds search features to back-end widgets
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
+
 trait SearchableWidget
 {
     protected $searchTerm = false;
@@ -29,7 +29,7 @@ trait SearchableWidget
     {
         foreach ($words as $word) {
             $word = trim($word);
-            if (! strlen($word)) {
+            if (!strlen($word)) {
                 continue;
             }
 

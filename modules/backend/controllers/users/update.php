@@ -5,12 +5,12 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <?php Block::put('form-contents') ?>
-        <?php if ($formModel->trashed()) { ?>
+        <?php if ($formModel->trashed()): ?>
             <?= $this->makePartial('hint_trashed') ?>
-        <?php } ?>
+        <?php endif; ?>
 
         <div class="layout">
 
@@ -44,7 +44,7 @@
                     <span class="btn-text">
                         <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('backend/users') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                     </span>
-                    <?php if ($formModel->trashed()) { ?>
+                    <?php if ($formModel->trashed()): ?>
                         <button
                             type="button"
                             class="wn-icon-user-plus btn-icon info pull-right"
@@ -52,7 +52,7 @@
                             data-load-indicator="<?= e(trans('backend::lang.form.restoring')) ?>"
                             data-request-confirm="<?= e(trans('backend::lang.form.confirm_restore')) ?>">
                         </button>
-                    <?php } else { ?>
+                    <?php else: ?>
                         <button
                             type="button"
                             class="wn-icon-trash-o btn-icon danger pull-right"
@@ -60,7 +60,7 @@
                             data-load-indicator="<?= e(trans('backend::lang.form.deleting')) ?>"
                             data-request-confirm="<?= e(trans('backend::lang.user.delete_confirm')) ?>">
                         </button>
-                    <?php } ?>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -72,12 +72,12 @@
     <?php Block::endPut() ?>
 
     <?php Block::put('body') ?>
-        <?= Form::open(['class' => 'layout stretch']) ?>
+        <?= Form::open(['class'=>'layout stretch']) ?>
             <?= $this->makeLayout('form-with-sidebar') ?>
         <?= Form::close() ?>
     <?php Block::endPut() ?>
 
-<?php } else { ?>
+<?php else: ?>
     <div class="control-breadcrumb">
         <?= Block::placeholder('breadcrumb') ?>
     </div>
@@ -85,4 +85,4 @@
         <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
         <p><a href="<?= Backend::url('backend/users') ?>" class="btn btn-default"><?= e(trans('backend::lang.user.return')) ?></a></p>
     </div>
-<?php } ?>
+<?php endif ?>

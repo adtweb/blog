@@ -1,10 +1,9 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 /**
  * Parent class for PHP classes created for layout PHP sections.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class LayoutCode extends CodeBase
@@ -13,5 +12,7 @@ class LayoutCode extends CodeBase
      * This event is triggered after the layout components are executed,
      * but before the page's onStart event.
      */
-    public function onBeforePageStart() {}
+    public function onBeforePageStart()
+    {
+    }
 }

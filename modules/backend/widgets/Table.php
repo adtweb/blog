@@ -1,27 +1,26 @@
-<?php
+<?php namespace Backend\Widgets;
 
-namespace Backend\Widgets;
-
-use Backend;
-use Backend\Classes\WidgetBase;
 use Config;
-use Input;
+use Backend;
 use Lang;
+use Input;
 use Request;
-use SystemException;
+use Backend\Classes\WidgetBase;
 use Winter\Storm\Html\Helper as HtmlHelper;
+use SystemException;
 
 /**
  * Table Widget.
  *
  * Represents an editable tabular control.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Table extends WidgetBase
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'table';
 
@@ -31,7 +30,7 @@ class Table extends WidgetBase
     protected $columns = [];
 
     /**
-     * @var bool Show data table header
+     * @var boolean Show data table header
      */
     protected $showHeader = true;
 
@@ -52,7 +51,7 @@ class Table extends WidgetBase
 
     protected $dataSourceAliases = [
         'client' => '\Backend\Widgets\Table\ClientMemoryDataSource',
-        'server' => '\Backend\Widgets\Table\ServerEventDataSource',
+        'server' => '\Backend\Widgets\Table\ServerEventDataSource'
     ];
 
     /**
@@ -67,7 +66,7 @@ class Table extends WidgetBase
         $this->recordsKeyFrom = $this->getConfig('keyFrom', 'id');
 
         $dataSourceClass = $this->getConfig('dataSource');
-        if (! strlen($dataSourceClass)) {
+        if (!strlen($dataSourceClass)) {
             throw new SystemException('The Table widget data source is not specified in the configuration.');
         }
 
@@ -75,7 +74,7 @@ class Table extends WidgetBase
             $dataSourceClass = $this->dataSourceAliases[$dataSourceClass];
         }
 
-        if (! class_exists($dataSourceClass)) {
+        if (!class_exists($dataSourceClass)) {
             throw new SystemException(sprintf('The Table widget data source class "%s" is could not be found.', $dataSourceClass));
         }
 
@@ -83,9 +82,9 @@ class Table extends WidgetBase
 
         if (Request::method() == 'POST' && $this->isClientDataSource()) {
             if (strpos($this->fieldName, '[') === false) {
-                $requestDataField = $this->fieldName.'TableData';
+                $requestDataField = $this->fieldName . 'TableData';
             } else {
-                $requestDataField = $this->fieldName.'[TableData]';
+                $requestDataField = $this->fieldName . '[TableData]';
             }
 
             // Use dot notation for request data field
@@ -101,7 +100,6 @@ class Table extends WidgetBase
 
     /**
      * Returns the data source object.
-     *
      * @return \Backend\Widgets\Table\DataSourceBase
      */
     public function getDataSource()
@@ -115,7 +113,6 @@ class Table extends WidgetBase
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('table');
     }
 
@@ -153,7 +150,7 @@ class Table extends WidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {
@@ -234,7 +231,7 @@ class Table extends WidgetBase
 
         return [
             'records' => $this->dataSource->getRecords(post('offset'), $count),
-            'count' => $this->dataSource->getCount(),
+            'count' => $this->dataSource->getCount()
         ];
     }
 
@@ -256,7 +253,7 @@ class Table extends WidgetBase
 
         return [
             'records' => $this->dataSource->searchRecords(post('query'), post('offset'), $count),
-            'count' => $this->dataSource->getCount(),
+            'count' => $this->dataSource->getCount()
         ];
     }
 
@@ -308,7 +305,7 @@ class Table extends WidgetBase
         }
 
         return [
-            'options' => $options,
+            'options' => $options
         ];
     }
 
@@ -325,7 +322,7 @@ class Table extends WidgetBase
         }
 
         return [
-            'options' => $options,
+            'options' => $options
         ];
     }
 }

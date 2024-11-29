@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Components;
+<?php namespace Cms\Components;
 
 use Cms\Classes\ComponentBase;
 
@@ -8,12 +6,13 @@ use Cms\Classes\ComponentBase;
  * The view bag stores custom template properties.
  * This is a hidden component ignored by the back-end UI.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ViewBag extends ComponentBase
 {
     /**
-     * @var bool This component is hidden from the back-end UI.
+     * @var boolean This component is hidden from the back-end UI.
      */
     public $isHidden = true;
 
@@ -23,12 +22,13 @@ class ViewBag extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name' => 'viewBag',
-            'description' => 'Stores custom template properties.',
+            'name'        => 'viewBag',
+            'description' => 'Stores custom template properties.'
         ];
     }
 
     /**
+     * @param array $properties
      * @return array
      */
     public function validateProperties(array $properties)
@@ -38,7 +38,6 @@ class ViewBag extends ComponentBase
 
     /**
      * Implements the getter functionality.
-     *
      * @param  string  $name
      * @return void
      */
@@ -53,8 +52,7 @@ class ViewBag extends ComponentBase
 
     /**
      * Determine if an attribute exists on the object.
-     *
-     * @param  string  $key
+     * @param  string $key
      * @return bool
      */
     public function __isset($key)
@@ -76,7 +74,7 @@ class ViewBag extends ComponentBase
         foreach ($this->properties as $name => $value) {
             $result[$name] = [
                 'title' => $name,
-                'type' => 'string',
+                'type' => 'string'
             ];
         }
 

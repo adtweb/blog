@@ -5,10 +5,10 @@
         data-request-update="list_manage_toolbar: '#plugin-toolbar'"
         type="checkbox"
         name="freeze_<?= $record->id ?>"
-        value="<?= ! $record->is_frozen ?>"
-        <?php if (! $record->is_frozen) { ?>
+        value="<?= !$record->is_frozen ?>"
+        <?php if (!$record->is_frozen): ?>
             checked="checked"
-        <?php } ?>
+        <?php endif; ?>
         data-stripe-load-indicator
     >
 

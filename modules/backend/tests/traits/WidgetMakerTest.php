@@ -2,8 +2,8 @@
 
 namespace Backend\Tests\Traits;
 
-use Backend\Classes\Controller;
 use System\Tests\Bootstrap\TestCase;
+use Backend\Classes\Controller;
 
 class ExampleTraitClass
 {
@@ -28,6 +28,8 @@ class WidgetMakerTest extends TestCase
      * Sets up the fixture.
      *
      * This method is called before a test is executed.
+     *
+     * @return void
      */
     public function setUp(): void
     {

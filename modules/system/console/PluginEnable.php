@@ -1,13 +1,13 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use System\Classes\PluginManager;
 use Winter\Storm\Console\Command;
+use System\Classes\PluginManager;
+use System\Models\PluginVersion;
 
 /**
  * Console command to enable a plugin.
  *
+ * @package winter\wn-system-module
  * @author Lucas Zamora
  */
 class PluginEnable extends Command
@@ -37,7 +37,6 @@ class PluginEnable extends Command
 
     /**
      * Execute the console command.
-     *
      * @return void
      */
     public function handle()

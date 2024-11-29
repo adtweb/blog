@@ -5,16 +5,16 @@
     role="form"
     id="<?= $this->getId($renderSection.'Container') ?>">
 
-    <?php if ($renderSection == 'outside') { ?>
+    <?php if ($renderSection == 'outside'): ?>
         <?= $this->makePartial('section', ['tabs' => $outsideTabs]) ?>
-    <?php } ?>
+    <?php endif ?>
 
-    <?php if ($renderSection == 'primary') { ?>
+    <?php if ($renderSection == 'primary'): ?>
         <?= $this->makePartial('section', ['tabs' => $primaryTabs]) ?>
-    <?php } ?>
+    <?php endif ?>
 
-    <?php if ($renderSection == 'secondary') { ?>
+    <?php if ($renderSection == 'secondary'): ?>
         <?= $this->makePartial('section', ['tabs' => $secondaryTabs]) ?>
-    <?php } ?>
+    <?php endif ?>
 
 </div>

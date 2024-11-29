@@ -1,9 +1,7 @@
-<?php
+<?php namespace Backend\Traits;
 
-namespace Backend\Traits;
-
-use Session;
 use Str;
+use Session;
 
 /**
  * Session Maker Trait
@@ -11,15 +9,15 @@ use Str;
  * Adds session management based methods to a controller class, or a class
  * that contains a `$controller` property referencing a controller.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait SessionMaker
 {
     /**
      * Saves a widget related key/value pair in to session data.
-     *
-     * @param  string  $key  Unique key for the data store.
-     * @param  mixed  $value  The value to store.
+     * @param string $key Unique key for the data store.
+     * @param mixed $value The value to store.
      * @return void
      */
     protected function putSession($key, $value)
@@ -35,9 +33,8 @@ trait SessionMaker
 
     /**
      * Retrieves a widget related key/value pair from session data.
-     *
-     * @param  string  $key  Unique key for the data store.
-     * @param  string  $default  A default value to use when value is not found.
+     * @param string $key Unique key for the data store.
+     * @param string $default A default value to use when value is not found.
      * @return string
      */
     protected function getSession($key = null, $default = null)
@@ -62,7 +59,6 @@ trait SessionMaker
 
     /**
      * Returns a unique session identifier for this widget and controller action.
-     *
      * @return string
      */
     protected function makeSessionId()
@@ -77,12 +73,11 @@ trait SessionMaker
         $rootNamespace = Str::getClassId(Str::getClassNamespace(Str::getClassNamespace($controller)));
 
         // The controller action is intentionally omitted, session should be shared for all actions
-        return 'widget.'.$rootNamespace.'-'.class_basename($controller).'-'.$uniqueId;
+        return 'widget.' . $rootNamespace . '-' . class_basename($controller) . '-' . $uniqueId;
     }
 
     /**
      * Resets all session data related to this widget.
-     *
      * @return void
      */
     public function resetSession()

@@ -1,14 +1,13 @@
-<?php
+<?php namespace Backend\Controllers;
 
-namespace Backend\Controllers;
-
+use BackendMenu;
 use Backend\Classes\Controller;
 use Backend\Widgets\MediaManager;
-use BackendMenu;
 
 /**
  * Backend Media Manager
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Media extends Controller

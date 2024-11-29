@@ -1,6 +1,6 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
+use System\Console\BaseScaffoldCommand;
 
 class CreatePlugin extends BaseScaffoldCommand
 {
@@ -37,7 +37,7 @@ class CreatePlugin extends BaseScaffoldCommand
      * @var array A mapping of stubs to generated files.
      */
     protected $stubs = [
-        'scaffold/plugin/plugin.stub' => 'Plugin.php',
+        'scaffold/plugin/plugin.stub'  => 'Plugin.php',
         'scaffold/plugin/version.stub' => 'updates/version.yaml',
     ];
 

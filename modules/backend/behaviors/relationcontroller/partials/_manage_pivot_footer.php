@@ -1,4 +1,4 @@
-<?php if ($relationManageWidget->showCheckboxes) { ?>
+<?php if ($relationManageWidget->showCheckboxes): ?>
     <button
         type="button"
         class="btn btn-primary"
@@ -9,7 +9,7 @@
         data-stripe-load-indicator>
         <?= e(trans('backend::lang.relation.add_selected')) ?>
     </button>
-<?php } ?>
+<?php endif ?>
 <button
     type="button"
     class="btn btn-default"

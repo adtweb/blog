@@ -1,11 +1,9 @@
-<?php
-
-namespace System\Helpers;
+<?php namespace System\Helpers;
 
 use Carbon\Carbon;
 use DateTime as PhpDateTime;
-use Exception;
 use InvalidArgumentException;
+use Exception;
 use Lang;
 
 class DateTime
@@ -34,9 +32,11 @@ class DateTime
 
         if ($datetime->isToday()) {
             $date = Lang::get('system::lang.datetime.today');
-        } elseif ($datetime->isYesterday()) {
+        }
+        elseif ($datetime->isYesterday()) {
             $date = Lang::get('system::lang.datetime.yesterday');
-        } elseif ($datetime->isTomorrow()) {
+        }
+        elseif ($datetime->isTomorrow()) {
             $date = Lang::get('system::lang.datetime.tomorrow');
         }
 
@@ -52,13 +52,17 @@ class DateTime
     {
         if ($value instanceof Carbon) {
             // Do nothing
-        } elseif ($value instanceof PhpDateTime) {
+        }
+        elseif ($value instanceof PhpDateTime) {
             $value = Carbon::instance($value);
-        } elseif (is_numeric($value)) {
+        }
+        elseif (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
-        } elseif (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value)) {
+        }
+        elseif (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $value)) {
             $value = Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
-        } else {
+        }
+        else {
             try {
                 $value = Carbon::parse($value);
             } catch (Exception $ex) {
@@ -70,7 +74,7 @@ class DateTime
             }
         }
 
-        if (! $value instanceof Carbon && $throwException) {
+        if (!$value instanceof Carbon && $throwException) {
             throw new InvalidArgumentException('Invalid date value supplied to DateTime helper.');
         }
 
@@ -79,8 +83,7 @@ class DateTime
 
     /**
      * Converts a PHP date format to "Moment.js" format.
-     *
-     * @param  string  $format
+     * @param string $format
      */
     public static function momentFormat($format): string
     {

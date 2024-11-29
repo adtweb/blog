@@ -5,7 +5,7 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <div class="scoreboard">
         <div data-control="toolbar">
@@ -32,11 +32,11 @@
         <?= $this->formRenderPreview() ?>
     </div>
 
-<?php } else { ?>
+<?php else: ?>
 
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
 
-<?php } ?>
+<?php endif ?>
 
 <p>
     <a href="<?= Backend::url('system/requestlogs') ?>" class="btn btn-default wn-icon-chevron-left">

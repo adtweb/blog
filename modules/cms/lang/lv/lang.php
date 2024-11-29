@@ -20,7 +20,7 @@ return [
             'maintenance' => 'Uzturēšanas režīmā',
             'manage_themes' => 'Pārvaldīt tēmas',
             'customize_theme' => 'Pielāgot tēmu',
-        ],
+        ]
     ],
     'theme' => [
         'not_found_name' => "Tēma ':name' netika atrasta.",
@@ -32,7 +32,7 @@ return [
         'edit' => [
             'not_set' => 'Labotā tēma netika iestatīta.',
             'not_found' => 'Labotā tēma netika atrasta.',
-            'not_match' => 'Objekts, kuram cenšaties piekļūt nepieder šobrīd labojamajai tēmai. Lūdzu, pārlādējiet lapu.',
+            'not_match' => "Objekts, kuram cenšaties piekļūt nepieder šobrīd labojamajai tēmai. Lūdzu, pārlādējiet lapu.",
         ],
         'settings_menu' => 'Front-end tēma',
         'settings_menu_description' => 'Pārvaldiet aktīvo front-end tēmu un pielāgošanas iespējas.',
@@ -123,7 +123,7 @@ return [
         ],
         'custom_error' => [
             'label' => 'Lapas kļūda',
-            'help' => 'Atvainojamies, taču kaut kas nogāja greizi un lapa nevar tikt attēlota.',
+            'help' => "Atvainojamies, taču kaut kas nogāja greizi un lapa nevar tikt attēlota.",
         ],
         'menu_label' => 'Lapas',
         'unsaved_label' => 'Nesaglabāta lapa(-as)',

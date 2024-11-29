@@ -4,37 +4,36 @@ $childRecords = $showTree ? $record->getChildren() : null;
 $treeLevelClass = $showTree ? 'list-tree-level-'.$treeLevel : '';
 ?>
 <tr class="<?= $treeLevelClass ?> <?= $this->getRowClass($record) ?>">
-    <?php if ($showCheckboxes) { ?>
+    <?php if ($showCheckboxes): ?>
         <?= $this->makePartial('list_body_checkbox', ['record' => $record]) ?>
-    <?php } ?>
+    <?php endif ?>
 
-    <?php if ($showTree) { ?>
+    <?php if ($showTree): ?>
         <?= $this->makePartial('list_body_tree', [
             'record' => $record,
             'expanded' => $expanded,
-            'childCount' => $record->getChildCount(),
+            'childCount' => $record->getChildCount()
         ]) ?>
-    <?php } ?>
+    <?php endif ?>
 
-    <?php $index = $url = 0;
-foreach ($columns as $key => $column) { ?>
+    <?php $index = $url = 0; foreach ($columns as $key => $column): ?>
         <?php $index++; ?>
         <td class="list-cell-index-<?= $index ?> list-cell-name-<?= $column->getName() ?> list-cell-type-<?= $column->type ?> <?= $column->clickable ? '' : 'nolink' ?> <?= $column->getAlignClass() ?> <?= $column->cssClass ?>">
-            <?php if ($column->clickable && ! $url && ($url = $this->getRecordUrl($record))) { ?>
+            <?php if ($column->clickable && !$url && ($url = $this->getRecordUrl($record))): ?>
                 <a <?= $this->getRecordOnClick($record) ?> href="<?= $url ?>">
                     <?= $this->getColumnValue($record, $column) ?>
                 </a>
-            <?php } else { ?>
+            <?php else: ?>
                 <?= $this->getColumnValue($record, $column) ?>
-            <?php } ?>
+            <?php endif ?>
         </td>
-    <?php } ?>
+    <?php endforeach ?>
 
-    <?php if ($showSetup) { ?>
+    <?php if ($showSetup): ?>
         <td class="list-setup">&nbsp;</td>
-    <?php } ?>
+    <?php endif ?>
 </tr>
 
-<?php if ($showTree && $expanded) { ?>
-    <?= $this->makePartial('list_body_rows', ['records' => $childRecords, 'treeLevel' => $treeLevel + 1]) ?>
-<?php } ?>
+<?php if ($showTree && $expanded): ?>
+    <?= $this->makePartial('list_body_rows', ['records' => $childRecords, 'treeLevel' => $treeLevel+1]) ?>
+<?php endif ?>

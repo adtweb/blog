@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Traits;
+<?php namespace System\Traits;
 
 /**
  * Property container trait
@@ -8,8 +6,10 @@ namespace System\Traits;
  * Adds properties and methods for classes that could define properties,
  * like components or report widgets.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
+
 trait PropertyContainer
 {
     /**
@@ -20,8 +20,7 @@ trait PropertyContainer
     /**
      * Validates the properties against the defined properties of the class.
      * This method also sets default properties.
-     *
-     * @param  array  $properties  The supplied property values.
+     * @param array $properties The supplied property values.
      * @return array The validated property set, with defaults applied.
      */
     public function validateProperties(array $properties)
@@ -69,8 +68,7 @@ trait PropertyContainer
 
     /**
      * Sets multiple properties.
-     *
-     * @param  array  $properties
+     * @param array $properties
      * @return void
      */
     public function setProperties($properties)
@@ -80,9 +78,8 @@ trait PropertyContainer
 
     /**
      * Sets a property value
-     *
-     * @param  string  $name
-     * @param  mixed  $value
+     * @param string $name
+     * @param mixed $value
      * @return void
      */
     public function setProperty($name, $value)
@@ -92,7 +89,6 @@ trait PropertyContainer
 
     /**
      * Returns all properties.
-     *
      * @return array
      */
     public function getProperties()
@@ -102,9 +98,8 @@ trait PropertyContainer
 
     /**
      * Returns a defined property value or default if one is not set.
-     *
-     * @param  string  $name  The property name to look for.
-     * @param  string  $default  A default value to return if no name is found.
+     * @param string $name The property name to look for.
+     * @param string $default A default value to return if no name is found.
      * @return mixed The property value or the default specified.
      */
     public function property($name, $default = null)
@@ -116,8 +111,7 @@ trait PropertyContainer
 
     /**
      * Returns options for multi-option properties (drop-downs, etc.)
-     *
-     * @param  string  $property  Specifies the property name
+     * @param string $property Specifies the property name
      * @return array Return an array of option values and descriptions
      */
     public function getPropertyOptions($property)

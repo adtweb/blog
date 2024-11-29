@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Contracts;
+<?php namespace Cms\Contracts;
 
 interface CmsObject
 {
@@ -32,21 +30,18 @@ interface CmsObject
 
     /**
      * Returns the file name.
-     *
      * @return string
      */
     public function getFileName();
 
     /**
      * Returns the file name without the extension.
-     *
      * @return string
      */
     public function getBaseFileName();
 
     /**
      * Returns the file content.
-     *
      * @return string
      */
     public function getContent();
@@ -60,7 +55,6 @@ interface CmsObject
 
     /**
      * Returns the key used by the Twig cache.
-     *
      * @return string
      */
     public function getTwigCacheKey();

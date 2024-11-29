@@ -1,25 +1,24 @@
-<?php
+<?php namespace Backend\Classes;
 
-namespace Backend\Classes;
-
-use stdClass;
-use Winter\Storm\Extension\Extendable;
 use Winter\Storm\Html\Helper as HtmlHelper;
+use Winter\Storm\Extension\Extendable;
+use stdClass;
 
 /**
  * Widget base class.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 abstract class WidgetBase extends Extendable
 {
-    use \Backend\Traits\ErrorMaker;
-    use \Backend\Traits\SessionMaker;
-    use \Backend\Traits\WidgetMaker;
+    use \System\Traits\ViewMaker;
     use \System\Traits\AssetMaker;
     use \System\Traits\ConfigMaker;
     use \System\Traits\EventEmitter;
-    use \System\Traits\ViewMaker;
+    use \Backend\Traits\ErrorMaker;
+    use \Backend\Traits\WidgetMaker;
+    use \Backend\Traits\SessionMaker;
 
     /**
      * @var object Supplied configuration.
@@ -43,9 +42,8 @@ abstract class WidgetBase extends Extendable
 
     /**
      * Constructor
-     *
-     * @param  \Backend\Classes\Controller  $controller
-     * @param  array  $configuration  Proactive configuration definition.
+     * @param \Backend\Classes\Controller $controller
+     * @param array $configuration Proactive configuration definition.
      */
     public function __construct($controller, $configuration = [])
     {
@@ -64,7 +62,7 @@ abstract class WidgetBase extends Extendable
         /*
          * If no alias is set by the configuration.
          */
-        if (! isset($this->alias)) {
+        if (!isset($this->alias)) {
             $this->alias = $this->config->alias ?? $this->defaultAlias;
         }
 
@@ -78,36 +76,38 @@ abstract class WidgetBase extends Extendable
         /*
          * Initialize the widget.
          */
-        if (! $this->getConfig('noInit', false)) {
+        if (!$this->getConfig('noInit', false)) {
             $this->init();
         }
     }
 
     /**
      * Initialize the widget, called by the constructor and free from its parameters.
-     *
      * @return void
      */
-    public function init() {}
+    public function init()
+    {
+    }
 
     /**
      * Renders the widget's primary contents.
-     *
      * @return string HTML markup supplied by this widget.
      */
-    public function render() {}
+    public function render()
+    {
+    }
 
     /**
      * Adds widget specific asset files. Use $this->addJs() and $this->addCss()
      * to register new assets to include on the page.
-     *
      * @return void
      */
-    protected function loadAssets() {}
+    protected function loadAssets()
+    {
+    }
 
     /**
      * Binds a widget to the controller for safe use.
-     *
      * @return void
      */
     public function bindToController()
@@ -123,8 +123,7 @@ abstract class WidgetBase extends Extendable
      * Transfers config values stored inside the $config property directly
      * on to the root object properties. If no properties are defined
      * all config will be transferred if it finds a matching property.
-     *
-     * @param  array  $properties
+     * @param array $properties
      * @return void
      */
     protected function fillFromConfig($properties = null)
@@ -142,8 +141,7 @@ abstract class WidgetBase extends Extendable
 
     /**
      * Returns a unique ID for this widget. Useful in creating HTML markup.
-     *
-     * @param  string  $suffix  An extra string to append to the ID.
+     * @param string $suffix An extra string to append to the ID.
      * @return string A unique identifier.
      */
     public function getId($suffix = null)
@@ -151,11 +149,11 @@ abstract class WidgetBase extends Extendable
         $id = class_basename(get_called_class());
 
         if ($this->alias != $this->defaultAlias) {
-            $id .= '-'.$this->alias;
+            $id .= '-' . $this->alias;
         }
 
         if ($suffix !== null) {
-            $id .= '-'.$suffix;
+            $id .= '-' . $suffix;
         }
 
         return HtmlHelper::nameToId($id);
@@ -163,20 +161,18 @@ abstract class WidgetBase extends Extendable
 
     /**
      * Returns a fully qualified event handler name for this widget.
-     *
-     * @param  string  $name  The ajax event handler name.
+     * @param string $name The ajax event handler name.
      * @return string
      */
     public function getEventHandler($name)
     {
-        return $this->alias.'::'.$name;
+        return $this->alias . '::' . $name;
     }
 
     /**
      * Safe accessor for configuration values.
-     *
-     * @param  string  $name  Config name, supports array names like "field[key]"
-     * @param  string  $default  Default value if nothing is found
+     * @param string $name Config name, supports array names like "field[key]"
+     * @param string $default Default value if nothing is found
      * @return string
      */
     public function getConfig($name, $default = null)
@@ -190,7 +186,7 @@ abstract class WidgetBase extends Extendable
          * First part will be the field name, pop it off
          */
         $fieldName = array_shift($keyParts);
-        if (! isset($this->config->{$fieldName})) {
+        if (!isset($this->config->{$fieldName})) {
             return $default;
         }
 
@@ -200,7 +196,7 @@ abstract class WidgetBase extends Extendable
          * Loop the remaining key parts and build a result
          */
         foreach ($keyParts as $key) {
-            if (! array_key_exists($key, $result)) {
+            if (!array_key_exists($key, $result)) {
                 return $default;
             }
 

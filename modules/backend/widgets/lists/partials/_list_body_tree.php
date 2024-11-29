@@ -5,12 +5,12 @@
         data-request="<?= $this->getEventHandler('onToggleTreeNode') ?>"
         data-stripe-load-indicator
         data-request-data="node_id: '<?= $record->getKey() ?>', status: <?= $expanded ? 1 : 0 ?>">
-        <?php if (! $childCount) { ?>
+        <?php if (!$childCount): ?>
             <i class="icon-square-o"></i>
-        <?php } elseif ($expanded) { ?>
+        <?php elseif ($expanded): ?>
             <i class="icon-minus-square-o"></i>
-        <?php } else { ?>
+        <?php else: ?>
             <i class="icon-plus-square-o"></i>
-        <?php } ?>
+        <?php endif ?>
     </a>
 </td>

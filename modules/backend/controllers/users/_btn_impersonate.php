@@ -1,4 +1,4 @@
-<?php if ($this->user->hasAccess('backend.impersonate_users')) { ?>
+<?php if ($this->user->hasAccess('backend.impersonate_users')): ?>
     <div class="loading-indicator-container">
         <button
             type="button"
@@ -11,4 +11,4 @@
             <?= e(trans('backend::lang.account.impersonate')) ?>
         </button>
     </div>
-<?php } ?>
+<?php endif ?>

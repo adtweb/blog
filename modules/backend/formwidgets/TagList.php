@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\FormWidgets;
+<?php namespace Backend\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 use Winter\Storm\Database\Relations\Relation as RelationBase;
@@ -13,9 +11,7 @@ class TagList extends FormWidgetBase
     use \Backend\Traits\FormModelWidget;
 
     const MODE_ARRAY = 'array';
-
     const MODE_STRING = 'string';
-
     const MODE_RELATION = 'relation';
 
     //
@@ -62,12 +58,12 @@ class TagList extends FormWidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'taglist';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -78,12 +74,12 @@ class TagList extends FormWidgetBase
             'mode',
             'nameFrom',
             'useKey',
-            'placeholder',
+            'placeholder'
         ]);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
@@ -106,7 +102,7 @@ class TagList extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
@@ -127,14 +123,15 @@ class TagList extends FormWidgetBase
      */
     protected function hydrateRelationSaveValue($names): ?array
     {
-        if (! $names) {
+        if (!$names) {
             return $names;
         }
 
         $relationModel = $this->getRelationModel();
         $existingTags = $relationModel
             ->whereIn($this->nameFrom, $names)
-            ->lists($this->nameFrom, $relationModel->getKeyName());
+            ->lists($this->nameFrom, $relationModel->getKeyName())
+        ;
 
         $newTags = $this->customTags ? array_diff($names, $existingTags) : [];
 
@@ -149,7 +146,7 @@ class TagList extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getLoadValue()
     {
@@ -166,14 +163,13 @@ class TagList extends FormWidgetBase
 
     /**
      * Returns defined field options, or from the relation if available.
-     *
      * @return array
      */
     public function getFieldOptions()
     {
         $options = $this->formField->options();
 
-        if (! $options && $this->mode === static::MODE_RELATION) {
+        if (!$options && $this->mode === static::MODE_RELATION) {
             $options = RelationBase::noConstraints(function () {
                 $query = $this->getRelationObject()->newQuery();
 
@@ -190,12 +186,11 @@ class TagList extends FormWidgetBase
 
     /**
      * Returns character(s) to use for separating keywords.
-     *
      * @return mixed
      */
     protected function getCustomSeparators()
     {
-        if (! $this->customTags) {
+        if (!$this->customTags) {
             return false;
         }
 
@@ -208,7 +203,6 @@ class TagList extends FormWidgetBase
 
     /**
      * Convert the character word to the singular character.
-     *
      * @return string
      */
     protected function getSeparatorCharacter()

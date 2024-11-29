@@ -2,21 +2,21 @@
 
 namespace System\Tests\Plugins\Database;
 
+use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\Post;
 use Database\Tester\Models\Author;
 use Database\Tester\Models\EventLog;
-use Database\Tester\Models\Post;
 use Model;
-use System\Tests\Bootstrap\PluginTestCase;
 
 class MorphToModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/EventLog.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/EventLog.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -25,9 +25,9 @@ class MorphToModelTest extends PluginTestCase
     {
         Model::unguard();
         $author = Author::create(['name' => 'Stevie', 'email' => 'stevie@example.com']);
-        $post1 = Post::create(['title' => 'First post', 'description' => 'Yay!!']);
-        $post2 = Post::make(['title' => 'Second post', 'description' => 'Woohoo!!']);
-        $event = EventLog::create(['action' => 'user-created']);
+        $post1 = Post::create(['title' => "First post", 'description' => "Yay!!"]);
+        $post2 = Post::make(['title' => "Second post", 'description' => "Woohoo!!"]);
+        $event = EventLog::create(['action' => "user-created"]);
         Model::reguard();
 
         // Set by Model object
@@ -58,7 +58,7 @@ class MorphToModelTest extends PluginTestCase
     {
         Model::unguard();
         $author = Author::create(['name' => 'Stevie']);
-        $event = EventLog::make(['action' => 'user-created', 'related_id' => $author->id, 'related_type' => get_class($author)]);
+        $event = EventLog::make(['action' => "user-created", 'related_id' => $author->id, 'related_type' => get_class($author)]);
         Model::reguard();
 
         $this->assertEquals([$author->id, get_class($author)], $event->getRelationValue('related'));

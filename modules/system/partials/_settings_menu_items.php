@@ -8,7 +8,7 @@ $collapsedGroups = explode(
 ?>
 
 <ul class="top-level">
-    <?php foreach ($items as $category => $items) {
+    <?php foreach ($items as $category => $items):
         $collapsed = in_array($category, $collapsedGroups);
         ?>
 
@@ -18,7 +18,7 @@ $collapsedGroups = explode(
             </div>
 
             <ul <?= $collapsed ? 'style="overflow: visible; height: 0px; display: none;"' : null ?>>
-                <?php foreach ($items as $item) { ?>
+                <?php foreach ($items as $item): ?>
                     <li class="<?= strtolower($item->owner) == $context->owner && strtolower($item->code) == $context->itemCode ? 'active' : false ?>" data-keywords="<?= e(trans($item->keywords)) ?>">
                         <a href="<?= $item->url ?>" ontouchstart="">
                             <i class="<?= $item->icon ?>"></i>
@@ -26,8 +26,8 @@ $collapsedGroups = explode(
                             <span class="description"><?= e(trans($item->description)) ?></span>
                         </a>
                     </li>
-                <?php } ?>
+                <?php endforeach ?>
             </ul>
         </li>
-    <?php } ?>
+    <?php endforeach ?>
 </ul>

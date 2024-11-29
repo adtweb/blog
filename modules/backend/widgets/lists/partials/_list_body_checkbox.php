@@ -3,9 +3,9 @@
         <input
             type="checkbox"
             name="checked[]"
-            id="<?= $this->getId('checkbox-'.$record->getKey()) ?>"
+            id="<?= $this->getId('checkbox-' . $record->getKey()) ?>"
             value="<?= $record->getKey() ?>"
             autocomplete="off"/>
-        <label for="<?= $this->getId('checkbox-'.$record->getKey()) ?>"><?= e(trans('backend::lang.list.check')) ?></label>
+        <label for="<?= $this->getId('checkbox-' . $record->getKey()) ?>"><?= e(trans('backend::lang.list.check')) ?></label>
     </div>
 </td>

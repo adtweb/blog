@@ -5,29 +5,29 @@
     <?= $maxItems ? 'data-max-items="'.$maxItems.'"' : '' ?>
     <?= $style ? 'data-style="'.$style.'"' : '' ?>
     data-mode="<?= $mode ?>"
-    <?php if ($mode === 'grid') { ?>
+    <?php if ($mode === 'grid'): ?>
     data-columns="<?= $columns ?>"
-    <?php } ?>
-    <?php if ($sortable) { ?>
+    <?php endif ?>
+    <?php if ($sortable): ?>
     data-sortable="true"
     data-sortable-container="#<?= $this->getId('items') ?>"
     data-sortable-handle=".<?= $this->getId('items') ?>-handle"
-    <?php } ?>
+    <?php endif; ?>
 >
     <ul id="<?= $this->getId('items') ?>" class="field-repeater-items">
-        <?php foreach ($formWidgets as $index => $widget) { ?>
+        <?php foreach ($formWidgets as $index => $widget): ?>
             <?= $this->makePartial('repeater_item', [
                 'widget' => $widget,
                 'indexValue' => $index,
             ]) ?>
-        <?php } ?>
+        <?php endforeach ?>
 
         <?= $this->makePartial('repeater_add_item') ?>
     </ul>
 
-    <?php if (! $this->previewMode) { ?>
+    <?php if (!$this->previewMode): ?>
         <input type="hidden" name="<?= $this->alias; ?>_loaded" value="1">
-    <?php } ?>
+    <?php endif ?>
 
     <script type="text/template" data-group-palette-template>
         <div class="popover-head">
@@ -42,7 +42,7 @@
 
                     <div class="control-filelist filelist-hero" data-control="filelist">
                         <ul>
-                            <?php foreach ($groupDefinitions as $item) { ?>
+                            <?php foreach ($groupDefinitions as $item): ?>
                                 <li>
                                     <a
                                         href="javascript:;"
@@ -55,7 +55,7 @@
                                         <span class="borders"></span>
                                     </a>
                                 </li>
-                            <?php } ?>
+                            <?php endforeach ?>
                         </ul>
                     </div>
 

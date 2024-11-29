@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Console;
+<?php namespace Cms\Console;
 
 use System\Console\BaseScaffoldCommand;
 
@@ -50,7 +48,7 @@ class CreateComponent extends BaseScaffoldCommand
      * @var array
      */
     protected $stubs = [
-        'scaffold/component/component.stub' => 'components/{{studly_name}}.php',
+        'scaffold/component/component.stub'  => 'components/{{studly_name}}.php',
         'scaffold/component/default.stub' => 'components/{{lower_name}}/default.htm',
     ];
 }

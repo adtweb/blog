@@ -2,11 +2,12 @@
 
 namespace Cms\Tests\Classes;
 
-use Cms\Classes\PartialStack;
 use System\Tests\Bootstrap\TestCase;
+use Cms\Classes\PartialStack;
 
 class PartialStackTest extends TestCase
 {
+
     public function testStackPartials()
     {
         $stack = new PartialStack;

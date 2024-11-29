@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Models;
+<?php namespace System\Models;
 
 use App;
 use Cache;
@@ -10,6 +8,7 @@ use Winter\Storm\Database\Model;
  * Parameters model
  * Used for storing internal application parameters.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Parameter extends Model
@@ -40,9 +39,8 @@ class Parameter extends Model
 
     /**
      * Returns a setting value by the module (or plugin) name and setting name.
-     *
-     * @param  string  $key  Specifies the setting key value, for example 'system:updates.check'
-     * @param  mixed  $default  The default value to return if the setting doesn't exist in the DB.
+     * @param string $key Specifies the setting key value, for example 'system:updates.check'
+     * @param mixed $default The default value to return if the setting doesn't exist in the DB.
      * @return mixed Returns the setting value loaded from the database or the default value.
      */
     public static function get($key, $default = null)
@@ -57,7 +55,7 @@ class Parameter extends Model
             $record = null;
         }
 
-        if (! $record) {
+        if (!$record) {
             return static::$cache[$key] = $default;
         }
 
@@ -66,9 +64,8 @@ class Parameter extends Model
 
     /**
      * Stores a setting value to the database.
-     *
-     * @param  string  $key  Specifies the setting key value, for example 'system:updates.check'
-     * @param  mixed  $value  The setting value to store, serializable.
+     * @param string $key Specifies the setting key value, for example 'system:updates.check'
+     * @param mixed $value The setting value to store, serializable.
      * @return bool
      */
     public static function set($key, $value = null)
@@ -77,14 +74,13 @@ class Parameter extends Model
             foreach ($key as $_key => $_value) {
                 static::set($_key, $_value);
             }
-
             return true;
         }
 
         $record = static::findRecord($key);
-        if (! $record) {
+        if (!$record) {
             $record = new static;
-            [$namespace, $group, $item] = $record->parseKey($key);
+            list($namespace, $group, $item) = $record->parseKey($key);
             $record->namespace = $namespace;
             $record->group = $group;
             $record->item = $item;
@@ -94,40 +90,36 @@ class Parameter extends Model
         $record->save();
 
         static::$cache[$key] = $value;
-
         return true;
     }
 
     /**
      * Resets a setting value by deleting the record.
-     *
-     * @param  string  $key  Specifies the setting key value.
+     * @param string $key Specifies the setting key value.
      * @return bool
      */
     public function reset($key)
     {
         $record = static::findRecord($key);
-        if (! $record) {
+        if (!$record) {
             return false;
         }
 
         $record->delete();
 
         unset(static::$cache[$key]);
-
         return true;
     }
 
     /**
      * Returns a record (cached)
-     *
      * @return self
      */
     public static function findRecord($key)
     {
         $record = new static;
 
-        [$namespace, $group, $item] = $record->parseKey($key);
+        list($namespace, $group, $item) = $record->parseKey($key);
 
         return $record
             ->applyKey($key)
@@ -137,14 +129,13 @@ class Parameter extends Model
 
     /**
      * Scope to find a setting record for the specified module (or plugin) name and setting name.
-     *
-     * @param  string  $key  Specifies the setting key value, for example 'system:updates.check'
-     * @param  mixed  $default  The default value to return if the setting doesn't exist in the DB.
+     * @param string $key Specifies the setting key value, for example 'system:updates.check'
+     * @param mixed $default The default value to return if the setting doesn't exist in the DB.
      * @return QueryBuilder
      */
     public function scopeApplyKey($query, $key)
     {
-        [$namespace, $group, $item] = $this->parseKey($key);
+        list($namespace, $group, $item) = $this->parseKey($key);
 
         $query = $query
             ->where('namespace', $namespace)

@@ -17,18 +17,18 @@ $navbarMode = Backend\Models\BrandSetting::get('menu_mode', 'inline');
             </a>
 
             <ul class="nav mainmenu-nav">
-                <?php foreach (BackendMenu::listMainMenuItems() as $item) { ?>
+                <?php foreach (BackendMenu::listMainMenuItems() as $item): ?>
                     <?php
                         $isActive = BackendMenu::isMainMenuItemActive($item);
                     ?>
                     <li class="<?= $isActive ? 'active' : null ?> svg-icon-container svg-active-effects">
                         <a href="<?= $item->url ?>">
                             <span class="nav-icon">
-                                <?php if ($item->iconSvg) { ?>
+                                <?php if ($item->iconSvg): ?>
                                     <img
                                         src="<?= Url::asset($item->iconSvg) ?>"
                                         class="svg-icon" loading="lazy" width="30" height="30" />
-                                <?php } ?>
+                                <?php endif ?>
 
                                 <i class="<?= $item->iconSvg ? 'svg-replace' : null ?> <?= $item->icon ?>"></i>
                             </span>
@@ -37,22 +37,22 @@ $navbarMode = Backend\Models\BrandSetting::get('menu_mode', 'inline');
                             </span>
                         </a>
                         <span
-                            class="counter <?= ! $item->counter ? 'empty' : null ?>"
+                            class="counter <?= !$item->counter ? 'empty' : null ?>"
                             data-menu-id="<?= e($item->code) ?>"
-                            <?php if ($item->counterLabel) { ?>
+                            <?php if ($item->counterLabel): ?>
                                 title="<?= e(trans($item->counterLabel)) ?>"
-                            <?php } ?>
+                            <?php endif ?>
                         >
                             <?= e($item->counter) ?>
                         </span>
                     </li>
-                <?php } ?>
+                <?php endforeach ?>
             </ul>
         </div>
     </div>
     <div class="toolbar-item toolbar-item-account">
         <ul class="mainmenu-toolbar">
-            <?php foreach (BackendMenu::listQuickActionItems() as $item) { ?>
+            <?php foreach (BackendMenu::listQuickActionItems() as $item): ?>
                 <li class="mainmenu-quick-action with-tooltip">
                     <a
                         href="<?= $item->url ?>"
@@ -60,16 +60,16 @@ $navbarMode = Backend\Models\BrandSetting::get('menu_mode', 'inline');
                         <?= Html::attributes($item->attributes) ?>
                     >
 
-                        <?php if ($item->iconSvg) { ?>
+                        <?php if ($item->iconSvg): ?>
                             <img
                                 src="<?= Url::asset($item->iconSvg) ?>"
                                 class="svg-icon" loading="lazy" width="20" height="20" />
-                        <?php } ?>
+                        <?php endif ?>
 
                         <i class="<?= $item->iconSvg ? 'svg-replace' : null ?> <?= $item->icon ?>"></i>
                     </a>
                 </li>
-            <?php } ?>
+            <?php endforeach ?>
             <li class="mainmenu-account with-tooltip">
                 <a
                     href="javascript:;" onclick="$.wn.layout.toggleAccountMenu(this)"
@@ -80,24 +80,24 @@ $navbarMode = Backend\Models\BrandSetting::get('menu_mode', 'inline');
                 </a>
                 <div class="mainmenu-accountmenu">
                     <ul>
-                        <?php foreach ($mySettings as $category => $items) { ?>
-                            <?php foreach ($items as $item) { ?>
+                        <?php foreach ($mySettings as $category => $items): ?>
+                            <?php foreach ($items as $item): ?>
                                 <li>
                                     <a href="<?= $item->url ?>">
                                         <?= e(trans($item->label)) ?>
                                     </a>
                                 </li>
-                            <?php } ?>
+                            <?php endforeach ?>
                             <li class="divider"></li>
-                        <?php } ?>
+                        <?php endforeach ?>
 
                         <li>
                             <a href="<?= Backend::url('backend/auth/signout') ?>">
-                                <?php if (\BackendAuth::isImpersonator()) { ?>
+                                <?php if (\BackendAuth::isImpersonator()): ?>
                                     <?= e(trans('backend::lang.account.stop_impersonating')) ?>
-                                <?php } else { ?>
+                                <?php else: ?>
                                     <?= e(trans('backend::lang.account.sign_out')) ?>
-                                <?php } ?>
+                                <?php endif; ?>
                             </a>
                         </li>
                     </ul>

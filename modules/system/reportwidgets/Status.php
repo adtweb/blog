@@ -1,23 +1,22 @@
-<?php
+<?php namespace System\ReportWidgets;
 
-namespace System\ReportWidgets;
-
+use Lang;
+use Config;
+use BackendAuth;
+use System\Models\Parameter;
+use System\Models\LogSetting;
+use System\Classes\UpdateManager;
+use System\Classes\PluginManager;
 use Backend\Classes\ReportWidgetBase;
 use Backend\Models\User;
-use BackendAuth;
-use Config;
-use Exception;
-use Lang;
-use System\Classes\PluginManager;
-use System\Classes\UpdateManager;
 use System\Models\EventLog;
-use System\Models\LogSetting;
-use System\Models\Parameter;
 use System\Models\RequestLog;
+use Exception;
 
 /**
  * System status report widget.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Status extends ReportWidgetBase
@@ -34,7 +33,8 @@ class Status extends ReportWidgetBase
     {
         try {
             $this->loadData();
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->vars['error'] = $ex->getMessage();
         }
 
@@ -45,12 +45,12 @@ class Status extends ReportWidgetBase
     {
         return [
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'default' => 'backend::lang.dashboard.status.widget_title_default',
-                'type' => 'string',
+                'title'             => 'backend::lang.dashboard.widget_title_label',
+                'default'           => 'backend::lang.dashboard.status.widget_title_default',
+                'type'              => 'string',
                 'validationPattern' => '^.+$',
                 'validationMessage' => 'backend::lang.dashboard.widget_title_error',
-            ],
+            ]
         ];
     }
 
@@ -59,13 +59,13 @@ class Status extends ReportWidgetBase
         $manager = UpdateManager::instance();
 
         $this->vars['canUpdate'] = BackendAuth::getUser()->hasAccess('system.manage_updates');
-        $this->vars['updates'] = $manager->check();
-        $this->vars['warnings'] = $this->getSystemWarnings();
+        $this->vars['updates']   = $manager->check();
+        $this->vars['warnings']  = $this->getSystemWarnings();
         $this->vars['coreBuild'] = Parameter::get('system::core.build');
 
-        $this->vars['eventLog'] = EventLog::count();
-        $this->vars['eventLogMsg'] = LogSetting::get('log_events', false) ? false : true;
-        $this->vars['requestLog'] = RequestLog::count();
+        $this->vars['eventLog']      = EventLog::count();
+        $this->vars['eventLogMsg']   = LogSetting::get('log_events', false) ? false : true;
+        $this->vars['requestLog']    = RequestLog::count();
         $this->vars['requestLogMsg'] = LogSetting::get('log_requests', false) ? false : true;
 
         $this->vars['appBirthday'] = Parameter::get('system::app.birthday');
@@ -74,7 +74,6 @@ class Status extends ReportWidgetBase
     public function onLoadWarningsForm()
     {
         $this->vars['warnings'] = $this->getSystemWarnings();
-
         return $this->makePartial('warnings_form');
     }
 
@@ -116,21 +115,21 @@ class Status extends ReportWidgetBase
         }
 
         $requiredExtensions = [
-            'GD' => extension_loaded('gd'),
+            'GD'       => extension_loaded('gd'),
             'fileinfo' => extension_loaded('fileinfo'),
-            'Zip' => class_exists('ZipArchive'),
-            'cURL' => function_exists('curl_init') && defined('CURLOPT_FOLLOWLOCATION'),
-            'OpenSSL' => function_exists('openssl_random_pseudo_bytes'),
+            'Zip'      => class_exists('ZipArchive'),
+            'cURL'     => function_exists('curl_init') && defined('CURLOPT_FOLLOWLOCATION'),
+            'OpenSSL'  => function_exists('openssl_random_pseudo_bytes'),
         ];
 
         foreach ($writablePaths as $path) {
-            if (! is_writable($path)) {
+            if (!is_writable($path)) {
                 $warnings[] = Lang::get('backend::lang.warnings.permissions', ['name' => '<strong>'.$path.'</strong>']);
             }
         }
 
         foreach ($requiredExtensions as $extension => $installed) {
-            if (! $installed) {
+            if (!$installed) {
                 $warnings[] = Lang::get('backend::lang.warnings.extension', ['name' => '<strong>'.$extension.'</strong>']);
             }
         }
@@ -138,8 +137,8 @@ class Status extends ReportWidgetBase
         foreach ($missingDependencies as $pluginCode => $plugin) {
             foreach ($plugin as $missingPluginCode) {
                 $warnings[] = Lang::get('system::lang.updates.update_warnings_plugin_missing', [
-                    'code' => '<strong>'.$missingPluginCode.'</strong>',
-                    'parent_code' => '<strong>'.$pluginCode.'</strong>',
+                    'code' => '<strong>' . $missingPluginCode . '</strong>',
+                    'parent_code' => '<strong>' . $pluginCode . '</strong>'
                 ]);
             }
         }

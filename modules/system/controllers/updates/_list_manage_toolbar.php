@@ -71,7 +71,7 @@
                     <?= e(trans('system::lang.plugins.enable_label')) ?>
                 </a>
             </li>
-            <?php if (\Config::get('app.debug', false) && \BackendAuth::getUser()->is_superuser) { ?>
+            <?php if (\Config::get('app.debug', false) && \BackendAuth::getUser()->is_superuser): ?>
                 <li role="separator" class="divider"></li>
                 <li>
                     <a href="javascript:;" class="wn-icon-bomb"
@@ -86,7 +86,7 @@
                         <?= e(trans('system::lang.plugins.refresh_label')) ?>
                     </a>
                 </li>
-            <?php } ?>
+            <?php endif; ?>
         </ul>
     </div>
     <div class="btn-group">

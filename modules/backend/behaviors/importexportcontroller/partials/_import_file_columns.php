@@ -1,7 +1,7 @@
 <div class="import-file-columns" id="importFileColumns">
-    <?php if ($importFileColumns) { ?>
+    <?php if ($importFileColumns): ?>
         <ul>
-            <?php foreach ($importFileColumns as $index => $column) { ?>
+            <?php foreach ($importFileColumns as $index => $column): ?>
                 <li data-column-id="<?= $index ?>">
                     <div class="import-column-name">
                         <span>
@@ -30,13 +30,13 @@
                         <ul data-empty-text="<?= e(trans('backend::lang.import_export.drop_column_here')) ?>"></ul>
                     </div>
                 </li>
-            <?php } ?>
+            <?php endforeach ?>
         </ul>
-    <?php } else { ?>
+    <?php else: ?>
         <p class="upload-prompt">
             <?= e(trans('backend::lang.import_export.upload_valid_csv')) ?>
         </p>
-    <?php } ?>
+    <?php endif ?>
 </div>
 
 <script>

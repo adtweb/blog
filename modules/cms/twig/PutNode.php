@@ -1,13 +1,12 @@
-<?php
+<?php namespace Cms\Twig;
 
-namespace Cms\Twig;
-
-use Twig\Compiler as TwigCompiler;
 use Twig\Node\Node as TwigNode;
+use Twig\Compiler as TwigCompiler;
 
 /**
  * Represents a put node
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PutNode extends TwigNode
@@ -20,7 +19,7 @@ class PutNode extends TwigNode
     /**
      * Compiles the node to PHP.
      *
-     * @param  TwigCompiler  $compiler  A TwigCompiler instance
+     * @param TwigCompiler $compiler A TwigCompiler instance
      */
     public function compile(TwigCompiler $compiler)
     {
@@ -28,7 +27,8 @@ class PutNode extends TwigNode
             ->addDebugInfo($this)
             ->write("echo \$this->env->getExtension('Cms\Twig\Extension')->startBlock(")
             ->raw("'".$this->getAttribute('name')."'")
-            ->write(");\n");
+            ->write(");\n")
+        ;
 
         $isOverwrite = strtolower($this->getAttribute('endType')) == 'overwrite';
 
@@ -38,6 +38,7 @@ class PutNode extends TwigNode
             ->addDebugInfo($this)
             ->write("echo \$this->env->getExtension('Cms\Twig\Extension')->endBlock(")
             ->raw($isOverwrite ? 'false' : 'true')
-            ->write(");\n");
+            ->write(");\n")
+        ;
     }
 }

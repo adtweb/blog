@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Console;
+<?php namespace Backend\Console;
 
 use System\Console\BaseScaffoldCommand;
 
@@ -51,6 +49,6 @@ class CreateReportWidget extends BaseScaffoldCommand
      */
     protected $stubs = [
         'scaffold/reportwidget/reportwidget.stub' => 'reportwidgets/{{studly_name}}.php',
-        'scaffold/reportwidget/widget.stub' => 'reportwidgets/{{lower_name}}/partials/_{{lower_name}}.php',
+        'scaffold/reportwidget/widget.stub'       => 'reportwidgets/{{lower_name}}/partials/_{{lower_name}}.php',
     ];
 }

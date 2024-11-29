@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\FormWidgets;
+<?php namespace Backend\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 
@@ -8,6 +6,8 @@ use Backend\Classes\FormWidgetBase;
  * Sensitive widget.
  *
  * Renders a password field that can be optionally made visible
+ *
+ * @package winter\wn-backend-module
  */
 class Sensitive extends FormWidgetBase
 {
@@ -37,12 +37,12 @@ class Sensitive extends FormWidgetBase
     public $hideOnTabChange = true;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'sensitive';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -60,7 +60,7 @@ class Sensitive extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
@@ -76,7 +76,7 @@ class Sensitive extends FormWidgetBase
     {
         $this->vars['readOnly'] = $this->readOnly;
         $this->vars['disabled'] = $this->disabled;
-        $this->vars['hasValue'] = ! empty($this->getLoadValue());
+        $this->vars['hasValue'] = !empty($this->getLoadValue());
         $this->vars['allowCopy'] = $this->allowCopy;
         $this->vars['hiddenPlaceholder'] = $this->hiddenPlaceholder;
         $this->vars['hideOnTabChange'] = $this->hideOnTabChange;
@@ -90,12 +90,12 @@ class Sensitive extends FormWidgetBase
     public function onShowValue()
     {
         return [
-            'value' => $this->getLoadValue(),
+            'value' => $this->getLoadValue()
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
@@ -107,7 +107,7 @@ class Sensitive extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {

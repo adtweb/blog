@@ -1,11 +1,11 @@
-<?php
-
-namespace Backend\Classes;
+<?php namespace Backend\Classes;
 
 use Winter\Storm\Exception\SystemException;
 
 /**
  * Class MainMenuItem
+ *
+ * @package Backend\Classes
  */
 class MainMenuItem
 {
@@ -47,7 +47,7 @@ class MainMenuItem
     /**
      * @var null|string
      */
-    public $badge;
+     public $badge;
 
     /**
      * @var string
@@ -69,41 +69,52 @@ class MainMenuItem
      */
     public $sideMenu = [];
 
+    /**
+     * @param string $permission
+     * @param array $definition
+     */
     public function addPermission(string $permission, array $definition)
     {
         $this->permissions[$permission] = $definition;
     }
 
+    /**
+     * @param SideMenuItem $sideMenu
+     */
     public function addSideMenuItem(SideMenuItem $sideMenu)
     {
         $this->sideMenu[$sideMenu->code] = $sideMenu;
     }
 
     /**
+     * @param string $code
      * @return SideMenuItem
-     *
      * @throws SystemException
      */
     public function getSideMenuItem(string $code)
     {
-        if (! array_key_exists($code, $this->sideMenu)) {
-            throw new SystemException('No sidenavigation item available with code '.$code);
+        if (!array_key_exists($code, $this->sideMenu)) {
+            throw new SystemException('No sidenavigation item available with code ' . $code);
         }
 
         return $this->sideMenu[$code];
     }
 
+    /**
+     * @param string $code
+     */
     public function removeSideMenuItem(string $code)
     {
         unset($this->sideMenu[$code]);
     }
 
     /**
+     * @param array $data
      * @return static
      */
     public static function createFromArray(array $data)
     {
-        $instance = new static;
+        $instance = new static();
         $instance->code = $data['code'];
         $instance->owner = $data['owner'];
         $instance->label = $data['label'];
@@ -114,8 +125,7 @@ class MainMenuItem
         $instance->counterLabel = $data['counterLabel'] ?? null;
         $instance->badge = $data['badge'] ?? null;
         $instance->permissions = $data['permissions'] ?? $instance->permissions;
-        $instance->order = (! empty($data['order']) || @$data['order'] === 0) ? (int) $data['order'] : $instance->order;
-
+        $instance->order = (!empty($data['order']) || @$data['order'] === 0) ? (int) $data['order'] : $instance->order;
         return $instance;
     }
 }

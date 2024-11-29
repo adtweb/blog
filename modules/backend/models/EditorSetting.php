@@ -1,16 +1,15 @@
-<?php
+<?php namespace Backend\Models;
 
-namespace Backend\Models;
-
-use Cache;
-use Exception;
 use File;
-use Less_Parser;
+use Cache;
 use Model;
+use Less_Parser;
+use Exception;
 
 /**
  * Editor settings that affect all users
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class EditorSetting extends Model
@@ -22,7 +21,7 @@ class EditorSetting extends Model
      * @var array Behaviors implemented by this model.
      */
     public $implement = [
-        \System\Behaviors\SettingsModel::class,
+        \System\Behaviors\SettingsModel::class
     ];
 
     /**
@@ -95,7 +94,7 @@ class EditorSetting extends Model
         'default' => 'paragraphFormat, paragraphStyle, quote, bold, italic, align, formatOL, formatUL, insertTable,
                       insertLink, insertImage, insertVideo, insertAudio, insertFile, insertHR, html',
         'minimal' => 'paragraphFormat, bold, italic, underline, |, insertLink, insertImage, |, html',
-        'full' => 'undo, redo, |, bold, italic, underline, |, paragraphFormat, paragraphStyle, inlineStyle, |,
+        'full'    => 'undo, redo, |, bold, italic, underline, |, paragraphFormat, paragraphStyle, inlineStyle, |,
                       strikeThrough, subscript, superscript, clearFormatting, |, fontFamily, fontSize, |, color,
                       emoticons, -, selectAll, |, align, formatOL, formatUL, outdent, indent, quote, |, insertHR,
                       insertLink, insertImage, insertVideo, insertAudio, insertFile, insertTable, |, selectAll,
@@ -110,7 +109,6 @@ class EditorSetting extends Model
     /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
-     *
      * @return void
      */
     public function initSettingsData()
@@ -132,7 +130,7 @@ class EditorSetting extends Model
 
     public function afterFetch()
     {
-        if (! isset($this->value['html_paragraph_formats'])) {
+        if (!isset($this->value['html_paragraph_formats'])) {
             $this->html_paragraph_formats = $this->makeFormatsForTable($this->defaultHtmlParagraphFormats);
             $this->save();
         }
@@ -163,7 +161,6 @@ class EditorSetting extends Model
 
     /**
      * Same as getConfigured but uses a special structure for styles.
-     *
      * @return mixed
      */
     public static function getConfiguredStyles($key, $default = null)
@@ -172,7 +169,7 @@ class EditorSetting extends Model
             if (array_has($value, ['class_name', 'class_label'])) {
                 return [
                     array_get($value, 'class_name'),
-                    array_get($value, 'class_label'),
+                    array_get($value, 'class_label')
                 ];
             }
         });
@@ -180,7 +177,6 @@ class EditorSetting extends Model
 
     /**
      * Same as getConfigured but uses a special structure for paragraph formats.
-     *
      * @return mixed
      */
     public static function getConfiguredFormats($key, $default = null)
@@ -189,7 +185,7 @@ class EditorSetting extends Model
             if (array_has($value, ['format_tag', 'format_label'])) {
                 return [
                     array_get($value, 'format_tag'),
-                    array_get($value, 'format_label'),
+                    array_get($value, 'format_label')
                 ];
             }
         });
@@ -212,7 +208,6 @@ class EditorSetting extends Model
 
     /**
      * Returns the value only if it differs from the default value.
-     *
      * @return mixed
      */
     public static function getConfigured($key, $default = null)
@@ -235,7 +230,6 @@ class EditorSetting extends Model
 
     /**
      * Return the editor toolbar presets without line breaks.
-     *
      * @return array
      */
     public function getEditorToolbarPresets()
@@ -255,8 +249,9 @@ class EditorSetting extends Model
         try {
             $customCss = self::compileCss();
             Cache::forever($cacheKey, $customCss);
-        } catch (Exception $ex) {
-            $customCss = '/* '.$ex->getMessage().' */';
+        }
+        catch (Exception $ex) {
+            $customCss = '/* ' . $ex->getMessage() . ' */';
         }
 
         return $customCss;

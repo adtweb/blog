@@ -1,21 +1,21 @@
 <?php
-$groupCode = $useGroups ? $this->getGroupCodeFromIndex($indexValue) : '';
-$itemTitle = $useGroups ? $this->getGroupTitle($groupCode) : null;
+    $groupCode = $useGroups ? $this->getGroupCodeFromIndex($indexValue) : '';
+    $itemTitle = $useGroups ? $this->getGroupTitle($groupCode) : null;
 ?>
 <li
     <?= $itemTitle ? 'data-collapse-title="'.e(trans($itemTitle)).'"' : '' ?>
     class="field-repeater-item"
-    <?php if ($mode === 'grid') { ?>
+    <?php if ($mode === 'grid'): ?>
     style="min-height: <?= $rowHeight ?>px"
-    <?php } ?>
+    <?php endif ?>
 >
 
-    <?php if (! $this->previewMode) { ?>
-        <?php if ($sortable) { ?>
+    <?php if (!$this->previewMode): ?>
+        <?php if ($sortable): ?>
             <div class="repeater-item-handle <?= $this->getId('items') ?>-handle">
                 <i class="icon-bars"></i>
             </div>
-        <?php } ?>
+        <?php endif; ?>
 
         <div class="repeater-item-remove">
             <button
@@ -29,9 +29,9 @@ $itemTitle = $useGroups ? $this->getGroupTitle($groupCode) : null;
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-    <?php } ?>
+    <?php endif ?>
 
-    <?php if ($mode !== 'grid') { ?>
+    <?php if ($mode !== 'grid'): ?>
     <div class="repeater-item-collapse">
         <a href="javascript:;" class="repeater-item-collapse-one">
             <i class="icon-chevron-up"></i>
@@ -39,18 +39,18 @@ $itemTitle = $useGroups ? $this->getGroupTitle($groupCode) : null;
     </div>
 
     <div class="repeater-item-collapsed-title"></div>
-    <?php } ?>
+    <?php endif ?>
 
     <div class="field-repeater-form"
          data-control="formwidget"
          data-refresh-handler="<?= $this->getEventHandler('onRefresh') ?>"
          data-refresh-data="'_repeater_index': '<?= $indexValue ?>', '_repeater_group': '<?= $groupCode ?>'">
-        <?php foreach ($widget->getFields() as $field) { ?>
+        <?php foreach ($widget->getFields() as $field): ?>
             <?= $widget->renderField($field) ?>
-        <?php } ?>
-        <?php if ($useGroups) { ?>
+        <?php endforeach ?>
+        <?php if ($useGroups): ?>
             <input type="hidden" name="<?= $widget->arrayName ?>[_group]" value="<?= $groupCode ?>" />
-        <?php } ?>
+        <?php endif ?>
     </div>
 
 </li>

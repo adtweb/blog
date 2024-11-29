@@ -9,7 +9,7 @@ if ($tabs->stretch) {
 ?>
 <!-- <?= ucfirst($type) ?> Tabs -->
 <div class="<?= $containerCss ?>">
-    <?php if ($tabs->suppressTabs) { ?>
+    <?php if ($tabs->suppressTabs): ?>
 
         <div
             id="<?= $this->getId($type.'Tabs') ?>"
@@ -17,7 +17,7 @@ if ($tabs->stretch) {
             <?= $this->makePartial('form_fields', ['fields' => $tabs]) ?>
         </div>
 
-    <?php } else { ?>
+    <?php else: ?>
 
         <div
             id="<?= $this->getId($type.'Tabs') ?>"
@@ -26,5 +26,5 @@ if ($tabs->stretch) {
             <?= $this->makePartial('form_tabs', ['tabs' => $tabs]) ?>
         </div>
 
-    <?php } ?>
+    <?php endif ?>
 </div>

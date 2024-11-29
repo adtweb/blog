@@ -1,24 +1,24 @@
-<?php
+<?php namespace System\Controllers;
 
-namespace System\Controllers;
-
-use Backend\Classes\Controller;
-use BackendMenu;
-use Config;
+use Lang;
 use File;
 use Flash;
-use Lang;
+use Config;
 use Redirect;
-use System\Classes\MailManager;
-use System\Classes\SettingsManager;
+use BackendMenu;
 use System\Models\MailBrandSetting;
+use System\Classes\SettingsManager;
+use System\Classes\MailManager;
+use Backend\Classes\Controller;
 use System\Models\MailLayout;
 use System\Models\MailTemplate;
 
 /**
  * Mail brand customization controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class MailBrandSettings extends Controller
 {
@@ -95,7 +95,7 @@ class MailBrandSettings extends Controller
         $data = [
             'subject' => Config::get('app.name'),
             'appName' => Config::get('app.name'),
-            'texts' => Lang::get('system::lang.mail_brand.sample_template'),
+            'texts' => Lang::get('system::lang.mail_brand.sample_template')
         ];
 
         $layout = new MailLayout;

@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Models;
+<?php namespace System\Models;
 
 use App;
 use Exception;
@@ -10,6 +8,7 @@ use Str;
 /**
  * Model for logging system errors and debug trace messages
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class EventLog extends Model
@@ -29,12 +28,13 @@ class EventLog extends Model
      */
     public static function useLogging(): bool
     {
-        return
-            ! defined('WINTER_NO_EVENT_LOGGING') &&
+        return (
+            !defined('WINTER_NO_EVENT_LOGGING') &&
             class_exists('Model') &&
             Model::getConnectionResolver() &&
             App::hasDatabase() &&
-            LogSetting::get('log_events');
+            LogSetting::get('log_events')
+        );
     }
 
     /**
@@ -52,7 +52,8 @@ class EventLog extends Model
 
         try {
             $record->save();
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
         }
 
         return $record;

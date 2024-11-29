@@ -2,17 +2,18 @@
 
 namespace System\Tests\Plugins\Database;
 
+use System\Tests\Bootstrap\PluginTestCase;
+use Carbon\Carbon;
 use Database\Tester\Models\CategorySimple;
 use Model;
-use System\Tests\Bootstrap\PluginTestCase;
 
 class SimpleTreeModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Category.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Category.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
         $this->seedSampleTree();
@@ -118,7 +119,7 @@ class SimpleTreeModelTest extends PluginTestCase
             16 => 'Graphic design',
             17 => '&nbsp;&nbsp;&nbsp;Photoshop',
             18 => '&nbsp;&nbsp;&nbsp;Illustrator',
-            19 => '&nbsp;&nbsp;&nbsp;Fireworks',
+            19 => '&nbsp;&nbsp;&nbsp;Fireworks'
         ], $array);
 
         $array = CategorySimple::listsNested('name', 'id', '--');
@@ -141,7 +142,7 @@ class SimpleTreeModelTest extends PluginTestCase
             16 => 'Graphic design',
             17 => '--Photoshop',
             18 => '--Illustrator',
-            19 => '--Fireworks',
+            19 => '--Fireworks'
         ], $array);
 
         $array = CategorySimple::listsNested('id', 'name', '**');
@@ -164,7 +165,7 @@ class SimpleTreeModelTest extends PluginTestCase
             'Graphic design' => '16',
             'Photoshop' => '**17',
             'Illustrator' => '**18',
-            'Fireworks' => '**19',
+            'Fireworks' => '**19'
         ], $array);
     }
 
@@ -199,16 +200,17 @@ class SimpleTreeModelTest extends PluginTestCase
             16 => 'Graphic design (#16)',
             17 => '...Photoshop (#17)',
             18 => '...Illustrator (#18)',
-            19 => '...Fireworks (#19)',
+            19 => '...Fireworks (#19)'
         ], $array);
     }
+
 
     public function seedSampleTree()
     {
         Model::unguard();
 
         $webdev = CategorySimple::create([
-            'name' => 'Web development',
+            'name' => 'Web development'
         ]);
 
         $webdev->children()->create(['name' => 'HTML5']);
@@ -222,7 +224,7 @@ class SimpleTreeModelTest extends PluginTestCase
         $winter->children()->create(['name' => 'November']);
 
         $mobdev = CategorySimple::create([
-            'name' => 'Mobile development',
+            'name' => 'Mobile development'
         ]);
 
         $mobdev->children()->create(['name' => 'iOS']);
@@ -231,7 +233,7 @@ class SimpleTreeModelTest extends PluginTestCase
         $mobdev->children()->create(['name' => 'Android']);
 
         $design = CategorySimple::create([
-            'name' => 'Graphic design',
+            'name' => 'Graphic design'
         ]);
 
         $design->children()->create(['name' => 'Photoshop']);

@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Console;
+<?php namespace Cms\Console;
 
 use Cms\Classes\Theme;
 use Event;
@@ -17,6 +15,7 @@ use Winter\Storm\Console\Command;
  * - --target defaults to "filesystem", the source will whichever of filesystem vs database is not the target
  * - --force bypasses the confirmation request
  *
+ * @package winter\wn-cms-module
  * @author Luke Towers
  */
 class ThemeSync extends Command
@@ -25,7 +24,6 @@ class ThemeSync extends Command
 
     /**
      * The console command name.
-     *
      * @var string
      */
     protected $name = 'theme:sync';
@@ -42,7 +40,6 @@ class ThemeSync extends Command
 
     /**
      * The console command description.
-     *
      * @var string
      */
     protected $description = 'Sync an existing theme between the DB and Filesystem layers';
@@ -64,29 +61,28 @@ class ThemeSync extends Command
 
     /**
      * Execute the console command.
-     *
      * @return void
      */
     public function handle()
     {
         // Check to see if the application even uses a database
-        if (! $this->laravel->hasDatabase()) {
-            return $this->error('The application is not using a database.');
+        if (!$this->laravel->hasDatabase()) {
+            return $this->error("The application is not using a database.");
         }
 
         // Check to see if the DB layer is enabled
-        if (! Theme::databaseLayerEnabled()) {
-            return $this->error('cms.databaseTemplates is not enabled, enable it first and try again.');
+        if (!Theme::databaseLayerEnabled()) {
+            return $this->error("cms.databaseTemplates is not enabled, enable it first and try again.");
         }
 
         // Check to see if the provided theme exists
         $themeName = $this->argument('name') ?: Theme::getActiveThemeCode();
         $themeExists = Theme::exists($themeName);
-        if (! $themeExists) {
+        if (!$themeExists) {
             $themeName = strtolower(str_replace('.', '-', $themeName));
             $themeExists = Theme::exists($themeName);
         }
-        if (! $themeExists) {
+        if (!$themeExists) {
             return $this->error(sprintf('The theme %s does not exist.', $themeName));
         }
         $theme = Theme::load($themeName);
@@ -97,8 +93,8 @@ class ThemeSync extends Command
         $target = $this->option('target') ?: 'filesystem';
         $source = ($target === 'filesystem') ? 'database' : 'filesystem';
 
-        if (! in_array($target, $availableSources)) {
-            return $this->error(sprintf('Provided --target of %s is invalid. Allowed: filesystem, database', $target));
+        if (!in_array($target, $availableSources)) {
+            return $this->error(sprintf("Provided --target of %s is invalid. Allowed: filesystem, database", $target));
         }
 
         $this->source = $source;
@@ -108,7 +104,7 @@ class ThemeSync extends Command
         $userPaths = $this->option('paths') ?: null;
         $themePaths = array_keys($this->datasource->getSourcePaths($source));
 
-        if (! isset($userPaths)) {
+        if (!isset($userPaths)) {
             $paths = $themePaths;
         } else {
             $paths = [];
@@ -116,7 +112,7 @@ class ThemeSync extends Command
 
             foreach ($userPaths as $userPath) {
                 foreach ($themePaths as $themePath) {
-                    $pregMatch = '/^'.str_replace('/', '\/', $userPath).'/i';
+                    $pregMatch = '/^' . str_replace('/', '\/', $userPath) . '/i';
 
                     if ($userPath === $themePath || preg_match($pregMatch, $themePath)) {
                         $paths[] = $themePath;
@@ -143,12 +139,13 @@ class ThemeSync extends Command
          *             Partial::class,
          *         ];
          *     });
+         *
          */
         $eventResults = Event::fire('system.console.theme.sync.getAvailableModelClasses');
         $validModels = [];
 
         foreach ($eventResults as $result) {
-            if (! is_array($result)) {
+            if (!is_array($result)) {
                 continue;
             }
 
@@ -165,7 +162,7 @@ class ThemeSync extends Command
         foreach ($paths as $path) {
             foreach ($validModels as $model) {
                 if (
-                    starts_with($path, $model->getObjectTypeDirName().'/')
+                    starts_with($path, $model->getObjectTypeDirName() . '/')
                     && in_array(pathinfo($path, PATHINFO_EXTENSION), $model->getAllowedExtensions())
                 ) {
                     $validPaths[$path] = get_class($model);
@@ -181,7 +178,7 @@ class ThemeSync extends Command
         }
 
         // Confirm with the user
-        if (! $this->confirmToProceed(sprintf('This will OVERWRITE the %s provided paths in "themes/%s" on the %s with content from the %s', count($validPaths), $themeName, $target, $source), true)) {
+        if (!$this->confirmToProceed(sprintf('This will OVERWRITE the %s provided paths in "themes/%s" on the %s with content from the %s', count($validPaths), $themeName, $target, $source), true)) {
             return;
         }
 
@@ -191,7 +188,7 @@ class ThemeSync extends Command
 
             foreach ($validPaths as $path => $model) {
                 $entity = $this->getModelForPath($path, $model, $theme);
-                if (! isset($entity)) {
+                if (!isset($entity)) {
                     continue;
                 }
 
@@ -202,17 +199,19 @@ class ThemeSync extends Command
             $progress->finish();
             $this->info('');
             $this->info(sprintf('The theme %s has been successfully synced from the %s to the %s.', $themeName, $source, $target));
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->error($ex->getMessage());
         }
     }
 
+
     /**
      * Get the correct Halcyon model for the provided path from the source datasource and load the requested path data.
      *
-     * @param  string  $path
-     * @param  string  $model
-     * @param  \Cms\Classes\Theme  $theme
+     * @param string $path
+     * @param string $model
+     * @param \Cms\Classes\Theme $theme
      * @return \Winter\Storm\Halcyon\Model
      */
     protected function getModelForPath($path, $modelClass, $theme)
@@ -222,10 +221,10 @@ class ThemeSync extends Command
 
             $entity = $modelClass::load(
                 $theme,
-                str_replace($modelObj->getObjectTypeDirName().'/', '', $path)
+                str_replace($modelObj->getObjectTypeDirName() . '/', '', $path)
             );
 
-            if (! isset($entity)) {
+            if (!isset($entity)) {
                 return null;
             }
 

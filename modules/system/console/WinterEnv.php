@@ -1,10 +1,8 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use App;
-use Winter\Storm\Console\Command;
 use Winter\Storm\Parse\EnvFile;
+use Winter\Storm\Console\Command;
 use Winter\Storm\Parse\PHP\ArrayFile;
 
 /**
@@ -13,6 +11,7 @@ use Winter\Storm\Parse\PHP\ArrayFile;
  * This creates an .env file with some default configuration values, it also converts
  * the existing PHP-based configuration files to use the `env` function for values.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterEnv extends Command
@@ -57,7 +56,7 @@ class WinterEnv extends Command
     {
         if (
             file_exists($this->laravel->environmentFilePath())
-            && ! $this->confirmToProceed()
+            && !$this->confirmToProceed()
         ) {
             return 1;
         }
@@ -89,7 +88,7 @@ class WinterEnv extends Command
 
         $confirmed = $this->confirm('Do you really wish to run this command?');
 
-        if (! $confirmed) {
+        if (!$confirmed) {
             $this->comment('Command Canceled!');
 
             return false;
@@ -100,10 +99,12 @@ class WinterEnv extends Command
 
     /**
      * Get the full path of a config file
+     * @param string $config
+     * @return string
      */
     protected function getConfigPath(string $config): string
     {
-        return rtrim(App::make('path.config'), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$config.'.php';
+        return rtrim(App::make('path.config'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $config . '.php';
     }
 
     /**
@@ -115,13 +116,13 @@ class WinterEnv extends Command
 
         foreach ($this->config() as $config => $items) {
             foreach ($items as $envKey => $configKey) {
-                $env->set($envKey, config($config.'.'.$configKey));
+                $env->set($envKey, config($config . '.' . $configKey));
                 if ($config === 'database' && $envKey === 'DB_CONNECTION') {
                     $default = config('database.default');
                     $dbConfig = $this->dbConfig()[$default] ?? [];
 
                     foreach ($dbConfig as $dbEnvKey => $dbConfigKey) {
-                        $env->set($dbEnvKey, config(implode('.', [$config, 'connections', $default, $dbConfigKey])));
+                        $env->set($dbEnvKey, config(join('.', [$config, 'connections', $default, $dbConfigKey])));
                     }
                 }
 
@@ -130,7 +131,7 @@ class WinterEnv extends Command
                     $mailConfig = $this->mailConfig()[$default] ?? [];
 
                     foreach ($mailConfig as $mailEnvKey => $mailConfigKey) {
-                        $env->set($mailEnvKey, config(implode('.', [$config, 'mailers', $default, $mailConfigKey])));
+                        $env->set($mailEnvKey, config(join('.', [$config, 'mailers', $default, $mailConfigKey])));
                     }
                 }
             }
@@ -150,7 +151,7 @@ class WinterEnv extends Command
             foreach ($items as $envKey => $configKey) {
                 $arrayFile->set(
                     $configKey,
-                    $arrayFile->function('env', $this->getKeyValuePair($envKey, $config.'.'.$configKey))
+                    $arrayFile->function('env', $this->getKeyValuePair($envKey, $config . '.' . $configKey))
                 );
                 if ($config === 'database' && $envKey === 'DB_CONNECTION') {
                     foreach ($this->dbConfig() as $connection => $keys) {
@@ -158,7 +159,7 @@ class WinterEnv extends Command
                             $path = sprintf('connections.%s.%s', $connection, $dbConfigKey);
                             $arrayFile->set(
                                 $path,
-                                $arrayFile->function('env', $this->getKeyValuePair($dbEnvKey, $config.'.'.$path))
+                                $arrayFile->function('env', $this->getKeyValuePair($dbEnvKey, $config . '.' . $path))
                             );
                         }
                     }
@@ -169,7 +170,7 @@ class WinterEnv extends Command
                             $path = sprintf('mailers.%s.%s', $mailer, $mailConfigKey);
                             $arrayFile->set(
                                 $path,
-                                $arrayFile->function('env', $this->getKeyValuePair($mailEnvKey, $config.'.'.$path))
+                                $arrayFile->function('env', $this->getKeyValuePair($mailEnvKey, $config . '.' . $path))
                             );
                         }
                     }
@@ -187,12 +188,12 @@ class WinterEnv extends Command
     protected function getKeyValuePair(string $envKey, string $configKey): array
     {
         $return = [$envKey, in_array($envKey, $this->protectedKeys) ? '' : config($configKey)];
-
         return $return;
     }
 
     /**
      * Returns a map of env keys to php config keys for db configs
+     * @return array
      */
     protected function config(): array
     {
@@ -229,6 +230,7 @@ class WinterEnv extends Command
 
     /**
      * Returns a map of env keys to php config keys for db configs
+     * @return array
      */
     protected function dbConfig(): array
     {
@@ -260,6 +262,7 @@ class WinterEnv extends Command
 
     /**
      * Returns a map of env keys to php config keys for mail configs
+     * @return array
      */
     protected function mailConfig(): array
     {

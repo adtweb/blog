@@ -20,7 +20,7 @@ return [
         'untitled' => 'Fără titlu',
         '404' => [
             'label' => 'Pagina nu a fost găsită',
-            'help' => 'Am căutat și am tot căutat, dar adresa URL solicitată nu a putut fi găsită. Poate căutați altceva?',
+            'help' => "Am căutat și am tot căutat, dar adresa URL solicitată nu a putut fi găsită. Poate căutați altceva?",
             'back_link' => 'Reveniți la pagina anterioară',
         ],
         'access_denied' => [
@@ -30,7 +30,7 @@ return [
         ],
         'no_database' => [
             'label' => 'Baza de date lipsește',
-            'help' => 'Este necesară o bază de date pentru a accesa backend-ul. Verificați că baza de date este configurată și migrarea este executată înainte de a încerca din nou.',
+            'help' => "Este necesară o bază de date pentru a accesa backend-ul. Verificați că baza de date este configurată și migrarea este executată înainte de a încerca din nou.",
             'cms_link' => 'Reveniți la pagina principală',
         ],
     ],
@@ -61,16 +61,16 @@ return [
         'login_placeholder' => 'conectare',
         'password_placeholder' => 'parolă',
         'remember_me' => 'Stai conectat',
-        'forgot_password' => 'Ați uitat parola?',
-        'enter_email' => 'Introduceți email',
-        'enter_login' => 'Introduceți date de conectare',
-        'email_placeholder' => 'email',
-        'enter_new_password' => 'Introduceți o nouă parolă',
-        'password_reset' => 'Resetare parolă',
-        'restore_success' => 'Un mesaj a fost trimis către adresa de email cu instrucțiuni pentru resetarea parolei.',
-        'reset_success' => 'Parola a fost resetata cu succes. Vă puteți conecta.',
-        'reset_error' => 'Date invalide pentru resetarea parolei. Vă rugăm încercați din nou!',
-        'reset_fail' => 'Eroare la resetarea parolei!',
+        'forgot_password' => "Ați uitat parola?",
+        'enter_email' => "Introduceți email",
+        'enter_login' => "Introduceți date de conectare",
+        'email_placeholder' => "email",
+        'enter_new_password' => "Introduceți o nouă parolă",
+        'password_reset' => "Resetare parolă",
+        'restore_success' => "Un mesaj a fost trimis către adresa de email cu instrucțiuni pentru resetarea parolei.",
+        'reset_success' => "Parola a fost resetata cu succes. Vă puteți conecta.",
+        'reset_error' => "Date invalide pentru resetarea parolei. Vă rugăm încercați din nou!",
+        'reset_fail' => "Eroare la resetarea parolei!",
         'apply' => 'Aplicare',
         'cancel' => 'Anulare',
         'delete' => 'Ștergere',
@@ -191,7 +191,7 @@ return [
             'users_count' => 'Utilizatori',
         ],
         'preferences' => [
-            'not_authenticated' => 'Nu există niciun utilizator autentificat pentru care să se încarce sau să se salveze preferințe.',
+            'not_authenticated' => 'Nu există niciun utilizator autentificat pentru care să se încarce sau să se salveze preferințe.'
         ],
         'trashed_hint_title' => 'Acest cont a fost șters',
         'trashed_hint_desc' => 'Acest cont a fost șters și nu se va mai putea conecta. Pentru a-l restabili, faceți clic pe pictograma din dreapta jos de restaurare a utilizatorului',
@@ -302,7 +302,7 @@ return [
         'insert_row_below' => 'Introduceți rândul de mai jos',
         'delete_row' => 'Șterge rândul',
         'concurrency_file_changed_title' => 'Fișierul a fost schimbat',
-        'concurrency_file_changed_description' => 'Fișierul pe care îl editați a fost schimbat pe disc de către un alt utilizator. Puteți fie să reîncărcați fișierul și să-l pierdeți, fie să îl suprascrieți pe disc.',
+        'concurrency_file_changed_description' => "Fișierul pe care îl editați a fost schimbat pe disc de către un alt utilizator. Puteți fie să reîncărcați fișierul și să-l pierdeți, fie să îl suprascrieți pe disc.",
         'return_to_list' => 'Reveniți la listă',
     ],
     'recordfinder' => [
@@ -354,7 +354,7 @@ return [
     'model' => [
         'name' => 'Model',
         'not_found' => "Modelul ':class' cu ID-ul :id nu a putut fi găsit",
-        'missing_id' => 'Nu există niciun ID specificat pentru care să se realizeze căutarea înregistrării modelului.',
+        'missing_id' => "Nu există niciun ID specificat pentru care să se realizeze căutarea înregistrării modelului.",
         'missing_relation' => "Modelul ':class' nu conține o definiție pentru relația ':relation'.",
         'missing_method' => "Modelul ':class' nu conține o metodă ':method'.",
         'invalid_class' => "Modelul :model folosit în clasa :class nu este valid; trebuie să moștenească clasa \Model.",
@@ -433,7 +433,7 @@ return [
         'paragraph_formats_comment' => 'Opțiunile care vor apărea în câmpul derulant Format paragraf.',
     ],
     'tooltips' => [
-        'preview_website' => 'Previzualizare site',
+        'preview_website' => 'Previzualizare site'
     ],
     'mysettings' => [
         'menu_label' => 'Setările mele',
@@ -442,7 +442,7 @@ return [
     'myaccount' => [
         'menu_label' => 'Contul meu',
         'menu_description' => 'Actualizați datele contului, precum nume, adresa de email și parola.',
-        'menu_keywords' => 'securitate autentificare',
+        'menu_keywords' => 'securitate autentificare'
     ],
     'branding' => [
         'menu_label' => 'Personalizați back-end-ul',

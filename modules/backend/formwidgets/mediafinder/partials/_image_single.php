@@ -4,12 +4,12 @@
         field-mediafinder
         style-image-single
         is-image
-        <?php if ($value) { ?>
+        <?php if ($value): ?>
             is-populated
-        <?php } ?>
-        <?php if ($this->previewMode) { ?>
+        <?php endif ?>
+        <?php if ($this->previewMode): ?>
             is-preview
-        <?php } ?>
+        <?php endif ?>
     "
     data-control="mediafinder"
     data-mediafinder-mode="image"
@@ -29,11 +29,11 @@
             <img data-find-image src="<?= $imageUrl ?>" alt="" />
         </div>
 
-        <?php if (! $imageExists && ! empty($imageUrl)) { ?>
+        <?php if (!$imageExists && !empty($imageUrl)): ?>
             <p data-find-error class="help-block">
                 <?= e(trans('backend::lang.mediafinder.no_image')) ?>
             </p>
-        <?php } ?>
+        <?php endif; ?>
 
         <div class="info">
             <h4 class="filename">

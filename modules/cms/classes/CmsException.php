@@ -1,18 +1,17 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use File;
-use Throwable;
 use Twig\Error\Error as TwigError;
 use Winter\Storm\Exception\ApplicationException;
 use Winter\Storm\Halcyon\Processors\SectionParser;
+use Throwable;
 
 /**
  * The CMS exception class.
  * The exception class handles CMS related errors. Allows the masking of other exception types which
  * uses actual source CMS files -- instead of cached files -- for their error content.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class CmsException extends ApplicationException
@@ -29,22 +28,21 @@ class CmsException extends ApplicationException
         100 => 'General',
         200 => 'INI Settings',
         300 => 'PHP Content',
-        400 => 'Twig Template',
+        400 => 'Twig Template'
     ];
 
     /**
      * Creates the CMS exception object.
-     *
-     * @param  mixed  $message  The message to display as a string, or a CmsCompoundObject that is used
-     *                          for using this exception as a mask for another exception type.
-     * @param  int  $code  Error code to specify the exception type:
-     *                     Error 100: A general exception.
-     *                     Error 200: Mask the exception as INI content.
-     *                     Error 300: Mask the exception as PHP content.
-     *                     Error 400: Mask the exception as Twig content.
-     * @param  Throwable  $previous  Previous exception.
+     * @param mixed $message The message to display as a string, or a CmsCompoundObject that is used
+     * for using this exception as a mask for another exception type.
+     * @param int $code Error code to specify the exception type:
+     * Error 100: A general exception.
+     * Error 200: Mask the exception as INI content.
+     * Error 300: Mask the exception as PHP content.
+     * Error 400: Mask the exception as Twig content.
+     * @param Throwable $previous Previous exception.
      */
-    public function __construct($message = null, $code = 100, ?Throwable $previous = null)
+    public function __construct($message = null, $code = 100, Throwable $previous = null)
     {
         if ($message instanceof CmsCompoundObject || $message instanceof ComponentPartial) {
             $this->compoundObject = $message;
@@ -64,8 +62,7 @@ class CmsException extends ApplicationException
      * has occurred in external code, the function will return false. Otherwise return
      * true and modify the exception by overriding it's content, line and message values
      * to be accurate against a CMS object properties.
-     *
-     * @param  Throwable  $exception  The exception to modify.
+     * @param Throwable $exception The exception to modify.
      * @return bool
      */
     public function processCompoundObject(Throwable $exception)
@@ -97,8 +94,7 @@ class CmsException extends ApplicationException
     /**
      * Override properties of an exception specific to the INI section
      * of a CMS object.
-     *
-     * @param  Throwable  $exception  The exception to modify.
+     * @param Throwable $exception The exception to modify.
      * @return bool
      */
     protected function processIni(Throwable $exception)
@@ -108,7 +104,7 @@ class CmsException extends ApplicationException
         /*
          * Expecting: syntax error, unexpected '!' in Unknown on line 4
          */
-        if (! starts_with($message, 'syntax error')) {
+        if (!starts_with($message, 'syntax error')) {
             return false;
         }
         if (strpos($message, 'Unknown') === false) {
@@ -124,7 +120,7 @@ class CmsException extends ApplicationException
          */
         $parts = explode(' ', $message);
         $line = array_pop($parts);
-        $this->line = (int) $line;
+        $this->line = (int)$line;
 
         // Find where the ini settings section begins
         $offsetArray = SectionParser::parseOffset($this->compoundObject->getContent());
@@ -141,8 +137,7 @@ class CmsException extends ApplicationException
     /**
      * Override properties of an exception specific to the PHP section
      * of a CMS object.
-     *
-     * @param  Throwable  $exception  The exception to modify.
+     * @param Throwable $exception The exception to modify.
      * @return bool
      */
     protected function processPhp(Throwable $exception)
@@ -159,21 +154,22 @@ class CmsException extends ApplicationException
             }
 
             // Expected: */storage/cms/cache/39/05/home.htm.php
-            if (strpos($exception->getFile(), $this->compoundObject->getFileName().'.php')) {
+            if (strpos($exception->getFile(), $this->compoundObject->getFileName() . '.php')) {
                 $check = true;
             }
 
-            if (! $check) {
+            if (!$check) {
                 return false;
             }
-            /*
-             * Errors occurring the PHP code base class (Cms\Classes\CodeBase)
-             */
-        } else {
+        /*
+         * Errors occurring the PHP code base class (Cms\Classes\CodeBase)
+         */
+        }
+        else {
             $trace = $exception->getTrace();
             if (isset($trace[1]['class'])) {
                 $class = $trace[1]['class'];
-                if (! is_subclass_of($class, CodeBase::class)) {
+                if (!is_subclass_of($class, CodeBase::class)) {
                     return false;
                 }
             }
@@ -197,14 +193,13 @@ class CmsException extends ApplicationException
     /**
      * Override properties of an exception specific to the Twig section
      * of a CMS object.
-     *
-     * @param  Throwable  $exception  The exception to modify.
+     * @param Throwable $exception The exception to modify.
      * @return bool
      */
     protected function processTwig(Throwable $exception)
     {
         // Must be a Twig related exception
-        if (! $exception instanceof TwigError) {
+        if (!$exception instanceof TwigError) {
             return false;
         }
 
@@ -228,15 +223,13 @@ class CmsException extends ApplicationException
      * Error 200: Mask the exception as INI content.
      * Error 300: Mask the exception as PHP content.
      * Error 400: Mask the exception as Twig content.
-     *
-     * @param  Throwable  $exception  The exception to modify.
+     * @param Throwable $exception The exception to modify.
      * @return void
      */
     public function applyMask(Throwable $exception)
     {
         if ($this->code == 100 || $this->processCompoundObject($exception) === false) {
             parent::applyMask($exception);
-
             return;
         }
     }

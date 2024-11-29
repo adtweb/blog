@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Classes;
+<?php namespace System\Classes;
 
 use ApplicationException;
 use Config;
@@ -13,6 +11,7 @@ use Winter\Storm\Halcyon\Datasource\FileDatasource;
  * This manifest is a file checksum of all files within this Winter CMS installation. When compared to the source
  * manifest, this allows us to determine the current installation's build number.
  *
+ * @package winter\wn-system-module
  * @author Ben Thomson
  */
 class FileManifest
@@ -55,7 +54,7 @@ class FileManifest
     /**
      * Constructor.
      */
-    public function __construct(?string $root = null, ?array $modules = null)
+    public function __construct(string $root = null, array $modules = null)
     {
         $this->setRoot($root ?? base_path());
         $this->setModules($modules ?? Config::get('cms.loadModules', ['System', 'Backend', 'Cms']));
@@ -71,7 +70,7 @@ class FileManifest
         if (is_string($root)) {
             $this->root = realpath($root);
 
-            if ($this->root === false || ! is_dir($this->root)) {
+            if ($this->root === false || !is_dir($this->root)) {
                 throw new ApplicationException(
                     'Invalid root specified for the file manifest.'
                 );
@@ -105,9 +104,9 @@ class FileManifest
         $files = [];
 
         foreach ($this->modules as $module) {
-            $path = $this->root.'/modules/'.$module;
+            $path = $this->root . '/modules/' . $module;
 
-            if (! is_dir($path)) {
+            if (!is_dir($path)) {
                 continue;
             }
 
@@ -124,7 +123,7 @@ class FileManifest
      */
     public function getModuleChecksums(): array
     {
-        if (! count($this->files)) {
+        if (!count($this->files)) {
             $this->getFiles();
         }
 
@@ -153,7 +152,7 @@ class FileManifest
         $datasource = new FileDatasource($basePath, new Filesystem);
 
         $files = array_map(function ($path) use ($basePath) {
-            return $basePath.'/'.$path;
+            return $basePath . '/' . $path;
         }, array_keys($datasource->getAvailablePaths()));
 
         // Ensure files are sorted so they are in a consistent order, no matter the way the OS returns the file list.
@@ -175,7 +174,7 @@ class FileManifest
      */
     protected function normalizeFileContents(string $file): string
     {
-        if (! is_file($file)) {
+        if (!is_file($file)) {
             return '';
         }
 

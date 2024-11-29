@@ -6,12 +6,12 @@ $allowCustom = $field->getConfig('allowCustom', false);
 ?>
 
 <!-- Dropdown -->
-<?php if ($this->previewMode || $field->readOnly) { ?>
+<?php if ($this->previewMode || $field->readOnly): ?>
     <div class="form-control" <?= $field->readOnly ? 'disabled="disabled"' : ''; ?>>
         <?= (isset($fieldOptions[$field->value])) ? e(trans($fieldOptions[$field->value])) : '' ?>
     </div>
     <input type="hidden" name="<?= $field->getName() ?>" value="<?= $field->value ?>">
-<?php } else { ?>
+<?php else: ?>
     <select
         id="<?= $field->getId() ?>"
         name="<?= $field->getName() ?>"
@@ -19,22 +19,22 @@ $allowCustom = $field->getConfig('allowCustom', false);
         <?= $field->getAttributes() ?>
         <?= $field->placeholder ? 'data-placeholder="'.e(trans($field->placeholder)).'"' : '' ?>
         >
-        <?php if ($emptyOption) { ?>
+        <?php if ($emptyOption): ?>
             <option value=""><?= e(trans($emptyOption)) ?></option>
-        <?php } ?>
-        <?php foreach ($fieldOptions as $value => $option) { ?>
+        <?php endif ?>
+        <?php foreach ($fieldOptions as $value => $option): ?>
             <?php
-            if (! is_array($option)) {
+            if (!is_array($option)) {
                 $option = [$option];
             }
             ?>
             <option
                 <?= $field->isSelected($value) ? 'selected="selected"' : '' ?>
-                <?php if (isset($option[1])) { ?>
+                <?php if (isset($option[1])): ?>
                     data-<?= strpos($option[1], '.') ? 'image' : 'icon' ?>="<?= $option[1] ?>"
-                <?php } ?>
+                <?php endif ?>
                 value="<?= e($value) ?>"
             ><?= e(trans($option[0])) ?></option>
-        <?php } ?>
+        <?php endforeach ?>
     </select>
-<?php } ?>
+<?php endif ?>

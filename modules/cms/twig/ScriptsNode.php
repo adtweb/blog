@@ -1,13 +1,12 @@
-<?php
+<?php namespace Cms\Twig;
 
-namespace Cms\Twig;
-
-use Twig\Compiler as TwigCompiler;
 use Twig\Node\Node as TwigNode;
+use Twig\Compiler as TwigCompiler;
 
 /**
  * Represents a "scripts" node
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ScriptsNode extends TwigNode
@@ -20,13 +19,14 @@ class ScriptsNode extends TwigNode
     /**
      * Compiles the node to PHP.
      *
-     * @param  TwigCompiler  $compiler  A TwigCompiler instance
+     * @param TwigCompiler $compiler A TwigCompiler instance
      */
     public function compile(TwigCompiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
             ->write("echo \$this->env->getExtension('Cms\Twig\Extension')->assetsFunction('js');\n")
-            ->write("echo \$this->env->getExtension('Cms\Twig\Extension')->displayBlock('scripts');\n");
+            ->write("echo \$this->env->getExtension('Cms\Twig\Extension')->displayBlock('scripts');\n")
+        ;
     }
 }

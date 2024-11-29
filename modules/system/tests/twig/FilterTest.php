@@ -20,7 +20,7 @@ class FilterTest extends TestCase
         $tests = [
             // "filter" tag applies a filter on its children
             'filter_upper' => [
-                'template' => <<<'TEMPLATE'
+                'template' => <<<TEMPLATE
 {% filter upper %}
 Some text with a {{ var }}
 {% endfilter %}
@@ -38,7 +38,7 @@ TEMPLATE,
 
             // "filter" tags accept multiple chained filters
             'filter_multiple' => [
-                'template' => <<<'TEMPLATE'
+                'template' => <<<TEMPLATE
 {% filter lower|title %}
   {{ var }}
 {% endfilter %}
@@ -49,7 +49,7 @@ TEMPLATE,
 
             // "filter" tags can be nested at will
             'filter_multiple' => [
-                'template' => <<<'TEMPLATE'
+                'template' => <<<TEMPLATE
 {% filter lower|title %}
   {{ var }}
   {% filter upper %}
@@ -59,7 +59,7 @@ TEMPLATE,
 {% endfilter %}
 TEMPLATE,
                 'data' => ['var' => 'VAR'],
-                'expect' => <<<'EXPECT'
+                'expect' => <<<EXPECT
   Var
       Var
     Var
@@ -68,7 +68,7 @@ EXPECT,
 
             // "filter" tag applies the filter on "for" tags
             'filter_for' => [
-                'template' => <<<'TEMPLATE'
+                'template' => <<<TEMPLATE
 {% filter upper %}
 {% for item in items %}
 {{ item }}
@@ -76,7 +76,7 @@ EXPECT,
 {% endfilter %}
 TEMPLATE,
                 'data' => ['items' => ['a', 'b']],
-                'expect' => <<<'EXPECT'
+                'expect' => <<<EXPECT
 A
 B
 EXPECT,
@@ -84,7 +84,7 @@ EXPECT,
 
             // "filter" tag applies the filter on "if" tags
             'filter_for' => [
-                'template' => <<<'TEMPLATE'
+                'template' => <<<TEMPLATE
 {% filter upper %}
 {% if items %}
 {{ items|join(', ') }}
@@ -105,7 +105,7 @@ FOO
 {% endfilter %}
 TEMPLATE,
                 'data' => ['items' => ['a', 'b']],
-                'expect' => <<<'EXPECT'
+                'expect' => <<<EXPECT
 A, B
 
 B

@@ -1,18 +1,17 @@
-<?php
+<?php namespace Cms\Models;
 
-namespace Cms\Models;
-
-use ApplicationException;
-use Cms\Classes\Theme as CmsTheme;
-use Exception;
 use File;
 use Model;
 use Response;
+use ApplicationException;
 use Winter\Storm\Filesystem\Zip;
+use Cms\Classes\Theme as CmsTheme;
+use Exception;
 
 /**
  * Theme export model
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeExport extends Model
@@ -47,12 +46,12 @@ class ThemeExport extends Model
         'themeName' => null,
         'dirName' => null,
         'folders' => [
-            'assets' => true,
-            'pages' => true,
-            'layouts' => true,
+            'assets'   => true,
+            'pages'    => true,
+            'layouts'  => true,
             'partials' => true,
-            'content' => true,
-        ],
+            'content'  => true,
+        ]
     ];
 
     /**
@@ -60,25 +59,25 @@ class ThemeExport extends Model
      *
      * @return void
      */
-    public function save(?array $options = null, $sessionKey = null)
+    public function save(array $options = null, $sessionKey = null)
     {
-        throw new ApplicationException(sprintf('The % model is not intended to be saved, please use %s instead', get_class($this), 'ThemeData'));
+        throw new ApplicationException(sprintf("The % model is not intended to be saved, please use %s instead", get_class($this), 'ThemeData'));
     }
 
     public function getFoldersOptions()
     {
         return [
-            'assets' => 'Assets',
-            'pages' => 'Pages',
-            'layouts' => 'Layouts',
+            'assets'   => 'Assets',
+            'pages'    => 'Pages',
+            'layouts'  => 'Layouts',
             'partials' => 'Partials',
-            'content' => 'Content',
+            'content'  => 'Content',
         ];
     }
 
     public function setThemeAttribute($theme)
     {
-        if (! $theme instanceof CmsTheme) {
+        if (!$theme instanceof CmsTheme) {
             return;
         }
 
@@ -94,15 +93,15 @@ class ThemeExport extends Model
 
         try {
             $themePath = $this->theme->getPath();
-            $tempPath = temp_path().'/'.uniqid('oc');
+            $tempPath = temp_path() . '/'.uniqid('oc');
             $zipName = uniqid('oc');
             $zipPath = temp_path().'/'.$zipName;
 
-            if (! File::makeDirectory($tempPath)) {
+            if (!File::makeDirectory($tempPath)) {
                 throw new ApplicationException('Unable to create directory '.$tempPath);
             }
 
-            if (! File::makeDirectory($metaPath = $tempPath.'/meta')) {
+            if (!File::makeDirectory($metaPath = $tempPath . '/meta')) {
                 throw new ApplicationException('Unable to create directory '.$metaPath);
             }
 
@@ -110,7 +109,7 @@ class ThemeExport extends Model
             File::copyDirectory($themePath.'/meta', $metaPath);
 
             foreach ($this->folders as $folder) {
-                if (! array_key_exists($folder, $this->getFoldersOptions())) {
+                if (!array_key_exists($folder, $this->getFoldersOptions())) {
                     continue;
                 }
 
@@ -119,7 +118,8 @@ class ThemeExport extends Model
 
             Zip::make($zipPath, $tempPath);
             File::deleteDirectory($tempPath);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             if (strlen($tempPath) && File::isDirectory($tempPath)) {
                 File::deleteDirectory($tempPath);
             }
@@ -136,12 +136,12 @@ class ThemeExport extends Model
 
     public static function download($name, $outputName = null)
     {
-        if (! preg_match('/^oc[0-9a-z]*$/i', $name)) {
+        if (!preg_match('/^oc[0-9a-z]*$/i', $name)) {
             throw new ApplicationException('File not found');
         }
 
-        $zipPath = temp_path().'/'.$name;
-        if (! file_exists($zipPath)) {
+        $zipPath = temp_path() . '/' . $name;
+        if (!file_exists($zipPath)) {
             throw new ApplicationException('File not found');
         }
 

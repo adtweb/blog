@@ -73,10 +73,10 @@ return [
         'dates' => [
             'all' => 'Alle',
             'filter_button_text' => 'Filter',
-            'reset_button_text' => 'Zurücksetzen',
+            'reset_button_text'  => 'Zurücksetzen',
             'date_placeholder' => 'Datum',
             'after_placeholder' => 'Nach',
-            'before_placeholder' => 'Vor',
+            'before_placeholder' => 'Vor'
         ],
         'numbers' => [
             'all' => 'Alle',

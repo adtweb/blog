@@ -2,16 +2,16 @@
     <input type="hidden" data-type="current-folder" value="<?= e($currentFolder) ?>"/>
     <input type="hidden" data-type="search-mode" value="<?= $searchMode ? 'true' : 'false' ?>"/>
     <div class="list-container">
-        <?php if (count($items) == 0 && $isRootFolder && ! $searchMode) { ?>
+        <?php if (count($items) == 0 && $isRootFolder && !$searchMode): ?>
             <div class="empty-library"><?= e(trans('backend::lang.media.empty_library')) ?></div>
-        <?php } ?>
+        <?php endif ?>
 
-        <?php if ($viewMode == Backend\Widgets\MediaManager::VIEW_MODE_GRID) { ?>
+        <?php if ($viewMode == Backend\Widgets\MediaManager::VIEW_MODE_GRID): ?>
             <?= $this->makePartial('list-grid') ?>
-        <?php } elseif ($viewMode == Backend\Widgets\MediaManager::VIEW_MODE_LIST) { ?>
+        <?php elseif ($viewMode == Backend\Widgets\MediaManager::VIEW_MODE_LIST): ?>
             <?= $this->makePartial('list-list') ?>
-        <?php } else { ?>
+        <?php else: ?>
             <?= $this->makePartial('list-tiles') ?>
-        <?php } ?>
+        <?php endif ?>
     </div>
 </div>

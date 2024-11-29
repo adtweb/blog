@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Console;
+<?php namespace Backend\Console;
 
 use Backend\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -11,6 +9,7 @@ use Winter\Storm\Console\Command;
 /**
  * Console command to change the password of a Backend user via CLI.
  *
+ * @package winter\wn-backend-module
  * @author Ben Thomson
  * @author Winter CMS
  */
@@ -49,7 +48,6 @@ class WinterPasswd extends Command
 
     /**
      * Execute the console command.
-     *
      * @return int
      */
     public function handle()
@@ -64,7 +62,6 @@ class WinterPasswd extends Command
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             $this->error('The specified user does not exist.');
-
             return 1;
         }
 
@@ -83,9 +80,8 @@ class WinterPasswd extends Command
 
         $this->info('Password successfully changed.');
         if ($this->generatedPassword) {
-            $this->output->writeLn('Password set to <info>'.$password.'</info>.');
+            $this->output->writeLn('Password set to <info>' . $password . '</info>.');
         }
-
         return 0;
     }
 
@@ -113,7 +109,7 @@ class WinterPasswd extends Command
      * Also allows for a default to be specified.
      *
      * @param  string  $question
-     * @param  bool  $fallback
+     * @param  bool    $fallback
      * @return string
      */
     protected function optionalSecret($question, $fallback = true, $default = null)

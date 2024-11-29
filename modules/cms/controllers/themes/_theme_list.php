@@ -1,13 +1,13 @@
 <?php
-$themes = Cms\Classes\Theme::all();
+    $themes = Cms\Classes\Theme::all();
 ?>
-<?php foreach ($themes as $index => $theme) { ?>
+<?php foreach ($themes as $index => $theme): ?>
 
     <div id="themeListItem-<?= $theme->getId() ?>" class="layout-row min-size <?= $theme->isActiveTheme() ? 'active' : null ?>">
         <?= $this->makePartial('theme_list_item', ['theme' => $theme]) ?>
     </div>
 
-<?php } ?>
+<?php endforeach ?>
 
 <div class="layout-row links">
     <div class="layout-cell theme-thumbnail">

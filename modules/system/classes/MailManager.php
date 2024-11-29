@@ -1,18 +1,17 @@
-<?php
-
-namespace System\Classes;
+<?php namespace System\Classes;
 
 use App;
 use Markdown;
-use System\Helpers\View as ViewHelper;
-use System\Models\MailBrandSetting;
 use System\Models\MailPartial;
 use System\Models\MailTemplate;
+use System\Models\MailBrandSetting;
+use System\Helpers\View as ViewHelper;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
  * This class manages Mail sending functions
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailManager
@@ -69,26 +68,27 @@ class MailManager
      * This function hijacks the `addContent` method of the `Winter\Storm\Mail\Mailer`
      * class, using the `mailer.beforeAddContent` event.
      *
-     * @param  \Illuminate\Mail\Message  $message
-     * @param  string  $code
-     * @param  array  $data
-     * @param  bool  $plainOnly  Add only plain text content to the message
+     * @param \Illuminate\Mail\Message $message
+     * @param string $code
+     * @param array $data
+     * @param bool $plainOnly Add only plain text content to the message
      * @return bool
      */
     public function addContentToMailer($message, $code, $data, $plainOnly = false)
     {
         // We only handle mail template names as a string, let the caller handle the content if we receive anything else
-        if (! is_string($code)) {
+        if (!is_string($code)) {
             return false;
         }
 
         if (isset($this->templateCache[$code])) {
             $template = $this->templateCache[$code];
-        } else {
+        }
+        else {
             $this->templateCache[$code] = $template = MailTemplate::findOrMakeTemplate($code);
         }
 
-        if (! $template) {
+        if (!$template) {
             return false;
         }
 
@@ -100,10 +100,10 @@ class MailManager
     /**
      * Internal method used to share logic between `addRawContentToMailer` and `addContentToMailer`
      *
-     * @param  \Illuminate\Mail\Message  $message
-     * @param  string  $template
-     * @param  array  $data
-     * @param  bool  $plainOnly  Add only plain text content to the message
+     * @param \Illuminate\Mail\Message $message
+     * @param string $template
+     * @param array $data
+     * @param bool $plainOnly Add only plain text content to the message
      * @return void
      */
     protected function addContentToMailerInternal($message, $template, $data, $plainOnly = false)
@@ -112,7 +112,7 @@ class MailManager
          * Inject global view variables
          */
         $globalVars = ViewHelper::getGlobalVars();
-        if (! empty($globalVars)) {
+        if (!empty($globalVars)) {
             $data = (array) $data + $globalVars;
         }
 
@@ -126,10 +126,10 @@ class MailManager
         }
 
         $data += [
-            'subject' => $symfonyMessage->getSubject(),
+            'subject' => $symfonyMessage->getSubject()
         ];
 
-        if (! $plainOnly) {
+        if (!$plainOnly) {
             /*
              * HTML contents
              */
@@ -159,7 +159,7 @@ class MailManager
      */
     public function render($content, $data = [])
     {
-        if (! $content) {
+        if (!$content) {
             return '';
         }
 
@@ -189,10 +189,10 @@ class MailManager
                 'brandCss' => $css,
             ] + (array) $data);
 
-            $css .= PHP_EOL.$template->layout->content_css;
+            $css .= PHP_EOL . $template->layout->content_css;
         }
 
-        if (! $disableAutoInlineCss) {
+        if (!$disableAutoInlineCss) {
             $html = (new CssToInlineStyles)->convert($html, $css);
         }
 
@@ -201,13 +201,13 @@ class MailManager
 
     /**
      * Render the Markdown template into text.
-     *
-     * @param  array  $data
+     * @param $content
+     * @param array $data
      * @return string
      */
     public function renderText($content, $data = [])
     {
-        if (! $content) {
+        if (!$content) {
             return '';
         }
 
@@ -224,7 +224,7 @@ class MailManager
 
         $templateText = $template->content_text;
 
-        if (! strlen($template->content_text)) {
+        if (!strlen($template->content_text)) {
             $templateText = $template->content_html;
         }
 
@@ -232,7 +232,7 @@ class MailManager
 
         if ($template->layout) {
             $text = $this->renderTwig($template->layout->content_text, [
-                'content' => $text,
+                'content' => $text
             ] + (array) $data);
         }
 
@@ -241,17 +241,18 @@ class MailManager
 
     public function renderPartial($code, array $params = [])
     {
-        if (! $partial = MailPartial::findOrMakePartial($code)) {
+        if (!$partial = MailPartial::findOrMakePartial($code)) {
             return '<!-- Missing partial: '.$code.' -->';
         }
 
         if ($this->isHtmlRenderMode) {
             $content = $partial->content_html;
-        } else {
+        }
+        else {
             $content = $partial->content_text ?: $partial->content_html;
         }
 
-        if (! strlen(trim($content))) {
+        if (!strlen(trim($content))) {
             return '';
         }
 
@@ -264,8 +265,8 @@ class MailManager
     protected function renderTwig(string $content, array $data = []): string
     {
         return App::make('twig.environment.mailer')
-            ->createTemplate($content)
-            ->render($data);
+                ->createTemplate($content)
+                ->render($data);
     }
 
     //
@@ -274,7 +275,6 @@ class MailManager
 
     /**
      * Loads registered mail templates from modules and plugins
-     *
      * @return void
      */
     public function loadRegisteredTemplates()
@@ -304,7 +304,6 @@ class MailManager
 
     /**
      * Returns a list of the registered templates.
-     *
      * @return array
      */
     public function listRegisteredTemplates()
@@ -318,7 +317,6 @@ class MailManager
 
     /**
      * Returns a list of the registered partials.
-     *
      * @return array
      */
     public function listRegisteredPartials()
@@ -332,7 +330,6 @@ class MailManager
 
     /**
      * Returns a list of the registered layouts.
-     *
      * @return array
      */
     public function listRegisteredLayouts()
@@ -354,7 +351,7 @@ class MailManager
      *         $manager->registerMailTemplates([...]);
      *     });
      *
-     * @param  callable  $callback  A callable function.
+     * @param callable $callback A callable function.
      */
     public function registerCallback(callable $callback)
     {
@@ -366,12 +363,12 @@ class MailManager
      */
     public function registerMailTemplates(array $definitions)
     {
-        if (! $this->registeredTemplates) {
+        if (!$this->registeredTemplates) {
             $this->registeredTemplates = [];
         }
 
         // Prior sytax where (key) code => (value) description
-        if (! isset($definitions[0])) {
+        if (!isset($definitions[0])) {
             $definitions = array_keys($definitions);
         }
 
@@ -385,7 +382,7 @@ class MailManager
      */
     public function registerMailPartials(array $definitions)
     {
-        if (! $this->registeredPartials) {
+        if (!$this->registeredPartials) {
             $this->registeredPartials = [];
         }
 
@@ -397,7 +394,7 @@ class MailManager
      */
     public function registerMailLayouts(array $definitions)
     {
-        if (! $this->registeredLayouts) {
+        if (!$this->registeredLayouts) {
             $this->registeredLayouts = [];
         }
 

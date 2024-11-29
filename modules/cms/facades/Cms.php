@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Facades;
+<?php namespace Cms\Facades;
 
 use Winter\Storm\Support\Facade;
 

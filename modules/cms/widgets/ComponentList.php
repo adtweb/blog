@@ -1,18 +1,17 @@
-<?php
-
-namespace Cms\Widgets;
+<?php namespace Cms\Widgets;
 
 use App;
-use Backend\Classes\WidgetBase;
-use Cms\Classes\ComponentHelpers;
-use Input;
-use Lang;
 use Str;
+use Lang;
+use Input;
 use System\Classes\PluginManager;
+use Cms\Classes\ComponentHelpers;
+use Backend\Classes\WidgetBase;
 
 /**
  * Component list widget.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ComponentList extends WidgetBase
@@ -33,13 +32,12 @@ class ComponentList extends WidgetBase
 
     /**
      * Renders the widget.
-     *
      * @return string
      */
     public function render()
     {
         return $this->makePartial('body', [
-            'data' => $this->getData(),
+            'data' => $this->getData()
         ]);
     }
 
@@ -74,7 +72,7 @@ class ComponentList extends WidgetBase
         $items = [];
         foreach ($plugins as $plugin) {
             $components = $this->getPluginComponents($plugin);
-            if (! is_array($components)) {
+            if (!is_array($components)) {
                 continue;
             }
 
@@ -99,31 +97,31 @@ class ComponentList extends WidgetBase
                 $componentDetails = $component->componentDetails();
                 $component->alias = '--alias--';
 
-                $item = (object) [
-                    'title' => ComponentHelpers::getComponentName($component),
-                    'description' => ComponentHelpers::getComponentDescription($component),
-                    'plugin' => $pluginName,
+                $item = (object)[
+                    'title'          => ComponentHelpers::getComponentName($component),
+                    'description'    => ComponentHelpers::getComponentDescription($component),
+                    'plugin'         => $pluginName,
                     'propertyConfig' => ComponentHelpers::getComponentsPropertyConfig($component),
                     'propertyValues' => ComponentHelpers::getComponentPropertyValues($component, $alias),
-                    'className' => get_class($component),
-                    'pluginIcon' => $pluginIcon,
-                    'alias' => $alias,
-                    'name' => $componentInfo->duplicateAlias
+                    'className'      => get_class($component),
+                    'pluginIcon'     => $pluginIcon,
+                    'alias'          => $alias,
+                    'name'           => $componentInfo->duplicateAlias
                         ? $componentInfo->className
-                        : $componentInfo->alias,
+                        : $componentInfo->alias
                 ];
 
-                if ($searchWords && ! $this->itemMatchesSearch($searchWords, $item)) {
+                if ($searchWords && !$this->itemMatchesSearch($searchWords, $item)) {
                     continue;
                 }
 
-                if (! array_key_exists($pluginClass, $items)) {
-                    $group = (object) [
-                        'title' => $pluginName,
+                if (!array_key_exists($pluginClass, $items)) {
+                    $group = (object)[
+                        'title'       => $pluginName,
                         'description' => $pluginDescription,
                         'pluginClass' => $pluginClass,
-                        'icon' => $pluginIcon,
-                        'items' => [],
+                        'icon'        => $pluginIcon,
+                        'items'       => []
                     ];
 
                     $items[$pluginClass] = $group;
@@ -156,7 +154,7 @@ class ComponentList extends WidgetBase
         $componentList = [];
         foreach ($plugins as $plugin) {
             $components = $plugin->registerComponents();
-            if (! is_array($components)) {
+            if (!is_array($components)) {
                 continue;
             }
 
@@ -169,11 +167,11 @@ class ComponentList extends WidgetBase
                     }
                 }
 
-                $componentList[] = (object) [
-                    'className' => $className,
-                    'alias' => $alias,
+                $componentList[] = (object)[
+                    'className'      => $className,
+                    'alias'          => $alias,
                     'duplicateAlias' => $duplicateAlias,
-                    'pluginClass' => get_class($plugin),
+                    'pluginClass'    => get_class($plugin)
                 ];
             }
         }
@@ -208,9 +206,9 @@ class ComponentList extends WidgetBase
     protected function updateList()
     {
         return [
-            '#'.$this->getId('component-list') => $this->makePartial('items', [
-                'items' => $this->getData(),
-            ]),
+            '#' . $this->getId('component-list') => $this->makePartial('items', [
+                'items' => $this->getData()
+            ])
         ];
     }
 
@@ -218,11 +216,11 @@ class ComponentList extends WidgetBase
     {
         foreach ($words as $word) {
             $word = trim($word);
-            if (! strlen($word)) {
+            if (!strlen($word)) {
                 continue;
             }
 
-            if (! $this->itemContainsWord($word, $item)) {
+            if (!$this->itemContainsWord($word, $item)) {
                 return false;
             }
         }

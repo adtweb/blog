@@ -1,17 +1,16 @@
-<?php
+<?php namespace System\Controllers;
 
-namespace System\Controllers;
-
-use Backend\Classes\Controller;
-use BackendMenu;
-use Flash;
 use Lang;
+use Flash;
 use Redirect;
+use BackendMenu;
+use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
 
 /**
  * Mail layouts controller
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailLayouts extends Controller

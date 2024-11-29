@@ -1,10 +1,8 @@
-<?php
+<?php namespace Backend\Traits;
 
-namespace Backend\Traits;
-
+use Lang;
 use ApplicationException;
 use Exception;
-use Lang;
 use Winter\Storm\Database\Model;
 use Winter\Storm\Database\Relations\Relation;
 
@@ -13,6 +11,7 @@ use Winter\Storm\Database\Relations\Relation;
  *
  * Special logic for for form widgets that use a database stored model.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait FormModelWidget
@@ -20,41 +19,40 @@ trait FormModelWidget
     /**
      * Returns the final model and attribute name of a nested HTML array attribute.
      * Eg: list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
-     *
      * @throws ApplicationException if something goes wrong when attempting to resolve the model attribute
      */
     public function resolveModelAttribute(string $attribute): array
     {
         try {
             return $this->formField->resolveModelAttribute($this->model, $attribute);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             throw new ApplicationException(Lang::get('backend::lang.model.missing_relation', [
                 'class' => get_class($this->model),
-                'relation' => $attribute,
+                'relation' => $attribute
             ]));
         }
     }
 
     /**
      * Returns the model of a relation type, supports nesting via HTML array.
-     *
      * @throws ApplicationException if the related model cannot be resolved
      */
     public function getRelationModel(): Model
     {
-        [$model, $attribute] = $this->resolveModelAttribute($this->valueFrom);
+        list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
 
-        if (! $model) {
+        if (!$model) {
             throw new ApplicationException(Lang::get('backend::lang.model.missing_relation', [
                 'class' => get_class($this->model),
-                'relation' => $this->valueFrom,
+                'relation' => $this->valueFrom
             ]));
         }
 
-        if (! $model->hasRelation($attribute)) {
+        if (!$model->hasRelation($attribute)) {
             throw new ApplicationException(Lang::get('backend::lang.model.missing_relation', [
                 'class' => get_class($model),
-                'relation' => $attribute,
+                'relation' => $attribute
             ]));
         }
 
@@ -63,26 +61,24 @@ trait FormModelWidget
 
     /**
      * Returns the value as a relation object from the model, supports nesting via HTML array.
-     *
-     * @return Relation
-     *
      * @throws ApplicationException if the relationship cannot be resolved
+     * @return Relation
      */
     protected function getRelationObject()
     {
-        [$model, $attribute] = $this->resolveModelAttribute($this->valueFrom);
+        list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
 
-        if (! $model) {
+        if (!$model) {
             throw new ApplicationException(Lang::get('backend::lang.model.missing_relation', [
                 'class' => get_class($this->model),
-                'relation' => $this->valueFrom,
+                'relation' => $this->valueFrom
             ]));
         }
 
-        if (! $model->hasRelation($attribute)) {
+        if (!$model->hasRelation($attribute)) {
             throw new ApplicationException(Lang::get('backend::lang.model.missing_relation', [
                 'class' => get_class($model),
-                'relation' => $attribute,
+                'relation' => $attribute
             ]));
         }
 
@@ -94,8 +90,7 @@ trait FormModelWidget
      */
     protected function getRelationType(): ?string
     {
-        [$model, $attribute] = $this->resolveModelAttribute($this->valueFrom);
-
+        list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
         return $model->getRelationType($attribute);
     }
 }

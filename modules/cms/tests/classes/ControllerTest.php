@@ -3,11 +3,11 @@
 namespace Cms\Tests\Classes;
 
 use Cms;
-use Cms\Classes\Controller;
-use Cms\Classes\Theme;
 use Request;
-use System\Helpers\View;
 use System\Tests\Bootstrap\TestCase;
+use Cms\Classes\Theme;
+use Cms\Classes\Controller;
+use System\Helpers\View;
 use Winter\Storm\Halcyon\Model;
 use Winter\Storm\Support\Facades\Config;
 
@@ -28,12 +28,12 @@ class ControllerTest extends TestCase
 
         View::clearVarCache();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/MainMenu.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/ContentBlock.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Comments.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/classes/Users.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/MainMenu.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/ContentBlock.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Comments.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/classes/Users.php';
     }
 
     public function tearDown(): void
@@ -76,7 +76,7 @@ class ControllerTest extends TestCase
         $this->assertIsString($url);
 
         // Grab the cache key from the url
-        $cacheKey = 'combiner.'.str_before(basename($url), '-');
+        $cacheKey = 'combiner.' . str_before(basename($url), '-');
 
         // Load the cached config
         $combinerConfig = \Cache::get($cacheKey);
@@ -129,7 +129,7 @@ class ControllerTest extends TestCase
         $results = $response->getContent();
         $lines = explode("\n", str_replace("\r\n", "\n", $results));
         foreach ($lines as $test) {
-            [$result, $expected] = explode(' -> ', $test);
+            list($result, $expected) = explode(' -> ', $test);
             $this->assertEquals($expected, $result);
         }
     }
@@ -145,7 +145,7 @@ class ControllerTest extends TestCase
         $this->assertNotEmpty($response);
         $this->assertInstanceOf('\Illuminate\Http\Response', $response);
         ob_start();
-        include base_path().'/modules/cms/views/404.php';
+        include base_path() . '/modules/cms/views/404.php';
         $page404Content = ob_get_contents();
         ob_end_clean();
         $this->assertEquals($page404Content, $response->getContent());
@@ -258,7 +258,7 @@ class ControllerTest extends TestCase
         $theme = Theme::load('test');
         $controller = new Controller($theme);
         $response = $controller->run('/apage')->getContent();
-        $this->assertEquals('<div>LAYOUT CONTENT <h1>This page is a subdirectory</h1></div>', $response);
+        $this->assertEquals("<div>LAYOUT CONTENT <h1>This page is a subdirectory</h1></div>", $response);
     }
 
     public function testPartialNotFound()
@@ -437,7 +437,7 @@ class ControllerTest extends TestCase
         $component = $page->components['testArchive'];
         $details = $component->componentDetails();
 
-        $content = <<<'ESC'
+        $content = <<<ESC
 <div>LAYOUT CONTENT<p>This page uses components.</p>
     <h3>Lorum ipsum</h3>
     <p>Post Content #1</p>
@@ -454,7 +454,7 @@ ESC;
 
     public function testComponentAliases()
     {
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
 
         $theme = Theme::load('test');
         $controller = new Controller($theme);
@@ -467,7 +467,7 @@ ESC;
         $component = $page->components['firstAlias'];
         $component2 = $page->components['secondAlias'];
 
-        $content = <<<'ESC'
+        $content = <<<ESC
 <div>LAYOUT CONTENT<p>This page uses components.</p>
     <h3>Lorum ipsum</h3>
     <p>Post Content #1</p>
@@ -528,7 +528,7 @@ ESC;
         $component = $page->components['testArchive'];
         $details = $component->componentDetails();
 
-        $content = <<<'ESC'
+        $content = <<<ESC
 <div>LAYOUT CONTENT<p>This page uses components.</p>
     <h3>Lorum ipsum</h3>
     <p>Post Content #1</p>
@@ -554,7 +554,7 @@ ESC;
         $component = $page->components['someAlias'];
         $details = $component->componentDetails();
 
-        $content = <<<'ESC'
+        $content = <<<ESC
 <div>LAYOUT CONTENT<p>This page uses components.</p>
     <h3>Lorum ipsum</h3>
     <p>Post Content #1</p>
@@ -626,7 +626,7 @@ ESC;
         $controller = new Controller($theme);
         $response = $controller->run('/component-partial-nesting')->getContent();
 
-        $content = <<<'ESC'
+        $content = <<<ESC
 <h1>Level 1</h1>
 <ul>
     <strong>Home</strong>
@@ -666,7 +666,7 @@ ESC;
         $controller = new Controller($theme);
         $response = $controller->run('/component-custom-render')->getContent();
 
-        $content = <<<'ESC'
+        $content = <<<ESC
 Pass
 Custom output: Would you look over Picasso's shoulder
 Custom output: And tell him about his brush strokes?
@@ -681,7 +681,7 @@ ESC;
         $response = $controller->run('/with-macro')->getContent();
 
         $this->assertStringContainsString(
-            '<p><a href="'.Cms::url('/').'">with-macro.htm</a><strong>with-macro.htm</strong></p>',
+            '<p><a href="' . Cms::url('/') . '">with-macro.htm</a><strong>with-macro.htm</strong></p>',
             $response
         );
     }

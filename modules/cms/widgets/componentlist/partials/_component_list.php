@@ -4,17 +4,17 @@
             <?php
                 $count = count($components);
             ?>
-            <?php foreach ($components as $index => $component) { ?>
-                <?php if ($index > 0 && ($index % 2) == 0) { ?>
+            <?php foreach ($components as $index => $component): ?>
+                <?php if ($index > 0 && ($index % 2) == 0): ?>
                     </div>
 
-                    <?php if ($index == ($count - 1)) { ?>
+                    <?php if ($index == ($count - 1)): ?>
                         </div>
                         <div class="layout single">
-                    <?php } ?>
+                    <?php endif ?>
 
                     <div class="layout-row">
-                <?php } ?>
+                <?php endif ?>
                 <div class="layout-cell" data-control="dragcomponent" data-component>
                     <div class="layout-relative">
                         <span class="name"><?= e($component->title) ?></span>
@@ -33,7 +33,7 @@
                         <a href="#" class="remove">&times;</a>
                     </div>
                 </div>
-            <?php } ?>
+            <?php endforeach ?>
         </div>
     </div>
 </div>

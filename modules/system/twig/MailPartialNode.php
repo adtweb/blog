@@ -1,13 +1,12 @@
-<?php
+<?php namespace System\Twig;
 
-namespace System\Twig;
-
-use Twig\Compiler as TwigCompiler;
 use Twig\Node\Node as TwigNode;
+use Twig\Compiler as TwigCompiler;
 
 /**
  * Represents a partial node
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailPartialNode extends TwigNode
@@ -26,7 +25,7 @@ class MailPartialNode extends TwigNode
     /**
      * Compiles the node to PHP.
      *
-     * @param  TwigCompiler  $compiler  A TwigCompiler instance
+     * @param TwigCompiler $compiler A TwigCompiler instance
      */
     public function compile(TwigCompiler $compiler)
     {
@@ -43,7 +42,7 @@ class MailPartialNode extends TwigNode
         }
 
         for ($i = 1; $i < count($this->getNode('nodes')); $i++) {
-            $compiler->write("\$context['__system_partial_params']['".$this->getAttribute('names')[$i - 1]."'] = ");
+            $compiler->write("\$context['__system_partial_params']['".$this->getAttribute('names')[$i-1]."'] = ");
             $compiler->subcompile($this->getNode('nodes')->getNode($i));
             $compiler->write(";\n");
         }
@@ -52,7 +51,8 @@ class MailPartialNode extends TwigNode
             ->write("echo \System\Classes\MailManager::instance()->renderPartial(")
             ->subcompile($this->getNode('nodes')->getNode(0))
             ->write(", \$context['__system_partial_params']")
-            ->write(");\n");
+            ->write(");\n")
+        ;
 
         $compiler->write("unset(\$context['__system_partial_params']);\n");
     }

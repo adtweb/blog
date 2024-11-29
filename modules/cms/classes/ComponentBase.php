@@ -1,16 +1,15 @@
-<?php
+<?php namespace Cms\Classes;
 
-namespace Cms\Classes;
-
-use BadMethodCallException;
-use Config;
-use Lang;
 use Str;
+use Lang;
+use Config;
 use Winter\Storm\Extension\Extendable;
+use BadMethodCallException;
 
 /**
  * Component base class
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 abstract class ComponentBase extends Extendable
@@ -35,25 +34,25 @@ abstract class ComponentBase extends Extendable
     public $name;
 
     /**
-     * @var bool Determines whether the component is hidden from the back-end UI.
+     * @var boolean Determines whether the component is hidden from the back-end UI.
      */
     public $isHidden = false;
 
     /**
      * @var string Icon of the plugin that defines the component.
-     *             This field is used by the CMS internally.
+     * This field is used by the CMS internally.
      */
     public $pluginIcon;
 
     /**
      * @var string Component CSS class name for the back-end page/layout component list.
-     *             This field is used by the CMS internally.
+     * This field is used by the CMS internally.
      */
     public $componentCssClass;
 
     /**
-     * @var bool Determines whether Inspector can be used with the component.
-     *           This field is used by the CMS internally.
+     * @var boolean Determines whether Inspector can be used with the component.
+     * This field is used by the CMS internally.
      */
     public $inspectorEnabled = true;
 
@@ -80,10 +79,10 @@ abstract class ComponentBase extends Extendable
     /**
      * Component constructor. Takes in the page or layout code section object
      * and properties set by the page or layout.
-     *
-     * @param  array  $properties
+     * @param null|CodeBase $cmsObject
+     * @param array $properties
      */
-    public function __construct(?CodeBase $cmsObject = null, $properties = [])
+    public function __construct(CodeBase $cmsObject = null, $properties = [])
     {
         if ($cmsObject !== null) {
             $this->page = $cmsObject;
@@ -116,24 +115,30 @@ abstract class ComponentBase extends Extendable
      */
     public function getPath()
     {
-        return plugins_path().$this->dirName;
+        return plugins_path() . $this->dirName;
     }
 
     /**
      * Executed when this component is first initialized, before AJAX requests.
      */
-    public function init() {}
+    public function init()
+    {
+    }
 
     /**
      * Executed when this component is bound to a page or layout, part of
      * the page life cycle.
      */
-    public function onRun() {}
+    public function onRun()
+    {
+    }
 
     /**
      * Executed when this component is rendered on a page or layout.
      */
-    public function onRender() {}
+    public function onRender()
+    {
+    }
 
     /**
      * Renders a requested partial in context of this component,
@@ -144,14 +149,12 @@ abstract class ComponentBase extends Extendable
         $this->controller->setComponentContext($this);
         $result = call_user_func_array([$this->controller, 'renderPartial'], func_get_args());
         $this->controller->setComponentContext(null);
-
         return $result;
     }
 
     /**
      * Executes the event cycle when running an AJAX handler.
-     *
-     * @return bool Returns true if the handler was found. Returns false otherwise.
+     * @return boolean Returns true if the handler was found. Returns false otherwise.
      */
     public function runAjaxHandler($handler)
     {
@@ -182,6 +185,7 @@ abstract class ComponentBase extends Extendable
          *             }
          *         }
          *     });
+         *
          */
         if ($event = $this->fireSystemEvent('cms.component.beforeRunAjaxHandler', [$handler])) {
             return $event;
@@ -210,6 +214,7 @@ abstract class ComponentBase extends Extendable
          *             return 'request has been intercepted, original response: ' . json_encode($result);
          *         }
          *     });
+         *
          */
         if ($event = $this->fireSystemEvent('cms.component.runAjaxHandler', [$handler, $result])) {
             return $event;
@@ -245,9 +250,8 @@ abstract class ComponentBase extends Extendable
 
     /**
      * Sets names used by external properties.
-     *
-     * @param  array  $names  The key should be the property name,
-     *                        the value should be the external property name.
+     * @param array $names The key should be the property name,
+     *                     the value should be the external property name.
      * @return void
      */
     public function setExternalPropertyNames(array $names)
@@ -257,9 +261,8 @@ abstract class ComponentBase extends Extendable
 
     /**
      * Sets an external property name.
-     *
-     * @param  string  $name  Property name
-     * @param  string  $extName  External property name
+     * @param string $name Property name
+     * @param string $extName External property name
      * @return string
      */
     public function setExternalPropertyName($name, $extName)
@@ -270,9 +273,8 @@ abstract class ComponentBase extends Extendable
     /**
      * Returns the external property name when the property value is an external property reference.
      * Otherwise the default value specified is returned.
-     *
-     * @param  string  $name  The property name
-     * @param  mixed  $default
+     * @param string $name The property name
+     * @param mixed $default
      * @return string
      */
     public function propertyName($name, $default = null)
@@ -283,9 +285,8 @@ abstract class ComponentBase extends Extendable
     /**
      * Returns the external property name when the property value is a routing parameter reference.
      * Otherwise the default value specified is returned.
-     *
-     * @param  string  $name  The property name
-     * @param  mixed  $default
+     * @param string $name The property name
+     * @param mixed $default
      * @return string
      */
     public function paramName($name, $default = null)
@@ -303,16 +304,16 @@ abstract class ComponentBase extends Extendable
 
     /**
      * Dynamically handle calls into the controller instance.
-     *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
     {
         try {
             return parent::__call($method, $parameters);
-        } catch (BadMethodCallException $ex) {
+        }
+        catch (BadMethodCallException $ex) {
         }
 
         if (isset($this->controller) && method_exists($this->controller, $method)) {
@@ -321,7 +322,7 @@ abstract class ComponentBase extends Extendable
 
         throw new BadMethodCallException(Lang::get('cms::lang.component.method_not_found', [
             'name' => get_class($this),
-            'method' => $method,
+            'method' => $method
         ]));
     }
 

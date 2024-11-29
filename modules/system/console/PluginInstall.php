@@ -1,16 +1,15 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use System\Classes\PluginManager;
-use System\Classes\UpdateManager;
 use Winter\Storm\Console\Command;
+use System\Classes\UpdateManager;
+use System\Classes\PluginManager;
 
 /**
  * Console command to install a new plugin.
  *
  * This adds a new plugin by requesting it from the Winter marketplace.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PluginInstall extends Command
@@ -33,7 +32,6 @@ class PluginInstall extends Command
 
     /**
      * Execute the console command.
-     *
      * @return void
      */
     public function handle()

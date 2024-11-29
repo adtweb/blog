@@ -1,17 +1,16 @@
-<?php
+<?php namespace Cms\Twig;
 
-namespace Cms\Twig;
-
-use Twig\Error\SyntaxError as TwigErrorSyntax;
 use Twig\Node\Node as TwigNode;
 use Twig\Token as TwigToken;
 use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
+use Twig\Error\SyntaxError as TwigErrorSyntax;
 
 /**
  * Parser for the `{% component %}` Twig tag.
  *
  *     {% component "pluginComponent" %}
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ComponentTokenParser extends TwigTokenParser
@@ -19,7 +18,7 @@ class ComponentTokenParser extends TwigTokenParser
     /**
      * Parses a token and returns a node.
      *
-     * @param  TwigToken  $token  A TwigToken instance
+     * @param TwigToken $token A TwigToken instance
      * @return TwigNode A TwigNode instance
      */
     public function parse(TwigToken $token)
@@ -32,7 +31,7 @@ class ComponentTokenParser extends TwigTokenParser
         $nodes = [$name];
 
         $end = false;
-        while (! $end) {
+        while (!$end) {
             $current = $stream->next();
 
             switch ($current->getType()) {

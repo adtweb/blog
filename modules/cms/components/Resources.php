@@ -1,9 +1,7 @@
-<?php
+<?php namespace Cms\Components;
 
-namespace Cms\Components;
-
-use Cms\Classes\ComponentBase;
 use File;
+use Cms\Classes\ComponentBase;
 use System\Classes\CombineAssets;
 
 /**
@@ -37,8 +35,8 @@ class Resources extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name' => 'Resources',
-            'description' => 'Easily reference theme assets for inclusion on a page.',
+            'name'           => 'Resources',
+            'description'    => 'Easily reference theme assets for inclusion on a page.',
         ];
     }
 
@@ -49,35 +47,35 @@ class Resources extends ComponentBase
     {
         return [
             'js' => [
-                'title' => 'JavaScript',
-                'description' => 'JavaScript file(s) in the assets/js folder',
-                'type' => 'stringList',
-                'showExternalParam' => false,
+                'title'             => 'JavaScript',
+                'description'       => 'JavaScript file(s) in the assets/js folder',
+                'type'              => 'stringList',
+                'showExternalParam' => false
             ],
             'less' => [
-                'title' => 'LESS',
-                'description' => 'LESS file(s) in the assets/less folder',
-                'type' => 'stringList',
-                'showExternalParam' => false,
+                'title'             => 'LESS',
+                'description'       => 'LESS file(s) in the assets/less folder',
+                'type'              => 'stringList',
+                'showExternalParam' => false
             ],
             'sass' => [
-                'title' => 'SASS',
-                'description' => 'SASS file(s) in the assets/sass folder',
-                'type' => 'stringList',
-                'showExternalParam' => false,
+                'title'             => 'SASS',
+                'description'       => 'SASS file(s) in the assets/sass folder',
+                'type'              => 'stringList',
+                'showExternalParam' => false
             ],
             'css' => [
-                'title' => 'CSS',
-                'description' => 'Stylesheet file(s) in the assets/css folder',
-                'type' => 'stringList',
-                'showExternalParam' => false,
+                'title'             => 'CSS',
+                'description'       => 'Stylesheet file(s) in the assets/css folder',
+                'type'              => 'stringList',
+                'showExternalParam' => false
             ],
             'vars' => [
-                'title' => 'Variables',
-                'description' => 'Page variables name(s) and value(s)',
-                'type' => 'dictionary',
-                'showExternalParam' => false,
-            ],
+                'title'             => 'Variables',
+                'description'       => 'Page variables name(s) and value(s)',
+                'type'              => 'dictionary',
+                'showExternalParam' => false
+            ]
         ];
     }
 

@@ -1,17 +1,15 @@
-<?php
+<?php namespace Backend\Controllers;
 
-namespace Backend\Controllers;
-
-use ApplicationException;
-use Backend;
-use Backend\Classes\Controller;
+use View;
 use Cache;
 use Config;
-use Exception;
+use Backend;
 use Response;
-use RuntimeException;
 use System\Models\File as FileModel;
-use View;
+use Backend\Classes\Controller;
+use ApplicationException;
+use Exception;
+use RuntimeException;
 
 /**
  * Backend files controller
@@ -19,7 +17,9 @@ use View;
  * Used for delivering protected system files, and generating URLs
  * for accessing them.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class Files extends Controller
 {
@@ -30,7 +30,8 @@ class Files extends Controller
     {
         try {
             return $this->findFileObject($code)->output('inline', true);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
         }
 
         return Response::make(View::make('backend::404'), 404);
@@ -48,7 +49,8 @@ class Files extends Controller
                 compact('mode', 'extension'),
                 true
             );
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
         }
 
         return Response::make(View::make('backend::404'), 404);
@@ -57,8 +59,8 @@ class Files extends Controller
     /**
      * Attempt to return a redirect to a temporary URL to the asset instead of streaming the asset - if supported
      *
-     * @param  System|Models\File  $file
-     * @param  string|null  $path  Optional, defaults to the getDiskPath() of the file
+     * @param System|Models\File $file
+     * @param string|null $path Optional, defaults to the getDiskPath() of the file
      * @return string|null
      */
     protected static function getTemporaryUrl($file, $path = null)
@@ -71,7 +73,7 @@ class Files extends Controller
         }
 
         // Check to see if the URL has already been generated
-        $pathKey = 'backend.file:'.$path;
+        $pathKey = 'backend.file:' . $path;
         $url = Cache::get($pathKey, null);
 
         if (is_null($url) && $disk->exists($path)) {
@@ -88,7 +90,7 @@ class Files extends Controller
         }
 
         // Limit the return types to strings or null
-        if (! is_string($url) || empty($url)) {
+        if (!is_string($url) || empty($url)) {
             $url = null;
         }
 
@@ -97,67 +99,62 @@ class Files extends Controller
 
     /**
      * Returns the URL for downloading a system file.
-     *
-     * @param  $file  System\Models\File
+     * @param $file System\Models\File
      * @return string
      */
     public static function getDownloadUrl($file)
     {
         $url = static::getTemporaryUrl($file);
 
-        if (! empty($url)) {
+        if (!empty($url)) {
             return $url;
         } else {
-            return Backend::url('backend/files/get/'.self::getUniqueCode($file));
+            return Backend::url('backend/files/get/' . self::getUniqueCode($file));
         }
     }
 
     /**
      * Returns the URL for downloading a system file.
-     *
-     * @param  $file  System\Models\File
-     * @param  $width  int
-     * @param  $height  int
-     * @param  $options  array
+     * @param $file System\Models\File
+     * @param $width int
+     * @param $height int
+     * @param $options array
      * @return string
      */
     public static function getThumbUrl($file, $width, $height, $options)
     {
         $url = static::getTemporaryUrl($file, $file->getDiskPath($file->getThumbFilename($width, $height, $options)));
 
-        if (! empty($url)) {
+        if (!empty($url)) {
             return $url;
         } else {
-            return Backend::url('backend/files/thumb/'.self::getUniqueCode($file)).'/'.$width.'/'.$height.'/'.$options['mode'].'/'.$options['extension'];
+            return Backend::url('backend/files/thumb/' . self::getUniqueCode($file)) . '/' . $width . '/' . $height . '/' . $options['mode'] . '/' . $options['extension'];
         }
     }
 
     /**
      * Returns a unique code used for masking the file identifier.
-     *
-     * @param  $file  System\Models\File
+     * @param $file System\Models\File
      * @return string
      */
     public static function getUniqueCode($file)
     {
-        if (! $file) {
+        if (!$file) {
             return null;
         }
 
-        $hash = md5($file->file_name.'!'.$file->disk_name);
-
-        return base64_encode($file->id.'!'.$hash);
+        $hash = md5($file->file_name . '!' . $file->disk_name);
+        return base64_encode($file->id . '!' . $hash);
     }
 
     /**
      * Locates a file model based on the unique code.
-     *
-     * @param  $code  string
+     * @param $code string
      * @return System\Models\File
      */
     protected function findFileObject($code)
     {
-        if (! $code) {
+        if (!$code) {
             throw new ApplicationException('Missing code');
         }
 
@@ -166,9 +163,9 @@ class Files extends Controller
             throw new ApplicationException('Invalid code');
         }
 
-        [$id, $hash] = $parts;
+        list($id, $hash) = $parts;
 
-        if (! $file = FileModel::find((int) $id)) {
+        if (!$file = FileModel::find((int) $id)) {
             throw new ApplicationException('Unable to find file');
         }
 

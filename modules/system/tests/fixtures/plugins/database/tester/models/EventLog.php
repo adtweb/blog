@@ -1,6 +1,4 @@
-<?php
-
-namespace Database\Tester\Models;
+<?php namespace Database\Tester\Models;
 
 use Model;
 
@@ -27,6 +25,6 @@ class EventLog extends Model
      * @var array Relations
      */
     public $morphTo = [
-        'related' => [],
+        'related' => []
     ];
 }

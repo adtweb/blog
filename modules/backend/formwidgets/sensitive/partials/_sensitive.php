@@ -2,9 +2,9 @@
     data-control="sensitive"
     data-clean="true"
     data-event-handler="<?= $this->getEventHandler('onShowValue') ?>"
-    <?php if ($hideOnTabChange) { ?>
+    <?php if ($hideOnTabChange): ?>
         data-hide-on-tab-change="true"
-    <?php } ?>
+    <?php endif ?>
 >
     <div class="loading-indicator-container size-form-field">
         <div class="input-group">
@@ -15,13 +15,13 @@
                 value="<?= ($hasValue) ? $hiddenPlaceholder : '' ?>"
                 placeholder="<?= e(trans($this->formField->placeholder)) ?>"
                 class="form-control"
-                <?php if ($this->previewMode) { ?>
+                <?php if ($this->previewMode): ?>
                     disabled="disabled"
-                <?php } ?>
+                <?php endif ?>
                 autocomplete="off"
                 data-input
             />
-            <?php if ($allowCopy) { ?>
+            <?php if ($allowCopy): ?>
             <a
                 href="javascript:;"
                 class="input-group-addon btn btn-secondary"
@@ -29,7 +29,7 @@
             >
                 <i class="icon-copy"></i>
             </a>
-            <?php } ?>
+            <?php endif ?>
             <a
                 href="javascript:;"
                 class="input-group-addon btn btn-secondary"

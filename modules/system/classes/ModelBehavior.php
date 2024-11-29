@@ -1,14 +1,13 @@
-<?php
+<?php namespace System\Classes;
 
-namespace System\Classes;
-
-use ApplicationException;
 use Lang;
+use ApplicationException;
 use Winter\Storm\Database\ModelBehavior as ModelBehaviorBase;
 
 /**
  * Base class for model behaviors.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ModelBehavior extends ModelBehaviorBase
@@ -20,8 +19,7 @@ class ModelBehavior extends ModelBehaviorBase
 
     /**
      * Constructor
-     *
-     * @param  Winter\Storm\Database\Model  $model  The extended model.
+     * @param Winter\Storm\Database\Model $model The extended model.
      */
     public function __construct($model)
     {
@@ -31,11 +29,11 @@ class ModelBehavior extends ModelBehaviorBase
          * Validate model properties
          */
         foreach ($this->requiredProperties as $property) {
-            if (! isset($model->{$property})) {
+            if (!isset($model->{$property})) {
                 throw new ApplicationException(Lang::get('system::lang.behavior.missing_property', [
                     'class' => get_class($model),
                     'property' => $property,
-                    'behavior' => get_called_class(),
+                    'behavior' => get_called_class()
                 ]));
             }
         }

@@ -1,6 +1,4 @@
-<?php
-
-namespace Winter\Tester\Components;
+<?php namespace Winter\Tester\Components;
 
 use Cms\Classes\ComponentBase;
 
@@ -10,7 +8,7 @@ class ContentBlock extends ComponentBase
     {
         return [
             'name' => 'Content Block Dummy Component',
-            'description' => 'Displays a editable content block.',
+            'description' => 'Displays a editable content block.'
         ];
     }
 

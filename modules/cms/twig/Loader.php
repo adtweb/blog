@@ -1,17 +1,16 @@
-<?php
+<?php namespace Cms\Twig;
 
-namespace Cms\Twig;
-
-use Cms\Classes\Partial as CmsPartial;
-use Cms\Contracts\CmsObject;
 use Event;
-use System\Twig\Loader as LoaderBase;
-use Twig\Loader\LoaderInterface as TwigLoaderInterface;
 use Twig\Source as TwigSource;
+use Twig\Loader\LoaderInterface as TwigLoaderInterface;
+use Cms\Contracts\CmsObject;
+use System\Twig\Loader as LoaderBase;
+use Cms\Classes\Partial as CmsPartial;
 
 /**
  * This class implements a Twig template loader for the CMS.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Loader extends LoaderBase implements TwigLoaderInterface
@@ -29,7 +28,7 @@ class Loader extends LoaderBase implements TwigLoaderInterface
     /**
      * Sets a CMS object to load the template from.
      *
-     * @param  \Cms\Contracts\CmsObject  $obj  Specifies the CMS object.
+     * @param \Cms\Contracts\CmsObject $obj Specifies the CMS object.
      * @return void
      */
     public function setObject(CmsObject $obj)
@@ -43,7 +42,7 @@ class Loader extends LoaderBase implements TwigLoaderInterface
      */
     public function getSourceContext(string $name): TwigSource
     {
-        if (! $this->validateCmsObject($name)) {
+        if (!$this->validateCmsObject($name)) {
             return parent::getSourceContext($name);
         }
 
@@ -58,6 +57,7 @@ class Loader extends LoaderBase implements TwigLoaderInterface
          *     Event::listen('cms.template.processTwigContent', function ((\Cms\Classes\CmsObject) $thisObject, (object) $dataHolder) {
          *         $dataHolder->content = "NO CONTENT FOR YOU!";
          *     });
+         *
          */
         $dataHolder = (object) ['content' => $content];
         Event::fire('cms.template.processTwigContent', [$this->obj, $dataHolder]);
@@ -70,7 +70,7 @@ class Loader extends LoaderBase implements TwigLoaderInterface
      */
     public function getCacheKey(string $name): string
     {
-        if (! $this->validateCmsObject($name)) {
+        if (!$this->validateCmsObject($name)) {
             return parent::getCacheKey($name);
         }
 
@@ -80,12 +80,13 @@ class Loader extends LoaderBase implements TwigLoaderInterface
     /**
      * Determines if the content is fresh.
      *
-     * @param  string  $name  The template name
-     * @param  mixed  $time  The time to check against the template
+     * @param string $name The template name
+     * @param mixed $time The time to check against the template
+     * @return bool
      */
     public function isFresh(string $name, int $time): bool
     {
-        if (! $this->validateCmsObject($name)) {
+        if (!$this->validateCmsObject($name)) {
             return parent::isFresh($name, $time);
         }
 
@@ -97,7 +98,7 @@ class Loader extends LoaderBase implements TwigLoaderInterface
      */
     public function getFilename(string $name): string
     {
-        if (! $this->validateCmsObject($name)) {
+        if (!$this->validateCmsObject($name)) {
             return parent::getFilename($name);
         }
 
@@ -109,7 +110,7 @@ class Loader extends LoaderBase implements TwigLoaderInterface
      */
     public function exists(string $name): bool
     {
-        if (! $this->validateCmsObject($name)) {
+        if (!$this->validateCmsObject($name)) {
             return parent::exists($name);
         }
 
@@ -128,7 +129,6 @@ class Loader extends LoaderBase implements TwigLoaderInterface
 
         if ($fallbackObj = $this->findFallbackObject($name)) {
             $this->obj = $fallbackObj;
-
             return true;
         }
 
@@ -138,7 +138,7 @@ class Loader extends LoaderBase implements TwigLoaderInterface
     /**
      * Looks up a fallback CMS partial object.
      *
-     * @param  string  $name  The filename to attempt to load a fallback CMS partial for
+     * @param string $name The filename to attempt to load a fallback CMS partial for
      * @return Cms\Classes\Partial|bool Returns false if a CMS partial can't be found
      */
     protected function findFallbackObject($name)

@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Console;
+<?php namespace Cms\Console;
 
 use Cms\Classes\Theme;
 use Winter\Storm\Console\Command;
@@ -10,6 +8,7 @@ use Winter\Storm\Console\Command;
  *
  * This switches the active theme to another one, saved to the database.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeUse extends Command
@@ -18,7 +17,6 @@ class ThemeUse extends Command
 
     /**
      * The console command name.
-     *
      * @var string
      */
     protected $name = 'theme:use';
@@ -33,26 +31,24 @@ class ThemeUse extends Command
 
     /**
      * The console command description.
-     *
      * @var string
      */
     protected $description = 'Switch the active theme.';
 
     /**
      * Execute the console command.
-     *
      * @return void
      */
     public function handle()
     {
-        if (! $this->confirmToProceed('Change the active theme?')) {
+        if (!$this->confirmToProceed('Change the active theme?')) {
             return;
         }
 
         $newThemeName = $this->argument('name');
         $newTheme = Theme::load($newThemeName);
 
-        if (! $newTheme->exists($newThemeName)) {
+        if (!$newTheme->exists($newThemeName)) {
             return $this->error(sprintf('The theme %s does not exist.', $newThemeName));
         }
 

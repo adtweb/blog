@@ -1,12 +1,11 @@
-<?php
-
-namespace Database\Tester\Updates;
+<?php namespace Database\Tester\Updates;
 
 use Schema;
 use Winter\Storm\Database\Updates\Migration;
 
 class CreateTagsTable extends Migration
 {
+
     public function up()
     {
         Schema::create('database_tester_tags', function ($table) {

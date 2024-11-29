@@ -1,14 +1,14 @@
-<?php if ($items) { ?>
+<?php if ($items): ?>
     <ul>
-        <?php foreach ($items as $item) { ?>
-            <?php if (property_exists($item, 'items')) { ?>
-                <?php if ($item->items) { ?>
+        <?php foreach ($items as $item): ?>
+            <?php if (property_exists($item, 'items')): ?>
+                <?php if ($item->items): ?>
                     <li class="group" data-status="<?= $this->getCollapseStatus($item->title, false) ? 'expanded' : 'collapsed' ?>">
                         <h4><a href="javascript:;"><?= e($item->title) ?></a></h4>
-                        <?= $this->makePartial('items', ['items' => $item->items, 'nested' => true]) ?>
+                        <?= $this->makePartial('items', ['items'=>$item->items, 'nested'=>true]) ?>
                     </li>
-                <?php } ?>
-            <?php } else { ?>
+                <?php endif ?>
+            <?php else: ?>
                 <?php
                 $dataId = $this->itemType.'-'.$this->theme->getDirName().'-'.$item->fileName;
                 ?>
@@ -23,11 +23,11 @@
                         data-text-value="<?= $item->dragValue ?>">
                         <span class="title"><?= e($item->title) ?></span>
                         <span class="description" title="<?= e($item->description) ?>">
-                            <?php foreach ($item->descriptions as $title => $value) { ?>
-                                <?php if (strlen($value)) { ?>
+                            <?php foreach ($item->descriptions as $title => $value): ?>
+                                <?php if (strlen($value)): ?>
                                     <?= e($title) ?>: <strong><?= e($value) ?></strong>
-                                <?php } ?>
-                            <?php } ?>
+                                <?php endif ?>
+                            <?php endforeach ?>
 
                             <?= e($item->description) ?>
                         </span>
@@ -36,7 +36,7 @@
 
                     <input type="hidden" name="template[<?= e($item->fileName) ?>]" value="0" />
                     <div class="checkbox custom-checkbox nolabel">
-                        <?php $cbId = 'cb'.md5($this->itemType.'/'.$item->fileName) ?>
+                        <?php $cbId = 'cb' . md5($this->itemType . '/' . $item->fileName) ?>
                         <input
                             id="<?= $cbId ?>"
                             type="checkbox"
@@ -47,13 +47,13 @@
                         <label for="<?= $cbId ?>">Select</label>
                     </div>
                 </li>
-            <?php } ?>
-        <?php } ?>
+            <?php endif ?>
+        <?php endforeach ?>
     </ul>
-<?php } else { ?>
+<?php else: ?>
     <p class="no-data"><?= e(trans($this->noRecordsMessage)) ?></p>
-<?php } ?>
+<?php endif ?>
 
-<?php if (! isset($nested)) { ?>
+<?php if (!isset($nested)): ?>
     <input type="hidden" name="theme" value="<?= e($this->theme->getDirName()) ?>">
-<?php } ?>
+<?php endif ?>

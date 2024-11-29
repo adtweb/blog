@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use Backend\Classes\AuthManager;
 use Winter\Storm\Auth\Models\Role as RoleBase;
@@ -8,12 +6,12 @@ use Winter\Storm\Auth\Models\Role as RoleBase;
 /**
  * Administrator role
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class UserRole extends RoleBase
 {
     const CODE_DEVELOPER = 'developer';
-
     const CODE_PUBLISHER = 'publisher';
 
     /**
@@ -34,7 +32,7 @@ class UserRole extends RoleBase
      */
     public $hasMany = [
         'users' => [User::class, 'key' => 'role_id'],
-        'users_count' => [User::class, 'key' => 'role_id', 'count' => true],
+        'users_count' => [User::class, 'key' => 'role_id', 'count' => true]
     ];
 
     public function filterFields($fields)
@@ -70,14 +68,14 @@ class UserRole extends RoleBase
     public function isSystemRole()
     {
         // System roles must have a valid code property
-        if (! $this->code || ! strlen(trim($this->code))) {
+        if (!$this->code || !strlen(trim($this->code))) {
             return false;
         }
 
         // Winter default system roles
         if ($this->is_system || in_array($this->code, [
             self::CODE_DEVELOPER,
-            self::CODE_PUBLISHER,
+            self::CODE_PUBLISHER
         ])) {
             return true;
         }

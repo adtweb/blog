@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use Model;
 use Request;
@@ -8,6 +6,7 @@ use Request;
 /**
  * Model for logging access to the back-end
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class AccessLog extends Model
@@ -21,13 +20,12 @@ class AccessLog extends Model
      * @var array Relations
      */
     public $belongsTo = [
-        'user' => User::class,
+        'user' => User::class
     ];
 
     /**
      * Creates a log record
-     *
-     * @param  Backend\Models\User  $user  Admin user
+     * @param Backend\Models\User $user Admin user
      * @return self
      */
     public static function add($user)
@@ -43,7 +41,6 @@ class AccessLog extends Model
     /**
      * Returns a recent entry, latest entry is not considered recent
      * if the creation day is the same as today.
-     *
      * @return self
      */
     public static function getRecent($user)
@@ -53,12 +50,12 @@ class AccessLog extends Model
             ->limit(2)
             ->get();
 
-        if (! count($records)) {
+        if (!count($records)) {
             return null;
         }
 
         $first = $records->first();
 
-        return ! $first->created_at->isToday() ? $first : $records->pop();
+        return !$first->created_at->isToday() ? $first : $records->pop();
     }
 }

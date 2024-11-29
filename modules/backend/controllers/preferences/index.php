@@ -1,6 +1,6 @@
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
-    <?= Form::open(['class' => 'layout']) ?>
+    <?= Form::open(['class'=>'layout']) ?>
 
         <div class="layout-row">
             <?= $this->formRender() ?>
@@ -35,7 +35,7 @@
         </div>
     <?= Form::close() ?>
 
-<?php } else { ?>
+<?php else: ?>
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
     <p><a href="<?= Backend::url('system/settings') ?>" class="btn btn-default"><?= e(trans('system::lang.settings.return')) ?></a></p>
-<?php } ?>
+<?php endif ?>

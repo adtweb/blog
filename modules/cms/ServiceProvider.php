@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms;
+<?php namespace Cms;
 
 use Backend;
 use Backend\Classes\WidgetManager;
@@ -18,6 +16,8 @@ use Cms\Twig\Extension as CmsTwigExtension;
 use Cms\Twig\Loader as CmsTwigLoader;
 use Config;
 use Event;
+use File;
+use Lang;
 use System\Classes\CombineAssets;
 use System\Classes\MarkupManager;
 use System\Classes\SettingsManager;
@@ -92,7 +92,7 @@ class ServiceProvider extends ModuleServiceProvider
         // Register CMS Twig environment
         $this->app->bind('twig.environment.cms', function ($app) {
             // Load Twig options
-            $useCache = ! Config::get('cms.twigNoCache');
+            $useCache = !Config::get('cms.twigNoCache');
             $isDebugMode = Config::get('app.debug', false);
             $strictVariables = Config::get('cms.enableTwigStrictVariables', false);
             $strictVariables = $strictVariables ?? $isDebugMode;
@@ -108,7 +108,7 @@ class ServiceProvider extends ModuleServiceProvider
                 $theme = Theme::getActiveTheme();
                 $themeDir = $theme->getDirName();
                 if ($parent = $theme->getConfig()['parent'] ?? false) {
-                    $themeDir .= '-'.$parent;
+                    $themeDir .= '-' . $parent;
                 }
 
                 $options['cache'] = new TwigCacheFilesystem(
@@ -116,7 +116,7 @@ class ServiceProvider extends ModuleServiceProvider
                         'cms',
                         'twig',
                         $themeDir,
-                    ])).DIRECTORY_SEPARATOR,
+                    ])) . DIRECTORY_SEPARATOR,
                     $forceBytecode ? TwigCacheFilesystem::FORCE_BYTECODE_INVALIDATION : 0
                 );
             }
@@ -179,7 +179,7 @@ class ServiceProvider extends ModuleServiceProvider
         });
 
         Event::listen('cms.combiner.getCacheKey', function ($combiner, $holder) {
-            $holder->key = $holder->key.ThemeData::getCombinerCacheKey();
+            $holder->key = $holder->key . ThemeData::getCombinerCacheKey();
         });
     }
 
@@ -191,78 +191,78 @@ class ServiceProvider extends ModuleServiceProvider
         BackendMenu::registerCallback(function ($manager) {
             $manager->registerMenuItems('Winter.Cms', [
                 'cms' => [
-                    'label' => 'cms::lang.cms.menu_label',
-                    'icon' => 'icon-magic',
-                    'iconSvg' => 'modules/cms/assets/images/cms-icon.svg',
-                    'url' => Backend::url('cms'),
-                    'order' => 100,
+                    'label'       => 'cms::lang.cms.menu_label',
+                    'icon'        => 'icon-magic',
+                    'iconSvg'     => 'modules/cms/assets/images/cms-icon.svg',
+                    'url'         => Backend::url('cms'),
+                    'order'       => 100,
                     'permissions' => [
                         'cms.manage_content',
                         'cms.manage_assets',
                         'cms.manage_pages',
                         'cms.manage_layouts',
-                        'cms.manage_partials',
+                        'cms.manage_partials'
                     ],
                     'sideMenu' => [
                         'pages' => [
-                            'label' => 'cms::lang.page.menu_label',
-                            'icon' => 'icon-copy',
-                            'url' => 'javascript:;',
-                            'attributes' => ['data-menu-item' => 'pages'],
-                            'permissions' => ['cms.manage_pages'],
-                            'counterLabel' => 'cms::lang.page.unsaved_label',
+                            'label'        => 'cms::lang.page.menu_label',
+                            'icon'         => 'icon-copy',
+                            'url'          => 'javascript:;',
+                            'attributes'   => ['data-menu-item' => 'pages'],
+                            'permissions'  => ['cms.manage_pages'],
+                            'counterLabel' => 'cms::lang.page.unsaved_label'
                         ],
                         'partials' => [
-                            'label' => 'cms::lang.partial.menu_label',
-                            'icon' => 'icon-tags',
-                            'url' => 'javascript:;',
-                            'attributes' => ['data-menu-item' => 'partials'],
-                            'permissions' => ['cms.manage_partials'],
-                            'counterLabel' => 'cms::lang.partial.unsaved_label',
+                            'label'        => 'cms::lang.partial.menu_label',
+                            'icon'         => 'icon-tags',
+                            'url'          => 'javascript:;',
+                            'attributes'   => ['data-menu-item' => 'partials'],
+                            'permissions'  => ['cms.manage_partials'],
+                            'counterLabel' => 'cms::lang.partial.unsaved_label'
                         ],
                         'layouts' => [
-                            'label' => 'cms::lang.layout.menu_label',
-                            'icon' => 'icon-th-large',
-                            'url' => 'javascript:;',
-                            'attributes' => ['data-menu-item' => 'layouts'],
-                            'permissions' => ['cms.manage_layouts'],
-                            'counterLabel' => 'cms::lang.layout.unsaved_label',
+                            'label'        => 'cms::lang.layout.menu_label',
+                            'icon'         => 'icon-th-large',
+                            'url'          => 'javascript:;',
+                            'attributes'   => ['data-menu-item' => 'layouts'],
+                            'permissions'  => ['cms.manage_layouts'],
+                            'counterLabel' => 'cms::lang.layout.unsaved_label'
                         ],
                         'content' => [
-                            'label' => 'cms::lang.content.menu_label',
-                            'icon' => 'icon-file-text-o',
-                            'url' => 'javascript:;',
-                            'attributes' => ['data-menu-item' => 'content'],
-                            'permissions' => ['cms.manage_content'],
-                            'counterLabel' => 'cms::lang.content.unsaved_label',
+                            'label'        => 'cms::lang.content.menu_label',
+                            'icon'         => 'icon-file-text-o',
+                            'url'          => 'javascript:;',
+                            'attributes'   => ['data-menu-item' => 'content'],
+                            'permissions'  => ['cms.manage_content'],
+                            'counterLabel' => 'cms::lang.content.unsaved_label'
                         ],
                         'assets' => [
-                            'label' => 'cms::lang.asset.menu_label',
-                            'icon' => 'icon-picture-o',
-                            'url' => 'javascript:;',
-                            'attributes' => ['data-menu-item' => 'assets'],
-                            'permissions' => ['cms.manage_assets'],
-                            'counterLabel' => 'cms::lang.asset.unsaved_label',
+                            'label'        => 'cms::lang.asset.menu_label',
+                            'icon'         => 'icon-picture-o',
+                            'url'          => 'javascript:;',
+                            'attributes'   => ['data-menu-item' => 'assets'],
+                            'permissions'  => ['cms.manage_assets'],
+                            'counterLabel' => 'cms::lang.asset.unsaved_label'
                         ],
                         'components' => [
-                            'label' => 'cms::lang.component.menu_label',
-                            'icon' => 'icon-puzzle-piece',
-                            'url' => 'javascript:;',
-                            'attributes' => ['data-menu-item' => 'components'],
-                            'permissions' => ['cms.manage_pages', 'cms.manage_layouts', 'cms.manage_partials'],
-                        ],
-                    ],
-                ],
+                            'label'       => 'cms::lang.component.menu_label',
+                            'icon'        => 'icon-puzzle-piece',
+                            'url'         => 'javascript:;',
+                            'attributes'  => ['data-menu-item' => 'components'],
+                            'permissions' => ['cms.manage_pages', 'cms.manage_layouts', 'cms.manage_partials']
+                        ]
+                    ]
+                ]
             ]);
             $manager->registerQuickActions('Winter.Cms', [
                 'preview' => [
-                    'label' => 'backend::lang.tooltips.preview_website',
-                    'icon' => 'icon-crosshairs',
-                    'url' => Url::to('/'),
-                    'order' => 10,
+                    'label'      => 'backend::lang.tooltips.preview_website',
+                    'icon'       => 'icon-crosshairs',
+                    'url'        => Url::to('/'),
+                    'order'      => 10,
                     'attributes' => [
                         'target' => '_blank',
-                        'rel' => 'noopener noreferrer',
+                        'rel'    => 'noopener noreferrer',
                     ],
                 ],
             ]);
@@ -277,8 +277,8 @@ class ServiceProvider extends ModuleServiceProvider
     {
         WidgetManager::instance()->registerReportWidgets(function ($manager) {
             $manager->registerReportWidget(\Cms\ReportWidgets\ActiveTheme::class, [
-                'label' => 'cms::lang.dashboard.active_theme.widget_title_default',
-                'context' => 'dashboard',
+                'label'   => 'cms::lang.dashboard.active_theme.widget_title_default',
+                'context' => 'dashboard'
             ]);
         });
     }
@@ -294,43 +294,43 @@ class ServiceProvider extends ModuleServiceProvider
                     'label' => 'cms::lang.permissions.manage_content',
                     'tab' => 'cms::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
-                    'order' => 100,
+                    'order' => 100
                 ],
                 'cms.manage_assets' => [
                     'label' => 'cms::lang.permissions.manage_assets',
                     'tab' => 'cms::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
-                    'order' => 100,
+                    'order' => 100
                 ],
                 'cms.manage_pages' => [
                     'label' => 'cms::lang.permissions.manage_pages',
                     'tab' => 'cms::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
-                    'order' => 100,
+                    'order' => 100
                 ],
                 'cms.manage_layouts' => [
                     'label' => 'cms::lang.permissions.manage_layouts',
                     'tab' => 'cms::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
-                    'order' => 100,
+                    'order' => 100
                 ],
                 'cms.manage_partials' => [
                     'label' => 'cms::lang.permissions.manage_partials',
                     'tab' => 'cms::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
-                    'order' => 100,
+                    'order' => 100
                 ],
                 'cms.manage_themes' => [
                     'label' => 'cms::lang.permissions.manage_themes',
                     'tab' => 'cms::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
-                    'order' => 100,
+                    'order' => 100
                 ],
                 'cms.manage_theme_options' => [
                     'label' => 'cms::lang.permissions.manage_theme_options',
                     'tab' => 'cms::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
-                    'order' => 100,
+                    'order' => 100
                 ],
             ]);
             $manager->registerPermissionOwnerAlias('Winter.Cms', 'October.Cms');
@@ -355,33 +355,33 @@ class ServiceProvider extends ModuleServiceProvider
         SettingsManager::instance()->registerCallback(function ($manager) {
             $manager->registerSettingItems('Winter.Cms', [
                 'theme' => [
-                    'label' => 'cms::lang.theme.settings_menu',
+                    'label'       => 'cms::lang.theme.settings_menu',
                     'description' => 'cms::lang.theme.settings_menu_description',
-                    'category' => SettingsManager::CATEGORY_CMS,
-                    'icon' => 'icon-picture-o',
-                    'url' => Backend::url('cms/themes'),
+                    'category'    => SettingsManager::CATEGORY_CMS,
+                    'icon'        => 'icon-picture-o',
+                    'url'         => Backend::url('cms/themes'),
                     'permissions' => ['cms.manage_themes', 'cms.manage_theme_options'],
-                    'order' => 200,
+                    'order'       => 200
                 ],
                 'maintenance_settings' => [
-                    'label' => 'cms::lang.maintenance.settings_menu',
+                    'label'       => 'cms::lang.maintenance.settings_menu',
                     'description' => 'cms::lang.maintenance.settings_menu_description',
-                    'category' => SettingsManager::CATEGORY_CMS,
-                    'icon' => 'icon-plug',
-                    'class' => Models\MaintenanceSetting::class,
+                    'category'    => SettingsManager::CATEGORY_CMS,
+                    'icon'        => 'icon-plug',
+                    'class'       => Models\MaintenanceSetting::class,
                     'permissions' => ['cms.manage_themes'],
-                    'order' => 300,
+                    'order'       => 300
                 ],
                 'theme_logs' => [
-                    'label' => 'cms::lang.theme_log.menu_label',
+                    'label'       => 'cms::lang.theme_log.menu_label',
                     'description' => 'cms::lang.theme_log.menu_description',
-                    'category' => SettingsManager::CATEGORY_LOGS,
-                    'icon' => 'icon-magic',
-                    'url' => Backend::url('cms/themelogs'),
+                    'category'    => SettingsManager::CATEGORY_LOGS,
+                    'icon'        => 'icon-magic',
+                    'url'         => Backend::url('cms/themelogs'),
                     'permissions' => ['system.access_logs'],
-                    'order' => 910,
-                    'keywords' => 'theme change log',
-                ],
+                    'order'       => 910,
+                    'keywords'    => 'theme change log'
+                ]
             ]);
             $manager->registerOwnerAlias('Winter.Cms', 'October.Cms');
         });
@@ -394,7 +394,7 @@ class ServiceProvider extends ModuleServiceProvider
     {
         Event::listen('pages.menuitem.listTypes', function () {
             return [
-                'cms-page' => 'cms::lang.page.cms_page',
+                'cms-page' => 'cms::lang.page.cms_page'
             ];
         });
 
@@ -418,7 +418,7 @@ class ServiceProvider extends ModuleServiceProvider
     {
         Event::listen('backend.richeditor.listTypes', function () {
             return [
-                'cms-page' => 'cms::lang.page.cms_page',
+                'cms-page' => 'cms::lang.page.cms_page'
             ];
         });
 
@@ -441,7 +441,7 @@ class ServiceProvider extends ModuleServiceProvider
                 Classes\Page::class,
                 Classes\Layout::class,
                 Classes\Content::class,
-                Classes\Partial::class,
+                Classes\Partial::class
             ];
         });
     }

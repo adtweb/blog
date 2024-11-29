@@ -67,7 +67,7 @@ return [
         'installed' => 'Telepítve',
         'no_plugins' => 'A piactérről még nem lett telepítve bővítmény.',
         'recommended' => 'Ajánlott',
-        'plugin_label' => 'Bővítmény',
+        'plugin_label'  => 'Bővítmény',
         'unknown_plugin' => 'A bővítményhet tartozó fájlok törölve lettek.',
         'select_label' => 'Művelet kiválasztása...',
         'bulk_actions_label' => 'Csoportos műveletek',
@@ -233,7 +233,7 @@ return [
             'panel_bg' => 'Panel háttere',
             'promotion_bg' => 'Promóció háttere',
             'promotion_border_color' => 'Promóció szegély színe',
-        ],
+        ]
     ],
     'install' => [
         'project_label' => 'Csatolás',
@@ -335,7 +335,7 @@ return [
         'required' => "A(z) :location helyen használt konfigurációnak meg kell adnia egy ':property' értéket.",
     ],
     'zip' => [
-        'extract_failed' => "Nem tömöríthető ki a(z) ':file' fájl.",
+        'extract_failed' => "Nem tömöríthető ki a(z) ':file' fájl."
     ],
     'event_log' => [
         'hint' => 'Ez a napló a rendszerben történt lehetséges hibákat listázza ki. Például a kivételeket és a hibakeresési információkat.',

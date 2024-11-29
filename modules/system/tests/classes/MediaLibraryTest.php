@@ -2,9 +2,9 @@
 
 namespace System\Tests\Classes;
 
+use System\Tests\Bootstrap\TestCase;
 use Illuminate\Filesystem\FilesystemAdapter;
 use System\Classes\MediaLibrary;
-use System\Tests\Bootstrap\TestCase;
 
 class MediaLibraryTest extends TestCase
 {
@@ -113,8 +113,8 @@ class MediaLibraryTest extends TestCase
                 '/media/hidden/sub1/deep1',
                 '/media/hidden/sub2',
                 '/media/hidden but not really',
-                '/media/name',
-            ],
+                '/media/name'
+            ]
         ]);
 
         $this->app['config']->set('cms.storage.media.folder', 'media');
@@ -132,13 +132,13 @@ class MediaLibraryTest extends TestCase
 
         config(['filesystems.disks.test_local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root'   => storage_path('app'),
         ]]);
 
         config(['cms.storage.media' => [
-            'disk' => 'test_local',
+            'disk'   => 'test_local',
             'folder' => 'media',
-            'path' => '/storage/app/media',
+            'path'   => '/storage/app/media',
         ]]);
     }
 
@@ -146,13 +146,13 @@ class MediaLibraryTest extends TestCase
     {
         $mediaPath = storage_path('app/media');
 
-        if (! is_dir($mediaPath)) {
+        if (!is_dir($mediaPath)) {
             mkdir($mediaPath, 0777, true);
         }
 
         foreach (glob(base_path('modules/system/tests/fixtures/media/*')) as $file) {
             $path = pathinfo($file);
-            copy($file, $mediaPath.DIRECTORY_SEPARATOR.$path['basename']);
+            copy($file, $mediaPath . DIRECTORY_SEPARATOR . $path['basename']);
         }
     }
 

@@ -1,5 +1,5 @@
 <div id="importFormPopup">
-    <?php if (! $this->fatalError) { ?>
+    <?php if (!$this->fatalError): ?>
 
         <?= Form::open(['id' => 'importForm']) ?>
             <div class="modal-header">
@@ -28,7 +28,7 @@
             })
         </script>
 
-    <?php } else { ?>
+    <?php else: ?>
 
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="popup">&times;</button>
@@ -46,5 +46,5 @@
             </button>
         </div>
 
-    <?php } ?>
+    <?php endif ?>
 </div>

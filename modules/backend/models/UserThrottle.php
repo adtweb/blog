@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use Config;
 use Winter\Storm\Auth\Models\Throttle as ThrottleBase;
@@ -8,6 +6,7 @@ use Winter\Storm\Auth\Models\Throttle as ThrottleBase;
 /**
  * Administrator throttling model
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class UserThrottle extends ThrottleBase
@@ -21,11 +20,11 @@ class UserThrottle extends ThrottleBase
      * @var array Relations
      */
     public $belongsTo = [
-        'user' => User::class,
+        'user' => User::class
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function __construct(array $attributes = [])
     {

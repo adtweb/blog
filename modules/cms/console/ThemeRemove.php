@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Console;
+<?php namespace Cms\Console;
 
 use Cms\Classes\Theme;
 use Cms\Classes\ThemeManager;
@@ -12,6 +10,7 @@ use Winter\Storm\Console\Command;
  *
  * This completely deletes an existing theme, including all files and directories.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeRemove extends Command
@@ -20,7 +19,6 @@ class ThemeRemove extends Command
 
     /**
      * The console command name.
-     *
      * @var string
      */
     protected $name = 'theme:remove';
@@ -35,14 +33,12 @@ class ThemeRemove extends Command
 
     /**
      * The console command description.
-     *
      * @var string
      */
     protected $description = 'Delete an existing theme.';
 
     /**
      * Execute the console command.
-     *
      * @return void
      */
     public function handle()
@@ -51,16 +47,16 @@ class ThemeRemove extends Command
         $themeName = $this->argument('name');
         $themeExists = Theme::exists($themeName);
 
-        if (! $themeExists) {
+        if (!$themeExists) {
             $themeName = strtolower(str_replace('.', '-', $themeName));
             $themeExists = Theme::exists($themeName);
         }
 
-        if (! $themeExists) {
+        if (!$themeExists) {
             return $this->error(sprintf('The theme %s does not exist.', $themeName));
         }
 
-        if (! $this->confirmToProceed(sprintf('This will DELETE theme "%s" from the filesystem and database.', $themeName))) {
+        if (!$this->confirmToProceed(sprintf('This will DELETE theme "%s" from the filesystem and database.', $themeName))) {
             return;
         }
 

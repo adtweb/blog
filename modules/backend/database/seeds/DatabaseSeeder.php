@@ -1,10 +1,9 @@
-<?php
+<?php namespace Backend\Database\Seeds;
 
-namespace Backend\Database\Seeds;
-
-use Eloquent;
-use Seeder;
 use Str;
+use Seeder;
+use Eloquent;
+use Backend\Database\Seeds\SeedSetupAdmin;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,13 +21,13 @@ class DatabaseSeeder extends Seeder
             // Generate a random password for the seeded admin account
             $adminSeeder = new \Backend\Database\Seeds\SeedSetupAdmin;
             $adminSeeder->setDefaults([
-                'password' => $adminPassword,
+                'password' => $adminPassword
             ]);
             $this->call($adminSeeder);
         });
 
         return ($shouldRandomizePassword)
-            ? 'The following password has been automatically generated for the "admin" account: <fg=yellow;options=bold>'.$adminPassword.'</>'
+            ? 'The following password has been automatically generated for the "admin" account: <fg=yellow;options=bold>' . $adminPassword . '</>'
             : '';
     }
 }

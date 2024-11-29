@@ -1,26 +1,26 @@
 <tr>
-    <?php if ($showCheckboxes) { ?>
+    <?php if ($showCheckboxes): ?>
         <th class="list-checkbox">
             <div class="checkbox custom-checkbox nolabel">
                 <input type="checkbox" id="<?= $this->getId('checkboxAll') ?>" />
                 <label for="<?= $this->getId('checkboxAll') ?>"></label>
             </div>
         </th>
-    <?php } ?>
+    <?php endif ?>
 
-    <?php if ($showTree) { ?>
+    <?php if ($showTree): ?>
         <th class="list-tree">
             <span></span>
         </th>
-    <?php } ?>
+    <?php endif ?>
 
-    <?php foreach ($columns as $key => $column) { ?>
-        <?php if ($showSorting && $column->sortable) { ?>
+    <?php foreach ($columns as $key => $column): ?>
+        <?php if ($showSorting && $column->sortable): ?>
             <th
-                <?php if ($column->width) { ?>
+                <?php if ($column->width): ?>
                     style="width: <?= $column->width ?>"
-                <?php } ?>
-                class="<?= $this->sortColumn == $column->columnName ? 'sort-'.$this->sortDirection.' active' : 'sort-desc' ?> list-cell-name-<?= $column->getName() ?> list-cell-type-<?= $column->type ?> <?= $column->getAlignClass() ?> <?= $column->headCssClass ?>"
+                <?php endif ?>
+                class="<?= $this->sortColumn==$column->columnName?'sort-'.$this->sortDirection.' active':'sort-desc' ?> list-cell-name-<?= $column->getName() ?> list-cell-type-<?= $column->type ?> <?= $column->getAlignClass() ?> <?= $column->headCssClass ?>"
                 >
                 <a
                     href="javascript:;"
@@ -30,19 +30,19 @@
                     <?= $this->getHeaderValue($column) ?>
                 </a>
             </th>
-        <?php } else { ?>
+        <?php else: ?>
             <th
-                <?php if ($column->width) { ?>
+                <?php if ($column->width): ?>
                     style="width: <?= $column->width ?>"
-                <?php } ?>
+                <?php endif ?>
                 class="list-cell-name-<?= $column->getName() ?> list-cell-type-<?= $column->type ?> <?= $column->getAlignClass() ?> <?= $column->headCssClass ?>"
                 >
                 <span><?= $this->getHeaderValue($column) ?></span>
             </th>
-        <?php } ?>
-    <?php } ?>
+        <?php endif ?>
+    <?php endforeach ?>
 
-    <?php if ($showSetup) { ?>
+    <?php if ($showSetup): ?>
         <th class="list-setup">
             <a href="javascript:;"
                 id="<?= $this->getId('setupButton') ?>"
@@ -50,5 +50,5 @@
                 data-control="popup"
                 data-handler="<?= $this->getEventHandler('onLoadSetup') ?>"></a>
         </th>
-    <?php } ?>
+    <?php endif ?>
 </tr>

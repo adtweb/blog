@@ -5,7 +5,7 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <?php Block::put('form-contents') ?>
         <div class="layout">
@@ -50,12 +50,12 @@
     <?php Block::endPut() ?>
 
     <?php Block::put('body') ?>
-        <?= Form::open(['class' => 'layout stretch']) ?>
+        <?= Form::open(['class'=>'layout stretch']) ?>
             <?= $this->makeLayout('form-with-sidebar') ?>
         <?= Form::close() ?>
     <?php Block::endPut() ?>
 
-<?php } else { ?>
+<?php else: ?>
     <div class="control-breadcrumb">
         <?= Block::placeholder('breadcrumb') ?>
     </div>
@@ -63,4 +63,4 @@
         <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
         <p><a href="<?= Backend::url('backend/users') ?>" class="btn btn-default"><?= e(trans('backend::lang.user.return')) ?></a></p>
     </div>
-<?php } ?>
+<?php endif ?>

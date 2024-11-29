@@ -1,13 +1,14 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
 use System\Models\PluginVersion;
 use Winter\Storm\Console\Command;
 
 /**
  * Console command to list existing plugins.
  *
+ * @package winter\wn-system-module
  * @author Lucas Zamora
  */
 class PluginList extends Command
@@ -29,17 +30,15 @@ class PluginList extends Command
 
     /**
      * Execute the console command.
-     *
      * @return void
      */
     public function handle()
     {
-        $allPlugins = PluginVersion::all();
+        $allPlugins  = PluginVersion::all();
         $pluginsCount = count($allPlugins);
 
         if ($pluginsCount <= 0) {
             $this->info('No plugin found');
-
             return;
         }
 
@@ -48,8 +47,8 @@ class PluginList extends Command
             $rows[] = [
                 $plugin->code,
                 $plugin->version,
-                (! $plugin->is_frozen) ? '<info>Yes</info>' : '<fg=red>No</>',
-                (! $plugin->is_disabled) ? '<info>Yes</info>' : '<fg=red>No</>',
+                (!$plugin->is_frozen) ? '<info>Yes</info>': '<fg=red>No</>',
+                (!$plugin->is_disabled) ? '<info>Yes</info>': '<fg=red>No</>',
             ];
         }
 

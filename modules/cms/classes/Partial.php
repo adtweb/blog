@@ -1,10 +1,9 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 /**
  * The CMS partial class.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Partial extends CmsCompoundObject
@@ -16,7 +15,6 @@ class Partial extends CmsCompoundObject
 
     /**
      * Returns name of a PHP class to us a parent for the PHP class created for the object's PHP section.
-     *
      * @return string Returns the class name.
      */
     public function getCodeClassParent()

@@ -1,34 +1,32 @@
-<?php
+<?php namespace System\Classes;
 
-namespace System\Classes;
-
-use Config;
-use Exception;
-use Illuminate\Routing\Controller as ControllerBase;
 use Lang;
+use Config;
 use Response;
+use Exception;
 use SystemException;
+use ApplicationException;
+use Illuminate\Routing\Controller as ControllerBase;
 
 /**
  * The is the master controller for system related routing.
  * It is currently only responsible for serving up the asset combiner contents.
  *
  * @see System\Classes\CombineAssets Asset combiner class
- *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges, Luke Towers
  */
 class SystemController extends ControllerBase
 {
     /**
      * Combines JavaScript and StyleSheet assets.
-     *
-     * @param  string  $name  Combined file code
+     * @param string $name Combined file code
      * @return Response Combined content.
      */
     public function combine($name)
     {
         try {
-            if (! strpos($name, '-')) {
+            if (!strpos($name, '-')) {
                 return Response::make('/* '.e(Lang::get('system::lang.combiner.not_found', ['name' => $name])).' */', 404);
             }
 
@@ -48,8 +46,8 @@ class SystemController extends ControllerBase
      * Resizes an image using the provided configuration
      * and returns a redirect to the resized image
      *
-     * @param  string  $identifier  The identifier used to retrieve the image configuration
-     * @param  string  $encodedUrl  The double-encoded URL of the resized image, see https://github.com/octobercms/october/issues/3592#issuecomment-671017380
+     * @param string $identifier The identifier used to retrieve the image configuration
+     * @param string $encodedUrl The double-encoded URL of the resized image, see https://github.com/octobercms/october/issues/3592#issuecomment-671017380
      * @return RedirectResponse
      */
     public function resizer(string $identifier, string $encodedUrl)
@@ -74,7 +72,7 @@ class SystemController extends ControllerBase
         } catch (Exception $ex) {
             // If it failed for any other reason, restore the config so that
             // the resizer route will continue to work until it succeeds
-            if (! empty($resizer)) {
+            if (!empty($resizer)) {
                 $resizer->storeConfig();
             }
 

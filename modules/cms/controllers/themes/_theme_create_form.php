@@ -1,6 +1,6 @@
 <?= Form::ajax('onCreate', [
     'id' => 'themeCreateForm',
-    'data-popup-load-indicator' => true,
+    'data-popup-load-indicator' => true
 ]) ?>
 
     <div class="modal-header">
@@ -8,7 +8,7 @@
         <h4 class="modal-title"><?= e(trans('cms::lang.theme.create_title')) ?></h4>
     </div>
 
-    <?php if (! $this->fatalError) { ?>
+    <?php if (!$this->fatalError): ?>
 
         <div class="modal-body">
             <?= $widget->render() ?>
@@ -28,7 +28,7 @@
             </button>
         </div>
 
-    <?php } else { ?>
+    <?php else: ?>
 
         <div class="modal-body">
             <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
@@ -42,7 +42,7 @@
             </button>
         </div>
 
-    <?php } ?>
+    <?php endif ?>
 
     <script>
         setTimeout(

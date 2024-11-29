@@ -4,56 +4,56 @@ $availableOptions = $useKey ? $fieldOptions : array_unique(array_merge($selected
 $displayOnlyOptions = [];
 
 foreach ($availableOptions as $key => $option) {
-    if (! strlen($option)) {
+    if (!strlen($option)) {
         continue;
     }
-    if (($useKey && in_array($key, $selectedValues)) || (! $useKey && in_array($option, $selectedValues))) {
+    if (($useKey && in_array($key, $selectedValues)) || (!$useKey && in_array($option, $selectedValues))) {
         $displayOnlyOptions[] = $option;
     }
 }
 ?>
 <!-- Tag List -->
-<?php if ($this->previewMode || $field->readOnly || $field->disabled) { ?>
+<?php if ($this->previewMode || $field->readOnly || $field->disabled): ?>
     <ul class="form-control taglist--preview" <?= $field->readOnly || $field->disabled ? 'disabled="disabled"' : ''; ?>>
-        <?php foreach ($displayOnlyOptions as $option) { ?>
+        <?php foreach ($displayOnlyOptions as $option): ?>
             <li class="taglist__item"><?= e(trans($option)) ?></li>
-        <?php } ?>
+        <?php endforeach ?>
     </ul>
-    <?php if (is_array($field->value)) { ?>
-        <?php foreach ($displayOnlyOptions as $option) { ?>
+    <?php if (is_array($field->value)): ?>
+        <?php foreach ($displayOnlyOptions as $option): ?>
         <input
             type="hidden"
             name="<?= $field->getName() ?>[]"
             value="<?= $option ?>">
-        <?php } ?>
-    <?php } else { ?>
+        <?php endforeach ?>
+    <?php else: ?>
         <input
             type="hidden"
             name="<?= $field->getName() ?>"
             value="<?= $field->value ?>">
-    <?php } ?>
-<?php } else { ?>
+    <?php endif ?>
+<?php else: ?>
     <select
         id="<?= $field->getId() ?>"
         name="<?= $field->getName() ?>[]"
-        class="form-control custom-select <?= ! count($fieldOptions) ? 'select-no-dropdown' : '' ?> select-hide-selected"
-        <?php if (! empty($customSeparators)) { ?>
+        class="form-control custom-select <?= !count($fieldOptions) ? 'select-no-dropdown' : '' ?> select-hide-selected"
+        <?php if (!empty($customSeparators)): ?>
             data-token-separators="<?= $customSeparators ?>"
-        <?php } ?>
-        <?php if (! empty($placeholder)) { ?>
+        <?php endif ?>
+        <?php if (!empty($placeholder)): ?>
             data-placeholder="<?= e(trans($placeholder)) ?>"
-        <?php } ?>
+        <?php endif ?>
         multiple
         <?= $field->getAttributes() ?>>
-        <?php foreach ($availableOptions as $key => $option) { ?>
-            <?php if (! strlen($option)) {
+        <?php foreach ($availableOptions as $key => $option): ?>
+            <?php if (!strlen($option)) {
                 continue;
             } ?>
-            <?php if ($useKey) { ?>
+            <?php if ($useKey): ?>
                 <option value="<?= e($key) ?>" <?= in_array($key, $selectedValues) ? 'selected="selected"' : '' ?>><?= e(trans($option)) ?></option>
-            <?php } else { ?>
+            <?php else: ?>
                 <option value="<?= e($option) ?>" <?= in_array($option, $selectedValues) ? 'selected="selected"' : '' ?>><?= e(trans($option)) ?></option>
-            <?php } ?>
-        <?php } ?>
+            <?php endif ?>
+        <?php endforeach ?>
     </select>
-<?php } ?>
+<?php endif ?>

@@ -1,9 +1,7 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use Artisan;
 use File;
+use Artisan;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -12,6 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
  *
  * This removes the demo theme and plugin. A great way to start a fresh project!
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterFresh extends Command
@@ -44,7 +43,7 @@ class WinterFresh extends Command
      */
     public function handle()
     {
-        if (! $this->confirmToProceed('Are you sure?')) {
+        if (!$this->confirmToProceed('Are you sure?')) {
             return;
         }
 
@@ -76,7 +75,6 @@ class WinterFresh extends Command
 
     /**
      * Get the console command options.
-     *
      * @return array
      */
     protected function getOptions()

@@ -442,8 +442,8 @@ return [
             'label' => 'Bezbednosni žeton nije validan.',
         ],
         'maintenance' => [
-            'label' => 'Odmah se vraćamo!',
-            'help' => 'Sajt je u fazi održavanja, dođite kasnije!',
+            'label' => "Odmah se vraćamo!",
+            'help' => "Sajt je u fazi održavanja, dođite kasnije!",
             'message' => 'Poruka:',
             'available_at' => 'Pokušajte ponovo za:',
         ],

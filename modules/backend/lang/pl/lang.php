@@ -1,6 +1,4 @@
-<?php
-
-return [
+<?php return [
     'auth' => [
         'title' => 'Panel Administracyjny',
         'invalid_login' => 'Podane dane logowania są niepoprawne. Sprawdź je i spróbuj ponownie.',

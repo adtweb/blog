@@ -10,12 +10,12 @@
             <h1><i class="icon-wrench warning"></i> <?= Lang::get('system::lang.page.maintenance.label') ?></h1>
             <p class="lead"><?= Lang::get('system::lang.page.maintenance.help') ?></p>
             <p class="lead">
-                <?php if ($message) { ?>
+                <?php if ($message): ?>
                     <strong><?= Lang::get('system::lang.page.maintenance.message') ?></strong> <?= $message; ?><br />
-                <?php } ?>
-                <?php if ($willBeAvailableAt) { ?>
+                <?php endif; ?>
+                <?php if ($willBeAvailableAt): ?>
                     <strong><?= Lang::get('system::lang.page.maintenance.available_at') ?></strong> <?= $willBeAvailableAt; ?><br />
-                <?php } ?>
+                <?php endif; ?>
         </div>
     </body>
 </html>

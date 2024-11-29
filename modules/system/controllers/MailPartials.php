@@ -1,14 +1,13 @@
-<?php
+<?php namespace System\Controllers;
 
-namespace System\Controllers;
-
-use Backend\Classes\Controller;
 use BackendMenu;
+use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
 
 /**
  * Mail partials controller
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailPartials extends Controller

@@ -1,18 +1,16 @@
-<?php
+<?php namespace Backend\Behaviors;
 
-namespace Backend\Behaviors;
-
-use ApplicationException;
+use Db;
+use Str;
+use Lang;
+use Flash;
+use Event;
+use Redirect;
 use Backend;
 use Backend\Classes\ControllerBehavior;
-use Db;
-use Event;
-use Exception;
-use Flash;
-use Lang;
-use Redirect;
-use Str;
 use Winter\Storm\Router\Helper as RouterHelper;
+use ApplicationException;
+use Exception;
 
 /**
  * Adds features for working with backend forms. This behavior
@@ -36,7 +34,7 @@ use Winter\Storm\Router\Helper as RouterHelper;
  * or directly as a PHP array.
  *
  * @see https://wintercms.com/docs/backend/forms Back-end form documentation
- *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class FormController extends ControllerBehavior
@@ -70,8 +68,8 @@ class FormController extends ControllerBehavior
 
     /**
      * @var array Configuration values that must exist when applying the primary config file.
-     *            - modelClass: Class name for the model
-     *            - form: Form field definitions
+     * - modelClass: Class name for the model
+     * - form: Form field definitions
      */
     protected $requiredConfig = ['modelClass', 'form'];
 
@@ -97,8 +95,7 @@ class FormController extends ControllerBehavior
 
     /**
      * Behavior constructor
-     *
-     * @param  \Backend\Classes\Controller  $controller
+     * @param \Backend\Classes\Controller $controller
      */
     public function __construct($controller)
     {
@@ -119,9 +116,8 @@ class FormController extends ControllerBehavior
      * to this behavior via this method as the first argument.
      *
      * @see \Backend\Widgets\Form
-     *
-     * @param  \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model  $model
-     * @param  string  $context  Form context
+     * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model $model
+     * @param string $context Form context
      * @return void
      */
     public function initForm($model, $context = null)
@@ -190,8 +186,7 @@ class FormController extends ControllerBehavior
 
     /**
      * Prepares commonly used view data.
-     *
-     * @param  \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model  $model
+     * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model $model
      */
     protected function prepareVars($model)
     {
@@ -207,7 +202,7 @@ class FormController extends ControllerBehavior
     /**
      * Controller "create" action used for creating new model records.
      *
-     * @param  string  $context  Form context
+     * @param string $context Form context
      * @return void
      */
     public function create($context = null)
@@ -223,7 +218,8 @@ class FormController extends ControllerBehavior
             $model = $this->controller->formExtendModel($model) ?: $model;
 
             $this->initForm($model);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->controller->handleError($ex);
         }
     }
@@ -235,7 +231,7 @@ class FormController extends ControllerBehavior
      * This handler will invoke the unique controller overrides
      * `formBeforeCreate` and `formAfterCreate`.
      *
-     * @param  string  $context  Form context
+     * @param string $context Form context
      * @return \Illuminate\Http\RedirectResponse|void
      */
     public function create_onSave($context = null)
@@ -276,8 +272,8 @@ class FormController extends ControllerBehavior
      * This action takes a record identifier (primary key of the model)
      * to locate the record used for sourcing the existing form values.
      *
-     * @param  int  $recordId  Record identifier
-     * @param  string  $context  Form context
+     * @param int $recordId Record identifier
+     * @param string $context Form context
      * @return void
      */
     public function update($recordId = null, $context = null)
@@ -291,7 +287,8 @@ class FormController extends ControllerBehavior
 
             $model = $this->controller->formFindModelObject($recordId);
             $this->initForm($model);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->controller->handleError($ex);
         }
     }
@@ -303,10 +300,9 @@ class FormController extends ControllerBehavior
      * This handler will invoke the unique controller overrides
      * `formBeforeUpdate` and `formAfterUpdate`.
      *
-     * @param  int  $recordId  Record identifier
-     * @param  string  $context  Form context
+     * @param int $recordId Record identifier
+     * @param string $context Form context
      * @return \Illuminate\Http\RedirectResponse|void
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the provided recordId is not found
      */
     public function update_onSave($recordId = null, $context = null)
@@ -342,9 +338,8 @@ class FormController extends ControllerBehavior
      * This handler will invoke the unique controller override
      * `formAfterDelete`.
      *
-     * @param  int  $recordId  Record identifier
+     * @param int $recordId Record identifier
      * @return \Illuminate\Http\RedirectResponse|void
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the provided recordId is not found
      * @throws Exception if there is no primary key on the model
      */
@@ -374,8 +369,8 @@ class FormController extends ControllerBehavior
      * This action takes a record identifier (primary key of the model)
      * to locate the record used for sourcing the existing preview data.
      *
-     * @param  int  $recordId  Record identifier
-     * @param  string  $context  Form context
+     * @param int $recordId Record identifier
+     * @param string $context Form context
      * @return void
      */
     public function preview($recordId = null, $context = null)
@@ -389,7 +384,8 @@ class FormController extends ControllerBehavior
 
             $model = $this->controller->formFindModelObject($recordId);
             $this->initForm($model);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->controller->handleError($ex);
         }
     }
@@ -410,15 +406,13 @@ class FormController extends ControllerBehavior
      *     <?= $this->formRender(['preview' => true, section' => 'primary']) ?>
      *
      * @see \Backend\Widgets\Form
-     *
-     * @param  array  $options  Render options
+     * @param array $options Render options
      * @return string Rendered HTML for the form.
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the Form Widget isn't set
      */
     public function formRender($options = [])
     {
-        if (! $this->formWidget) {
+        if (!$this->formWidget) {
             throw new ApplicationException(Lang::get('backend::lang.form.behavior_not_ready'));
         }
 
@@ -457,7 +451,6 @@ class FormController extends ControllerBehavior
     protected function createModel()
     {
         $class = $this->config->modelClass;
-
         return new $class;
     }
 
@@ -465,14 +458,14 @@ class FormController extends ControllerBehavior
      * Returns a Redirect object based on supplied context and parses
      * the model primary key.
      *
-     * @param  string  $context  Redirect context, eg: create, update, delete
-     * @param  \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model  $model  The active model to parse in it's ID and attributes.
+     * @param string $context Redirect context, eg: create, update, delete
+     * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model $model The active model to parse in it's ID and attributes.
      * @return \Illuminate\Http\RedirectResponse
      */
     public function makeRedirect($context = null, $model = null)
     {
         $redirectUrl = null;
-        if (post('close') && ! ends_with($context, '-close')) {
+        if (post('close') && !ends_with($context, '-close')) {
             $context .= '-close';
         }
 
@@ -504,8 +497,8 @@ class FormController extends ControllerBehavior
      * Otherwise the default redirect is used. Relative URLs are treated as
      * backend URLs.
      *
-     * @param  string  $context  Redirect context, eg: create, update, delete.
-     * @param  Model  $model  The active model.
+     * @param string $context Redirect context, eg: create, update, delete.
+     * @param Model $model The active model.
      * @return string
      */
     public function formGetRedirectUrl($context = null, $model = null)
@@ -530,19 +523,18 @@ class FormController extends ControllerBehavior
     /**
      * Parses in some default variables to a language string defined in config.
      *
-     * @param  string  $name  Configuration property containing the language string
-     * @param  string  $default  A default language string to use if the config is not found
-     * @param  array  $extras  Any extra params to include in the language string variables
+     * @param string $name Configuration property containing the language string
+     * @param string $default A default language string to use if the config is not found
+     * @param array $extras Any extra params to include in the language string variables
      * @return string The translated string.
      */
     protected function getLang($name, $default = null, $extras = [])
     {
         $name = $this->getConfig($name, $default);
         $vars = [
-            'name' => Lang::get($this->getConfig('name', 'backend::lang.model.name')),
+            'name' => Lang::get($this->getConfig('name', 'backend::lang.model.name'))
         ];
         $vars = array_merge($vars, $extras);
-
         return Lang::get($name, $vars);
     }
 
@@ -555,8 +547,8 @@ class FormController extends ControllerBehavior
      *
      *     <?= $this->formRenderField('field_name') ?>
      *
-     * @param  string  $name  Field name
-     * @param  array  $options  (e.g. ['useContainer'=>false])
+     * @param string $name Field name
+     * @param array $options (e.g. ['useContainer'=>false])
      * @return string HTML markup
      */
     public function formRenderField($name, $options = [])
@@ -570,7 +562,6 @@ class FormController extends ControllerBehavior
      *     <?= $this->formRenderPreview() ?>
      *
      * @return string The form HTML markup.
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the Form Widget isn't set
      */
     public function formRenderPreview()
@@ -600,7 +591,6 @@ class FormController extends ControllerBehavior
      *     <?= $this->formRenderOutsideFields() ?>
      *
      * @return string HTML markup
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the Form Widget isn't set
      */
     public function formRenderOutsideFields()
@@ -630,7 +620,6 @@ class FormController extends ControllerBehavior
      *     <?= $this->formRenderPrimaryTabs() ?>
      *
      * @return string HTML markup
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the Form Widget isn't set
      */
     public function formRenderPrimaryTabs()
@@ -660,7 +649,6 @@ class FormController extends ControllerBehavior
      *     <?= $this->formRenderSecondaryTabs() ?>
      *
      * @return string HTML markup
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the Form Widget isn't set
      */
     public function formRenderSecondaryTabs()
@@ -689,7 +677,7 @@ class FormController extends ControllerBehavior
      *
      *     <button id="<?= $this->formGetId('button')">...</button>
      *
-     * @param  string  $suffix
+     * @param string $suffix
      * @return string
      */
     public function formGetId($suffix = null)
@@ -713,65 +701,70 @@ class FormController extends ControllerBehavior
 
     /**
      * Called before the creation or updating form is saved.
-     *
      * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
-    public function formBeforeSave($model) {}
+    public function formBeforeSave($model)
+    {
+    }
 
     /**
      * Called after the creation or updating form is saved.
-     *
      * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
-    public function formAfterSave($model) {}
+    public function formAfterSave($model)
+    {
+    }
 
     /**
      * Called before the creation form is saved.
-     *
      * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
-    public function formBeforeCreate($model) {}
+    public function formBeforeCreate($model)
+    {
+    }
 
     /**
      * Called after the creation form is saved.
-     *
      * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
-    public function formAfterCreate($model) {}
+    public function formAfterCreate($model)
+    {
+    }
 
     /**
      * Called before the updating form is saved.
-     *
      * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
-    public function formBeforeUpdate($model) {}
+    public function formBeforeUpdate($model)
+    {
+    }
 
     /**
      * Called after the updating form is saved.
-     *
      * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
-    public function formAfterUpdate($model) {}
+    public function formAfterUpdate($model)
+    {
+    }
 
     /**
      * Called after the form model is deleted.
-     *
      * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
-    public function formAfterDelete($model) {}
+    public function formAfterDelete($model)
+    {
+    }
 
     /**
      * Finds a Model record by its primary identifier, used by update actions. This logic
      * can be changed by overriding it in the controller.
-     *
-     * @param  string  $recordId
+     * @param string $recordId
      * @return \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
-     *
      * @throws \Winter\Storm\Exception\ApplicationException if the provided recordId is not found
      */
     public function formFindModelObject($recordId)
     {
-        if (! strlen($recordId)) {
+        if (!strlen($recordId)) {
             throw new ApplicationException($this->getLang('not-found-message', 'backend::lang.form.missing_id'));
         }
 
@@ -784,9 +777,9 @@ class FormController extends ControllerBehavior
         $this->controller->formExtendQuery($query);
         $result = $query->find($recordId);
 
-        if (! $result) {
+        if (!$result) {
             throw new ApplicationException($this->getLang('not-found-message', 'backend::lang.form.not_found', [
-                'class' => get_class($model), 'id' => $recordId,
+                'class' => get_class($model), 'id' => $recordId
             ]));
         }
 
@@ -798,7 +791,6 @@ class FormController extends ControllerBehavior
     /**
      * Creates a new instance of a form model. This logic can be changed
      * by overriding it in the controller.
-     *
      * @return \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model
      */
     public function formCreateModelObject()
@@ -808,77 +800,83 @@ class FormController extends ControllerBehavior
 
     /**
      * Called before the form fields are defined.
-     *
-     * @param  \Backend\Widgets\Form  $host  The hosting form widget
+     * @param \Backend\Widgets\Form $host The hosting form widget
      * @return void
      */
-    public function formExtendFieldsBefore($host) {}
+    public function formExtendFieldsBefore($host)
+    {
+    }
 
     /**
      * Called after the form fields are defined.
-     *
-     * @param  \Backend\Widgets\Form  $host  The hosting form widget
-     * @param  array  $fields  Array of all defined form field objects (\Backend\Classes\FormField)
+     * @param \Backend\Widgets\Form $host The hosting form widget
+     * @param array $fields Array of all defined form field objects (\Backend\Classes\FormField)
      * @return void
      */
-    public function formExtendFields($host, $fields) {}
+    public function formExtendFields($host, $fields)
+    {
+    }
 
     /**
      * Called before the form is refreshed, should return an array of additional save data.
-     *
-     * @param  \Backend\Widgets\Form  $host  The hosting form widget
-     * @param  array  $saveData  Current save data
+     * @param \Backend\Widgets\Form $host The hosting form widget
+     * @param array $saveData Current save data
      * @return array|void
      */
-    public function formExtendRefreshData($host, $saveData) {}
+    public function formExtendRefreshData($host, $saveData)
+    {
+    }
 
     /**
      * Called when the form is refreshed, giving the opportunity to modify the form fields.
-     *
-     * @param  \Backend\Widgets\Form  $host  The hosting form widget
-     * @param  array  $fields  Current form fields
+     * @param \Backend\Widgets\Form $host The hosting form widget
+     * @param array $fields Current form fields
      * @return array|void
      */
-    public function formExtendRefreshFields($host, $fields) {}
+    public function formExtendRefreshFields($host, $fields)
+    {
+    }
 
     /**
      * Called after the form is refreshed, should return an array of additional result parameters.
-     *
-     * @param  \Backend\Widgets\Form  $host  The hosting form widget
-     * @param  array  $result  Current result parameters.
+     * @param \Backend\Widgets\Form $host The hosting form widget
+     * @param array $result Current result parameters.
      * @return array|void
      */
-    public function formExtendRefreshResults($host, $result) {}
+    public function formExtendRefreshResults($host, $result)
+    {
+    }
 
     /**
      * Extend supplied model used by create and update actions, the model can
      * be altered by overriding it in the controller.
-     *
-     * @param  \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model  $model
+     * @param \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model $model
      * @return \Winter\Storm\Database\Model|\Winter\Storm\Halcyon\Model|void
      */
-    public function formExtendModel($model) {}
+    public function formExtendModel($model)
+    {
+    }
 
     /**
      * Extend the query used for finding the form model. Extra conditions
      * can be applied to the query, for example, $query->withTrashed();
-     *
-     * @param  \Winter\Storm\Database\Builder|\Winter\Storm\Halcyon\Builder  $query
+     * @param \Winter\Storm\Database\Builder|\Winter\Storm\Halcyon\Builder $query
      * @return void
      */
-    public function formExtendQuery($query) {}
+    public function formExtendQuery($query)
+    {
+    }
 
     /**
      * Static helper for extending form fields.
-     *
-     * @param  callable  $callback
+     * @param  callable $callback
      * @return void
      */
     public static function extendFormFields($callback)
     {
         $calledClass = self::getCalledExtensionClass();
         Event::listen('backend.form.extendFields', function ($widget) use ($calledClass, $callback) {
-            if (! is_a($widget->getController(), $calledClass)) {
+            if (!is_a($widget->getController(), $calledClass)) {
                 return;
             }
             call_user_func_array($callback, [$widget, $widget->model, $widget->getContext()]);

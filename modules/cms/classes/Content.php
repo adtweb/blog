@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use File;
 use Markdown;
@@ -8,6 +6,7 @@ use Markdown;
 /**
  * The CMS content file class.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Content extends CmsCompoundObject
@@ -30,8 +29,7 @@ class Content extends CmsCompoundObject
     /**
      * Initializes the object properties from the cached data. The extra data
      * set here becomes available as attributes set on the model after fetch.
-     *
-     * @param  array  $item  The cached data array.
+     * @param array $item The cached data array.
      */
     public static function initCacheItem(&$item)
     {
@@ -40,7 +38,6 @@ class Content extends CmsCompoundObject
 
     /**
      * Returns a default value for parsedMarkup attribute.
-     *
      * @return string
      */
     public function getParsedMarkupAttribute()
@@ -54,7 +51,6 @@ class Content extends CmsCompoundObject
 
     /**
      * Parses the content markup according to the file type.
-     *
      * @return string
      */
     public function parseMarkup()

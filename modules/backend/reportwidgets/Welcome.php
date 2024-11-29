@@ -1,16 +1,15 @@
-<?php
+<?php namespace Backend\ReportWidgets;
 
-namespace Backend\ReportWidgets;
-
-use Backend\Classes\ReportWidgetBase;
-use Backend\Models\AccessLog;
-use Backend\Models\BrandSetting;
 use BackendAuth;
+use Backend\Models\AccessLog;
+use Backend\Classes\ReportWidgetBase;
+use Backend\Models\BrandSetting;
 use Exception;
 
 /**
  * User welcome report widget.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Welcome extends ReportWidgetBase
@@ -27,7 +26,8 @@ class Welcome extends ReportWidgetBase
     {
         try {
             $this->loadData();
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->vars['error'] = $ex->getMessage();
         }
 
@@ -38,17 +38,17 @@ class Welcome extends ReportWidgetBase
     {
         return [
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'default' => 'backend::lang.dashboard.welcome.widget_title_default',
-                'type' => 'string',
+                'title'             => 'backend::lang.dashboard.widget_title_label',
+                'default'           => 'backend::lang.dashboard.welcome.widget_title_default',
+                'type'              => 'string',
                 'validationPattern' => '^.+$',
                 'validationMessage' => 'backend::lang.dashboard.widget_title_error',
-            ],
+            ]
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {

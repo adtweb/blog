@@ -1,9 +1,9 @@
 <!-- IconPicker -->
-<?php if ($this->previewMode) { ?>
+<?php if ($this->previewMode): ?>
     <span class="form-control">
         <i class="<?= e($field->getLoadValue()) ?>"></i>
     </span>
-<?php } else { ?>
+<?php else: ?>
     <?php $icon = $field->getLoadValue() ? e($field->getLoadValue()) : ($field->config->default ?? ''); ?>
     <div id="<?= $field->getId() ?>"
          data-control="iconpicker"
@@ -24,4 +24,4 @@
             >
         </div>
     </div>
-<?php } ?>
+<?php endif ?>

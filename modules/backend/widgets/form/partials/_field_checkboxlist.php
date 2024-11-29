@@ -6,21 +6,21 @@ $readOnly = $this->previewMode || $field->readOnly || $field->disabled;
 $quickselectEnabled = $field->getConfig('quickselect', $isScrollable);
 ?>
 <!-- Checkbox List -->
-<?php if ($readOnly && $field->value) { ?>
+<?php if ($readOnly && $field->value): ?>
 
     <div class="field-checkboxlist">
         <?php
         $index = 0;
-    foreach ($fieldOptions as $value => $option) {
-        $index++;
-        $checkboxId = 'checkbox_'.$field->getId().'_'.$index;
-        if (! in_array($value, $checkedValues)) {
-            continue;
-        }
-        if (! is_array($option)) {
-            $option = [$option];
-        }
-        ?>
+        foreach ($fieldOptions as $value => $option):
+            $index++;
+            $checkboxId = 'checkbox_'.$field->getId().'_'.$index;
+            if (!in_array($value, $checkedValues)) {
+                continue;
+            }
+            if (!is_array($option)) {
+                $option = [$option];
+            }
+            ?>
 
             <div class="checkbox custom-checkbox">
                 <input
@@ -34,17 +34,17 @@ $quickselectEnabled = $field->getConfig('quickselect', $isScrollable);
                 <label for="<?= $checkboxId ?>">
                     <?= e(trans($option[0])) ?>
                 </label>
-                <?php if (isset($option[1])) { ?>
+                <?php if (isset($option[1])): ?>
                     <p class="help-block"><?= e(trans($option[1])) ?></p>
-                <?php } ?>
+                <?php endif ?>
             </div>
-        <?php } ?>
+        <?php endforeach ?>
     </div>
 
-<?php } elseif (! $readOnly && count($fieldOptions)) { ?>
+<?php elseif (!$readOnly && count($fieldOptions)): ?>
 
     <div class="field-checkboxlist <?= $isScrollable ? 'is-scrollable' : '' ?>">
-        <?php if ($quickselectEnabled) { ?>
+        <?php if ($quickselectEnabled): ?>
             <!-- Quick selection -->
             <div class="checkboxlist-controls">
                 <div>
@@ -58,15 +58,15 @@ $quickselectEnabled = $field->getConfig('quickselect', $isScrollable);
                     </a>
                 </div>
             </div>
-        <?php } ?>
+        <?php endif ?>
 
         <div class="field-checkboxlist-inner">
 
-            <?php if ($isScrollable) { ?>
+            <?php if ($isScrollable): ?>
                 <!-- Scrollable Checkbox list -->
                 <div class="field-checkboxlist-scrollable">
                     <div class="control-scrollbar" data-control="scrollbar">
-            <?php } ?>
+            <?php endif ?>
 
             <input
                 type="hidden"
@@ -74,14 +74,14 @@ $quickselectEnabled = $field->getConfig('quickselect', $isScrollable);
                 value="0" />
 
             <?php
-        $index = 0;
-    foreach ($fieldOptions as $value => $option) {
-        $index++;
-        $checkboxId = 'checkbox_'.$field->getId().'_'.$index;
-        if (! is_array($option)) {
-            $option = [$option];
-        }
-        ?>
+            $index = 0;
+            foreach ($fieldOptions as $value => $option):
+                $index++;
+                $checkboxId = 'checkbox_'.$field->getId().'_'.$index;
+                if (!is_array($option)) {
+                    $option = [$option];
+                }
+                ?>
 
                 <div class="checkbox custom-checkbox">
                     <input
@@ -94,26 +94,26 @@ $quickselectEnabled = $field->getConfig('quickselect', $isScrollable);
                     <label for="<?= $checkboxId ?>">
                         <?= e(trans($option[0])) ?>
                     </label>
-                    <?php if (isset($option[1])) { ?>
+                    <?php if (isset($option[1])): ?>
                         <p class="help-block"><?= e(trans($option[1])) ?></p>
-                    <?php } ?>
+                    <?php endif ?>
                 </div>
-            <?php } ?>
+            <?php endforeach ?>
 
-            <?php if ($isScrollable) { ?>
+            <?php if ($isScrollable): ?>
                     </div>
                 </div>
-            <?php } ?>
+            <?php endif ?>
 
         </div>
 
     </div>
 
-<?php } else { ?>
+<?php else: ?>
 
     <!-- No options specified -->
-    <?php if ($field->placeholder) { ?>
+    <?php if ($field->placeholder): ?>
         <p><?= e(trans($field->placeholder)) ?></p>
-    <?php } ?>
+    <?php endif ?>
 
-<?php } ?>
+<?php endif ?>

@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use Config;
 use Illuminate\Console\Command;
@@ -16,6 +14,8 @@ use Winter\Storm\Support\Str;
  * Console command to run tests for plugins and modules.
  *
  * If a plugin is provided, this command will search for a `phpunit.xml` file inside the plugin's directory and run its tests.
+ *
+ * @package winter\wn-system-module
  */
 class WinterTest extends Command
 {
@@ -61,7 +61,6 @@ class WinterTest extends Command
 
         /**
          * Ignore validation errors as option proxying is used by this command
-         *
          * @see https://github.com/nunomaduro/collision/blob/stable/src/Adapters/Laravel/Commands/TestCommand.php
          */
         $this->ignoreValidationErrors();
@@ -78,9 +77,8 @@ class WinterTest extends Command
     /**
      * Execute the console command.
      *
-     * @return int|void
-     *
      * @throws ApplicationException
+     * @return int|void
      */
     public function handle()
     {
@@ -98,7 +96,7 @@ class WinterTest extends Command
             if ($this->option($type)) {
                 foreach ($this->option($type) as $target) {
                     $target = strtolower($target);
-                    if (! isset($configs[$type.'s'][$target])) {
+                    if (!isset($configs[$type . 's'][$target])) {
                         throw new ApplicationException(sprintf(
                             'Unable to find %s %s\'s phpunit.xml file',
                             $type,
@@ -106,15 +104,15 @@ class WinterTest extends Command
                         ));
                     }
                     $this->info(sprintf('Running tests for %s: %s', $type, $target));
-                    $exit = $this->execPhpUnit($configs[$type.'s'][$target], $arguments);
+                    $exit = $this->execPhpUnit($configs[$type . 's'][$target], $arguments);
                     // keep non 0 exit codes for return
-                    $exitCode = ! $exitCode ? $exit : $exitCode;
+                    $exitCode = !$exitCode ? $exit : $exitCode;
                 }
             }
         }
 
         // if we ran a specific test above we should have an exit code
-        if (! is_null($exitCode)) {
+        if (!is_null($exitCode)) {
             return $exitCode;
         }
 
@@ -123,12 +121,12 @@ class WinterTest extends Command
             foreach ($configs[$type] as $name => $config) {
                 $this->info(
                     $type === 'plugins'
-                        ? 'Running tests for plugin: '.PluginManager::instance()->normalizeIdentifier($name)
-                        : 'Running tests for module: '.$name
+                        ? 'Running tests for plugin: ' . PluginManager::instance()->normalizeIdentifier($name)
+                        : 'Running tests for module: ' . $name
                 );
                 $exit = $this->execPhpUnit($config, $arguments);
                 // keep non 0 exit codes for return
-                $exitCode = ! $exitCode ? $exit : $exitCode;
+                $exitCode = !$exitCode ? $exit : $exitCode;
             }
         }
 
@@ -138,16 +136,16 @@ class WinterTest extends Command
     /**
      * Execute a phpunit test
      *
-     * @param  string  $config  Path to configuration file
-     * @param  array  $args  Array of params for PHPUnit
+     * @param string $config Path to configuration file
+     * @param array $args Array of params for PHPUnit
      * @return int Exit code from process
      */
     protected function execPhpUnit(string $config, array $args): int
     {
         // Find and bind the phpunit executable
-        if (! $this->phpUnitExec) {
+        if (!$this->phpUnitExec) {
             $bin = $this->usingPest() ? 'pest' : 'phpunit';
-            $this->phpUnitExec = (new ExecutableFinder)
+            $this->phpUnitExec = (new ExecutableFinder())
                 ->find($bin, base_path("vendor/bin/$bin"), [base_path('vendor')]);
         }
 
@@ -168,22 +166,22 @@ class WinterTest extends Command
             chdir($cwd);
         }
 
-        if (! is_file($bootstrapPath)) {
+        if (!is_file($bootstrapPath)) {
             throw new ApplicationException(sprintf(
                 'Unable to find the bootstrap file "%s"',
                 $bootstrapPath,
             ));
         }
 
-        $testDirectory = Str::after(dirname($config), base_path().DIRECTORY_SEPARATOR).'/tests';
+        $testDirectory = Str::after(dirname($config), base_path() . DIRECTORY_SEPARATOR) . '/tests';
 
         $generatedArgs = [
             $this->phpUnitExec,
-            '--configuration='.$config,
-            '--bootstrap='.$bootstrapPath,
+            '--configuration=' . $config,
+            '--bootstrap=' . $bootstrapPath,
         ];
         if ($this->usingPest()) {
-            $generatedArgs[] = '--test-directory='.$testDirectory;
+            $generatedArgs[] = '--test-directory=' . $testDirectory;
         }
 
         $process = new Process(
@@ -227,12 +225,12 @@ class WinterTest extends Command
     {
         $configs = [
             'modules' => [],
-            'plugins' => [],
+            'plugins' => []
         ];
 
         foreach (Config::get('cms.loadModules', ['System', 'Cms', 'Backend']) as $module) {
             $module = strtolower($module);
-            if ($path = $this->getPhpUnitXmlFile(base_path('modules/'.$module))) {
+            if ($path = $this->getPhpUnitXmlFile(base_path('modules/' . $module))) {
                 $configs['modules'][$module] = $path;
             }
         }
@@ -253,14 +251,14 @@ class WinterTest extends Command
     protected function getPhpUnitXmlFile(string $path): ?string
     {
         // If a phpunit.xml file exists, returns its path
-        $configFilePath = $path.DIRECTORY_SEPARATOR.'phpunit.xml';
+        $configFilePath = $path . DIRECTORY_SEPARATOR . 'phpunit.xml';
 
         if (file_exists($configFilePath)) {
             return $configFilePath;
         }
 
         // Fallback to phpunit.xml.dist file path if it exists
-        $distFilePath = $path.DIRECTORY_SEPARATOR.'phpunit.xml.dist';
+        $distFilePath = $path . DIRECTORY_SEPARATOR . 'phpunit.xml.dist';
         if (file_exists($distFilePath)) {
             return $distFilePath;
         }

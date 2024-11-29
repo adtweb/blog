@@ -2,18 +2,15 @@
 
 namespace System\Tests\Classes;
 
-use System\Classes\PluginBase;
-use System\Classes\PluginManager;
 use System\Tests\Bootstrap\PluginManagerTestCase;
+use System\Classes\PluginManager;
+use System\Classes\PluginBase;
 
 class PluginManagerTest extends PluginManagerTestCase
 {
     const INSTALLED_PLUGIN_COUNT = 17;
-
     const ENABLED_PLUGIN_COUNT = 14;
-
     const PLUGIN_NAMESPACE_COUNT = 18;
-
     const PLUGIN_VENDOR_COUNT = 5;
 
     //
@@ -59,7 +56,7 @@ class PluginManagerTest extends PluginManagerTestCase
     {
         $result = $this->manager->getPluginPath('Winter\Tester');
         $basePath = str_replace('\\', '/', base_path());
-        $this->assertEquals($basePath.'/modules/system/tests/fixtures/plugins/winter/tester', $result);
+        $this->assertEquals($basePath . '/modules/system/tests/fixtures/plugins/winter/tester', $result);
     }
 
     public function testGetPlugins()

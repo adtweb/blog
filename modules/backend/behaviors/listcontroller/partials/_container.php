@@ -1,9 +1,9 @@
-<?php if ($toolbar) { ?>
+<?php if ($toolbar): ?>
     <?= $toolbar->render() ?>
-<?php } ?>
+<?php endif ?>
 
-<?php if ($filter) { ?>
+<?php if ($filter): ?>
     <?= $filter->render() ?>
-<?php } ?>
+<?php endif ?>
 
 <?= $list->render() ?>

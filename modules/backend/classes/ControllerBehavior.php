@@ -1,22 +1,21 @@
-<?php
+<?php namespace Backend\Classes;
 
-namespace Backend\Classes;
-
-use ApplicationException;
 use Lang;
-use System\Traits\ViewMaker;
+use ApplicationException;
 use Winter\Storm\Extension\ExtensionBase;
+use System\Traits\ViewMaker;
 use Winter\Storm\Html\Helper as HtmlHelper;
 
 /**
  * Controller Behavior base class
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ControllerBehavior extends ExtensionBase
 {
-    use \Backend\Traits\SessionMaker;
     use \Backend\Traits\WidgetMaker;
+    use \Backend\Traits\SessionMaker;
     use \System\Traits\AssetMaker;
     use \System\Traits\ConfigMaker;
     use \System\Traits\ViewMaker {
@@ -56,11 +55,11 @@ class ControllerBehavior extends ExtensionBase
          * Validate controller properties
          */
         foreach ($this->requiredProperties as $property) {
-            if (! isset($controller->{$property})) {
+            if (!isset($controller->{$property})) {
                 throw new ApplicationException(Lang::get('system::lang.behavior.missing_property', [
                     'class' => get_class($controller),
                     'property' => $property,
-                    'behavior' => get_called_class(),
+                    'behavior' => get_called_class()
                 ]));
             }
         }
@@ -73,9 +72,8 @@ class ControllerBehavior extends ExtensionBase
 
     /**
      * Sets the configuration values
-     *
-     * @param  mixed  $config  Config object or array
-     * @param  array  $required  Required config items
+     * @param mixed $config   Config object or array
+     * @param array $required Required config items
      */
     public function setConfig($config, $required = [])
     {
@@ -84,9 +82,8 @@ class ControllerBehavior extends ExtensionBase
 
     /**
      * Safe accessor for configuration values.
-     *
-     * @param  string  $name  Config name, supports array names like "field[key]"
-     * @param  mixed  $default  Default value if nothing is found
+     * @param string $name Config name, supports array names like "field[key]"
+     * @param mixed $default Default value if nothing is found
      * @return string
      */
     public function getConfig($name = null, $default = null)
@@ -107,7 +104,7 @@ class ControllerBehavior extends ExtensionBase
          * First part will be the field name, pop it off
          */
         $fieldName = array_shift($keyParts);
-        if (! isset($this->config->{$fieldName})) {
+        if (!isset($this->config->{$fieldName})) {
             return $default;
         }
 
@@ -117,7 +114,7 @@ class ControllerBehavior extends ExtensionBase
          * Loop the remaining key parts and build a result
          */
         foreach ($keyParts as $key) {
-            if (! is_array($result) || ! array_key_exists($key, $result)) {
+            if (!is_array($result) || !array_key_exists($key, $result)) {
                 return $default;
             }
 
@@ -133,12 +130,11 @@ class ControllerBehavior extends ExtensionBase
      * Such methods should be defined as public, to allow the behavior object to access it.
      * By default public methods of a controller are considered as actions.
      * To prevent this occurrence, methods should be hidden by using this method.
-     *
-     * @param  mixed  $methodName  Specifies a method name.
+     * @param mixed $methodName Specifies a method name.
      */
     protected function hideAction($methodName)
     {
-        if (! is_array($methodName)) {
+        if (!is_array($methodName)) {
             $methodName = [$methodName];
         }
 
@@ -147,22 +143,19 @@ class ControllerBehavior extends ExtensionBase
 
     /**
      * Makes all views in context of the controller, not the behavior.
-     *
-     * @param  string  $filePath  Absolute path to the view file.
-     * @param  array  $extraParams  Parameters that should be available to the view.
+     * @param string $filePath Absolute path to the view file.
+     * @param array $extraParams Parameters that should be available to the view.
      * @return string
      */
     public function makeFileContents($filePath, $extraParams = [])
     {
         $this->controller->vars = array_merge($this->controller->vars, $this->vars);
-
         return $this->controller->makeFileContents($filePath, $extraParams);
     }
 
     /**
      * Returns true in case if a specified method exists in the extended controller.
-     *
-     * @param  string  $methodName  Specifies the method name
+     * @param string $methodName Specifies the method name
      * @return bool
      */
     protected function controllerMethodExists($methodName)

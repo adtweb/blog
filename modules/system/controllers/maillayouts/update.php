@@ -5,9 +5,9 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
-    <?= Form::open(['class' => 'layout']) ?>
+    <?= Form::open(['class'=>'layout']) ?>
 
         <div class="layout-row min-size">
             <div class="scoreboard">
@@ -46,7 +46,7 @@
                     class="btn btn-default">
                     <?= e(trans('backend::lang.form.save_and_close')) ?>
                 </button>
-                <?php if ($formModel->is_locked) { ?>
+                <?php if ($formModel->is_locked): ?>
                     <button
                         type="button"
                         class="btn btn-danger pull-right"
@@ -55,7 +55,7 @@
                         data-request-confirm="<?= e(trans('backend::lang.form.action_confirm')) ?>">
                         <?= e(trans('backend::lang.form.reset_default')) ?>
                     </button>
-                <?php } else { ?>
+                <?php else: ?>
                     <button
                         type="button"
                         class="wn-icon-trash-o btn-icon danger pull-right"
@@ -63,7 +63,7 @@
                         data-load-indicator="<?= e(trans('system::lang.mail_templates.deleting_layout')) ?>"
                         data-request-confirm="<?= e(trans('system::lang.mail_templates.delete_layout_confirm')) ?>">
                     </button>
-                <?php } ?>
+                <?php endif ?>
                 <span class="btn-text">
                     <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('system/mailtemplates/index/layouts') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                 </span>
@@ -72,9 +72,9 @@
 
     <?= Form::close() ?>
 
-<?php } else { ?>
+<?php else: ?>
 
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
     <p><a href="<?= Backend::url('system/mailtemplates/index/layouts') ?>" class="btn btn-default"><?= e(trans('system::lang.mail_templates.return')) ?></a></p>
 
-<?php } ?>
+<?php endif ?>

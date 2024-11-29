@@ -1,16 +1,15 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use ApplicationException;
 use Http;
+use ZipArchive;
 use System\Classes\FileManifest;
 use System\Classes\SourceManifest;
-use ZipArchive;
 
 /**
  * Console command to generate a release/tag manifest for Winter CMS version checks.
  *
+ * @package winter\wn-system-module
  * @author Ben Thomson
  * @author Winter CMS
  */
@@ -58,7 +57,7 @@ class WinterManifest extends \Illuminate\Console\Command
 
         $targetFile = (substr($this->argument('target'), 0, 1) === '/')
             ? $this->argument('target')
-            : getcwd().'/'.$this->argument('target');
+            : getcwd() . '/' . $this->argument('target');
 
         if (empty($targetFile)) {
             throw new ApplicationException(
@@ -80,7 +79,7 @@ class WinterManifest extends \Illuminate\Console\Command
 
         // Create temporary directory to hold builds
         $buildDir = storage_path('temp/builds/');
-        if (! is_dir($buildDir)) {
+        if (!is_dir($buildDir)) {
             mkdir($buildDir, 0775, true);
         }
 
@@ -89,12 +88,12 @@ class WinterManifest extends \Illuminate\Console\Command
         $sourceBuilds = [];
 
         while (true) {
-            $page++;
+            ++$page;
 
             if ($this->option('token')) {
-                $url = 'https://'.$this->option('token').'@api.github.com/repos/wintercms/winter/tags?per_page=100&page='.$page;
+                $url = 'https://' . $this->option('token') . '@api.github.com/repos/wintercms/winter/tags?per_page=100&page=' . $page;
             } else {
-                $url = 'https://api.github.com/repos/wintercms/winter/tags?per_page=100&page='.$page;
+                $url = 'https://api.github.com/repos/wintercms/winter/tags?per_page=100&page=' . $page;
             }
 
             $builds = Http::get($url, function ($http) {
@@ -119,7 +118,7 @@ class WinterManifest extends \Illuminate\Console\Command
                 if ($versionInt >= $minBuild && $versionInt <= $maxBuild) {
                     $sourceBuilds[] = [
                         'version' => $version,
-                        'download' => $build->zipball_url,
+                        'download' => $build->zipball_url
                     ];
                 }
             }
@@ -134,21 +133,21 @@ class WinterManifest extends \Illuminate\Console\Command
             $build = $sourceBuild['version'];
 
             // Download version from GitHub
-            $this->comment('Processing build '.$build);
+            $this->comment('Processing build ' . $build);
             $this->line('  - Downloading...');
 
-            if (file_exists($buildDir.'build-'.$build.'.zip') || is_dir($buildDir.$build.'/')) {
+            if (file_exists($buildDir . 'build-' . $build . '.zip') || is_dir($buildDir . $build . '/')) {
                 $this->info('  - Already downloaded.');
             } else {
                 Http::get($sourceBuild['download'], function ($http) use ($buildDir, $build) {
                     $http->header('User-Agent', 'Winter CMS');
-                    $http->toFile($buildDir.'build-'.$build.'.zip');
+                    $http->toFile($buildDir . 'build-' . $build . '.zip');
                 });
 
-                $zipFile = @file_get_contents($buildDir.'build-'.$build.'.zip');
+                $zipFile = @file_get_contents($buildDir . 'build-' . $build . '.zip');
 
                 if (empty($zipFile)) {
-                    $this->error('  - Not found ('.$sourceBuild['download'].').');
+                    $this->error('  - Not found (' . $sourceBuild['download'] . ').');
                     break;
                 }
 
@@ -157,22 +156,22 @@ class WinterManifest extends \Illuminate\Console\Command
 
             // Extract version
             $this->line('  - Extracting...');
-            if (is_dir($buildDir.$build.'/')) {
+            if (is_dir($buildDir . $build . '/')) {
                 $this->info('  - Already extracted.');
             } else {
                 $zip = new ZipArchive;
-                if ($zip->open($buildDir.'build-'.$build.'.zip')) {
+                if ($zip->open($buildDir . 'build-' . $build . '.zip')) {
                     $rootFolder = substr($zip->statIndex(0)['name'], 0, -1);
 
                     $toExtract = [];
                     $paths = [
-                        $rootFolder.'/modules/backend/',
-                        $rootFolder.'/modules/cms/',
-                        $rootFolder.'/modules/system/',
+                        $rootFolder . '/modules/backend/',
+                        $rootFolder . '/modules/cms/',
+                        $rootFolder . '/modules/system/',
                     ];
 
                     // Only get necessary files from the modules directory
-                    for ($i = 1; $i < $zip->numFiles; $i++) {
+                    for ($i = 1; $i < $zip->numFiles; ++$i) {
                         $filename = $zip->statIndex($i)['name'];
 
                         foreach ($paths as $path) {
@@ -183,19 +182,19 @@ class WinterManifest extends \Illuminate\Console\Command
                         }
                     }
 
-                    if (! count($toExtract)) {
+                    if (!count($toExtract)) {
                         $this->error('  - Unable to get valid files for extraction. Cancelled.');
                         exit(1);
                     }
 
-                    $zip->extractTo($buildDir.$build.'/', $toExtract);
+                    $zip->extractTo($buildDir . $build . '/', $toExtract);
                     $zip->close();
 
                     // Rename root folder
-                    rename($buildDir.$build.'/'.$rootFolder, $buildDir.$build.'/winter-'.$build);
+                    rename($buildDir . $build . '/' . $rootFolder, $buildDir . $build . '/winter-' . $build);
 
                     // Remove ZIP file
-                    unlink($buildDir.'build-'.$build.'.zip');
+                    unlink($buildDir . 'build-' . $build . '.zip');
                 } else {
                     $this->error('  - Unable to extract zip file. Cancelled.');
                     exit(1);
@@ -206,7 +205,7 @@ class WinterManifest extends \Illuminate\Console\Command
 
             // Add build to manifest
             $this->line('  - Adding to manifest...');
-            $buildManifest = new FileManifest($buildDir.$build.'/winter-'.$build);
+            $buildManifest = new FileManifest($buildDir . $build . '/winter-' . $build);
             $manifest->addBuild($build, $buildManifest);
             $this->info('  - Added.');
         }
@@ -221,14 +220,14 @@ class WinterManifest extends \Illuminate\Console\Command
     /**
      * Converts a version string into an integer for comparison.
      *
-     * @return int
-     *
+     * @param string $version
      * @throws ApplicationException if a version string does not match the format "major.minor.path"
+     * @return int
      */
     protected function getVersionInt(string $version)
     {
         // Get major.minor.patch versions
-        if (! preg_match('/^v?([0-9]+)\.([0-9]+)\.([0-9]+)/', $version, $versionParts)) {
+        if (!preg_match('/^v?([0-9]+)\.([0-9]+)\.([0-9]+)/', $version, $versionParts)) {
             throw new ApplicationException('Invalid version string - must be of the format "major.minor.path"');
         }
 

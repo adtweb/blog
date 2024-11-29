@@ -1,7 +1,7 @@
 <!-- Range -->
-<?php if ($this->previewMode) { ?>
+<?php if ($this->previewMode): ?>
     <span class="form-control"><?= isset($field->value) ? e($field->value) : '&nbsp;' ?></span>
-<?php } else { ?>
+<?php else: ?>
     <?php
     $min = $field->config['min'] ?? 0;
     $max = $field->config['max'] ?? 100;
@@ -37,4 +37,4 @@
             input.dispatchEvent(new Event('input'));
         })();
     </script>
-<?php } ?>
+<?php endif; ?>

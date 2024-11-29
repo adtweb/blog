@@ -1,16 +1,14 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use Cms\Classes\Theme;
-use Config;
 use File;
-use Symfony\Component\Process\Exception\ProcessSignaledException;
+use Config;
+use Cms\Classes\Theme;
+use Winter\Storm\Support\Str;
+use Winter\Storm\Console\Command;
 use Symfony\Component\Process\Process;
 use System\Classes\MixAssets;
 use System\Classes\PluginManager;
-use Winter\Storm\Console\Command;
-use Winter\Storm\Support\Str;
+use Symfony\Component\Process\Exception\ProcessSignaledException;
 
 class MixInstall extends Command
 {
@@ -57,6 +55,7 @@ class MixInstall extends Command
 
     /**
      * Execute the console command.
+     * @return int
      */
     public function handle(): int
     {
@@ -64,9 +63,8 @@ class MixInstall extends Command
             $this->npmPath = $this->option('npm', 'npm');
         }
 
-        if (! version_compare($this->getNpmVersion(), '7', '>')) {
+        if (!version_compare($this->getNpmVersion(), '7', '>')) {
             $this->error('"npm" version 7 or above must be installed to run this command.');
-
             return 1;
         }
 
@@ -97,9 +95,8 @@ class MixInstall extends Command
                 }
 
                 // Check if package could be a module (but explicitly ignore core Winter modules)
-                if (Str::startsWith($package, 'module-') && ! in_array($package, ['system', 'backend', 'cms'])) {
-                    $mixedAssets->registerPackage($package, base_path('modules/'.Str::after($package, 'module-').'/winter.mix.js'));
-
+                if (Str::startsWith($package, 'module-') && !in_array($package, ['system', 'backend', 'cms'])) {
+                    $mixedAssets->registerPackage($package, base_path('modules/' . Str::after($package, 'module-') . '/winter.mix.js'));
                     continue;
                 }
 
@@ -110,15 +107,13 @@ class MixInstall extends Command
                     && Theme::exists(Str::after($package, 'theme-'))
                 ) {
                     $theme = Theme::load(Str::after($package, 'theme-'));
-                    $mixedAssets->registerPackage($package, $theme->getPath().'/winter.mix.js');
-
+                    $mixedAssets->registerPackage($package, $theme->getPath() . '/winter.mix.js');
                     continue;
                 }
 
                 // Check if a package could be a plugin
                 if (PluginManager::instance()->exists($package)) {
-                    $mixedAssets->registerPackage($package, PluginManager::instance()->getPluginPath($package).'/winter.mix.js');
-
+                    $mixedAssets->registerPackage($package, PluginManager::instance()->getPluginPath($package) . '/winter.mix.js');
                     continue;
                 }
             }
@@ -128,20 +123,18 @@ class MixInstall extends Command
 
             // Filter the registered packages to only deal with the requested packages
             foreach (array_keys($registeredPackages) as $name) {
-                if (! in_array($name, $requestedPackages)) {
+                if (!in_array($name, $requestedPackages)) {
                     unset($registeredPackages[$name]);
                 }
             }
         }
 
-        if (! count($registeredPackages)) {
+        if (!count($registeredPackages)) {
             if (count($requestedPackages)) {
                 $this->error('No registered packages matched the requested packages for installation.');
-
                 return 1;
             } else {
                 $this->info('No packages registered for mixing.');
-
                 return 0;
             }
         }
@@ -158,8 +151,8 @@ class MixInstall extends Command
         // Check to see if Laravel Mix is already present as a dependency
         if (
             (
-                ! isset($packageJson['dependencies']['laravel-mix'])
-                && ! isset($packageJson['devDependencies']['laravel-mix'])
+                !isset($packageJson['dependencies']['laravel-mix'])
+                && !isset($packageJson['devDependencies']['laravel-mix'])
             )
             && $this->confirm('laravel-mix was not found as a dependency in package.json, would you like to add it?', true)
         ) {
@@ -174,13 +167,13 @@ class MixInstall extends Command
 
             // Add the package path to the instance's package.json->workspaces->packages property if not present
             if (
-                ! in_array($packagePath, $workspacesPackages)
-                && ! in_array($packagePath, $ignoredPackages)
+                !in_array($packagePath, $workspacesPackages)
+                && !in_array($packagePath, $ignoredPackages)
             ) {
                 if (
                     $this->confirm(
                         sprintf(
-                            'Detected %s (%s), should it be added to your package.json?',
+                            "Detected %s (%s), should it be added to your package.json?",
                             $name,
                             $packagePath
                         ),
@@ -207,13 +200,13 @@ class MixInstall extends Command
             }
 
             // Detect missing winter.mix.js files and install them
-            if (! File::exists($package['mix'])) {
+            if (!File::exists($package['mix'])) {
                 $this->info(sprintf(
                     'No Mix file found for %s, creating one at %s...',
                     $name,
                     $package['mix']
                 ));
-                File::put($package['mix'], File::get(__DIR__.'/fixtures/winter.mix.js.fixture'));
+                File::put($package['mix'], File::get(__DIR__ . '/fixtures/winter.mix.js.fixture'));
             }
         }
 
@@ -282,7 +275,6 @@ class MixInstall extends Command
     {
         $process = new Process(['npm', '--version']);
         $process->run();
-
         return $process->getOutput();
     }
 }

@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Components;
+<?php namespace Cms\Components;
 
 use Cms\Classes\ComponentBase;
 
@@ -12,7 +10,7 @@ class SoftComponent extends ComponentBase
     protected $message;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function __construct($properties)
     {
@@ -28,8 +26,8 @@ class SoftComponent extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name' => 'cms::lang.component.soft_component',
-            'description' => 'cms::lang.component.soft_component_description',
+            'name'        => 'cms::lang.component.soft_component',
+            'description' => 'cms::lang.component.soft_component_description'
         ];
     }
 }

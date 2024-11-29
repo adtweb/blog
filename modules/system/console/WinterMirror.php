@@ -1,13 +1,11 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use Event;
 use File;
-use Illuminate\Console\Command;
+use Event;
 use StdClass;
-use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Console command to implement a "public" folder.
@@ -15,6 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
  * This command will create symbolic links to files and directories
  * that are commonly required to be publicly available.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterMirror extends Command
@@ -108,7 +107,7 @@ class WinterMirror extends Command
     {
         $this->getDestinationPath();
 
-        $paths = new StdClass;
+        $paths = new StdClass();
         $paths->files = $this->files;
         $paths->directories = $this->directories;
         $paths->wildcards = $this->wildcards;
@@ -124,6 +123,7 @@ class WinterMirror extends Command
          *     Event::listen('system.console.mirror.extendPaths', function ($paths) {
          *          $paths->directories = array_merge($paths->directories, ['plugins/myauthor/myplugin/public']);
          *     });
+         *
          */
         Event::fire('system.console.mirror.extendPaths', [$paths]);
 
@@ -150,7 +150,7 @@ class WinterMirror extends Command
 
         $dest = $this->getDestinationPath().'/'.$file;
 
-        if (! File::isFile($src) || File::isFile($dest)) {
+        if (!File::isFile($src) || File::isFile($dest)) {
             return false;
         }
 
@@ -165,11 +165,11 @@ class WinterMirror extends Command
 
         $dest = $this->getDestinationPath().'/'.$directory;
 
-        if (! File::isDirectory($src) || File::isDirectory($dest)) {
+        if (!File::isDirectory($src) || File::isDirectory($dest)) {
             return false;
         }
 
-        if (! File::isDirectory(dirname($dest))) {
+        if (!File::isDirectory(dirname($dest))) {
             File::makeDirectory(dirname($dest), 0755, true);
         }
 
@@ -182,11 +182,11 @@ class WinterMirror extends Command
             return $this->mirrorDirectory($wildcard);
         }
 
-        [$start, $end] = explode('*', $wildcard, 2);
+        list($start, $end) = explode('*', $wildcard, 2);
 
         $startDir = base_path().'/'.$start;
 
-        if (! File::isDirectory($startDir)) {
+        if (!File::isDirectory($startDir)) {
             return false;
         }
 
@@ -216,10 +216,10 @@ class WinterMirror extends Command
 
         $destPath = $this->argument('destination');
         if (realpath($destPath) === false) {
-            $destPath = base_path().'/'.$destPath;
+            $destPath = base_path() . '/' . $destPath;
         }
 
-        if (! File::isDirectory($destPath)) {
+        if (!File::isDirectory($destPath)) {
             File::makeDirectory($destPath, 0755, true);
         }
 
@@ -243,12 +243,11 @@ class WinterMirror extends Command
             array_shift($file);
         }
 
-        return str_repeat('../', count($dir)).implode('/', $file);
+        return str_repeat('../', count($dir)) . implode('/', $file);
     }
 
     /**
      * Get the console command arguments.
-     *
      * @return array
      */
     protected function getArguments()
@@ -260,7 +259,6 @@ class WinterMirror extends Command
 
     /**
      * Get the console command options.
-     *
      * @return array
      */
     protected function getOptions()

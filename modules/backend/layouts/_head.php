@@ -51,17 +51,17 @@ $scripts = array_merge($scripts, [
 ]);
 ?>
 
-<?php foreach ($styles as $style) { ?>
-    <link href="<?= $style.'?v='.$coreBuild; ?>" rel="stylesheet" importance="high">
-    <link href="<?= $style.'?v='.$coreBuild; ?>" rel="preload" as="style" importance="high">
-<?php } ?>
+<?php foreach ($styles as $style): ?>
+    <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="stylesheet" importance="high">
+    <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="preload" as="style" importance="high">
+<?php endforeach; ?>
 
-<?php foreach ($scripts as $script) { ?>
-    <script data-cfasync="false" src="<?= $script.'?v='.$coreBuild; ?>" importance="high"></script>
-    <link href="<?= $script.'?v='.$coreBuild; ?>" rel="preload" as="script" importance="high">
-<?php } ?>
+<?php foreach ($scripts as $script): ?>
+    <script data-cfasync="false" src="<?= $script . '?v=' . $coreBuild; ?>" importance="high"></script>
+    <link href="<?= $script . '?v=' . $coreBuild; ?>" rel="preload" as="script" importance="high">
+<?php endforeach; ?>
 
-<?php if (! Config::get('cms.enableBackendServiceWorkers', false)) { ?>
+<?php if (!Config::get('cms.enableBackendServiceWorkers', false)): ?>
     <script>
         "use strict";
         /* Only run on HTTPS connections
@@ -78,7 +78,7 @@ $scripts = array_merge($scripts, [
             );
         }
     </script>
-<?php } ?>
+<?php endif; ?>
 
 <?= $this->makeAssets() ?>
 <?= Block::placeholder('head') ?>

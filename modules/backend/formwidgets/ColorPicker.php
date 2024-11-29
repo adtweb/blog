@@ -1,16 +1,15 @@
-<?php
+<?php namespace Backend\FormWidgets;
 
-namespace Backend\FormWidgets;
-
-use ApplicationException;
-use Backend\Classes\FormWidgetBase;
-use Backend\Models\BrandSetting;
 use Lang;
+use Backend\Classes\FormWidgetBase;
+use ApplicationException;
+use Backend\Models\BrandSetting;
 
 /**
  * Color picker
  * Renders a color picker field.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  * @author Winter CMS
  */
@@ -55,8 +54,8 @@ class ColorPicker extends FormWidgetBase
 
     /**
      * @var string|array Color format(s) to allow for the resulting color value. Specify "all" as a string to allow all
-     *                   formats.
-     *                   Allowed values: 'cmyk', 'hex', 'hsl', 'rgb', 'all'
+     * formats.
+     * Allowed values: 'cmyk', 'hex', 'hsl', 'rgb', 'all'
      */
     public $formats = 'hex';
 
@@ -75,12 +74,12 @@ class ColorPicker extends FormWidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'colorpicker';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -96,12 +95,11 @@ class ColorPicker extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('colorpicker');
     }
 
@@ -132,7 +130,7 @@ class ColorPicker extends FormWidgetBase
 
         if (is_array($availableColors)) {
             return $availableColors;
-        } elseif (is_string($availableColors) && ! empty($availableColors)) {
+        } elseif (is_string($availableColors) && !empty($availableColors)) {
             if ($this->model->methodExists($availableColors)) {
                 return $this->availableColors = $this->model->{$availableColors}(
                     $this->formField->fieldName,
@@ -141,9 +139,9 @@ class ColorPicker extends FormWidgetBase
                 );
             } else {
                 throw new ApplicationException(Lang::get('backend::lang.field.colors_method_not_exists', [
-                    'model' => get_class($this->model),
+                    'model'  => get_class($this->model),
                     'method' => $availableColors,
-                    'field' => $this->formField->fieldName,
+                    'field'  => $this->formField->fieldName
                 ]));
             }
         } else {
@@ -244,7 +242,7 @@ class ColorPicker extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {
@@ -252,11 +250,11 @@ class ColorPicker extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
-        if (! strlen($value)) {
+        if (!strlen($value)) {
             return null;
         }
 
@@ -265,7 +263,7 @@ class ColorPicker extends FormWidgetBase
             case 'hex':
             case 'hsl':
             case 'rgb':
-                if (! preg_match($this->validationPatterns[$this->formats], $value)) {
+                if (!preg_match($this->validationPatterns[$this->formats], $value)) {
                     throw new ApplicationException(Lang::get('backend::lang.field.colors_invalid_input'));
                 }
                 break;
@@ -277,7 +275,7 @@ class ColorPicker extends FormWidgetBase
                         break;
                     }
                 }
-                if (! $valid) {
+                if (!$valid) {
                     throw new ApplicationException(Lang::get('backend::lang.field.colors_invalid_input'));
                 }
                 break;

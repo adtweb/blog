@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Traits;
+<?php namespace Backend\Traits;
 
 use System\Classes\ErrorHandler;
 
@@ -8,6 +6,7 @@ use System\Classes\ErrorHandler;
  * Error Maker Trait
  * Adds exception based methods to a class, goes well with `System\Traits\ViewMaker`.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait ErrorMaker
@@ -18,11 +17,11 @@ trait ErrorMaker
     protected $fatalError;
 
     /**
-     * @return bool Whether a fatal error has been set or not.
+     * @return boolean Whether a fatal error has been set or not.
      */
     public function hasFatalError()
     {
-        return ! is_null($this->fatalError);
+        return !is_null($this->fatalError);
     }
 
     /**

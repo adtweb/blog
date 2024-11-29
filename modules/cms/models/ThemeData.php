@@ -1,17 +1,16 @@
-<?php
+<?php namespace Cms\Models;
 
-namespace Cms\Models;
-
-use Cms\Classes\Theme as CmsTheme;
-use Exception;
 use Lang;
 use Model;
+use Cms\Classes\Theme as CmsTheme;
 use System\Classes\CombineAssets;
+use Exception;
 use System\Models\File;
 
 /**
  * Customization data used by a theme
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeData extends Model
@@ -55,7 +54,6 @@ class ThemeData extends Model
 
     /**
      * Before saving the model, strip dynamic attributes applied from config.
-     *
      * @return void
      */
     public function beforeSave()
@@ -78,14 +76,14 @@ class ThemeData extends Model
     {
         try {
             CombineAssets::resetCache();
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
         }
     }
 
     /**
      * Returns a cached version of this model, based on a Theme object.
-     *
-     * @param  $theme  Cms\Classes\Theme
+     * @param $theme Cms\Classes\Theme
      * @return self
      */
     public static function forTheme($theme)
@@ -97,7 +95,8 @@ class ThemeData extends Model
 
         try {
             $themeData = self::firstOrCreate(['theme' => $dirName]);
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             // Database failed
             $themeData = new self(['theme' => $dirName]);
         }
@@ -108,7 +107,6 @@ class ThemeData extends Model
     /**
      * After fetching the model, intiialize model relationships based
      * on form field definitions.
-     *
      * @return void
      */
     public function afterFetch()
@@ -116,7 +114,7 @@ class ThemeData extends Model
         $data = (array) $this->data + $this->getDefaultValues();
 
         foreach ($this->getFormFields() as $id => $field) {
-            if (! isset($field['type'])) {
+            if (!isset($field['type'])) {
                 continue;
             }
 
@@ -143,12 +141,11 @@ class ThemeData extends Model
 
     /**
      * Before model is validated, set the default values.
-     *
      * @return void
      */
     public function beforeValidate()
     {
-        if (! $this->exists) {
+        if (!$this->exists) {
             $this->setDefaultValues();
         }
     }
@@ -156,7 +153,9 @@ class ThemeData extends Model
     /**
      * Creates relationships for this model based on form field definitions.
      */
-    public function initFormFields() {}
+    public function initFormFields()
+    {
+    }
 
     /**
      * Sets default values on this model based on form field definitions.
@@ -170,7 +169,6 @@ class ThemeData extends Model
 
     /**
      * Gets default values for this model based on form field definitions.
-     *
      * @return array
      */
     public function getDefaultValues()
@@ -190,12 +188,11 @@ class ThemeData extends Model
 
     /**
      * Returns all fields defined for this model, based on form field definitions.
-     *
      * @return array
      */
     public function getFormFields()
     {
-        if (! $theme = CmsTheme::load($this->theme)) {
+        if (!$theme = CmsTheme::load($this->theme)) {
             throw new Exception(Lang::get('Unable to find theme with name :name', $this->theme));
         }
 
@@ -208,7 +205,6 @@ class ThemeData extends Model
 
     /**
      * Returns variables that should be passed to the asset combiner.
-     *
      * @return array
      */
     public function getAssetVariables()
@@ -216,7 +212,7 @@ class ThemeData extends Model
         $result = [];
 
         foreach ($this->getFormFields() as $attribute => $field) {
-            if (! $varName = array_get($field, 'assetVar')) {
+            if (!$varName = array_get($field, 'assetVar')) {
                 continue;
             }
 
@@ -228,18 +224,17 @@ class ThemeData extends Model
 
     /**
      * Applies asset variables to the combiner filters that support it.
-     *
      * @return void
      */
     public static function applyAssetVariablesToCombinerFilters($filters)
     {
         $theme = CmsTheme::getActiveTheme();
 
-        if (! $theme) {
+        if (!$theme) {
             return;
         }
 
-        if (! $theme->hasCustomData()) {
+        if (!$theme->hasCustomData()) {
             return;
         }
 
@@ -254,13 +249,12 @@ class ThemeData extends Model
 
     /**
      * Generate a cache key for the combiner, this allows variables to bust the cache.
-     *
      * @return string
      */
     public static function getCombinerCacheKey()
     {
         $theme = CmsTheme::getActiveTheme();
-        if (! $theme->hasCustomData()) {
+        if (!$theme->hasCustomData()) {
             return '';
         }
 

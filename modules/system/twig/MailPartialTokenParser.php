@@ -1,11 +1,9 @@
-<?php
+<?php namespace System\Twig;
 
-namespace System\Twig;
-
-use Twig\Error\SyntaxError as TwigErrorSyntax;
 use Twig\Node\Node as TwigNode;
 use Twig\Token as TwigToken;
 use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
+use Twig\Error\SyntaxError as TwigErrorSyntax;
 
 /**
  * Parser for the `{% partial %}` Twig tag.
@@ -16,6 +14,7 @@ use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
  *
  *     {% partial "sidebar" name='John', year=2013 %}
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailPartialTokenParser extends TwigTokenParser
@@ -23,7 +22,7 @@ class MailPartialTokenParser extends TwigTokenParser
     /**
      * Parses a token and returns a node.
      *
-     * @param  TwigToken  $token  A TwigToken instance
+     * @param TwigToken $token A TwigToken instance
      * @return TwigNode A TwigNode instance
      */
     public function parse(TwigToken $token)
@@ -38,12 +37,12 @@ class MailPartialTokenParser extends TwigTokenParser
         $body = null;
 
         $end = false;
-        while (! $end) {
+        while (!$end) {
             $current = $stream->next();
 
             if (
                 $current->test(TwigToken::NAME_TYPE, 'body') &&
-                ! $stream->test(TwigToken::OPERATOR_TYPE, '=')
+                !$stream->test(TwigToken::OPERATOR_TYPE, '=')
             ) {
                 $hasBody = true;
                 $current = $stream->next();

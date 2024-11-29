@@ -1,13 +1,11 @@
-<?php
+<?php namespace Cms\Traits;
 
-namespace Cms\Traits;
-
-use ApplicationException;
-use Cache;
-use Cms\Classes\Controller;
-use Cms\Classes\Page;
-use Config;
 use File;
+use Cache;
+use Config;
+use Cms\Classes\Page;
+use Cms\Classes\Controller;
+use ApplicationException;
 
 /**
  * URL Maker Trait
@@ -36,6 +34,7 @@ use File;
  *        ];
  *    }
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait UrlMaker
@@ -56,7 +55,6 @@ trait UrlMaker
 
     /**
      * Returns an array of values to use in URL generation.
-     *
      * @return @array
      */
     // public function getUrlParams()
@@ -84,8 +82,8 @@ trait UrlMaker
     /**
      * Changes the component used for generating the URLs dynamically.
      *
-     * @param  string  $name
-     * @param  string  $property
+     * @param string $name
+     * @param string $property
      * @return void
      */
     public function resetUrlComponent($name, $property = null)
@@ -101,7 +99,6 @@ trait UrlMaker
 
     /**
      * Mutator for the "url" attribute. Returns the URL detected by the component.
-     *
      * @return string
      */
     public function getUrlAttribute()
@@ -115,8 +112,7 @@ trait UrlMaker
 
     /**
      * Explicitly set the URL for this model.
-     *
-     * @param  string  $value
+     * @param string $value
      * @return void
      */
     public function setUrlAttribute($value)
@@ -126,8 +122,7 @@ trait UrlMaker
 
     /**
      * Explicitly set the CMS Page to link to.
-     *
-     * @param  string  $pageName
+     * @param string $pageName
      * @return void
      */
     public function setUrlPageName($pageName)
@@ -138,7 +133,6 @@ trait UrlMaker
     /**
      * Locates the page name where the detected component is found. This method
      * uses the Cache service to improve performance.
-     *
      * @return string
      */
     public function getUrlPageName()
@@ -156,7 +150,7 @@ trait UrlMaker
         if ($cached !== false && ($cached = @unserialize($cached)) !== false) {
             $filePath = array_get($cached, 'path');
             $mtime = array_get($cached, 'mtime');
-            if (! File::isFile($filePath) || ($mtime != File::lastModified($filePath))) {
+            if (!File::isFile($filePath) || ($mtime != File::lastModified($filePath))) {
                 $cached = false;
             }
         }
@@ -175,11 +169,11 @@ trait UrlMaker
             $page = Page::whereComponent($this->urlComponentName, $this->urlComponentProperty, '1')->first();
         }
 
-        if (! $useProperty || ! $page) {
+        if (!$useProperty || !$page) {
             $page = Page::withComponent($this->urlComponentName)->first();
         }
 
-        if (! $page) {
+        if (!$page) {
             throw new ApplicationException(sprintf(
                 'Unable to a find a primary component "%s" for generating a URL in %s.',
                 $this->urlComponentName,
@@ -191,9 +185,9 @@ trait UrlMaker
         $filePath = $page->getFilePath();
 
         $cached = [
-            'path' => $filePath,
+            'path'     => $filePath,
             'fileName' => $baseFileName,
-            'mtime' => @File::lastModified($filePath),
+            'mtime'    => @File::lastModified($filePath)
         ];
 
         $expiresAt = now()->addMinutes(Config::get('cms.parsedPageCacheTTL', 1440));
@@ -205,7 +199,6 @@ trait UrlMaker
     /**
      * Generates a real URL based on the page, detected by the primary component.
      * The CMS Controller is used for this process passing the declared params.
-     *
      * @return string
      */
     protected function makeUrl()

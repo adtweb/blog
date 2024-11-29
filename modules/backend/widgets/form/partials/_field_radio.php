@@ -2,14 +2,13 @@
 $fieldOptions = $field->options();
 ?>
 <!-- Radio List -->
-<?php if (count($fieldOptions)) { ?>
+<?php if (count($fieldOptions)): ?>
 
-    <?php $index = 0;
-    foreach ($fieldOptions as $value => $option) { ?>
+    <?php $index = 0; foreach ($fieldOptions as $value => $option): ?>
         <?php
         $index++;
         if (is_string($option)) {
-            $option = [$option];
+            $option = array($option);
         }
 
         $fieldId = md5(uniqid($field->getId($index), true));
@@ -28,17 +27,17 @@ $fieldOptions = $field->options();
             <label for="<?= $fieldId ?>">
                 <?= e(trans($option[0])) ?>
             </label>
-            <?php if (isset($option[1])) { ?>
+            <?php if (isset($option[1])): ?>
                 <p class="help-block"><?= e(trans($option[1])) ?></p>
-            <?php } ?>
+            <?php endif ?>
         </div>
-    <?php } ?>
+    <?php endforeach ?>
 
-<?php } else { ?>
+<?php else: ?>
 
     <!-- No options specified -->
-    <?php if ($field->placeholder) { ?>
+    <?php if ($field->placeholder): ?>
         <p><?= e(trans($field->placeholder)) ?></p>
-    <?php } ?>
+    <?php endif ?>
 
-<?php } ?>
+<?php endif ?>

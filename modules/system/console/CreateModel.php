@@ -1,8 +1,7 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use Winter\Storm\Support\Str;
+use System\Console\BaseScaffoldCommand;
 
 class CreateModel extends BaseScaffoldCommand
 {
@@ -53,8 +52,8 @@ class CreateModel extends BaseScaffoldCommand
      * @var array A mapping of stubs to generated files.
      */
     protected $stubs = [
-        'scaffold/model/model.stub' => 'models/{{studly_name}}.php',
-        'scaffold/model/fields.stub' => 'models/{{lower_name}}/fields.yaml',
+        'scaffold/model/model.stub'   => 'models/{{studly_name}}.php',
+        'scaffold/model/fields.stub'  => 'models/{{lower_name}}/fields.yaml',
         'scaffold/model/columns.stub' => 'models/{{lower_name}}/columns.yaml',
     ];
 
@@ -65,7 +64,7 @@ class CreateModel extends BaseScaffoldCommand
      */
     public function handle()
     {
-        if (parent::handle() === false && ! $this->option('force')) {
+        if (parent::handle() === false && !$this->option('force')) {
             return false;
         }
 
@@ -82,7 +81,7 @@ class CreateModel extends BaseScaffoldCommand
             $this->createSeeder();
         }
 
-        if (! $this->option('no-migration')) {
+        if (!$this->option('no-migration')) {
             $this->createMigration();
         }
     }
@@ -118,7 +117,7 @@ class CreateModel extends BaseScaffoldCommand
     public function createMigration()
     {
         $this->call('create:migration', [
-            'plugin' => $this->getPluginIdentifier(),
+            'plugin'  => $this->getPluginIdentifier(),
             '--model' => $this->getNameInput(),
             '--create' => true,
             '--force' => $this->option('force'),
@@ -135,7 +134,7 @@ class CreateModel extends BaseScaffoldCommand
         return;
 
         $this->call('create:seeder', [
-            'plugin' => $this->getPluginIdentifier(),
+            'plugin'  => $this->getPluginIdentifier(),
             'model' => $this->getNameInput(),
             '--force' => $this->option('force'),
             '--uninspiring' => $this->option('uninspiring'),
@@ -148,7 +147,7 @@ class CreateModel extends BaseScaffoldCommand
     public function createController()
     {
         $this->call('create:controller', [
-            'plugin' => $this->getPluginIdentifier(),
+            'plugin'  => $this->getPluginIdentifier(),
             'controller' => Str::plural($this->argument('model')),
             '--model' => $this->getNameInput(),
             '--force' => $this->option('force'),

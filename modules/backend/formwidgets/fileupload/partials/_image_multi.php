@@ -7,12 +7,12 @@
     data-error-template="#<?= $this->getId('errorTemplate') ?>"
     data-sort-handler="<?= $this->getEventHandler('onSortAttachments') ?>"
     data-max-filesize="<?= $maxFilesize ?>"
-    <?php if ($useCaption) { ?>
+    <?php if ($useCaption): ?>
         data-config-handler="<?= $this->getEventHandler('onLoadAttachmentConfig') ?>"
-    <?php } ?>
-    <?php if ($acceptedFileTypes) { ?>
+    <?php endif ?>
+    <?php if ($acceptedFileTypes): ?>
         data-file-types="<?= $acceptedFileTypes ?>"
-    <?php } ?>
+    <?php endif ?>
     <?= $this->formField->getAttributes() ?>
 >
 
@@ -23,7 +23,7 @@
 
     <!-- Existing files -->
     <div class="upload-files-container">
-        <?php foreach ($fileList as $file) { ?>
+        <?php foreach ($fileList as $file): ?>
             <div class="upload-object is-success" data-id="<?= $file->id ?>" data-path="<?= $file->pathUrl ?>">
                 <div class="icon-container image">
                     <img src="<?= $file->thumbUrl ?>" alt="" />
@@ -45,7 +45,7 @@
                     <a href="javascript:;" class="drag-handle"><i class="icon-bars"></i></a>
                 </div>
             </div>
-        <?php } ?>
+        <?php endforeach ?>
     </div>
 </div>
 

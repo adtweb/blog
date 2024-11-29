@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 class MixUpdate extends MixInstall
 {
@@ -10,12 +8,12 @@ class MixUpdate extends MixInstall
     protected static $defaultName = 'mix:update';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $description = 'Update Node.js dependencies required for mixed assets';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $signature = 'mix:update
         {npmArgs?* : Arguments to pass through to the "npm" binary}
@@ -23,7 +21,7 @@ class MixUpdate extends MixInstall
         {--p|package=* : Defines one or more packages to update}';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $terms = [
         'complete' => 'update',
@@ -31,7 +29,7 @@ class MixUpdate extends MixInstall
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $npmCommand = 'update';
 }

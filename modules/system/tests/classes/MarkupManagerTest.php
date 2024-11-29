@@ -2,16 +2,17 @@
 
 namespace System\Tests\Classes;
 
-use System\Classes\MarkupManager;
 use System\Tests\Bootstrap\TestCase;
+use System\Classes\MarkupManager;
 
 class MarkupManagerTest extends TestCase
 {
-    public function setUp(): void
+
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/Plugin.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/Plugin.php';
     }
 
     //

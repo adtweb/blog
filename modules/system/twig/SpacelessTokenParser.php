@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Twig;
+<?php namespace System\Twig;
 
 use Twig\Token;
 use Twig\TokenParser\AbstractTokenParser;

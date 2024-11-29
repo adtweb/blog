@@ -2,12 +2,12 @@
     <div class="layout-cell">
 
         <div class="layout">
-            <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')) { ?>
+            <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')): ?>
                 <!-- Breadcrumb -->
                 <div class="control-breadcrumb breadcrumb-flush">
                     <?= $breadcrumbContent ?>
                 </div>
-            <?php } ?>
+            <?php endif ?>
 
             <!-- Content -->
             <div class="layout-row">

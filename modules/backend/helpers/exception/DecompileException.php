@@ -1,7 +1,7 @@
-<?php
-
-namespace Backend\Helpers\Exception;
+<?php namespace Backend\Helpers\Exception;
 
 use ApplicationException;
 
-class DecompileException extends ApplicationException {}
+class DecompileException extends ApplicationException
+{
+}

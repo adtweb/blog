@@ -2,9 +2,9 @@
     type="button"
     class="
         btn btn-danger wn-icon-download
-        <?php if (! $canCommit) { ?>
+        <?php if (!$canCommit): ?>
             hide
-        <?php } ?>
+        <?php endif ?>
     "
     data-request="onCommit"
     data-request-confirm="<?= e(trans('cms::lang.editor.commit_confirm')) ?>"

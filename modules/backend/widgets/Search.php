@@ -1,14 +1,13 @@
-<?php
+<?php namespace Backend\Widgets;
 
-namespace Backend\Widgets;
-
-use Backend\Classes\WidgetBase;
 use Lang;
+use Backend\Classes\WidgetBase;
 
 /**
  * Search Widget
  * Used for building a toolbar, Renders a search container.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Search extends WidgetBase
@@ -52,7 +51,7 @@ class Search extends WidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'search';
 
@@ -166,11 +165,10 @@ class Search extends WidgetBase
 
     /**
      * Returns a value suitable for the field name property.
-     *
      * @return string
      */
     public function getName()
     {
-        return $this->alias.'[term]';
+        return $this->alias . '[term]';
     }
 }

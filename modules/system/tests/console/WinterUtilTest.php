@@ -7,11 +7,8 @@ use System\Tests\Bootstrap\TestCase;
 class WinterUtilTest extends TestCase
 {
     protected string $defaultClient;
-
     protected string $langClient;
-
     protected string $langCountryClient;
-
     protected array $createdDirs = [];
 
     protected function setUp(): void
@@ -24,13 +21,13 @@ class WinterUtilTest extends TestCase
 
         // Backup original files
         if (file_exists($this->defaultClient)) {
-            rename($this->defaultClient, $this->defaultClient.'.backup');
+            rename($this->defaultClient, $this->defaultClient . '.backup');
         }
         if (file_exists($this->langClient)) {
-            rename($this->langClient, $this->langClient.'.backup');
+            rename($this->langClient, $this->langClient . '.backup');
         }
         if (file_exists($this->langCountryClient)) {
-            rename($this->langCountryClient, $this->langCountryClient.'.backup');
+            rename($this->langCountryClient, $this->langCountryClient . '.backup');
         }
     }
 
@@ -52,8 +49,8 @@ class WinterUtilTest extends TestCase
         foreach (['lang/en/system', 'lang/en-gb/system'] as $slug) {
             $path = rtrim(base_path(), '/');
             foreach (explode('/', $slug) as $dir) {
-                $path = $path.'/'.$dir;
-                if (! is_dir($path)) {
+                $path = $path . '/' . $dir;
+                if (!is_dir($path)) {
                     mkdir($path, 0755);
                     $this->createdDirs[] = $path;
                 }
@@ -83,12 +80,12 @@ class WinterUtilTest extends TestCase
     protected function tearDown(): void
     {
         unlink($this->defaultClient);
-        rename($this->defaultClient.'.backup', $this->defaultClient);
+        rename($this->defaultClient . '.backup', $this->defaultClient);
 
         foreach ([$this->langClient, $this->langCountryClient] as $client) {
             unlink($client);
-            if (file_exists($client.'.backup')) {
-                rename($client.'.backup', $client);
+            if (file_exists($client . '.backup')) {
+                rename($client . '.backup', $client);
             }
         }
 

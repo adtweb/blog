@@ -9,6 +9,7 @@ trait InteractsWithAuthentication
     /**
      * Set the currently logged in user for the application.
      *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $driver
      * @return $this
      */
@@ -22,6 +23,7 @@ trait InteractsWithAuthentication
     /**
      * Set the currently logged in user for the application.
      *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @param  string|null  $driver
      * @return void
      */
@@ -98,6 +100,7 @@ trait InteractsWithAuthentication
     /**
      * Assert that the given credentials are valid.
      *
+     * @param  array  $credentials
      * @param  string|null  $guard
      * @return $this
      */
@@ -114,6 +117,7 @@ trait InteractsWithAuthentication
     /**
      * Assert that the given credentials are invalid.
      *
+     * @param  array  $credentials
      * @param  string|null  $guard
      * @return $this
      */
@@ -130,6 +134,7 @@ trait InteractsWithAuthentication
     /**
      * Return true if the credentials are valid, false otherwise.
      *
+     * @param  array  $credentials
      * @param  string|null  $guard
      * @return bool
      */

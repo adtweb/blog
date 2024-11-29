@@ -1,21 +1,20 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use App;
 use Backend;
-use Cache;
-use Config;
-use Exception;
+use Url;
 use File;
 use Lang;
-use Less_Parser;
 use Model;
-use Url;
+use Cache;
+use Config;
+use Less_Parser;
+use Exception;
 
 /**
  * Brand settings that affect all users
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  * @author Winter CMS
  */
@@ -28,7 +27,7 @@ class BrandSetting extends Model
      * @var array Behaviors implemented by this model.
      */
     public $implement = [
-        \System\Behaviors\SettingsModel::class,
+        \System\Behaviors\SettingsModel::class
     ];
 
     /**
@@ -43,7 +42,7 @@ class BrandSetting extends Model
 
     public $attachOne = [
         'favicon' => \System\Models\File::class,
-        'logo' => \System\Models\File::class,
+        'logo' => \System\Models\File::class
     ];
 
     /**
@@ -51,30 +50,25 @@ class BrandSetting extends Model
      */
     public $cacheKey = 'backend::brand.custom_css';
 
-    const PRIMARY_COLOR = '#34495e'; // Wet Asphalt
-
+    const PRIMARY_COLOR   = '#34495e'; // Wet Asphalt
     const SECONDARY_COLOR = '#e67e22'; // Pumpkin
+    const ACCENT_COLOR    = '#3498db'; // Peter River
 
-    const ACCENT_COLOR = '#3498db'; // Peter River
-
-    const INLINE_MENU = 'inline';
-
-    const TILE_MENU = 'tile';
-
+    const INLINE_MENU   = 'inline';
+    const TILE_MENU     = 'tile';
     const COLLAPSE_MENU = 'collapse';
 
     /**
      * Validation rules
      */
     public $rules = [
-        'app_name' => 'required',
-        'app_tagline' => 'required',
+        'app_name'     => 'required',
+        'app_tagline'  => 'required',
     ];
 
     /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
-     *
      * @return void
      */
     public function initSettingsData()
@@ -194,8 +188,9 @@ class BrandSetting extends Model
         try {
             $customCss = self::compileCss();
             Cache::forever($cacheKey, $customCss);
-        } catch (Exception $ex) {
-            $customCss = '/* '.$ex->getMessage().' */';
+        }
+        catch (Exception $ex) {
+            $customCss = '/* ' . $ex->getMessage() . ' */';
         }
 
         return $customCss;
@@ -211,14 +206,14 @@ class BrandSetting extends Model
         $accentColor = self::get('accent_color', self::ACCENT_COLOR);
 
         $parser->ModifyVars([
-            'logo-image' => "'".self::getLogo()."'",
-            'brand-primary' => $primaryColor,
+            'logo-image'      => "'".self::getLogo()."'",
+            'brand-primary'   => $primaryColor,
             'brand-secondary' => $secondaryColor,
-            'brand-accent' => $accentColor,
+            'brand-accent'    => $accentColor,
         ]);
 
         $parser->parse(
-            File::get($basePath.'/custom.less').
+            File::get($basePath . '/custom.less') .
             self::get('custom_css')
         );
 
@@ -231,7 +226,7 @@ class BrandSetting extends Model
 
     public static function isBaseConfigured()
     {
-        return (bool) Config::get('brand');
+        return !!Config::get('brand');
     }
 
     public static function getDefaultFavicon()

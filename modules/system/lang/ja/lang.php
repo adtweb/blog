@@ -29,8 +29,8 @@ return [
             'social' => 'ソーシャル',
             'events' => 'イベント',
             'customers' => 'カスタマー',
-            'my_settings' => 'マイ設定',
-        ],
+            'my_settings' => 'マイ設定'
+        ]
     ],
     'plugin' => [
         'unnamed' => '名前なしプラグイン',
@@ -130,7 +130,7 @@ return [
         'missing_model' => 'モデルの定義が見つかりません。',
         'update_success' => ':name を設定しました。',
         'return' => 'システム設定へ戻る',
-        'search' => '検索',
+        'search' => '検索'
     ],
     'mail' => [
         'log_file' => 'ログファイル',
@@ -367,8 +367,8 @@ return [
             'label' => 'セキュリティトークンが無効です。',
         ],
         'maintenance' => [
-            'label' => 'すぐに戻ってきます!!',
-            'help' => '現在メンテナンスのため停止しています。',
+            'label' => "すぐに戻ってきます!!",
+            'help' => "現在メンテナンスのため停止しています。",
             'message' => 'メッセージ:',
             'available_at' => 'やり直してください:',
         ],

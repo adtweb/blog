@@ -9,7 +9,7 @@
                 <?= e(trans('backend::lang.media.insert')) ?>
             </button>
 
-            <?php if (! $this->readOnly) { ?>
+            <?php if (!$this->readOnly): ?>
                 <button
                     type="button"
                     data-command="popup-command"
@@ -17,7 +17,7 @@
                     class="btn btn-primary hide">
                     <?= e(trans('backend::lang.media.crop_and_insert')) ?>
                 </button>
-            <?php } ?>
+            <?php endif; ?>
 
             <button
                 type="button"

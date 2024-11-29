@@ -1,11 +1,9 @@
-<?php
-
-namespace System\Helpers;
+<?php namespace System\Helpers;
 
 use App;
+use File;
 use Cache as CacheFacade;
 use Config;
-use File;
 
 class Cache
 {
@@ -26,7 +24,7 @@ class Cache
         $instance->clearCombiner();
         $instance->clearCache();
 
-        if (! Config::get('cms.twigNoCache')) {
+        if (!Config::get('cms.twigNoCache')) {
             $instance->clearTwig();
         }
 
@@ -39,7 +37,7 @@ class Cache
     public function clearCombiner()
     {
         $path = storage_path().'/cms/combiner';
-        if (! is_dir($path)) {
+        if (!is_dir($path)) {
             return;
         }
         foreach (File::directories($path) as $directory) {
@@ -53,7 +51,7 @@ class Cache
     public function clearCache()
     {
         $path = storage_path().'/cms/cache';
-        if (! is_dir($path)) {
+        if (!is_dir($path)) {
             return;
         }
         foreach (File::directories(storage_path().'/cms/cache') as $directory) {
@@ -67,7 +65,7 @@ class Cache
     public function clearTwig()
     {
         $path = storage_path().'/cms/twig';
-        if (! is_dir($path)) {
+        if (!is_dir($path)) {
             return;
         }
         foreach (File::directories(storage_path().'/cms/twig') as $directory) {

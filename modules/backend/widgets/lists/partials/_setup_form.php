@@ -1,4 +1,4 @@
-<?= Form::open(['data-request-parent' => '#'.$this->getId('setupButton')]) ?>
+<?= Form::open(['data-request-parent' => '#' . $this->getId('setupButton')]) ?>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="popup">&times;</button>
         <h4 class="modal-title"><?= e(trans('backend::lang.list.setup_title')) ?></h4>
@@ -8,7 +8,7 @@
 
         <div class="control-simplelist with-checkboxes is-sortable" data-control="simplelist">
             <ul>
-                <?php foreach ($columns as $key => $column) { ?>
+                <?php foreach ($columns as $key => $column): ?>
                     <li>
                         <div class="checkbox custom-checkbox">
                             <input
@@ -28,23 +28,23 @@
                             </label>
                         </div>
                     </li>
-                <?php } ?>
+                <?php endforeach ?>
             </ul>
         </div>
 
-        <?php if ($this->showPagination) { ?>
+        <?php if ($this->showPagination): ?>
             <div class="form-group">
                 <label><?= e(trans('backend::lang.list.records_per_page')) ?></label>
                 <p class="help-block before-field">
                     <?= e(trans('backend::lang.list.records_per_page_help')) ?>
                 </p>
                 <select class="form-control custom-select select-no-search" name="records_per_page">
-                    <?php foreach ($perPageOptions as $optionValue) { ?>
+                    <?php foreach ($perPageOptions as $optionValue): ?>
                         <option value="<?= $optionValue ?>" <?= $optionValue == $recordsPerPage ? 'selected="selected"' : '' ?>><?= $optionValue ?></option>
-                    <?php } ?>
+                    <?php endforeach ?>
                 </select>
             </div>
-        <?php } ?>
+        <?php endif ?>
 
     </div>
     <div class="modal-footer">

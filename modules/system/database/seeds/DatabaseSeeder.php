@@ -1,12 +1,11 @@
-<?php
+<?php namespace System\Database\Seeds;
 
-namespace System\Database\Seeds;
-
-use Eloquent;
 use Seeder;
+use Eloquent;
 
 class DatabaseSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *

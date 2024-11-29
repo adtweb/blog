@@ -1,18 +1,18 @@
-<?php
+<?php namespace System\Traits;
 
-namespace System\Traits;
-
-use Carbon\Carbon;
-use Config;
 use Crypt;
+use Config;
 use Request;
 use Session;
+use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * Security Controller Trait
  * Adds cross-site scripting protection methods to a controller based class
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait SecurityController
@@ -47,17 +47,17 @@ trait SecurityController
      */
     protected function verifyCsrfToken()
     {
-        if (! Config::get('cms.enableCsrfProtection', true)) {
+        if (!Config::get('cms.enableCsrfProtection', true)) {
             return true;
         }
 
         $token = Request::input('_token') ?: Request::header('X-CSRF-TOKEN');
 
-        if (! $token && $header = Request::header('X-XSRF-TOKEN')) {
+        if (!$token && $header = Request::header('X-XSRF-TOKEN')) {
             $token = Crypt::decrypt($header, false);
         }
 
-        if (! strlen($token) || ! strlen(Session::token())) {
+        if (!strlen($token) || !strlen(Session::token())) {
             return false;
         }
 
@@ -69,7 +69,6 @@ trait SecurityController
 
     /**
      * Checks if the back-end should force a secure protocol (HTTPS) enabled by config.
-     *
      * @return bool
      */
     protected function verifyForceSecure()
@@ -78,6 +77,6 @@ trait SecurityController
             return true;
         }
 
-        return ! Config::get('cms.backendForceSecure', false);
+        return !Config::get('cms.backendForceSecure', false);
     }
 }

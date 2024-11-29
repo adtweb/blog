@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Classes;
+<?php namespace Backend\Classes;
 
 use Winter\Storm\Database\Model;
 use Winter\Storm\Html\Helper as HtmlHelper;
@@ -9,6 +7,7 @@ use Winter\Storm\Html\Helper as HtmlHelper;
  * List Columns definition
  * A translation of the list column configuration
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ListColumn
@@ -50,7 +49,7 @@ class ListColumn
 
     /**
      * @var string Model attribute to use for the display value, this will
-     *             override any `$sqlSelect` definition.
+     * override any `$sqlSelect` definition.
      */
     public $valueFrom;
 
@@ -61,7 +60,7 @@ class ListColumn
 
     /**
      * @var string Custom SQL for selecting this record display value,
-     *             the `@` symbol is replaced with the table name.
+     * the `@` symbol is replaced with the table name.
      */
     public $sqlSelect;
 
@@ -72,8 +71,8 @@ class ListColumn
 
     /**
      * @var string sets the column width, can be specified in percents (10%) or pixels (50px).
-     *             There could be a single column without width specified, it will be stretched to take the
-     *             available space.
+     * There could be a single column without width specified, it will be stretched to take the
+     * available space.
      */
     public $width;
 
@@ -109,9 +108,8 @@ class ListColumn
 
     /**
      * Constructor.
-     *
-     * @param  string  $columnName
-     * @param  string  $label
+     * @param string $columnName
+     * @param string $label
      */
     public function __construct($columnName, $label)
     {
@@ -123,21 +121,18 @@ class ListColumn
      * Specifies a list column rendering mode. Supported modes are:
      * - text - text column, aligned left
      * - number - numeric column, aligned right
-     *
-     * @param  string  $type  Specifies a render mode as described above
+     * @param string $type Specifies a render mode as described above
      */
     public function displayAs($type, $config)
     {
         $this->type = strtolower($type) ?: $this->type;
         $this->config = $this->evalConfig($config);
-
         return $this;
     }
 
     /**
      * Process options and apply them to this object.
-     *
-     * @param  array  $config
+     * @param array $config
      * @return array
      */
     protected function evalConfig($config)
@@ -190,7 +185,6 @@ class ListColumn
 
     /**
      * Returns a HTML valid name for the column name.
-     *
      * @return string
      */
     public function getName()
@@ -200,8 +194,7 @@ class ListColumn
 
     /**
      * Returns a value suitable for the column id property.
-     *
-     * @param  string  $suffix  Specify a suffix string
+     * @param  string $suffix Specify a suffix string
      * @return string
      */
     public function getId($suffix = null)
@@ -219,19 +212,17 @@ class ListColumn
 
     /**
      * Returns the column specific aligment css class.
-     *
      * @return string
      */
     public function getAlignClass()
     {
-        return $this->align ? 'list-cell-align-'.$this->align : '';
+        return $this->align ? 'list-cell-align-' . $this->align : '';
     }
 
     /**
      * Returns a raw config item value.
-     *
-     * @param  string  $value
-     * @param  string  $default
+     * @param  string $value
+     * @param  string $default
      * @return mixed
      */
     public function getConfig($value, $default = null)
@@ -242,24 +233,21 @@ class ListColumn
     /**
      * Returns this columns value from a supplied data set, which can be
      * an array or a model or another generic collection.
-     *
-     * @param  mixed  $data
-     * @param  mixed  $default
+     * @param mixed $data
+     * @param mixed $default
      * @return mixed
      */
     public function getValueFromData($data, $default = null)
     {
         $columnName = $this->valueFrom ?: $this->columnName;
-
         return $this->getColumnNameFromData($columnName, $data, $default);
     }
 
     /**
      * Internal method to extract the value of a column name from a data set.
-     *
-     * @param  string  $columnName
-     * @param  mixed  $data
-     * @param  mixed  $default
+     * @param string $columnName
+     * @param mixed $data
+     * @param mixed $default
      * @return mixed
      */
     protected function getColumnNameFromData($columnName, $data, $default = null)
@@ -278,10 +266,11 @@ class ListColumn
         foreach ($keyParts as $key) {
             if ($result instanceof Model && $result->hasRelation($key)) {
                 $result = $result->{$key};
-            } else {
+            }
+            else {
                 if (is_array($result) && array_key_exists($key, $result)) {
                     $result = $result[$key];
-                } elseif (! isset($result->{$key})) {
+                } elseif (!isset($result->{$key})) {
                     return $default;
                 } else {
                     $result = $result->{$key};

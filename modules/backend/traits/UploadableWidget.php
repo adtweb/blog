@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Traits;
+<?php namespace Backend\Traits;
 
 use ApplicationException;
 use Event;
@@ -18,6 +16,7 @@ use Winter\Storm\Support\Svg;
  * Uploadable Widget Trait
  * Adds media library upload features to back-end widgets
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait UploadableWidget
@@ -41,11 +40,10 @@ trait UploadableWidget
     public function uploadableGetUploadPath(string $fileName): string
     {
         // Use the configured upload path unless it's null, in which case use the user-provided path
-        $path = ! empty($this->uploadPath) ? $this->uploadPath : Request::input('path');
+        $path = !empty($this->uploadPath) ? $this->uploadPath : Request::input('path');
         $path = MediaLibrary::validatePath($path);
         $path = MediaLibrary::instance()->getMediaPath($path);
-        $filePath = rtrim($path, '/').'/'.$fileName;
-
+        $filePath = rtrim($path, '/') . '/' . $fileName;
         return $filePath;
     }
 
@@ -91,7 +89,7 @@ trait UploadableWidget
 
     protected function onUploadDirect(): \Illuminate\Http\Response
     {
-        if (! Request::hasFile('file_data')) {
+        if (!Request::hasFile('file_data')) {
             throw new ApplicationException('File missing from request');
         }
 
@@ -106,10 +104,10 @@ trait UploadableWidget
             /*
              * See mime type handling in the asset manager
              */
-            if (! $uploadedFile->isValid()) {
+            if (!$uploadedFile->isValid()) {
                 if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                     $message = "The file \"{$uploadedFile->getClientOriginalName()}\" uploaded successfully but wasn't "
-                        ."available at {$uploadedFile->getPathName()}. Check to make sure that nothing moved it away.";
+                        . "available at {$uploadedFile->getPathName()}. Check to make sure that nothing moved it away.";
                 } else {
                     $message = $uploadedFile->getErrorMessage();
                 }
@@ -120,7 +118,7 @@ trait UploadableWidget
              * getRealPath() can be empty for some environments (IIS)
              */
             $sourcePath = empty(trim($uploadedFile->getRealPath()))
-                ? $uploadedFile->getPath().DIRECTORY_SEPARATOR.$uploadedFile->getFileName()
+                ? $uploadedFile->getPath() . DIRECTORY_SEPARATOR . $uploadedFile->getFileName()
                 : $uploadedFile->getRealPath();
 
             $filePath = $this->uploadableGetUploadPath($fileName);
@@ -147,12 +145,13 @@ trait UploadableWidget
              *     $mediaWidget->bindEvent('file.upload', function ((string) &$path, (\Symfony\Component\HttpFoundation\File\UploadedFile) $uploadedFile) {
              *         \Log::info($path . " was uploaded");
              *     });
+             *
              */
             $this->fireSystemEvent('media.file.upload', [&$filePath, $uploadedFile]);
 
             $response = Response::make([
                 'link' => $this->uploadableGetUploadUrl($filePath),
-                'result' => 'success',
+                'result' => 'success'
             ]);
         } catch (\Exception $ex) {
             throw new ApplicationException($ex->getMessage());
@@ -172,14 +171,14 @@ trait UploadableWidget
         /*
          * File name contains non-latin characters, attempt to slug the value
          */
-        if (! $this->validateFileName($fileName)) {
-            $fileName = $this->cleanFileName(File::name($fileName)).'.'.$extension;
+        if (!$this->validateFileName($fileName)) {
+            $fileName = $this->cleanFileName(File::name($fileName)) . '.' . $extension;
         }
 
         /*
          * Check for unsafe file extensions
          */
-        if (! $this->validateFileType($fileName)) {
+        if (!$this->validateFileType($fileName)) {
             throw new ApplicationException(Lang::get('backend::lang.media.type_blocked'));
         }
 
@@ -190,10 +189,11 @@ trait UploadableWidget
      * Validate a proposed media item file name.
      *
      * @param string
+     * @return bool
      */
     protected function validateFileName($name): bool
     {
-        if (! preg_match('/^[\w@\.\s_\-]+$/iu', $name)) {
+        if (!preg_match('/^[\w@\.\s_\-]+$/iu', $name)) {
             return false;
         }
 
@@ -208,6 +208,7 @@ trait UploadableWidget
      * Check for blocked / unsafe file extensions
      *
      * @param string
+     * @return bool
      */
     protected function validateFileType($name): bool
     {
@@ -215,7 +216,7 @@ trait UploadableWidget
 
         $allowedFileTypes = FileDefinitions::get('defaultExtensions');
 
-        if (! in_array($extension, $allowedFileTypes)) {
+        if (!in_array($extension, $allowedFileTypes)) {
             return false;
         }
 
@@ -226,7 +227,7 @@ trait UploadableWidget
      * Creates a slug form the string. A modified version of Str::slug
      * with the main difference that it accepts @-signs
      *
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
     protected function cleanFileName($name)

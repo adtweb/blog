@@ -1,16 +1,15 @@
-<?php
+<?php namespace Backend\FormWidgets;
 
-namespace Backend\FormWidgets;
-
-use Backend\Classes\FormWidgetBase;
-use BackendAuth;
 use Html;
 use Markdown;
+use BackendAuth;
+use Backend\Classes\FormWidgetBase;
 
 /**
  * Code Editor
  * Renders a code editor field.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MarkdownEditor extends FormWidgetBase
@@ -67,7 +66,6 @@ class MarkdownEditor extends FormWidgetBase
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('markdowneditor');
     }
 
@@ -99,13 +97,12 @@ class MarkdownEditor extends FormWidgetBase
     /**
      * Check to see if the generated HTML should be cleaned to remove any potential XSS
      *
-     * @return bool
+     * @return boolean
      */
     protected function shouldCleanHtml()
     {
         $user = BackendAuth::getUser();
-
-        return ! $user || ! $user->hasAccess('backend.allow_unsafe_markdown');
+        return !$user || !$user->hasAccess('backend.allow_unsafe_markdown');
     }
 
     /**
@@ -137,7 +134,7 @@ class MarkdownEditor extends FormWidgetBase
         }
 
         return [
-            'preview' => $previewHtml,
+            'preview' => $previewHtml
         ];
     }
 }

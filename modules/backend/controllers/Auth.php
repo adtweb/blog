@@ -1,26 +1,26 @@
-<?php
+<?php namespace Backend\Controllers;
 
-namespace Backend\Controllers;
-
-use ApplicationException;
-use Backend;
-use Backend\Classes\Controller;
-use Backend\Models\AccessLog;
-use BackendAuth;
-use Config;
-use Exception;
-use Flash;
 use Mail;
+use Flash;
+use Backend;
 use Request;
-use System\Classes\UpdateManager;
-use ValidationException;
 use Validator;
+use BackendAuth;
+use Backend\Models\AccessLog;
+use Backend\Classes\Controller;
+use System\Classes\UpdateManager;
+use ApplicationException;
+use ValidationException;
+use Exception;
+use Config;
 use Winter\Storm\Foundation\Http\Middleware\CheckForTrustedHost;
 
 /**
  * Authentication controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class Auth extends Controller
 {
@@ -71,8 +71,8 @@ class Auth extends Controller
     public function signin_onSubmit()
     {
         $rules = [
-            'login' => 'required|between:2,255',
-            'password' => 'required|between:4,255',
+            'login'    => 'required|between:2,255',
+            'password' => 'required|between:4,255'
         ];
 
         $validation = Validator::make(post(), $rules);
@@ -87,7 +87,7 @@ class Auth extends Controller
         // Authenticate user
         $user = BackendAuth::authenticate([
             'login' => post('login'),
-            'password' => post('password'),
+            'password' => post('password')
         ], $remember);
 
         $runMigrationsOnLogin = (bool) Config::get('cms.runMigrationsOnLogin', Config::get('app.debug', false));
@@ -163,7 +163,7 @@ class Auth extends Controller
         }
 
         $rules = [
-            'login' => 'required|between:2,255',
+            'login' => 'required|between:2,255'
         ];
 
         $validation = Validator::make(post(), $rules);
@@ -175,7 +175,7 @@ class Auth extends Controller
 
         if ($user) {
             $code = $user->getResetPasswordCode();
-            $link = Backend::url('backend/auth/reset/'.$user->id.'/'.$code);
+            $link = Backend::url('backend/auth/reset/' . $user->id . '/' . $code);
 
             $data = [
                 'name' => $user->full_name,
@@ -204,7 +204,7 @@ class Auth extends Controller
                 return $this->reset_onSubmit();
             }
 
-            if (! $userId || ! $code) {
+            if (!$userId || !$code) {
                 throw new ApplicationException(trans('backend::lang.account.reset_error'));
             }
         } catch (Exception $ex) {
@@ -220,12 +220,12 @@ class Auth extends Controller
      */
     public function reset_onSubmit()
     {
-        if (! post('id') || ! post('code')) {
+        if (!post('id') || !post('code')) {
             throw new ApplicationException(trans('backend::lang.account.reset_error'));
         }
 
         $rules = [
-            'password' => 'required|between:4,255',
+            'password' => 'required|between:4,255'
         ];
 
         $validation = Validator::make(post(), $rules);
@@ -236,11 +236,11 @@ class Auth extends Controller
         $code = post('code');
         $user = BackendAuth::findUserById(post('id'));
 
-        if (! $user->checkResetPasswordCode($code)) {
+        if (!$user->checkResetPasswordCode($code)) {
             throw new ApplicationException(trans('backend::lang.account.reset_error'));
         }
 
-        if (! $user->attemptResetPassword($code, post('password'))) {
+        if (!$user->attemptResetPassword($code, post('password'))) {
             throw new ApplicationException(trans('backend::lang.account.reset_fail'));
         }
 

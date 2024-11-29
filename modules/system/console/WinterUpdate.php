@@ -1,11 +1,9 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use Illuminate\Console\Command;
 use Str;
-use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Console\Command;
 use System\Classes\UpdateManager;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Console command to perform a system update.
@@ -14,6 +12,7 @@ use System\Classes\UpdateManager;
  * Winter gateway to receive the files via a package manager, then saves
  * the latest build number to the system.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterUpdate extends Command
@@ -71,7 +70,6 @@ class WinterUpdate extends Command
 
         if ($updates == 0) {
             $this->output->writeln('<info>No new updates found</info>');
-
             return;
         }
 
@@ -116,7 +114,6 @@ class WinterUpdate extends Command
 
     /**
      * Get the console command options.
-     *
      * @return array
      */
     protected function getOptions()

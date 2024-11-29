@@ -6,7 +6,7 @@
         value="<?= e($value) ?>"
         data-request="<?= $this->getEventHandler('onSubmit') ?>"
         data-request-complete="if($(this).val().length) {$(this).next().show()} else {$(this).next().hide()};"
-        <?= ! $searchOnEnter ? 'data-track-input' : '' ?>
+        <?= !$searchOnEnter ? 'data-track-input' : '' ?>
         data-load-indicator
         data-load-indicator-opaque
         class="form-control <?= $cssClasses ?>"

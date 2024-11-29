@@ -1,5 +1,5 @@
 <?php
-$author = $theme->getConfigValue('author');
+    $author = $theme->getConfigValue('author');
 ?>
 
 <div class="layout-cell min-height theme-thumbnail">
@@ -7,15 +7,15 @@ $author = $theme->getConfigValue('author');
 </div>
 <div class="layout-cell min-height theme-description">
     <h3><?= e($theme->getConfigValue('name', $theme->getDirName())) ?></h3>
-    <?php if (strlen($author)) { ?>
+    <?php if (strlen($author)): ?>
         <p class="author"><?= trans('cms::lang.theme.by_author', ['name' => '<a href="'.e($theme->getConfigValue('homepage', '#')).'">'.e($author).'</a>']) ?></p>
-    <?php } ?>
+    <?php endif ?>
     <p class="description">
         <?= e($theme->getConfigValue('description', 'The theme description is not provided.')) ?>
     </p>
     <div class="controls">
 
-        <?php if ($theme->isActiveTheme()) { ?>
+        <?php if ($theme->isActiveTheme()): ?>
             <button
                 type="submit"
                 disabled
@@ -23,7 +23,7 @@ $author = $theme->getConfigValue('author');
                 <i class="icon-star"></i>
                 <?= e(trans('cms::lang.theme.active_button')) ?>
             </button>
-        <?php } else { ?>
+        <?php else: ?>
             <button
                 type="submit"
                 data-request="onSetActiveTheme"
@@ -33,15 +33,15 @@ $author = $theme->getConfigValue('author');
                 <i class="icon-check"></i>
                 <?= e(trans('cms::lang.theme.activate_button')) ?>
             </button>
-        <?php } ?>
-        <?php if ($theme->hasCustomData()) { ?>
+        <?php endif ?>
+        <?php if ($theme->hasCustomData()): ?>
             <a
                 href="<?= Backend::url('cms/themeoptions/update/'.$theme->getDirName()) ?>"
                 class="btn btn-secondary<?= $theme->isActiveTheme() === false ? ' disabled' : '' ?>">
                 <i class="icon-paint-brush"></i>
                 <?= e(trans('cms::lang.theme.customize_button')) ?>
             </a>
-        <?php } ?>
+        <?php endif ?>
         <div class="dropdown">
             <button
                 data-toggle="dropdown"
@@ -100,7 +100,7 @@ $author = $theme->getConfigValue('author');
                         <?= e(trans('cms::lang.theme.export_button')) ?>
                     </a>
                 </li>
-                <?php if (! $theme->isActiveTheme()) { ?>
+                <?php if (!$theme->isActiveTheme()): ?>
                     <li role="presentation" class="divider"></li>
                     <li role="presentation">
                         <a
@@ -114,7 +114,7 @@ $author = $theme->getConfigValue('author');
                             <?= e(trans('cms::lang.theme.delete_button')) ?>
                         </a>
                     </li>
-                <?php } ?>
+                <?php endif ?>
             </ul>
         </div>
     </div>

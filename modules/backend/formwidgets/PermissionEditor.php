@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\FormWidgets;
+<?php namespace Backend\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 use BackendAuth;
@@ -29,6 +27,7 @@ use BackendAuth;
  * NOTE: Users are still not allowed to modify permissions that they themselves do not have access to
  *     availablePermissions: ['some.author.permission', 'some.other.permission', 'etc.some.system.permission']
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PermissionEditor extends FormWidgetBase
@@ -46,7 +45,7 @@ class PermissionEditor extends FormWidgetBase
     public $availablePermissions;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -59,12 +58,11 @@ class PermissionEditor extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('permissioneditor');
     }
 
@@ -78,7 +76,7 @@ class PermissionEditor extends FormWidgetBase
         }
 
         $permissionsData = $this->formField->getValueFromData($this->model);
-        if (! is_array($permissionsData)) {
+        if (!is_array($permissionsData)) {
             $permissionsData = [];
         }
 
@@ -90,7 +88,7 @@ class PermissionEditor extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
@@ -102,7 +100,7 @@ class PermissionEditor extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {
@@ -114,14 +112,14 @@ class PermissionEditor extends FormWidgetBase
      * Returns a safely parsed set of permissions, ensuring the user cannot elevate
      * their own permissions or permissions of another user above their own.
      *
-     * @param  string  $value
+     * @param string $value
      * @return array
      */
     protected function getSaveValueSecure($value)
     {
         $newPermissions = is_array($value) ? array_map('intval', $value) : [];
 
-        if (! empty($newPermissions)) {
+        if (!empty($newPermissions)) {
             $existingPermissions = $this->model->permissions ?: [];
 
             $allowedPermissions = array_map(function ($permissionObject) {
@@ -151,10 +149,10 @@ class PermissionEditor extends FormWidgetBase
 
         foreach ($permissions as $tab => $permissionsArray) {
             foreach ($permissionsArray as $index => $permission) {
-                if (! $this->user->hasAccess($permission->code) ||
+                if (!$this->user->hasAccess($permission->code) ||
                     (
                         is_array($this->availablePermissions) &&
-                        ! in_array($permission->code, $this->availablePermissions)
+                        !in_array($permission->code, $this->availablePermissions)
                     )) {
                     unset($permissionsArray[$index]);
                 }
@@ -162,7 +160,8 @@ class PermissionEditor extends FormWidgetBase
 
             if (empty($permissionsArray)) {
                 unset($permissions[$tab]);
-            } else {
+            }
+            else {
                 $permissions[$tab] = $permissionsArray;
             }
         }

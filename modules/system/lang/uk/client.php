@@ -34,15 +34,15 @@ return [
         'preview' => 'Попередній перегляд',
     ],
     'mediamanager' => [
-        'insert_link' => 'Вставити медіа-посилання',
-        'insert_image' => 'Вставити медіа-зображення',
-        'insert_video' => 'Вставити медіа-відео',
-        'insert_audio' => 'Вставити медіа-аудіо',
-        'invalid_file_empty_insert' => 'Будь ласка, оберіть файл для вставки посилання.',
-        'invalid_file_single_insert' => 'Будь ласка, оберіть один файл.',
-        'invalid_image_empty_insert' => 'Будь ласка, оберіть зображення для вставки.',
-        'invalid_video_empty_insert' => 'Будь ласка, оберіть відео для вставки.',
-        'invalid_audio_empty_insert' => 'Будь ласка, оберіть аудіо для вставки.',
+        'insert_link' => "Вставити медіа-посилання",
+        'insert_image' => "Вставити медіа-зображення",
+        'insert_video' => "Вставити медіа-відео",
+        'insert_audio' => "Вставити медіа-аудіо",
+        'invalid_file_empty_insert' => "Будь ласка, оберіть файл для вставки посилання.",
+        'invalid_file_single_insert' => "Будь ласка, оберіть один файл.",
+        'invalid_image_empty_insert' => "Будь ласка, оберіть зображення для вставки.",
+        'invalid_video_empty_insert' => "Будь ласка, оберіть відео для вставки.",
+        'invalid_audio_empty_insert' => "Будь ласка, оберіть аудіо для вставки.",
     ],
     'alert' => [
         'confirm_button_text' => 'Ок',
@@ -68,7 +68,7 @@ return [
         ],
         'scopes' => [
             'apply_button_text' => 'Застосувати',
-            'clear_button_text' => 'Очистити',
+            'clear_button_text'  => 'Очистити',
         ],
         'dates' => [
             'all' => 'всі',
@@ -81,7 +81,7 @@ return [
         'numbers' => [
             'all' => 'всі',
             'filter_button_text' => 'Фільтр',
-            'reset_button_text' => 'Скидання',
+            'reset_button_text'  => 'Скидання',
             'min_placeholder' => 'Min',
             'max_placeholder' => 'Max',
         ],

@@ -1,12 +1,11 @@
-<?php
-
-namespace System\Models;
+<?php namespace System\Models;
 
 use Model;
 
 /**
  * System log settings
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class LogSetting extends Model
@@ -17,7 +16,7 @@ class LogSetting extends Model
      * @var array Behaviors implemented by this model.
      */
     public $implement = [
-        \System\Behaviors\SettingsModel::class,
+        \System\Behaviors\SettingsModel::class
     ];
 
     /**
@@ -37,22 +36,21 @@ class LogSetting extends Model
 
     public static function filterSettingItems($manager)
     {
-        if (! self::isConfigured()) {
+        if (!self::isConfigured()) {
             $manager->removeSettingItem('Winter.System', 'request_logs');
             $manager->removeSettingItem('Winter.Cms', 'theme_logs');
-
             return;
         }
 
-        if (! self::get('log_events')) {
+        if (!self::get('log_events')) {
             $manager->removeSettingItem('Winter.System', 'event_logs');
         }
 
-        if (! self::get('log_requests')) {
+        if (!self::get('log_requests')) {
             $manager->removeSettingItem('Winter.System', 'request_logs');
         }
 
-        if (! self::get('log_theme')) {
+        if (!self::get('log_theme')) {
             $manager->removeSettingItem('Winter.Cms', 'theme_logs');
         }
     }
@@ -60,7 +58,6 @@ class LogSetting extends Model
     /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
-     *
      * @return void
      */
     public function initSettingsData()

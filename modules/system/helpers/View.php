@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Helpers;
+<?php namespace System\Helpers;
 
 use View as ViewFacade;
 

@@ -52,7 +52,7 @@ class ImageResizerTest extends PluginTestCase
     {
         // Resize with default options
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
+            (new CmsController())->themeUrl('assets/images/winter.png'),
             100,
             100
         );
@@ -71,7 +71,7 @@ class ImageResizerTest extends PluginTestCase
 
         // Resize with customised options
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
+            (new CmsController())->themeUrl('assets/images/winter.png'),
             150,
             120,
             [
@@ -80,7 +80,7 @@ class ImageResizerTest extends PluginTestCase
                 'sharpen' => 23,
                 'interlace' => true,
                 'quality' => 73,
-                'extension' => 'jpg',
+                'extension' => 'jpg'
             ]
         );
         self::assertArraySubset([
@@ -92,7 +92,7 @@ class ImageResizerTest extends PluginTestCase
                 'sharpen' => 23,
                 'interlace' => true,
                 'quality' => 73,
-                'extension' => 'jpg',
+                'extension' => 'jpg'
             ],
         ], $imageResizer->getConfig());
 
@@ -108,7 +108,7 @@ class ImageResizerTest extends PluginTestCase
         });
 
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
+            (new CmsController())->themeUrl('assets/images/winter.png'),
             100,
             100,
             []
@@ -130,7 +130,7 @@ class ImageResizerTest extends PluginTestCase
 
         // Resize with a falsey height specified
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
+            (new CmsController())->themeUrl('assets/images/winter.png'),
             100,
             false
         );
@@ -140,7 +140,7 @@ class ImageResizerTest extends PluginTestCase
         ], $imageResizer->getConfig());
 
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
+            (new CmsController())->themeUrl('assets/images/winter.png'),
             100,
             null
         );
@@ -151,7 +151,7 @@ class ImageResizerTest extends PluginTestCase
 
         // Resize with a falsey width specified
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
+            (new CmsController())->themeUrl('assets/images/winter.png'),
             '',
             100
         );
@@ -161,8 +161,8 @@ class ImageResizerTest extends PluginTestCase
         ], $imageResizer->getConfig());
 
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
-            '0',
+            (new CmsController())->themeUrl('assets/images/winter.png'),
+            "0",
             100
         );
         self::assertArraySubset([
@@ -183,7 +183,7 @@ class ImageResizerTest extends PluginTestCase
         $this->copyMedia();
 
         $imageResizer = new ImageResizer(
-            (new CmsController)->themeUrl('assets/images/winter.png'),
+            (new CmsController())->themeUrl('assets/images/winter.png'),
             100,
             100
         );
@@ -266,7 +266,7 @@ class ImageResizerTest extends PluginTestCase
         $this->assertEquals('png', $imageResizer->getConfig()['options']['extension']);
 
         // URL for a FileModel instance (absolute URL)
-        $fileModel = new FileModel;
+        $fileModel = new FileModel();
         $fileModel->fromFile(base_path('modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png'));
         $fileModel->save();
 
@@ -281,12 +281,12 @@ class ImageResizerTest extends PluginTestCase
         $fileModel->delete();
 
         // URL of a FileModel instance (relative URL)
-        $fileModel = new FileModel;
+        $fileModel = new FileModel();
         $fileModel->fromFile(base_path('modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png'));
         $fileModel->save();
 
         $imageResizer = new ImageResizer(
-            str_replace(url('').'/', '/', FileModel::first()->getPath()),
+            str_replace(url('') . '/', '/', FileModel::first()->getPath()),
             100,
             100
         );
@@ -296,7 +296,7 @@ class ImageResizerTest extends PluginTestCase
     public function testDirectSources()
     {
         // FileModel instance itself
-        $fileModel = new FileModel;
+        $fileModel = new FileModel();
         $fileModel->fromFile(base_path('modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png'));
         $fileModel->save();
 
@@ -352,7 +352,7 @@ class ImageResizerTest extends PluginTestCase
 
     public function testGetResizedUrl()
     {
-        $imageResizer = new ImageResizer((new CmsController)->themeUrl('assets/images/winter.png'));
+        $imageResizer = new ImageResizer((new CmsController())->themeUrl('assets/images/winter.png'));
 
         Config::set('cms.linkPolicy', 'force');
         $url = $imageResizer->getResizedUrl();
@@ -365,7 +365,7 @@ class ImageResizerTest extends PluginTestCase
 
     public function testGetResizerUrl()
     {
-        $imageResizer = new ImageResizer((new CmsController)->themeUrl('assets/images/winter.png'));
+        $imageResizer = new ImageResizer((new CmsController())->themeUrl('assets/images/winter.png'));
 
         Config::set('cms.linkPolicy', 'force');
         $url = $imageResizer->getResizerUrl();
@@ -382,13 +382,13 @@ class ImageResizerTest extends PluginTestCase
 
         Config::set('filesystems.disks.test_local', [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root'   => storage_path('app'),
         ]);
 
         Config::set('cms.storage.media', [
-            'disk' => 'test_local',
+            'disk'   => 'test_local',
             'folder' => 'media',
-            'path' => '/storage/temp/app/media',
+            'path'   => '/storage/temp/app/media',
         ]);
     }
 
@@ -396,13 +396,13 @@ class ImageResizerTest extends PluginTestCase
     {
         $mediaPath = storage_path('app/media');
 
-        if (! is_dir($mediaPath)) {
+        if (!is_dir($mediaPath)) {
             mkdir($mediaPath, 0777, true);
         }
 
         foreach (glob(base_path('modules/system/tests/fixtures/media/*')) as $file) {
             $path = pathinfo($file);
-            copy($file, $mediaPath.DIRECTORY_SEPARATOR.$path['basename']);
+            copy($file, $mediaPath . DIRECTORY_SEPARATOR . $path['basename']);
         }
     }
 

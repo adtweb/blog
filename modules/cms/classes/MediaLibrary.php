@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use System\Classes\MediaLibrary as SystemMediaLibrary;
 
@@ -8,8 +6,8 @@ use System\Classes\MediaLibrary as SystemMediaLibrary;
  * Provides abstraction level for the Media Library operations.
  * Implements the library caching features and security checks.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
- *
  * @deprecated Use System\Classes\MediaLibrary. Remove if year >= 2020.
  */
 class MediaLibrary extends SystemMediaLibrary
@@ -19,7 +17,7 @@ class MediaLibrary extends SystemMediaLibrary
      */
     protected function init()
     {
-        traceLog('Class '.__CLASS__.' has been deprecated, use '.SystemMediaLibrary::class.' instead.');
+        traceLog('Class ' . __CLASS__ . ' has been deprecated, use ' . SystemMediaLibrary::class . ' instead.');
         parent::init();
     }
 }

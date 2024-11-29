@@ -1,6 +1,4 @@
-<?php
-
-namespace System;
+<?php namespace System;
 
 use Backend;
 use Backend\Classes\WidgetManager;
@@ -48,7 +46,7 @@ class ServiceProvider extends ModuleServiceProvider
         $classLoader = $this->app->make(ClassLoader::class);
         foreach ($modules as $module) {
             if (strtolower(trim($module)) != 'system') {
-                $classLoader->autoloadPackage($module.'\\', 'modules/'.strtolower($module).'/');
+                $classLoader->autoloadPackage($module . '\\', "modules/" . strtolower($module) . '/');
             }
         }
 
@@ -75,7 +73,7 @@ class ServiceProvider extends ModuleServiceProvider
          */
         foreach ($modules as $module) {
             if (strtolower(trim($module)) != 'system') {
-                $this->app->register('\\'.$module.'\ServiceProvider');
+                $this->app->register('\\' . $module . '\ServiceProvider');
             }
         }
 
@@ -108,7 +106,7 @@ class ServiceProvider extends ModuleServiceProvider
         /*
          * Set a default samesite config value for invalid values
          */
-        if (! in_array(strtolower(Config::get('session.same_site')), ['lax', 'strict', 'none'])) {
+        if (!in_array(strtolower(Config::get('session.same_site')), ['lax', 'strict', 'none'])) {
             Config::set('session.same_site', 'Lax');
         }
 
@@ -158,7 +156,7 @@ class ServiceProvider extends ModuleServiceProvider
         $backendUri = RouterHelper::normalizeUrl(Config::get('cms.backendUri', 'backend'));
         foreach ($requests as $request) {
             if (substr($request, 0, 1) == '@') {
-                $request = $backendUri.substr($request, 1);
+                $request = $backendUri . substr($request, 1);
             }
 
             if (stripos($path, $request) === 0) {
@@ -176,7 +174,7 @@ class ServiceProvider extends ModuleServiceProvider
                 // @see octobercms/october#3208
                 || (
                     $this->app->hasDatabase()
-                    && ! Schema::hasTable(UpdateManager::instance()->getMigrationTableName())
+                    && !Schema::hasTable(UpdateManager::instance()->getMigrationTableName())
                 )
             )
         ) {
@@ -192,20 +190,20 @@ class ServiceProvider extends ModuleServiceProvider
         MarkupManager::instance()->registerCallback(function ($manager) {
             $manager->registerFunctions([
                 // Functions
-                'input' => 'input',
-                'post' => 'post',
-                'get' => 'get',
-                'link_to' => 'link_to',
-                'link_to_asset' => 'link_to_asset',
-                'link_to_route' => 'link_to_route',
+                'input'          => 'input',
+                'post'           => 'post',
+                'get'            => 'get',
+                'link_to'        => 'link_to',
+                'link_to_asset'  => 'link_to_asset',
+                'link_to_route'  => 'link_to_route',
                 'link_to_action' => 'link_to_action',
-                'action' => 'action',
-                'url' => 'url',
-                'route' => 'route',
-                'secure_url' => 'secure_url',
-                'secure_asset' => 'secure_asset',
-                'date' => [function (Environment $env, $value, $timezone = null) {
-                    if (! ($value instanceof DateInterval)) {
+                'action'         => 'action',
+                'url'            => 'url',
+                'route'          => 'route',
+                'secure_url'     => 'secure_url',
+                'secure_asset'   => 'secure_asset',
+                'date'           => [function (Environment $env, $value, $timezone = null) {
+                    if (!($value instanceof DateInterval)) {
                         $value = DateTime::makeCarbon($value)->toDateTime();
                     }
 
@@ -213,43 +211,43 @@ class ServiceProvider extends ModuleServiceProvider
                 }, 'options' => ['needs_environment' => true]],
 
                 // Classes
-                'array_*' => ['Arr', '*'],
-                'str_*' => ['Str', '*'],
-                'url_*' => ['Url', '*'],
-                'html_*' => ['Html', '*'],
-                'form_*' => ['Form', '*'],
-                'form_macro' => ['Form', '__call'],
+                'array_*'        => ['Arr', '*'],
+                'str_*'          => ['Str', '*'],
+                'url_*'          => ['Url', '*'],
+                'html_*'         => ['Html', '*'],
+                'form_*'         => ['Form', '*'],
+                'form_macro'     => ['Form', '__call']
             ]);
 
             $manager->registerFilters([
                 // Classes
-                'slug' => ['Str', 'slug'],
-                'plural' => ['Str', 'plural'],
-                'singular' => ['Str', 'singular'],
-                'finish' => ['Str', 'finish'],
-                'snake' => ['Str', 'snake'],
-                'camel' => ['Str', 'camel'],
-                'studly' => ['Str', 'studly'],
-                'trans' => ['Lang', 'get'],
-                'transchoice' => ['Lang', 'choice'],
-                'date' => [function (Environment $env, $value, $format = null, $timezone = null) {
-                    if (! ($value instanceof DateInterval)) {
+                'slug'           => ['Str', 'slug'],
+                'plural'         => ['Str', 'plural'],
+                'singular'       => ['Str', 'singular'],
+                'finish'         => ['Str', 'finish'],
+                'snake'          => ['Str', 'snake'],
+                'camel'          => ['Str', 'camel'],
+                'studly'         => ['Str', 'studly'],
+                'trans'          => ['Lang', 'get'],
+                'transchoice'    => ['Lang', 'choice'],
+                'date'           => [function (Environment $env, $value, $format = null, $timezone = null) {
+                    if (!($value instanceof DateInterval)) {
                         $value = DateTime::makeCarbon($value)->toDateTime();
                     }
 
                     return twig_date_format_filter($env, $value, $format, $timezone);
                 }, 'options' => ['needs_environment' => true]],
-                'md' => function ($value) {
+                'md'             => function ($value) {
                     return (is_string($value) && $value !== '') ? Markdown::parse($value) : '';
                 },
-                'md_safe' => function ($value) {
+                'md_safe'        => function ($value) {
                     return (is_string($value) && $value !== '') ? Markdown::parseSafe($value) : '';
                 },
-                'md_line' => function ($value) {
+                'md_line'        => function ($value) {
                     return (is_string($value) && $value !== '') ? Markdown::parseLine($value) : '';
                 },
-                'time_since' => ['System\Helpers\DateTime', 'timeSince'],
-                'time_tense' => ['System\Helpers\DateTime', 'timeTense'],
+                'time_since'     => ['System\Helpers\DateTime', 'timeSince'],
+                'time_tense'     => ['System\Helpers\DateTime', 'timeTense'],
             ]);
         });
     }
@@ -324,7 +322,6 @@ class ServiceProvider extends ModuleServiceProvider
     {
         Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
             $handler = new ErrorHandler;
-
             return $handler->handleException($exception);
         });
     }
@@ -356,7 +353,6 @@ class ServiceProvider extends ModuleServiceProvider
         $this->app->singleton('twig.environment.mailer', function ($app) {
             $twig = MarkupManager::makeBaseTwigEnvironment();
             $twig->addTokenParser(new \System\Twig\MailPartialTokenParser);
-
             return $twig;
         });
 
@@ -406,8 +402,7 @@ class ServiceProvider extends ModuleServiceProvider
         Event::listen('mailer.beforeAddContent', function ($mailer, $message, $view, $data, $raw, $plain) {
             $method = $raw === null ? 'addContentToMailer' : 'addRawContentToMailer';
             $plainOnly = $view === null; // When "plain-text only" email is sent, $view is null, this sets the flag appropriately
-
-            return ! MailManager::instance()->$method($message, $raw ?: $view ?: $plain, $data, $plainOnly);
+            return !MailManager::instance()->$method($message, $raw ?: $view ?: $plain, $data, $plainOnly);
         });
     }
 
@@ -419,13 +414,13 @@ class ServiceProvider extends ModuleServiceProvider
         BackendMenu::registerCallback(function ($manager) {
             $manager->registerMenuItems('Winter.System', [
                 'system' => [
-                    'label' => 'system::lang.settings.menu_label',
-                    'icon' => 'icon-cog',
-                    'iconSvg' => 'modules/system/assets/images/cog-icon.svg',
-                    'url' => Backend::url('system/settings'),
+                    'label'       => 'system::lang.settings.menu_label',
+                    'icon'        => 'icon-cog',
+                    'iconSvg'     => 'modules/system/assets/images/cog-icon.svg',
+                    'url'         => Backend::url('system/settings'),
                     'permissions' => [],
-                    'order' => 1000,
-                ],
+                    'order'       => 1000
+                ]
             ]);
             $manager->registerOwnerAlias('Winter.System', 'October.System');
         });
@@ -459,8 +454,8 @@ class ServiceProvider extends ModuleServiceProvider
     {
         WidgetManager::instance()->registerReportWidgets(function ($manager) {
             $manager->registerReportWidget(\System\ReportWidgets\Status::class, [
-                'label' => 'backend::lang.dashboard.status.widget_title_default',
-                'context' => 'dashboard',
+                'label'   => 'backend::lang.dashboard.status.widget_title_default',
+                'context' => 'dashboard'
             ]);
         });
     }
@@ -509,78 +504,78 @@ class ServiceProvider extends ModuleServiceProvider
         SettingsManager::instance()->registerCallback(function ($manager) {
             $manager->registerSettingItems('Winter.System', [
                 'updates' => [
-                    'label' => 'system::lang.updates.menu_label',
+                    'label'       => 'system::lang.updates.menu_label',
                     'description' => 'system::lang.updates.menu_description',
-                    'category' => SettingsManager::CATEGORY_SYSTEM,
-                    'icon' => 'icon-cloud-download',
-                    'url' => Backend::url('system/updates'),
+                    'category'    => SettingsManager::CATEGORY_SYSTEM,
+                    'icon'        => 'icon-cloud-download',
+                    'url'         => Backend::url('system/updates'),
                     'permissions' => ['system.manage_updates'],
-                    'order' => 300,
+                    'order'       => 300
                 ],
                 'administrators' => [
-                    'label' => 'backend::lang.user.menu_label',
+                    'label'       => 'backend::lang.user.menu_label',
                     'description' => 'backend::lang.user.menu_description',
-                    'category' => SettingsManager::CATEGORY_SYSTEM,
-                    'icon' => 'icon-users',
-                    'url' => Backend::url('backend/users'),
+                    'category'    => SettingsManager::CATEGORY_SYSTEM,
+                    'icon'        => 'icon-users',
+                    'url'         => Backend::url('backend/users'),
                     'permissions' => ['backend.manage_users'],
-                    'order' => 400,
+                    'order'       => 400
                 ],
                 'mail_templates' => [
-                    'label' => 'system::lang.mail_templates.menu_label',
+                    'label'       => 'system::lang.mail_templates.menu_label',
                     'description' => 'system::lang.mail_templates.menu_description',
-                    'category' => SettingsManager::CATEGORY_MAIL,
-                    'icon' => 'icon-envelope-square',
-                    'url' => Backend::url('system/mailtemplates'),
+                    'category'    => SettingsManager::CATEGORY_MAIL,
+                    'icon'        => 'icon-envelope-square',
+                    'url'         => Backend::url('system/mailtemplates'),
                     'permissions' => ['system.manage_mail_templates'],
-                    'order' => 610,
+                    'order'       => 610
                 ],
                 'mail_settings' => [
-                    'label' => 'system::lang.mail.menu_label',
+                    'label'       => 'system::lang.mail.menu_label',
                     'description' => 'system::lang.mail.menu_description',
-                    'category' => SettingsManager::CATEGORY_MAIL,
-                    'icon' => 'icon-envelope',
-                    'class' => 'System\Models\MailSetting',
+                    'category'    => SettingsManager::CATEGORY_MAIL,
+                    'icon'        => 'icon-envelope',
+                    'class'       => 'System\Models\MailSetting',
                     'permissions' => ['system.manage_mail_settings'],
-                    'order' => 620,
+                    'order'       => 620
                 ],
                 'mail_brand_settings' => [
-                    'label' => 'system::lang.mail_brand.menu_label',
+                    'label'       => 'system::lang.mail_brand.menu_label',
                     'description' => 'system::lang.mail_brand.menu_description',
-                    'category' => SettingsManager::CATEGORY_MAIL,
-                    'icon' => 'icon-paint-brush',
-                    'url' => Backend::url('system/mailbrandsettings'),
+                    'category'    => SettingsManager::CATEGORY_MAIL,
+                    'icon'        => 'icon-paint-brush',
+                    'url'         => Backend::url('system/mailbrandsettings'),
                     'permissions' => ['system.manage_mail_templates'],
-                    'order' => 630,
+                    'order'       => 630
                 ],
                 'event_logs' => [
-                    'label' => 'system::lang.event_log.menu_label',
+                    'label'       => 'system::lang.event_log.menu_label',
                     'description' => 'system::lang.event_log.menu_description',
-                    'category' => SettingsManager::CATEGORY_LOGS,
-                    'icon' => 'icon-exclamation-triangle',
-                    'url' => Backend::url('system/eventlogs'),
+                    'category'    => SettingsManager::CATEGORY_LOGS,
+                    'icon'        => 'icon-exclamation-triangle',
+                    'url'         => Backend::url('system/eventlogs'),
                     'permissions' => ['system.access_logs'],
-                    'order' => 900,
-                    'keywords' => 'error exception',
+                    'order'       => 900,
+                    'keywords'    => 'error exception'
                 ],
                 'request_logs' => [
-                    'label' => 'system::lang.request_log.menu_label',
+                    'label'       => 'system::lang.request_log.menu_label',
                     'description' => 'system::lang.request_log.menu_description',
-                    'category' => SettingsManager::CATEGORY_LOGS,
-                    'icon' => 'icon-file-o',
-                    'url' => Backend::url('system/requestlogs'),
+                    'category'    => SettingsManager::CATEGORY_LOGS,
+                    'icon'        => 'icon-file-o',
+                    'url'         => Backend::url('system/requestlogs'),
                     'permissions' => ['system.access_logs'],
-                    'order' => 910,
-                    'keywords' => '404 error',
+                    'order'       => 910,
+                    'keywords'    => '404 error'
                 ],
                 'log_settings' => [
-                    'label' => 'system::lang.log.menu_label',
+                    'label'       => 'system::lang.log.menu_label',
                     'description' => 'system::lang.log.menu_description',
-                    'category' => SettingsManager::CATEGORY_LOGS,
-                    'icon' => 'icon-dot-circle-o',
-                    'class' => 'System\Models\LogSetting',
+                    'category'    => SettingsManager::CATEGORY_LOGS,
+                    'icon'        => 'icon-dot-circle-o',
+                    'class'       => 'System\Models\LogSetting',
                     'permissions' => ['system.manage_logs'],
-                    'order' => 990,
+                    'order'       => 990
                 ],
             ]);
             $manager->registerOwnerAlias('Winter.System', 'October.System');
@@ -614,7 +609,6 @@ class ServiceProvider extends ModuleServiceProvider
              */
             $validator->extend('extensions', function ($attribute, $value, $parameters) {
                 $extension = strtolower($value->getClientOriginalExtension());
-
                 return in_array($extension, $parameters);
             });
 
@@ -624,7 +618,7 @@ class ServiceProvider extends ModuleServiceProvider
 
             $plugins = PluginManager::instance()->getRegistrationMethodValues('registerValidationRules');
             foreach ($plugins as $validators) {
-                if (! is_array($validators) || empty($validators)) {
+                if (!is_array($validators) || empty($validators)) {
                     continue;
                 }
                 foreach ($validators as $name => $validator) {

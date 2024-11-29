@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use File;
 use Symfony\Component\Process\Process;
@@ -41,22 +39,20 @@ class MixRun extends Command
         $name = $this->argument('package');
         $script = $this->argument('script');
 
-        if (! in_array($name, array_keys($packages))) {
+        if (!in_array($name, array_keys($packages))) {
             $this->error(
                 sprintf('Package "%s" is not a registered package.', $name)
             );
-
             return 1;
         }
 
         $package = $packages[$name];
         $packageJson = $this->readPackageJson($package);
 
-        if (! isset($packageJson['scripts'][$script])) {
+        if (!isset($packageJson['scripts'][$script])) {
             $this->error(
                 sprintf('Script "%s" is not defined in package "%s".', $script, $name)
             );
-
             return 1;
         }
 
@@ -68,6 +64,7 @@ class MixRun extends Command
         } else {
             array_unshift($command, 'npm', 'run', $script);
         }
+
 
         $process = new Process(
             $command,
@@ -84,7 +81,7 @@ class MixRun extends Command
         }
 
         $exitCode = $process->run(function ($status, $stdout) {
-            if (! $this->option('silent')) {
+            if (!$this->option('silent')) {
                 $this->getOutput()->write($stdout);
             }
         });
@@ -98,7 +95,6 @@ class MixRun extends Command
     protected function readPackageJson(array $package): array
     {
         $packageJsonPath = base_path($package['package']);
-
         return File::exists($packageJsonPath)
             ? json_decode(File::get($packageJsonPath), true)
             : [];

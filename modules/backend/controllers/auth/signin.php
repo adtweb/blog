@@ -32,7 +32,7 @@
             </button>
         </div>
 
-        <?php if (is_null(config('cms.backendForceRemember', true))) { ?>
+        <?php if (is_null(config('cms.backendForceRemember', true))): ?>
             <!-- Remember checkbox -->
             <div class="form-group checkbox-field horizontal-form remember">
                 <div class="checkbox custom-checkbox">
@@ -45,7 +45,7 @@
                     </label>
                 </div>
             </div>
-        <?php } ?>
+        <?php endif; ?>
 
         <p class="wn-icon-lock pull-right forgot-password">
             <!-- Forgot your password? -->

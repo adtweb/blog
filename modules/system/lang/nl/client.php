@@ -47,38 +47,38 @@ return [
     'alert' => [
         'confirm_button_text' => 'OK',
         'cancel_button_text' => 'Annuleren',
-        'widget_remove_confirm' => 'Deze widget verwijderen?',
+        'widget_remove_confirm' => 'Deze widget verwijderen?'
     ],
     'datepicker' => [
         'previousMonth' => 'Vorige maand',
         'nextMonth' => 'Volgende maan',
         'months' => ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
         'weekdays' => ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'],
-        'weekdaysShort' => ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
+        'weekdaysShort' => ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za']
     ],
     'colorpicker' => [
         'choose' => 'OK',
     ],
     'filter' => [
         'group' => [
-            'all' => 'alle',
+            'all' => 'alle'
         ],
         'scopes' => [
             'apply_button_text' => 'Toepassen',
-            'clear_button_text' => 'Resetten',
+            'clear_button_text'  => 'Resetten'
         ],
         'dates' => [
             'all' => 'alle',
             'filter_button_text' => 'Filteren',
-            'reset_button_text' => 'Resetten',
+            'reset_button_text'  => 'Resetten',
             'date_placeholder' => 'Datum',
             'after_placeholder' => 'Na',
-            'before_placeholder' => 'Voor',
+            'before_placeholder' => 'Voor'
         ],
         'numbers' => [
             'all' => 'alle',
             'filter_button_text' => 'Filteren',
-            'reset_button_text' => 'Resetten',
+            'reset_button_text'  => 'Resetten',
             'min_placeholder' => 'Minimum',
             'max_placeholder' => 'Maximum',
         ],

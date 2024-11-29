@@ -1,7 +1,7 @@
 <!-- Password -->
-<?php if ($this->previewMode) { ?>
+<?php if ($this->previewMode): ?>
     <div class="form-control">********</div>
-<?php } else { ?>
+<?php else: ?>
     <input
         type="password"
         name="<?= $field->getName() ?>"
@@ -13,4 +13,4 @@
         <?= $field->hasAttribute('maxlength') ? '' : 'maxlength="255"' ?>
         <?= $field->getAttributes() ?>
     />
-<?php } ?>
+<?php endif ?>

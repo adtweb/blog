@@ -1,4 +1,4 @@
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <div class="modal-body">
 
@@ -12,18 +12,18 @@
                     <h4><?= e(trans('backend::lang.import_export.updated')) ?></h4>
                     <p><?= $importResults->updated ?></p>
                 </div>
-                <?php if ($importResults->skippedCount) { ?>
+                <?php if ($importResults->skippedCount): ?>
                     <div class="scoreboard-item title-value">
                         <h4><?= e(trans('backend::lang.import_export.skipped')) ?></h4>
                         <p><?= $importResults->skippedCount ?></p>
                     </div>
-                <?php } ?>
-                <?php if ($importResults->warningCount) { ?>
+                <?php endif ?>
+                <?php if ($importResults->warningCount): ?>
                     <div class="scoreboard-item title-value">
                         <h4><?= e(trans('backend::lang.import_export.warnings')) ?></h4>
                         <p><?= $importResults->warningCount ?></p>
                     </div>
-                <?php } ?>
+                <?php endif ?>
                 <div class="scoreboard-item title-value">
                     <h4><?= e(trans('backend::lang.import_export.errors')) ?></h4>
                     <p><?= $importResults->errorCount ?></p>
@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <?php if ($importResults->hasMessages) { ?>
+        <?php if ($importResults->hasMessages): ?>
             <?php
             $tabs = [
                 'skipped' => trans('backend::lang.import_export.skipped_rows'),
@@ -39,48 +39,46 @@
                 'errors' => trans('backend::lang.import_export.errors'),
             ];
 
-            if (! $importResults->skippedCount) {
+            if (!$importResults->skippedCount) {
                 unset($tabs['skipped']);
             }
-            if (! $importResults->warningCount) {
+            if (!$importResults->warningCount) {
                 unset($tabs['warnings']);
             }
-            if (! $importResults->errorCount) {
+            if (!$importResults->errorCount) {
                 unset($tabs['errors']);
             }
             ?>
             <div class="control-tabs secondary-tabs" data-control="tab">
                 <ul class="nav nav-tabs">
-                    <?php $count = 0;
-            foreach ($tabs as $code => $tab) { ?>
+                    <?php $count = 0; foreach ($tabs as $code => $tab): ?>
                         <li class="<?= $count++ == 0 ? 'active' : '' ?>">
                             <a href="#importTab<?= $code ?>">
                                 <?= $tab ?>
                             </a>
                         </li>
-                    <?php } ?>
+                    <?php endforeach ?>
                 </ul>
                 <div class="tab-content">
-                    <?php $count = 0;
-            foreach ($tabs as $code => $tab) { ?>
+                    <?php $count = 0; foreach ($tabs as $code => $tab): ?>
                         <div class="tab-pane <?= $count++ == 0 ? 'active' : '' ?>">
                             <div class="list-preview">
                                 <div class="control-simplelist is-divided is-scrollable size-small" data-control="simplelist">
                                     <ul>
-                                        <?php foreach ($importResults->{$code} as $row => $message) { ?>
+                                        <?php foreach ($importResults->{$code} as $row => $message): ?>
                                             <li>
                                                 <strong><?= e(trans('backend::lang.import_export.row', ['row' => $row + $sourceIndexOffset])) ?></strong>
                                                 - <?= e($message) ?>
                                             </li>
-                                        <?php } ?>
+                                        <?php endforeach ?>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    <?php } ?>
+                    <?php endforeach ?>
                 </div>
             </div>
-        <?php } ?>
+        <?php endif ?>
 
     </div>
     <div class="modal-footer">
@@ -92,7 +90,7 @@
         </a>
     </div>
 
-<?php } else { ?>
+<?php else: ?>
 
     <div class="modal-body">
         <p class="flash-message static error"><?= e($this->fatalError) ?></p>
@@ -106,4 +104,4 @@
         </button>
     </div>
 
-<?php } ?>
+<?php endif ?>

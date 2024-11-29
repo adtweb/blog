@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use InvalidArgumentException;
 use Winter\Storm\Parse\PHP\ArrayFile;
@@ -22,14 +20,14 @@ abstract class BaseScaffoldCommand extends GeneratorCommand
         $parts = explode('.', $pluginCode);
 
         if (count($parts) !== 2) {
-            throw new InvalidArgumentException('Invalid plugin name, either too many dots or not enough. Example: Author.PluginName');
+            throw new InvalidArgumentException("Invalid plugin name, either too many dots or not enough. Example: Author.PluginName");
         }
 
         $pluginName = array_pop($parts);
         $authorName = array_pop($parts);
 
         return [
-            'name' => $this->getNameInput(),
+            'name'   => $this->getNameInput(),
             'plugin' => $pluginName,
             'author' => $authorName,
         ];
@@ -65,7 +63,7 @@ abstract class BaseScaffoldCommand extends GeneratorCommand
         $name = array_pop($parts);
         $author = array_pop($parts);
 
-        return plugins_path(strtolower($author).'/'.strtolower($name));
+        return plugins_path(strtolower($author) . '/' . strtolower($name));
     }
 
     /**
@@ -84,18 +82,18 @@ abstract class BaseScaffoldCommand extends GeneratorCommand
         // Generate the path to the localization file to modify
         $langFilePath = plugins_path(
             $this->vars['plugin_folder']
-            .DIRECTORY_SEPARATOR
-            .'lang'
-            .DIRECTORY_SEPARATOR
-            .$this->laravel->getLocale()
-            .DIRECTORY_SEPARATOR
-            .'lang.php'
+            . DIRECTORY_SEPARATOR
+            . 'lang'
+            . DIRECTORY_SEPARATOR
+            . $this->laravel->getLocale()
+            . DIRECTORY_SEPARATOR
+            . 'lang.php'
         );
-        if (! file_exists($langFilePath)) {
+        if (!file_exists($langFilePath)) {
             $this->makeDirectory($langFilePath);
-            $comment = 'File generated: '.str_replace(base_path(), '', $langFilePath);
+            $comment = 'File generated: ' . str_replace(base_path(), '', $langFilePath);
         } else {
-            $comment = 'File updated: '.str_replace(base_path(), '', $langFilePath);
+            $comment = 'File updated: ' . str_replace(base_path(), '', $langFilePath);
         }
 
         // Store the localization messages to the determined file path

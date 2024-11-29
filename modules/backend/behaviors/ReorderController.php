@@ -1,11 +1,9 @@
-<?php
+<?php namespace Backend\Behaviors;
 
-namespace Backend\Behaviors;
-
-use ApplicationException;
-use Backend;
-use Backend\Classes\ControllerBehavior;
 use Lang;
+use Backend;
+use ApplicationException;
+use Backend\Classes\ControllerBehavior;
 
 /**
  * Used for reordering and sorting records.
@@ -22,6 +20,7 @@ use Lang;
  * values as either a YAML file, located in the controller view directory,
  * or directly as a PHP array.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ReorderController extends ControllerBehavior
@@ -53,8 +52,8 @@ class ReorderController extends ControllerBehavior
 
     /**
      * @var string Reordering mode:
-     *             - simple: Winter\Storm\Database\Traits\Sortable
-     *             - nested: Winter\Storm\Database\Traits\NestedTree
+     * - simple: Winter\Storm\Database\Traits\Sortable
+     * - nested: Winter\Storm\Database\Traits\NestedTree
      */
     protected $sortMode;
 
@@ -70,8 +69,7 @@ class ReorderController extends ControllerBehavior
 
     /**
      * Behavior constructor
-     *
-     * @param  Backend\Classes\Controller  $controller
+     * @param Backend\Classes\Controller $controller
      */
     public function __construct($controller)
     {
@@ -123,8 +121,8 @@ class ReorderController extends ControllerBehavior
          */
         if ($this->sortMode == 'simple') {
             if (
-                (! $ids = post('record_ids')) ||
-                (! $orders = post('sort_orders'))
+                (!$ids = post('record_ids')) ||
+                (!$orders = post('sort_orders'))
             ) {
                 return;
             }
@@ -191,7 +189,7 @@ class ReorderController extends ControllerBehavior
 
         $modelClass = $this->getConfig('modelClass');
 
-        if (! $modelClass) {
+        if (!$modelClass) {
             throw new ApplicationException('Please specify the modelClass property for reordering');
         }
 
@@ -200,7 +198,6 @@ class ReorderController extends ControllerBehavior
 
     /**
      * Returns the display name for a record.
-     *
      * @return string
      */
     public function reorderGetRecordName($record)
@@ -210,7 +207,6 @@ class ReorderController extends ControllerBehavior
 
     /**
      * Validate the supplied form model.
-     *
      * @return void
      */
     protected function validateModel()
@@ -225,13 +221,15 @@ class ReorderController extends ControllerBehavior
             $model->isClassExtendedWith(\October\Rain\Database\Behaviors\Sortable::class)
         ) {
             $this->sortMode = 'simple';
-        } elseif (
+        }
+        elseif (
             isset($modelTraits[\Winter\Storm\Database\Traits\NestedTree::class]) ||
             isset($modelTraits[\October\Rain\Database\Traits\NestedTree::class])
         ) {
             $this->sortMode = 'nested';
             $this->showTree = true;
-        } else {
+        }
+        else {
             throw new ApplicationException('The model must implement the Sortable trait/behavior or the NestedTree trait.');
         }
 
@@ -240,7 +238,6 @@ class ReorderController extends ControllerBehavior
 
     /**
      * Returns all the records from the supplied model.
-     *
      * @return Collection
      */
     protected function getRecords()
@@ -254,8 +251,10 @@ class ReorderController extends ControllerBehavior
         if ($this->sortMode == 'simple') {
             $records = $query
                 ->orderBy($model->getSortOrderColumn())
-                ->get();
-        } elseif ($this->sortMode == 'nested') {
+                ->get()
+            ;
+        }
+        elseif ($this->sortMode == 'nested') {
             $records = $query->getNested();
         }
 
@@ -265,11 +264,12 @@ class ReorderController extends ControllerBehavior
     /**
      * Extend the query used for finding reorder records. Extra conditions
      * can be applied to the query, for example, $query->withTrashed();
-     *
-     * @param  Winter\Storm\Database\Builder  $query
+     * @param Winter\Storm\Database\Builder $query
      * @return void
      */
-    public function reorderExtendQuery($query) {}
+    public function reorderExtendQuery($query)
+    {
+    }
 
     //
     // Widgets
@@ -280,7 +280,8 @@ class ReorderController extends ControllerBehavior
         if ($toolbarConfig = $this->getConfig('toolbar')) {
             $toolbarConfig = $this->makeConfig($toolbarConfig);
             $toolbarWidget = $this->makeWidget('Backend\Widgets\Toolbar', $toolbarConfig);
-        } else {
+        }
+        else {
             $toolbarWidget = null;
         }
 
@@ -293,20 +294,19 @@ class ReorderController extends ControllerBehavior
 
     /**
      * Controller accessor for making partials within this behavior.
-     *
-     * @param  string  $partial
-     * @param  array  $params
+     * @param string $partial
+     * @param array $params
      * @return string Partial contents
      */
     public function reorderMakePartial($partial, $params = [])
     {
         $contents = $this->controller->makePartial(
-            'reorder_'.$partial,
+            'reorder_' . $partial,
             $params + $this->vars,
             false
         );
 
-        if (! $contents) {
+        if (!$contents) {
             $contents = $this->makePartial($partial, $params);
         }
 

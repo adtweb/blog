@@ -18,6 +18,7 @@ use Winter\Storm\Support\Svg;
  * Provides abstraction level for the Media Library operations.
  * Implements the library caching features and security checks.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MediaLibrary
@@ -25,13 +26,9 @@ class MediaLibrary
     use \Winter\Storm\Support\Traits\Singleton;
 
     const SORT_BY_TITLE = 'title';
-
     const SORT_BY_SIZE = 'size';
-
     const SORT_BY_MODIFIED = 'modified';
-
     const SORT_DIRECTION_ASC = 'asc';
-
     const SORT_DIRECTION_DESC = 'desc';
 
     /**
@@ -56,13 +53,13 @@ class MediaLibrary
 
     /**
      * @var array Contains a list of files and directories to ignore.
-     *            The list can be customized with cms.storage.media.ignore configuration option.
+     * The list can be customized with cms.storage.media.ignore configuration option.
      */
     protected $ignoreNames;
 
     /**
      * @var array Contains a list of regex patterns to ignore in files and directories.
-     *            The list can be customized with cms.storage.media.ignorePatterns configuration option.
+     * The list can be customized with cms.storage.media.ignorePatterns configuration option.
      */
     protected $ignorePatterns;
 
@@ -89,7 +86,7 @@ class MediaLibrary
     /**
      * Set the cache key
      *
-     * @param  string  $cacheKey  The key to set as the cache key for this instance
+     * @param string $cacheKey The key to set as the cache key for this instance
      */
     public function setCacheKey($cacheKey)
     {
@@ -109,12 +106,12 @@ class MediaLibrary
     /**
      * Returns a list of folders and files in a Library folder.
      *
-     * @param  string  $folder  Specifies the folder path relative the the Library root.
-     * @param  mixed  $sortBy  Determines the sorting preference.
-     *                         Supported values are 'title', 'size', 'lastModified' (see SORT_BY_XXX class constants), FALSE (to disable sorting), or an associative array with a 'by' key and a 'direction' key: ['by' => SORT_BY_XXX, 'direction' => SORT_DIRECTION_XXX].
-     * @param  string  $filter  Determines the document type filtering preference.
-     *                          Supported values are 'image', 'video', 'audio', 'document' (see FILE_TYPE_XXX constants of MediaLibraryItem class).
-     * @param  bool  $ignoreFolders  Determines whether folders should be suppressed in the result list.
+     * @param string $folder Specifies the folder path relative the the Library root.
+     * @param mixed $sortBy Determines the sorting preference.
+     * Supported values are 'title', 'size', 'lastModified' (see SORT_BY_XXX class constants), FALSE (to disable sorting), or an associative array with a 'by' key and a 'direction' key: ['by' => SORT_BY_XXX, 'direction' => SORT_DIRECTION_XXX].
+     * @param string $filter Determines the document type filtering preference.
+     * Supported values are 'image', 'video', 'audio', 'document' (see FILE_TYPE_XXX constants of MediaLibraryItem class).
+     * @param boolean $ignoreFolders Determines whether folders should be suppressed in the result list.
      * @return array Returns an array of MediaLibraryItem objects.
      */
     public function listFolderContents($folder = '/', $sortBy = 'title', $filter = null, $ignoreFolders = false)
@@ -129,13 +126,14 @@ class MediaLibrary
         $cached = Cache::get($this->cacheKey, false);
         $cached = $cached ? @unserialize(@base64_decode($cached)) : [];
 
-        if (! is_array($cached)) {
+        if (!is_array($cached)) {
             $cached = [];
         }
 
         if (array_key_exists($fullFolderPath, $cached)) {
             $folderContents = $cached[$fullFolderPath];
-        } else {
+        }
+        else {
             $folderContents = $this->scanFolderContents($fullFolderPath);
 
             $cached[$fullFolderPath] = $folderContents;
@@ -158,9 +156,10 @@ class MediaLibrary
 
         $this->filterItemList($folderContents['files'], $filter);
 
-        if (! $ignoreFolders) {
+        if (!$ignoreFolders) {
             $folderContents = array_merge($folderContents['folders'], $folderContents['files']);
-        } else {
+        }
+        else {
             $folderContents = $folderContents['files'];
         }
 
@@ -169,12 +168,11 @@ class MediaLibrary
 
     /**
      * Finds files in the Library.
-     *
-     * @param  string  $searchTerm  Specifies the search term.
-     * @param  mixed  $sortBy  Determines the sorting preference.
-     *                         Supported values are 'title', 'size', 'lastModified' (see SORT_BY_XXX class constants), FALSE (to disable sorting), or an associative array with a 'by' key and a 'direction' key: ['by' => SORT_BY_XXX, 'direction' => SORT_DIRECTION_XXX].
-     * @param  string  $filter  Determines the document type filtering preference.
-     *                          Supported values are 'image', 'video', 'audio', 'document' (see FILE_TYPE_XXX constants of MediaLibraryItem class).
+     * @param string $searchTerm Specifies the search term.
+     * @param mixed $sortBy Determines the sorting preference.
+     * Supported values are 'title', 'size', 'lastModified' (see SORT_BY_XXX class constants), FALSE (to disable sorting), or an associative array with a 'by' key and a 'direction' key: ['by' => SORT_BY_XXX, 'direction' => SORT_DIRECTION_XXX].
+     * @param string $filter Determines the document type filtering preference.
+     * Supported values are 'image', 'video', 'audio', 'document' (see FILE_TYPE_XXX constants of MediaLibraryItem class).
      * @return array Returns an array of MediaLibraryItem objects.
      */
     public function findFiles($searchTerm, $sortBy = 'title', $filter = null)
@@ -188,7 +186,8 @@ class MediaLibrary
             foreach ($folderContents as $item) {
                 if ($item->type == MediaLibraryItem::TYPE_FOLDER) {
                     $findInFolder($item->path);
-                } elseif ($this->pathMatchesSearch($item->path, $words)) {
+                }
+                elseif ($this->pathMatchesSearch($item->path, $words)) {
                     $result[] = $item;
                 }
             }
@@ -209,8 +208,7 @@ class MediaLibrary
 
     /**
      * Deletes a file from the Library.
-     *
-     * @param  array  $paths  A list of file paths relative to the Library root to delete.
+     * @param array $paths A list of file paths relative to the Library root to delete.
      */
     public function deleteFiles($paths)
     {
@@ -225,8 +223,7 @@ class MediaLibrary
 
     /**
      * Deletes a folder from the Library.
-     *
-     * @param  string  $path  Specifies the folder path relative to the Library root.
+     * @param string $path Specifies the folder path relative to the Library root.
      */
     public function deleteFolder($path)
     {
@@ -238,9 +235,8 @@ class MediaLibrary
 
     /**
      * Determines if a file with the specified path exists in the library.
-     *
-     * @param  string  $path  Specifies the file path relative the the Library root.
-     * @return bool Returns TRUE if the file exists.
+     * @param string $path Specifies the file path relative the the Library root.
+     * @return boolean Returns TRUE if the file exists.
      */
     public function exists($path)
     {
@@ -252,9 +248,8 @@ class MediaLibrary
 
     /**
      * Determines if a folder with the specified path exists in the library.
-     *
-     * @param  string  $path  Specifies the folder path relative the the Library root.
-     * @return bool Returns TRUE if the folder exists.
+     * @param string $path Specifies the folder path relative the the Library root.
+     * @return boolean Returns TRUE if the folder exists.
      */
     public function folderExists($path)
     {
@@ -276,9 +271,8 @@ class MediaLibrary
 
     /**
      * Returns a list of all directories in the Library, optionally excluding some of them.
-     *
-     * @param  array  $exclude  A list of folders to exclude from the result list.
-     *                          The folder paths should be specified relative to the Library root.
+     * @param array $exclude A list of folders to exclude from the result list.
+     * The folder paths should be specified relative to the Library root.
      * @return array
      */
     public function listAllDirectories($exclude = [])
@@ -293,23 +287,22 @@ class MediaLibrary
 
         foreach ($folders as $folder) {
             $folder = $this->getMediaRelativePath($folder);
-            if (! strlen($folder)) {
+            if (!strlen($folder)) {
                 $folder = '/';
             }
 
             if (Str::startsWith($folder, $exclude)) {
                 continue;
             }
-            if (! $this->isVisible($folder)) {
-                $exclude[] = $folder.'/';
-
+            if (!$this->isVisible($folder)) {
+                $exclude[] = $folder . '/';
                 continue;
             }
 
             $result[] = $folder;
         }
 
-        if (! in_array('/', $result)) {
+        if (!in_array('/', $result)) {
             array_unshift($result, '/');
         }
 
@@ -318,39 +311,34 @@ class MediaLibrary
 
     /**
      * Returns a file contents.
-     *
-     * @param  string  $path  Specifies the file path relative the the Library root.
+     * @param string $path Specifies the file path relative the the Library root.
      * @return string Returns the file contents
      */
     public function get($path)
     {
         $path = self::validatePath($path);
         $fullPath = $this->getMediaPath($path);
-
         return $this->getStorageDisk()->get($fullPath);
     }
 
     /**
      * Puts a file to the library.
-     *
-     * @param  string  $path  Specifies the file path relative the the Library root.
-     * @param  string  $contents  Specifies the file contents.
-     * @return bool
+     * @param string $path Specifies the file path relative the the Library root.
+     * @param string $contents Specifies the file contents.
+     * @return boolean
      */
     public function put($path, $contents)
     {
         $path = self::validatePath($path);
         $fullPath = $this->getMediaPath($path);
-
         return $this->getStorageDisk()->put($fullPath, $contents);
     }
 
     /**
      * Moves a file to another location.
-     *
-     * @param  string  $oldPath  Specifies the original path of the file.
-     * @param  string  $newPath  Specifies the new path of the file.
-     * @return bool
+     * @param string $oldPath Specifies the original path of the file.
+     * @param string $newPath Specifies the new path of the file.
+     * @return boolean
      */
     public function moveFile($oldPath, $newPath, $isRename = false)
     {
@@ -374,10 +362,9 @@ class MediaLibrary
 
     /**
      * Copies a folder.
-     *
-     * @param  string  $originalPath  Specifies the original path of the folder.
-     * @param  string  $newPath  Specifies the new path of the folder.
-     * @return bool
+     * @param string $originalPath Specifies the original path of the folder.
+     * @param string $newPath Specifies the new path of the folder.
+     * @return boolean
      */
     public function copyFolder($originalPath, $newPath)
     {
@@ -390,14 +377,14 @@ class MediaLibrary
             $destPath = self::validatePath($destPath);
             $fullDestPath = $this->getMediaPath($destPath);
 
-            if (! $disk->makeDirectory($fullDestPath)) {
+            if (!$disk->makeDirectory($fullDestPath)) {
                 return false;
             }
 
             $folderContents = $this->scanFolderContents($fullSrcPath);
 
             foreach ($folderContents['folders'] as $dirInfo) {
-                if (! $copyDirectory($dirInfo->path, $destPath.'/'.basename($dirInfo->path))) {
+                if (!$copyDirectory($dirInfo->path, $destPath.'/'.basename($dirInfo->path))) {
                     return false;
                 }
             }
@@ -405,7 +392,7 @@ class MediaLibrary
             foreach ($folderContents['files'] as $fileInfo) {
                 $fullFileSrcPath = $this->getMediaPath($fileInfo->path);
 
-                if (! $disk->copy($fullFileSrcPath, $fullDestPath.'/'.basename($fileInfo->path))) {
+                if (!$disk->copy($fullFileSrcPath, $fullDestPath.'/'.basename($fileInfo->path))) {
                     return false;
                 }
             }
@@ -418,10 +405,9 @@ class MediaLibrary
 
     /**
      * Moves a folder.
-     *
-     * @param  string  $originalPath  Specifies the original path of the folder.
-     * @param  string  $newPath  Specifies the new path of the folder.
-     * @return bool
+     * @param string $originalPath Specifies the original path of the folder.
+     * @param string $newPath Specifies the new path of the folder.
+     * @return boolean
      */
     public function moveFolder($originalPath, $newPath)
     {
@@ -431,19 +417,20 @@ class MediaLibrary
             // copy the directory to the destination path and delete
             // the source directory.
 
-            if (! $this->copyFolder($originalPath, $newPath)) {
+            if (!$this->copyFolder($originalPath, $newPath)) {
                 return false;
             }
 
             $this->deleteFolder($originalPath);
-        } else {
+        }
+        else {
             // If there's a risk that the directory name was updated
             // by changing the letter case - swap source and destination
             // using a temporary directory with random name.
 
             $tempraryDirPath = $this->generateRandomTmpFolderName(dirname($originalPath));
 
-            if (! $this->copyFolder($originalPath, $tempraryDirPath)) {
+            if (!$this->copyFolder($originalPath, $tempraryDirPath)) {
                 $this->deleteFolder($tempraryDirPath);
 
                 return false;
@@ -459,9 +446,8 @@ class MediaLibrary
 
     /**
      * Creates a folder.
-     *
-     * @param  string  $path  Specifies the folder path.
-     * @return bool
+     * @param string $path Specifies the folder path.
+     * @return boolean
      */
     public function makeFolder($path)
     {
@@ -487,9 +473,8 @@ class MediaLibrary
     /**
      * Checks if file path doesn't contain any substrings that would pose a security threat.
      * Throws an exception if the path is not valid.
-     *
-     * @param  string  $path  Specifies the path.
-     * @param  bool  $normalizeOnly  Specifies if only the normalization, without validation should be performed.
+     * @param string $path Specifies the path.
+     * @param boolean $normalizeOnly Specifies if only the normalization, without validation should be performed.
      * @return string Returns a normalized path.
      */
     public static function validatePath($path, $normalizeOnly = false)
@@ -522,7 +507,7 @@ class MediaLibrary
             preg_quote('&', '/'),
         ];
 
-        if (! preg_match('/^['.implode('', $regexWhitelist).']+$/iu', $path)) {
+        if (!preg_match('/^[' . implode('', $regexWhitelist) . ']+$/iu', $path)) {
             throw new ApplicationException(Lang::get('system::lang.media.invalid_path', compact('path')));
         }
 
@@ -552,8 +537,7 @@ class MediaLibrary
 
     /**
      * Helper that makes a URL for a media file.
-     *
-     * @param  string  $file
+     * @param string $file
      * @return string
      */
     public static function url($file)
@@ -563,15 +547,14 @@ class MediaLibrary
 
     /**
      * Returns a public file URL.
-     *
-     * @param  string  $path  Specifies the file path relative the the Library root.
+     * @param string $path Specifies the file path relative the the Library root.
      * @return string
      */
     public function getPathUrl($path)
     {
         $path = $this->validatePath($path, true);
 
-        $fullPath = $this->storagePath.implode('/', array_map('rawurlencode', explode('/', $path)));
+        $fullPath = $this->storagePath . implode("/", array_map("rawurlencode", explode("/", $path)));
 
         if (Config::get('cms.linkPolicy') === 'force') {
             return Url::to($fullPath);
@@ -582,8 +565,7 @@ class MediaLibrary
 
     /**
      * Returns a file or folder path with the prefixed storage folder.
-     *
-     * @param  string  $path  Specifies a path to process.
+     * @param string $path Specifies a path to process.
      * @return string Returns a processed string.
      */
     public function getMediaPath($path)
@@ -593,8 +575,7 @@ class MediaLibrary
 
     /**
      * Returns path relative to the Library root folder.
-     *
-     * @param  string  $path  Specifies a path relative to the Library disk root.
+     * @param string $path Specifies a path relative to the Library disk root.
      * @return string Returns the updated path.
      */
     protected function getMediaRelativePath($path)
@@ -610,9 +591,8 @@ class MediaLibrary
 
     /**
      * Determines if the path should be visible (not ignored).
-     *
-     * @param  string  $path  Specifies a path to check.
-     * @return bool Returns TRUE if the path is visible.
+     * @param string $path Specifies a path to check.
+     * @return boolean Returns TRUE if the path is visible.
      */
     protected function isVisible($path)
     {
@@ -633,16 +613,15 @@ class MediaLibrary
 
     /**
      * Initializes a library item from file metadata and item type.
-     *
-     * @param  array  $item  Specifies the file metadata as returned by the storage adapter.
-     * @param  string  $itemType  Specifies the item type.
+     * @param array $item Specifies the file metadata as returned by the storage adapter.
+     * @param string $itemType Specifies the item type.
      * @return mixed Returns the MediaLibraryItem object or NULL if the item is not visible.
      */
     protected function initLibraryItem($item, $itemType)
     {
         $relativePath = $this->getMediaRelativePath($item['path']);
 
-        if (! $this->isVisible($relativePath)) {
+        if (!$this->isVisible($relativePath)) {
             return;
         }
 
@@ -675,9 +654,8 @@ class MediaLibrary
 
     /**
      * Returns a number of items on a folder.
-     *
-     * @param  string  $path  Specifies the folder path relative to the storage disk root.
-     * @return int Returns the number of items in the folder.
+     * @param string $path Specifies the folder path relative to the storage disk root.
+     * @return integer Returns the number of items in the folder.
      */
     protected function getFolderItemCount($path)
     {
@@ -698,15 +676,14 @@ class MediaLibrary
 
     /**
      * Fetches the contents of a folder from the Library.
-     *
-     * @param  string  $fullFolderPath  Specifies the folder path relative the the storage disk root.
+     * @param string $fullFolderPath Specifies the folder path relative the the storage disk root.
      * @return array Returns an array containing two elements - 'files' and 'folders', each is an array of MediaLibraryItem objects.
      */
     protected function scanFolderContents($fullFolderPath)
     {
         $result = [
             'files' => [],
-            'folders' => [],
+            'folders' => []
         ];
 
         $contents = $this->getStorageDisk()->listContents($fullFolderPath);
@@ -721,7 +698,7 @@ class MediaLibrary
             }
 
             $libraryItem = $this->initLibraryItem($content, $type);
-            if (! is_null($libraryItem)) {
+            if (!is_null($libraryItem)) {
                 $result[$key][] = $libraryItem;
             }
         }
@@ -731,10 +708,9 @@ class MediaLibrary
 
     /**
      * Sorts the item list by title, size or last modified date.
-     *
-     * @param  array  $itemList  Specifies the item list to sort.
-     * @param  mixed  $sortSettings  Determines the sorting preference.
-     *                               Supported values are 'title', 'size', 'lastModified' (see SORT_BY_XXX class constants) or an associative array with a 'by' key and a 'direction' key: ['by' => SORT_BY_XXX, 'direction' => SORT_DIRECTION_XXX].
+     * @param array $itemList Specifies the item list to sort.
+     * @param mixed $sortSettings Determines the sorting preference.
+     * Supported values are 'title', 'size', 'lastModified' (see SORT_BY_XXX class constants) or an associative array with a 'by' key and a 'direction' key: ['by' => SORT_BY_XXX, 'direction' => SORT_DIRECTION_XXX].
      */
     protected function sortItemList(&$itemList, $sortSettings)
     {
@@ -783,14 +759,13 @@ class MediaLibrary
 
     /**
      * Filters item list by file type.
-     *
-     * @param  array  $itemList  Specifies the item list to sort.
-     * @param  string  $filter  Determines the document type filtering preference.
-     *                          Supported values are 'image', 'video', 'audio', 'document' (see FILE_TYPE_XXX constants of MediaLibraryItem class).
+     * @param array $itemList Specifies the item list to sort.
+     * @param string $filter Determines the document type filtering preference.
+     * Supported values are 'image', 'video', 'audio', 'document' (see FILE_TYPE_XXX constants of MediaLibraryItem class).
      */
     protected function filterItemList(&$itemList, $filter)
     {
-        if (! $filter) {
+        if (!$filter) {
             return;
         }
 
@@ -809,7 +784,6 @@ class MediaLibrary
      * This method should always be used instead of trying to access the
      * $storageDisk property directly as initializing the disc requires
      * communicating with the remote storage.
-     *
      * @return mixed Returns the storage disk object.
      */
     public function getStorageDisk(): FilesystemAdapter
@@ -825,10 +799,9 @@ class MediaLibrary
 
     /**
      * Determines if file path contains all words form the search term.
-     *
-     * @param  string  $path  Specifies a path to examine.
-     * @param  array  $words  A list of words to check against.
-     * @return bool
+     * @param string $path Specifies a path to examine.
+     * @param array $words A list of words to check against.
+     * @return boolean
      */
     protected function pathMatchesSearch($path, $words)
     {
@@ -836,11 +809,11 @@ class MediaLibrary
 
         foreach ($words as $word) {
             $word = trim($word);
-            if (! strlen($word)) {
+            if (!strlen($word)) {
                 continue;
             }
 
-            if (! Str::contains($path, $word)) {
+            if (!Str::contains($path, $word)) {
                 return false;
             }
         }

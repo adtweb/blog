@@ -1,12 +1,11 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use Winter\Storm\Auth\Models\Group as GroupBase;
 
 /**
  * Administrator group
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class UserGroup extends GroupBase
@@ -30,7 +29,7 @@ class UserGroup extends GroupBase
      */
     public $belongsToMany = [
         'users' => [User::class, 'table' => 'backend_users_groups'],
-        'users_count' => [User::class, 'table' => 'backend_users_groups', 'count' => true],
+        'users_count' => [User::class, 'table' => 'backend_users_groups', 'count' => true]
     ];
 
     public function afterCreate()

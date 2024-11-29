@@ -1,23 +1,21 @@
-<?php
+<?php namespace Backend\Behaviors;
 
-namespace Backend\Behaviors;
-
-use ApplicationException;
-use Backend;
-use Backend\Behaviors\ImportExportController\TranscodeFilter;
-use Backend\Classes\ControllerBehavior;
-use BackendAuth;
-use Exception;
-use Illuminate\Database\Eloquent\MassAssignmentException;
-use Lang;
-use League\Csv\EscapeFormula as CsvEscapeFormula;
-use League\Csv\Reader as CsvReader;
-use League\Csv\Statement as CsvStatement;
-use League\Csv\Writer as CsvWriter;
-use Response;
-use SplTempFileObject;
 use Str;
+use Lang;
 use View;
+use Response;
+use Backend;
+use BackendAuth;
+use Backend\Classes\ControllerBehavior;
+use Backend\Behaviors\ImportExportController\TranscodeFilter;
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use League\Csv\Reader as CsvReader;
+use League\Csv\Writer as CsvWriter;
+use League\Csv\EscapeFormula as CsvEscapeFormula;
+use League\Csv\Statement as CsvStatement;
+use ApplicationException;
+use SplTempFileObject;
+use Exception;
 
 /**
  * Adds features for importing and exporting data.
@@ -34,6 +32,7 @@ use View;
  * values as either a YAML file, located in the controller view directory,
  * or directly as a PHP array.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ImportExportController extends ControllerBehavior
@@ -100,8 +99,7 @@ class ImportExportController extends ControllerBehavior
 
     /**
      * Behavior constructor
-     *
-     * @param  Backend\Classes\Controller  $controller
+     * @param Backend\Classes\Controller $controller
      */
     public function __construct($controller)
     {
@@ -210,12 +208,14 @@ class ImportExportController extends ControllerBehavior
 
             $this->vars['importResults'] = $model->getResultStats();
             $this->vars['returnUrl'] = $this->getRedirectUrlForType('import');
-        } catch (MassAssignmentException $ex) {
+        }
+        catch (MassAssignmentException $ex) {
             $this->controller->handleError(new ApplicationException(Lang::get(
                 'backend::lang.model.mass_assignment_failed',
                 ['attribute' => $ex->getMessage()]
             )));
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->controller->handleError($ex);
         }
 
@@ -228,7 +228,8 @@ class ImportExportController extends ControllerBehavior
     {
         try {
             $this->checkRequiredImportColumns();
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->controller->handleError($ex);
         }
 
@@ -242,7 +243,7 @@ class ImportExportController extends ControllerBehavior
         }
 
         $columns = $this->getImportFileColumns();
-        if (! array_key_exists($columnId, $columns)) {
+        if (!array_key_exists($columnId, $columns)) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.unknown_column_error'));
         }
 
@@ -253,7 +254,7 @@ class ImportExportController extends ControllerBehavior
             $reader->setHeaderOffset(1);
         }
 
-        $result = (new CsvStatement)->limit(50)->process($reader)->fetchColumn((int) $columnId);
+        $result = (new CsvStatement())->limit(50)->process($reader)->fetchColumn((int) $columnId);
         $data = iterator_to_array($result, false);
 
         /*
@@ -261,7 +262,7 @@ class ImportExportController extends ControllerBehavior
          */
         foreach ($data as $index => $sample) {
             $data[$index] = Str::limit($sample, 100);
-            if (! strlen($data[$index])) {
+            if (!strlen($data[$index])) {
                 unset($data[$index]);
             }
         }
@@ -278,7 +279,6 @@ class ImportExportController extends ControllerBehavior
 
     /**
      * Prepares the view data.
-     *
      * @return void
      */
     public function prepareImportVars()
@@ -320,14 +320,14 @@ class ImportExportController extends ControllerBehavior
 
     protected function getImportFileColumns()
     {
-        if (! $path = $this->getImportFilePath()) {
+        if (!$path = $this->getImportFilePath()) {
             return null;
         }
 
         $reader = $this->createCsvReader($path);
         $firstRow = $reader->fetchOne(0);
 
-        if (! post('first_row_titles')) {
+        if (!post('first_row_titles')) {
             array_walk($firstRow, function (&$value, $key) {
                 $value = 'Column #'.($key + 1);
             });
@@ -346,7 +346,7 @@ class ImportExportController extends ControllerBehavior
     /**
      * Get the index offset to add to the reported row number in status messages
      *
-     * @param  bool  $firstRowTitles  Whether or not the first row contains column titles
+     * @param bool $firstRowTitles Whether or not the first row contains column titles
      * @return int $offset
      */
     protected function getImportSourceIndexOffset($firstRowTitles)
@@ -356,7 +356,7 @@ class ImportExportController extends ControllerBehavior
 
     protected function makeImportUploadFormWidget()
     {
-        if (! $this->getConfig('import')) {
+        if (!$this->getConfig('import')) {
             return null;
         }
 
@@ -377,7 +377,7 @@ class ImportExportController extends ControllerBehavior
     {
         $widget = $this->makeOptionsFormWidgetForType('import');
 
-        if (! $widget && $this->importUploadFormWidget) {
+        if (!$widget && $this->importUploadFormWidget) {
             $stepSection = $this->importUploadFormWidget->getField('step3_section');
             $stepSection->hidden = true;
         }
@@ -401,13 +401,13 @@ class ImportExportController extends ControllerBehavior
 
     protected function checkRequiredImportColumns()
     {
-        if (! $matches = post('column_match', [])) {
+        if (!$matches = post('column_match', [])) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.match_some_column_error'));
         }
 
         $dbColumns = $this->getImportDbColumns();
         foreach ($dbColumns as $column => $label) {
-            if (! $this->importIsColumnRequired($column)) {
+            if (!$this->importIsColumnRequired($column)) {
                 continue;
             }
 
@@ -419,9 +419,9 @@ class ImportExportController extends ControllerBehavior
                 }
             }
 
-            if (! $found) {
+            if (!$found) {
                 throw new ApplicationException(Lang::get('backend::lang.import_export.required_match_column_error', [
-                    'label' => Lang::get($label),
+                    'label' => Lang::get($label)
                 ]));
             }
         }
@@ -452,12 +452,14 @@ class ImportExportController extends ControllerBehavior
 
             $this->vars['fileUrl'] = $fileUrl;
             $this->vars['returnUrl'] = $this->getRedirectUrlForType('export');
-        } catch (MassAssignmentException $ex) {
+        }
+        catch (MassAssignmentException $ex) {
             $this->controller->handleError(new ApplicationException(Lang::get(
                 'backend::lang.model.mass_assignment_failed',
                 ['attribute' => $ex->getMessage()]
             )));
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->controller->handleError($ex);
         }
 
@@ -475,7 +477,6 @@ class ImportExportController extends ControllerBehavior
 
     /**
      * Prepares the view data.
-     *
      * @return void
      */
     public function prepareExportVars()
@@ -516,7 +517,7 @@ class ImportExportController extends ControllerBehavior
 
     protected function makeExportFormatFormWidget()
     {
-        if (! $this->getConfig('export') || $this->getConfig('export[useList]')) {
+        if (!$this->getConfig('export') || $this->getConfig('export[useList]')) {
             return null;
         }
 
@@ -537,7 +538,7 @@ class ImportExportController extends ControllerBehavior
     {
         $widget = $this->makeOptionsFormWidgetForType('export');
 
-        if (! $widget && $this->exportFormatFormWidget) {
+        if (!$widget && $this->exportFormatFormWidget) {
             $stepSection = $this->exportFormatFormWidget->getField('step3_section');
             $stepSection->hidden = true;
         }
@@ -551,7 +552,7 @@ class ImportExportController extends ControllerBehavior
         $columns = post('export_columns', []);
 
         foreach ($columns as $key => $columnName) {
-            if (! isset($visibleColumns[$columnName])) {
+            if (!isset($visibleColumns[$columnName])) {
                 unset($columns[$key]);
             }
         }
@@ -572,17 +573,18 @@ class ImportExportController extends ControllerBehavior
 
     protected function checkUseListExportMode()
     {
-        if (! $useList = $this->getConfig('export[useList]')) {
+        if (!$useList = $this->getConfig('export[useList]')) {
             return false;
         }
 
-        if (! $this->controller->isClassExtendedWith(\Backend\Behaviors\ListController::class)) {
+        if (!$this->controller->isClassExtendedWith(\Backend\Behaviors\ListController::class)) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.behavior_missing_uselist_error'));
         }
 
         if (is_array($useList)) {
             $listDefinition = array_get($useList, 'definition');
-        } else {
+        }
+        else {
             $listDefinition = $useList;
         }
 
@@ -591,9 +593,8 @@ class ImportExportController extends ControllerBehavior
 
     /**
      * Outputs the list results as a CSV export.
-     *
-     * @param  string  $definition
-     * @param  array  $options
+     * @param string $definition
+     * @param array $options
      * @return void
      */
     public function exportFromList($definition = null, $options = [])
@@ -624,7 +625,7 @@ class ImportExportController extends ControllerBehavior
         $csv->setDelimiter($options['delimiter']);
         $csv->setEnclosure($options['enclosure']);
         $csv->setEscape($options['escape']);
-        $csv->addFormatter(new CsvEscapeFormula);
+        $csv->addFormatter(new CsvEscapeFormula());
 
         /*
          * Add headers
@@ -671,7 +672,6 @@ class ImportExportController extends ControllerBehavior
         $response->header('Content-Transfer-Encoding', 'binary');
         $response->header('Content-Disposition', sprintf('%s; filename="%s"', 'attachment', $filename));
         $response->setContent((string) $csv);
-
         return $response;
     }
 
@@ -681,16 +681,15 @@ class ImportExportController extends ControllerBehavior
 
     /**
      * Controller accessor for making partials within this behavior.
-     *
-     * @param  string  $partial
-     * @param  array  $params
+     * @param string $partial
+     * @param array $params
      * @return string Partial contents
      */
     public function importExportMakePartial($partial, $params = [])
     {
         $contents = $this->controller->makePartial('import_export_'.$partial, $params + $this->vars, false);
 
-        if (! $contents) {
+        if (!$contents) {
             $contents = $this->makePartial($partial, $params);
         }
 
@@ -700,14 +699,13 @@ class ImportExportController extends ControllerBehavior
     /**
      * Checks to see if the import/export is controlled by permissions
      * and if the logged in user has permissions.
-     *
      * @return \View
      */
     protected function checkPermissionsForType($type)
     {
         if (
             ($permissions = $this->getConfig($type.'[permissions]')) &&
-            (! BackendAuth::getUser()->hasAnyAccess((array) $permissions))
+            (!BackendAuth::getUser()->hasAnyAccess((array) $permissions))
         ) {
             return Response::make(View::make('backend::access_denied'), 403);
         }
@@ -715,7 +713,7 @@ class ImportExportController extends ControllerBehavior
 
     protected function makeOptionsFormWidgetForType($type)
     {
-        if (! $this->getConfig($type)) {
+        if (!$this->getConfig($type)) {
             return null;
         }
 
@@ -740,9 +738,9 @@ class ImportExportController extends ControllerBehavior
         }
 
         $modelClass = $this->getConfig($type.'[modelClass]');
-        if (! $modelClass) {
+        if (!$modelClass) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.missing_model_class_error', [
-                'type' => $type,
+                'type' => $type
             ]));
         }
 
@@ -753,7 +751,7 @@ class ImportExportController extends ControllerBehavior
     {
         $config = $this->makeConfig($config);
 
-        if (! isset($config->columns) || ! is_array($config->columns)) {
+        if (!isset($config->columns) || !is_array($config->columns)) {
             return null;
         }
 
@@ -761,7 +759,8 @@ class ImportExportController extends ControllerBehavior
         foreach ($config->columns as $attribute => $column) {
             if (is_array($column)) {
                 $result[$attribute] = array_get($column, 'label', $attribute);
-            } else {
+            }
+            else {
                 $result[$attribute] = $column ?: $attribute;
             }
         }
@@ -782,8 +781,8 @@ class ImportExportController extends ControllerBehavior
 
     /**
      * Create a new CSV reader with options selected by the user
+     * @param string $path
      *
-     * @param  string  $path
      * @return CsvReader
      */
     protected function createCsvReader($path)
@@ -821,7 +820,6 @@ class ImportExportController extends ControllerBehavior
     /**
      * Returns the file format options from postback. This method
      * can be used to define presets.
-     *
      * @return array
      */
     protected function getFormatOptionsFromPost()

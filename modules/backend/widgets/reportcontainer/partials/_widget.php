@@ -1,6 +1,6 @@
-<?php if ($widget->property('ocWidgetNewRow')) { ?>
+<?php if ($widget->property('ocWidgetNewRow')): ?>
     <li class="item separator"></li>
-<?php } ?>
+<?php endif ?>
 
 <li class="item <?= 'width-'.$widget->property('ocWidgetWidth') ?> <?= $widget->property('ocWidgetNewRow') ? 'new-line' : null ?>">
     <div class="content">
@@ -23,9 +23,9 @@
             Edit
         </a>
 
-        <?php if ($this->canAddAndDelete) { ?>
+        <?php if ($this->canAddAndDelete): ?>
             <button type="button" class="close widget-control close-widget" data-dismiss="popover" aria-hidden="true">&times;</button>
-        <?php } ?>
+        <?php endif ?>
 
         <input type="hidden" data-widget-alias name="widgetAliases[]" value="<?= $widgetAlias ?>"/>
         <input type="hidden" data-widget-order name="widgetSortOrders[]" value="<?= $sortOrder ?>"/>

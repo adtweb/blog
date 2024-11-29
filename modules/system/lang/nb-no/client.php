@@ -49,7 +49,7 @@ return [
     'alert' => [
         'confirm_button_text' => 'OK',
         'cancel_button_text' => 'Avbryt',
-        'widget_remove_confirm' => 'Fjerne widget?',
+        'widget_remove_confirm' => 'Fjerne widget?'
     ],
 
     'datepicker' => [
@@ -57,21 +57,21 @@ return [
         'nextMonth' => 'Neste måned',
         'months' => ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'july', 'august', 'september', 'oktober', 'november', 'desember'],
         'weekdays' => ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'],
-        'weekdaysShort' => ['søn', 'man', 'tir', 'ons', 'tor', 'fre', 'lør'],
+        'weekdaysShort' => ['søn', 'man', 'tir', 'ons', 'tor', 'fre', 'lør']
     ],
 
     'filter' => [
         'group' => [
-            'all' => 'alle',
+            'all' => 'alle'
         ],
         'dates' => [
             'all' => 'alle',
             'filter_button_text' => 'Filter',
-            'reset_button_text' => 'Tilbakestill',
+            'reset_button_text'  => 'Tilbakestill',
             'date_placeholder' => 'Dato',
             'after_placeholder' => 'Etter',
-            'before_placeholder' => 'Før',
-        ],
+            'before_placeholder' => 'Før'
+        ]
     ],
 
     'eventlog' => [
@@ -87,7 +87,7 @@ return [
             'openWith' => 'Åpne med',
             'remember_choice' => 'Husk valget for denne sesjonen',
             'open' => 'Åpne',
-            'cancel' => 'Avbryt',
-        ],
-    ],
+            'cancel' => 'Avbryt'
+        ]
+    ]
 ];

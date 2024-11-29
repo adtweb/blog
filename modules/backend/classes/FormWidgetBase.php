@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Classes;
+<?php namespace Backend\Classes;
 
 use Winter\Storm\Html\Helper as HtmlHelper;
 
@@ -8,10 +6,12 @@ use Winter\Storm\Html\Helper as HtmlHelper;
  * Form Widget base class
  * Widgets used specifically for forms
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 abstract class FormWidgetBase extends WidgetBase
 {
+
     //
     // Configurable properties
     //
@@ -67,10 +67,9 @@ abstract class FormWidgetBase extends WidgetBase
 
     /**
      * Constructor
-     *
-     * @param  $controller  Controller Active controller object.
-     * @param  $formField  FormField Object containing general form field information.
-     * @param  $configuration  array Configuration the relates to this widget.
+     * @param $controller Controller Active controller object.
+     * @param $formField FormField Object containing general form field information.
+     * @param $configuration array Configuration the relates to this widget.
      */
     public function __construct($controller, $formField, $configuration = [])
     {
@@ -105,7 +104,6 @@ abstract class FormWidgetBase extends WidgetBase
     /**
      * Returns the HTML element field name for this widget, used for capturing
      * user input, passed back to the getSaveValue method when saving.
-     *
      * @return string HTML element name
      */
     public function getFieldName()
@@ -119,16 +117,14 @@ abstract class FormWidgetBase extends WidgetBase
     public function getId($suffix = null)
     {
         $id = parent::getId($suffix);
-        $id .= '-'.$this->fieldName;
-
+        $id .= '-' . $this->fieldName;
         return HtmlHelper::nameToId($id);
     }
 
     /**
      * Process the postback value for this widget. If the value is omitted from
      * postback data, it will be NULL, otherwise it will be an empty string.
-     *
-     * @param  mixed  $value  The existing value for this widget.
+     * @param mixed $value The existing value for this widget.
      * @return string The new value for this widget.
      */
     public function getSaveValue($value)
@@ -139,7 +135,6 @@ abstract class FormWidgetBase extends WidgetBase
     /**
      * Returns the value for this form field,
      * supports nesting via HTML array.
-     *
      * @return string
      */
     public function getLoadValue()
@@ -148,7 +143,7 @@ abstract class FormWidgetBase extends WidgetBase
             return $this->formField->value;
         }
 
-        $defaultValue = ! $this->model->exists
+        $defaultValue = !$this->model->exists
             ? $this->formField->getDefaultFromData($this->data ?: $this->model)
             : null;
 

@@ -34,13 +34,13 @@
                     <small>(<span class="product-counter"><?= count($installedThemes) ?></span>)</small>
                 </h4>
 
-                <?php if (! count($installedThemes)) { ?>
+                <?php if (!count($installedThemes)): ?>
                     <div class="product-list-empty">
                         <p><?= e(trans('system::lang.themes.no_themes')) ?></p>
                     </div>
-                <?php } else { ?>
+                <?php else: ?>
                     <ul class="product-list theme-list">
-                        <?php foreach ($installedThemes as $theme) { ?>
+                        <?php foreach ($installedThemes as $theme): ?>
 
                             <li data-code="<?= $theme['code'] ?>">
                                 <div class="image">
@@ -62,9 +62,9 @@
                                 </button>
                             </li>
 
-                        <?php } ?>
+                        <?php endforeach ?>
                     </ul>
-                <?php } ?>
+                <?php endif ?>
 
             </div>
 

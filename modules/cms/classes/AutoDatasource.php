@@ -14,6 +14,7 @@ use Winter\Storm\Halcyon\Processors\Processor;
 /**
  * Datasource that loads from other data sources automatically
  *
+ * @package winter\wn-cms-module
  * @author Luke Towers
  */
 class AutoDatasource extends Datasource implements DatasourceInterface
@@ -34,7 +35,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     protected $pathCache = [];
 
     /**
-     * @var bool Flag on whether the cache should respect refresh requests
+     * @var boolean Flag on whether the cache should respect refresh requests
      */
     protected $allowCacheRefreshes = true;
 
@@ -51,7 +52,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     /**
      * Create a new datasource instance.
      *
-     * @param  array  $datasources  Array of datasources to utilize. Lower indexes = higher priority ['datasourceName' => $datasource]
+     * @param array $datasources Array of datasources to utilize. Lower indexes = higher priority ['datasourceName' => $datasource]
      * @return void
      */
     public function __construct(array $datasources, ?string $cacheKey = null)
@@ -102,7 +103,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     /**
      * Populate the local cache of paths available in each datasource
      *
-     * @param  bool  $refresh  Default false, set to true to force the cache to be rebuilt
+     * @param boolean $refresh Default false, set to true to force the cache to be rebuilt
      */
     public function populateCache(bool $refresh = false): void
     {
@@ -112,7 +113,6 @@ class AutoDatasource extends Datasource implements DatasourceInterface
             if ($datasource instanceof AutoDatasource) {
                 $datasource->populateCache($refresh);
                 $pathCache[] = array_merge(...array_reverse($datasource->getPathCache()));
-
                 continue;
             }
 
@@ -134,7 +134,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
      */
     public function sourceHasModel(string $source, Model $model): bool
     {
-        if (! $model->exists) {
+        if (!$model->exists) {
             return false;
         }
 
@@ -142,9 +142,9 @@ class AutoDatasource extends Datasource implements DatasourceInterface
 
         $sourcePaths = $this->getSourcePaths($source);
 
-        if (! empty($sourcePaths)) {
+        if (!empty($sourcePaths)) {
             // Generate the path
-            [$name, $extension] = $model->getFileNameParts();
+            list($name, $extension) = $model->getFileNameParts();
             $path = $this->makeFilePath($model->getObjectTypeDirName(), $name, $extension);
 
             // Deleted paths are included as being handled by a datasource
@@ -184,7 +184,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
      */
     public function usingSource(string $source, \Closure $closure): mixed
     {
-        if (! array_key_exists($source, $this->datasources)) {
+        if (!array_key_exists($source, $this->datasources)) {
             throw new ApplicationException('Invalid datasource specified.');
         }
 
@@ -213,7 +213,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
 
             // Get the path parts
             $dirName = $model->getObjectTypeDirName();
-            [$fileName, $extension] = $model->getFileNameParts();
+            list($fileName, $extension) = $model->getFileNameParts();
 
             // Get the file content
             $content = $datasource->getPostProcessor()->processUpdate($model->newQuery(), []);
@@ -233,7 +233,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
 
             // Get the path parts
             $dirName = $model->getObjectTypeDirName();
-            [$fileName, $extension] = $model->getFileNameParts();
+            list($fileName, $extension) = $model->getFileNameParts();
 
             // Perform a forced delete on the selected datasource to ensure it's removed
             $this->forceDelete($dirName, $fileName, $extension);
@@ -260,7 +260,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
                 $datasourceIndex = $i;
 
                 // Set isDeleted to the inverse of the the path's existance flag
-                $isDeleted = ! $paths[$path];
+                $isDeleted = !$paths[$path];
 
                 // Break on first datasource that can handle the path
                 break;
@@ -279,10 +279,11 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     /**
      * Get all valid paths for the provided directory, removing any paths marked as deleted
      *
-     * @param  array  $options  Array of options, [
+     * @param string $dirName
+     * @param array $options Array of options, [
      *                          'extensions' => ['htm', 'md', 'twig'], // Extensions to search for
      *                          'fileMatch'  => '*gr[ae]y',            // Shell matching pattern to match the filename against using the fnmatch function
-     *                          ];
+     *                      ];
      * @return array $paths ["$dirName/path/1.md", "$dirName/path/2.md"]
      */
     protected function getValidPaths(string $dirName, array $options = []): array
@@ -302,15 +303,15 @@ class AutoDatasource extends Datasource implements DatasourceInterface
             }
 
             $paths = array_merge($paths, array_filter($sourcePaths, function ($path) use ($dirName, $options) {
-                $basePath = $dirName.'/';
+                $basePath = $dirName . '/';
 
                 $inPath = starts_with($path, $basePath);
 
                 // Check the fileMatch if provided as an option
-                $fnMatch = ! empty($options['fileMatch']) ? fnmatch($options['fileMatch'], str_after($path, $basePath)) : true;
+                $fnMatch = !empty($options['fileMatch']) ? fnmatch($options['fileMatch'], str_after($path, $basePath)) : true;
 
                 // Check the extension if provided as an option
-                $validExt = ! empty($options['extensions']) && is_array($options['extensions']) ? in_array(pathinfo($path, PATHINFO_EXTENSION), $options['extensions']) : true;
+                $validExt = !empty($options['extensions']) && is_array($options['extensions']) ? in_array(pathinfo($path, PATHINFO_EXTENSION), $options['extensions']) : true;
 
                 return $inPath && $fnMatch && $validExt;
             }, ARRAY_FILTER_USE_KEY));
@@ -330,7 +331,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
      */
     protected function makeFilePath(string $dirName, string $fileName, string $extension): string
     {
-        return ltrim($dirName.'/'.$fileName.'.'.$extension, '/');
+        return ltrim($dirName . '/' . $fileName . '.' . $extension, '/');
     }
 
     /**
@@ -342,7 +343,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function selectOne(string $dirName, string $fileName, string $extension): ?array
     {
@@ -373,7 +374,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function select(string $dirName, array $options = []): array
     {
@@ -381,10 +382,10 @@ class AutoDatasource extends Datasource implements DatasourceInterface
         if (@$options['columns'] === ['fileName']) {
             // Return just filenames of the valid paths for this directory
             $results = array_values(array_map(function ($path) use ($dirName) {
-                return ['fileName' => str_after($path, $dirName.'/')];
+                return ['fileName' => str_after($path, $dirName . '/')];
             }, $this->getValidPaths($dirName, $options)));
 
-            // Retrieve full listings from datasources directly
+        // Retrieve full listings from datasources directly
         } else {
             // Initialize result set
             $sourceResults = [];
@@ -402,7 +403,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
 
             // Get a list of valid filenames from the list of valid paths for this directory
             $validFiles = array_map(function ($path) use ($dirName) {
-                return str_after($path, $dirName.'/');
+                return str_after($path, $dirName . '/');
             }, $this->getValidPaths($dirName, $options));
 
             // Filter out deleted paths
@@ -415,7 +416,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function insert(string $dirName, string $fileName, string $extension, string $content): int
     {
@@ -429,7 +430,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function update(string $dirName, string $fileName, string $extension, string $content, $oldFileName = null, $oldExtension = null): int
     {
@@ -446,7 +447,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
 
         $datasource = $this->getActiveDatasource();
 
-        if (! empty($datasource->selectOne($dirName, $searchFileName, $searchExt))) {
+        if (!empty($datasource->selectOne($dirName, $searchFileName, $searchExt))) {
             $result = $datasource->update($dirName, $fileName, $extension, $content, $oldFileName, $oldExtension);
         } else {
             $result = $datasource->insert($dirName, $fileName, $extension, $content);
@@ -459,7 +460,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function delete(string $dirName, string $fileName, string $extension): bool
     {
@@ -470,9 +471,10 @@ class AutoDatasource extends Datasource implements DatasourceInterface
             } else {
                 $success = $this->getActiveDatasource()->delete($dirName, $fileName, $extension);
             }
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             // Only attempt to do an insert-delete when not force deleting the record
-            if (! $this->forceDeleting) {
+            if (!$this->forceDeleting) {
                 // Check to see if this is a valid path to delete
                 $path = $this->makeFilePath($dirName, $fileName, $extension);
 
@@ -498,7 +500,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function lastModified(string $dirName, string $fileName, string $extension): ?int
     {
@@ -506,14 +508,14 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function makeCacheKey($name = ''): string
     {
         $key = '';
 
         foreach ($this->datasources as $datasource) {
-            $key .= $datasource->makeCacheKey($name).'-';
+            $key .= $datasource->makeCacheKey($name) . '-';
         }
         $key .= $name;
 
@@ -521,7 +523,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getPathsCacheKey(): string
     {
@@ -529,7 +531,7 @@ class AutoDatasource extends Datasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getAvailablePaths(): array
     {
@@ -538,7 +540,6 @@ class AutoDatasource extends Datasource implements DatasourceInterface
         foreach ($datasources as $datasource) {
             $paths = array_merge($paths, $datasource->getAvailablePaths());
         }
-
         return $paths;
     }
 }

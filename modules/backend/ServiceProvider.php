@@ -1,14 +1,12 @@
-<?php
-
-namespace Backend;
+<?php namespace Backend;
 
 use Backend;
-use Backend\Classes\WidgetManager;
-use Backend\Models\UserRole;
-use BackendAuth;
 use BackendMenu;
-use System\Classes\CombineAssets;
+use BackendAuth;
+use Backend\Models\UserRole;
+use Backend\Classes\WidgetManager;
 use System\Classes\MailManager;
+use System\Classes\CombineAssets;
 use System\Classes\SettingsManager;
 use Winter\Storm\Support\ModuleServiceProvider;
 
@@ -114,21 +112,21 @@ class ServiceProvider extends ModuleServiceProvider
         BackendMenu::registerCallback(function ($manager) {
             $manager->registerMenuItems('Winter.Backend', [
                 'dashboard' => [
-                    'label' => 'backend::lang.dashboard.menu_label',
-                    'icon' => 'icon-dashboard',
-                    'iconSvg' => 'modules/backend/assets/images/dashboard-icon.svg',
-                    'url' => Backend::url('backend'),
+                    'label'       => 'backend::lang.dashboard.menu_label',
+                    'icon'        => 'icon-dashboard',
+                    'iconSvg'     => 'modules/backend/assets/images/dashboard-icon.svg',
+                    'url'         => Backend::url('backend'),
                     'permissions' => ['backend.access_dashboard'],
-                    'order' => 10,
+                    'order'       => 10
                 ],
                 'media' => [
-                    'label' => 'backend::lang.media.menu_label',
-                    'icon' => 'icon-folder',
-                    'iconSvg' => 'modules/backend/assets/images/media-icon.svg',
-                    'url' => Backend::url('backend/media'),
+                    'label'       => 'backend::lang.media.menu_label',
+                    'icon'        => 'icon-folder',
+                    'iconSvg'     => 'modules/backend/assets/images/media-icon.svg',
+                    'url'         => Backend::url('backend/media'),
                     'permissions' => ['media.*'],
-                    'order' => 200,
-                ],
+                    'order'       => 200
+                ]
             ]);
             $manager->registerOwnerAlias('Winter.Backend', 'October.Backend');
         });
@@ -141,8 +139,8 @@ class ServiceProvider extends ModuleServiceProvider
     {
         WidgetManager::instance()->registerReportWidgets(function ($manager) {
             $manager->registerReportWidget(\Backend\ReportWidgets\Welcome::class, [
-                'label' => 'backend::lang.dashboard.welcome.widget_title_default',
-                'context' => 'dashboard',
+                'label'   => 'backend::lang.dashboard.welcome.widget_title_default',
+                'context' => 'dashboard'
             ]);
         });
     }
@@ -156,42 +154,42 @@ class ServiceProvider extends ModuleServiceProvider
             $manager->registerPermissions('Winter.Backend', [
                 'backend.access_dashboard' => [
                     'label' => 'system::lang.permissions.view_the_dashboard',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 ],
                 'backend.manage_default_dashboard' => [
                     'label' => 'system::lang.permissions.manage_default_dashboard',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
                 ],
                 'backend.manage_users' => [
                     'label' => 'system::lang.permissions.manage_other_administrators',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
                 ],
                 'backend.impersonate_users' => [
                     'label' => 'system::lang.permissions.impersonate_users',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
                 ],
                 'backend.manage_preferences' => [
                     'label' => 'system::lang.permissions.manage_preferences',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 ],
                 'backend.manage_editor' => [
                     'label' => 'system::lang.permissions.manage_editor',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
                 ],
                 'backend.manage_own_editor' => [
                     'label' => 'system::lang.permissions.manage_own_editor',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 ],
                 'backend.manage_branding' => [
                     'label' => 'system::lang.permissions.manage_branding',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab'   => 'system::lang.permissions.name',
                     'roles' => [UserRole::CODE_DEVELOPER],
                 ],
                 'media.manage_media' => [
@@ -243,54 +241,54 @@ class ServiceProvider extends ModuleServiceProvider
         SettingsManager::instance()->registerCallback(function ($manager) {
             $manager->registerSettingItems('Winter.Backend', [
                 'branding' => [
-                    'label' => 'backend::lang.branding.menu_label',
+                    'label'       => 'backend::lang.branding.menu_label',
                     'description' => 'backend::lang.branding.menu_description',
-                    'category' => SettingsManager::CATEGORY_SYSTEM,
-                    'icon' => 'icon-paint-brush',
-                    'class' => 'Backend\Models\BrandSetting',
+                    'category'    => SettingsManager::CATEGORY_SYSTEM,
+                    'icon'        => 'icon-paint-brush',
+                    'class'       => 'Backend\Models\BrandSetting',
                     'permissions' => ['backend.manage_branding'],
-                    'order' => 500,
-                    'keywords' => 'brand style',
+                    'order'       => 500,
+                    'keywords'    => 'brand style'
                 ],
                 'editor' => [
-                    'label' => 'backend::lang.editor.menu_label',
+                    'label'       => 'backend::lang.editor.menu_label',
                     'description' => 'backend::lang.editor.menu_description',
-                    'category' => SettingsManager::CATEGORY_SYSTEM,
-                    'icon' => 'icon-code',
-                    'class' => 'Backend\Models\EditorSetting',
+                    'category'    => SettingsManager::CATEGORY_SYSTEM,
+                    'icon'        => 'icon-code',
+                    'class'       => 'Backend\Models\EditorSetting',
                     'permissions' => ['backend.manage_editor'],
-                    'order' => 500,
-                    'keywords' => 'html code class style',
+                    'order'       => 500,
+                    'keywords'    => 'html code class style'
                 ],
                 'myaccount' => [
-                    'label' => 'backend::lang.myaccount.menu_label',
+                    'label'       => 'backend::lang.myaccount.menu_label',
                     'description' => 'backend::lang.myaccount.menu_description',
-                    'category' => SettingsManager::CATEGORY_MYSETTINGS,
-                    'icon' => 'icon-user',
-                    'url' => Backend::url('backend/users/myaccount'),
-                    'order' => 500,
-                    'context' => 'mysettings',
-                    'keywords' => 'backend::lang.myaccount.menu_keywords',
+                    'category'    => SettingsManager::CATEGORY_MYSETTINGS,
+                    'icon'        => 'icon-user',
+                    'url'         => Backend::url('backend/users/myaccount'),
+                    'order'       => 500,
+                    'context'     => 'mysettings',
+                    'keywords'    => 'backend::lang.myaccount.menu_keywords'
                 ],
                 'preferences' => [
-                    'label' => 'backend::lang.backend_preferences.menu_label',
+                    'label'       => 'backend::lang.backend_preferences.menu_label',
                     'description' => 'backend::lang.backend_preferences.menu_description',
-                    'category' => SettingsManager::CATEGORY_MYSETTINGS,
-                    'icon' => 'icon-laptop',
-                    'url' => Backend::url('backend/preferences'),
+                    'category'    => SettingsManager::CATEGORY_MYSETTINGS,
+                    'icon'        => 'icon-laptop',
+                    'url'         => Backend::url('backend/preferences'),
                     'permissions' => ['backend.manage_preferences'],
-                    'order' => 510,
-                    'context' => 'mysettings',
+                    'order'       => 510,
+                    'context'     => 'mysettings'
                 ],
                 'access_logs' => [
-                    'label' => 'backend::lang.access_log.menu_label',
+                    'label'       => 'backend::lang.access_log.menu_label',
                     'description' => 'backend::lang.access_log.menu_description',
-                    'category' => SettingsManager::CATEGORY_LOGS,
-                    'icon' => 'icon-lock',
-                    'url' => Backend::url('backend/accesslogs'),
+                    'category'    => SettingsManager::CATEGORY_LOGS,
+                    'icon'        => 'icon-lock',
+                    'url'         => Backend::url('backend/accesslogs'),
                     'permissions' => ['system.access_logs'],
-                    'order' => 920,
-                ],
+                    'order'       => 920
+                ]
             ]);
             $manager->registerOwnerAlias('Winter.Backend', 'October.Backend');
         });

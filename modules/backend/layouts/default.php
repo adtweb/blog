@@ -6,7 +6,7 @@
     </head>
     <body class="<?= $this->bodyClass ?>">
         <div id="layout-canvas">
-            <?php if (\BackendAuth::isImpersonator()) { ?>
+            <?php if (\BackendAuth::isImpersonator()): ?>
                 <div class="global-notice">
                     <div class="notice-content">
                         <span class="notice-text">
@@ -21,7 +21,7 @@
                         <?= e(trans('backend::lang.account.stop_impersonating')) ?>
                     </a>
                 </div>
-            <?php } ?>
+            <?php endif; ?>
 
             <div class="layout">
 
@@ -34,37 +34,37 @@
 
                 <div class="layout-row">
                     <div class="layout flyout-container"
-                        <?php if ($flyoutContent) { ?>
+                        <?php if ($flyoutContent): ?>
                             data-control="flyout"
                             data-flyout-width="400"
                             data-flyout-toggle="#layout-sidenav"
-                        <?php } ?>
+                        <?php endif ?>
                     >
-                        <?php if ($flyoutContent) { ?>
+                        <?php if ($flyoutContent): ?>
                             <div class="layout-cell flyout"> <?= $flyoutContent ?></div>
-                        <?php } ?>
+                        <?php endif ?>
 
                         <!-- Side Navigation -->
                         <?= $this->makeLayoutPartial('sidenav') ?>
 
                         <!-- Side panel -->
-                        <?php if ($sidePanelContent = Block::placeholder('sidepanel')) { ?>
+                        <?php if ($sidePanelContent = Block::placeholder('sidepanel')): ?>
                             <div class="layout-cell w-350 hide-on-small" id="layout-side-panel" data-control="layout-sidepanel">
                                 <?= $sidePanelContent ?>
                             </div>
-                        <?php } ?>
+                        <?php endif ?>
 
                         <!-- Content Body -->
                         <div class="layout-cell layout-container" id="layout-body">
                             <div class="layout-relative">
 
                                 <div class="layout">
-                                    <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')) { ?>
+                                    <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')): ?>
                                         <!-- Breadcrumb -->
                                         <div class="control-breadcrumb">
                                             <?= $breadcrumbContent ?>
                                         </div>
-                                    <?php } ?>
+                                    <?php endif ?>
 
                                     <!-- Content -->
                                     <div class="layout-row">

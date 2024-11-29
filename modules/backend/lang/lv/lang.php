@@ -20,17 +20,17 @@ return [
         'untitled' => 'Bez nosaukuma',
         '404' => [
             'label' => 'Lapa nav atrasta',
-            'help' => 'Mēs meklējām un meklējām, taču pieprasīto URL neizdevās atrast. Iespējams meklējāt kaut ko citu?',
+            'help' => "Mēs meklējām un meklējām, taču pieprasīto URL neizdevās atrast. Iespējams meklējāt kaut ko citu?",
             'back_link' => 'Atpakaļ uz iepriekšējo lapu',
         ],
         'access_denied' => [
             'label' => 'Piekļuve liegta',
-            'help' => 'Jums nav nepieciešamo piekļuves tiesību, lai skatītu šo lapu.',
+            'help' => "Jums nav nepieciešamo piekļuves tiesību, lai skatītu šo lapu.",
             'cms_link' => 'Atgriezties back-end',
         ],
         'no_database' => [
             'label' => 'Trūkst datubāzes',
-            'help' => 'Nepieciešama datubāze, lai piekļūtu sistēmas back-end. Pirms mēģiniet vēlreiz, pārbaudiet vai datubāze ir konfigurēta un veiktas nepieciešamās datu migrācijas.',
+            'help' => "Nepieciešama datubāze, lai piekļūtu sistēmas back-end. Pirms mēģiniet vēlreiz, pārbaudiet vai datubāze ir konfigurēta un veiktas nepieciešamās datu migrācijas.",
             'cms_link' => 'Atgriezties sākumlapā',
         ],
     ],
@@ -306,7 +306,7 @@ return [
         'insert_row_below' => 'Ievietot rindu zem',
         'delete_row' => 'Dzēst rindu',
         'concurrency_file_changed_title' => 'Fails ir ticis modificēts',
-        'concurrency_file_changed_description' => 'Failu, kuru labojat, ir modificējis cits lietotājs. Jūs varat vai nu pārlādēt failu un zaudēt savas veiktās izmaiņas, vai arī pārrakstīt esošo failu uz diska.',
+        'concurrency_file_changed_description' => "Failu, kuru labojat, ir modificējis cits lietotājs. Jūs varat vai nu pārlādēt failu un zaudēt savas veiktās izmaiņas, vai arī pārrakstīt esošo failu uz diska.",
         'return_to_list' => 'Atgriezties uz sarakstu',
     ],
     'recordfinder' => [
@@ -364,7 +364,7 @@ return [
         'missing_relation' => "Modelis ':class' nesatur definīciju ':relation'.",
         'missing_method' => "Modelis ':class' nesatur metodi ':method'.",
         'invalid_class' => "Klasē :class lietotais modelis :model nav derīgs, modelim jāpārmanto \Model klase.",
-        'mass_assignment_failed' => "Masveida vērtību piešķiršana neizdevās modeļa atribūtam ':attribute'.",
+        'mass_assignment_failed' => "Masveida vērtību piešķiršana neizdevās modeļa atribūtam ':attribute'."
     ],
     'warnings' => [
         'tips' => 'Sistēmas konfigurācijas padomi',
@@ -394,9 +394,9 @@ return [
         'show_gutter' => 'Rādīt līniju numurus',
         'basic_autocompletion' => 'Pamata automātiskā pabeigšana (Ctrl + Space)',
         'live_autocompletion' => 'Reāllaika automātiskā pabeigšana',
-        'enable_snippets' => 'Ieslēgt koda fragmentus (Tab)',
-        'display_indent_guides' => 'Rādīt atkāpju vadlīnijas',
-        'show_print_margin' => 'Rādīt drukas piemali',
+        'enable_snippets'=> 'Ieslēgt koda fragmentus (Tab)',
+        'display_indent_guides'=> 'Rādīt atkāpju vadlīnijas',
+        'show_print_margin'=> 'Rādīt drukas piemali',
         'mode_off' => 'Izslēgta',
         'mode_fluid' => 'Plūstoša',
         '40_characters' => '40 simboli',

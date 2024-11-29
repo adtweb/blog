@@ -1,6 +1,6 @@
 <?= Form::ajax('onSaveFields', [
     'id' => 'themeFieldsForm',
-    'data-popup-load-indicator' => true,
+    'data-popup-load-indicator' => true
 ]) ?>
 
     <input type="hidden" name="theme" value="<?= $themeDir ?>" />
@@ -10,7 +10,7 @@
         <h4 class="modal-title"><?= e(trans('cms::lang.theme.edit_properties_title')) ?>: <?= $themeDir ?></h4>
     </div>
 
-    <?php if (! $this->fatalError) { ?>
+    <?php if (!$this->fatalError): ?>
 
         <div class="modal-body">
             <?= $widget->render() ?>
@@ -30,7 +30,7 @@
             </button>
         </div>
 
-    <?php } else { ?>
+    <?php else: ?>
 
         <div class="modal-body">
             <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
@@ -44,7 +44,7 @@
             </button>
         </div>
 
-    <?php } ?>
+    <?php endif ?>
 
     <script>
         setTimeout(

@@ -1,10 +1,9 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use File;
 use InvalidArgumentException;
 use System\Classes\VersionManager;
+use System\Console\BaseScaffoldCommand;
 use Winter\Storm\Database\Model;
 use Winter\Storm\Support\Str;
 use Yaml;
@@ -89,7 +88,7 @@ class CreateMigration extends BaseScaffoldCommand
         $changes = [$this->vars['name']];
         $stubs = array_keys($this->stubs);
         foreach ($stubs as $stub) {
-            $changes[] = Str::after($this->getDestinationForStub($stub), $plugin->getPluginPath().'/updates/');
+            $changes[] = Str::after($this->getDestinationForStub($stub), $plugin->getPluginPath() . '/updates/');
         }
 
         // Identify the version to insert these changes into
@@ -103,9 +102,9 @@ class CreateMigration extends BaseScaffoldCommand
         $versions[$version] = $changes;
 
         // Render and save the updated version.yaml file
-        $destinationFile = $plugin->getPluginPath().'/updates/version.yaml';
+        $destinationFile = $plugin->getPluginPath() . '/updates/version.yaml';
         $this->files->put($destinationFile, Yaml::render($versions));
-        $this->comment('File updated: '.str_replace(base_path(), '', $destinationFile));
+        $this->comment('File updated: ' . str_replace(base_path(), '', $destinationFile));
     }
 
     /**
@@ -127,7 +126,7 @@ class CreateMigration extends BaseScaffoldCommand
                 $this->option('model')
                     ? Str::plural($this->option('model'))
                     : null
-            )
+                )
                 ?? (
                     $this->option('table')
                         ? Str::replace('_', ' ', $this->option('table'))
@@ -135,7 +134,6 @@ class CreateMigration extends BaseScaffoldCommand
                 );
             $name = Str::replace('{ResourceName}', $resourceName, $template);
         }
-
         return $name;
     }
 
@@ -151,7 +149,7 @@ class CreateMigration extends BaseScaffoldCommand
         $table = $this->option('table');
         $model = $this->option('model');
 
-        if (empty($table) && ! empty($model)) {
+        if (empty($table) && !empty($model)) {
             $modelClass = "\\{$author}\\{$plugin}\Models\\{$model}";
             if (class_exists($modelClass)) {
                 $table = (new $modelClass)->getTable();
@@ -176,18 +174,18 @@ class CreateMigration extends BaseScaffoldCommand
             throw new InvalidArgumentException('The table or model options are required when using the create or update options');
         }
 
-        if (($table || $model) && ! in_array($scaffold, ['create', 'update'])) {
+        if (($table || $model) && !in_array($scaffold, ['create', 'update'])) {
             throw new InvalidArgumentException('One of create or update option is required when using the model or table options');
         }
 
         $this->stubs = $this->migrationScaffolds[$scaffold];
 
-        if (! empty($this->option('for-version'))) {
+        if (!empty($this->option('for-version'))) {
             $version = $this->option('for-version');
         } else {
             $currentVersion = $this->getPlugin()->getPluginVersion();
             if ($currentVersion === VersionManager::NO_VERSION_VALUE) {
-                throw new InvalidArgumentException('The plugin ['.$this->getPluginIdentifier().'] does not have a version set and no --version option was provided. Please set a version in the plugin\'s updates/version.yaml file.');
+                throw new InvalidArgumentException('The plugin [' . $this->getPluginIdentifier() . '] does not have a version set and no --version option was provided. Please set a version in the plugin\'s updates/version.yaml file.');
             }
             $version = $this->getNextVersion($currentVersion);
         }
@@ -199,10 +197,10 @@ class CreateMigration extends BaseScaffoldCommand
             'version' => $version,
         ];
 
-        if (! empty($model)) {
+        if (!empty($model)) {
             $vars['model'] = $model;
         }
-        if (! empty($table)) {
+        if (!empty($table)) {
             $vars['table'] = $table;
         }
 
@@ -223,15 +221,15 @@ class CreateMigration extends BaseScaffoldCommand
 
         $vars['fields'] = [];
 
-        $fields_path = $vars['plugin_url'].'/models/'.$vars['lower_model'].'/fields.yaml';
+        $fields_path = $vars['plugin_url'] . '/models/' . $vars['lower_model'] . '/fields.yaml';
         $fields = Yaml::parseFile(plugins_path($fields_path));
 
-        $modelName = $vars['plugin_namespace'].'\\Models\\'.$vars['model'];
+        $modelName = $vars['plugin_namespace'] . '\\Models\\' . $vars['model'];
 
-        $vars['model'] = $model = new $modelName;
+        $vars['model'] = $model = new $modelName();
 
         foreach (['fields', 'tabs', 'secondaryTabs'] as $type) {
-            if (! isset($fields[$type])) {
+            if (!isset($fields[$type])) {
                 continue;
             }
             if ($type === 'fields') {
@@ -242,7 +240,7 @@ class CreateMigration extends BaseScaffoldCommand
 
             foreach ($fieldList as $field => $config) {
                 if (str_contains($field, '@')) {
-                    [$field, $context] = explode('@', $field);
+                    list($field, $context) = explode('@', $field);
                 }
 
                 $type = $config['type'] ?? 'text';
@@ -264,7 +262,7 @@ class CreateMigration extends BaseScaffoldCommand
         foreach ($model->getRelationDefinitions() as $relationType => $definitions) {
             if (in_array($relationType, ['belongsTo', 'hasOne'])) {
                 foreach (array_keys($definitions) as $relation) {
-                    $vars['fields'][$relation.'_id'] = [
+                    $vars['fields'][$relation . '_id'] = [
                         'type' => 'foreignId',
                         'index' => true,
                         'required' => true,
@@ -301,14 +299,13 @@ class CreateMigration extends BaseScaffoldCommand
         $currentVersion = ltrim($currentVersion, 'v');
         $parts = explode('.', $currentVersion);
         $parts[count($parts) - 1] = (int) $parts[count($parts) - 1] + 1;
-
-        return 'v'.implode('.', $parts);
+        return 'v' . implode('.', $parts);
     }
 
     /**
      * Maps model fields config to DB Schema column types.
      */
-    protected function mapFieldType(string $fieldName, array $fieldConfig, ?Model $model = null): array
+    protected function mapFieldType(string $fieldName, array $fieldConfig, ?Model $model = null) : array
     {
         switch ($fieldConfig['type'] ?? 'text') {
             case 'checkbox':
@@ -352,7 +349,7 @@ class CreateMigration extends BaseScaffoldCommand
         return [
             'type' => $dbType,
             'required' => $required,
-            'index' => in_array($fieldName, ['slug']) or str_ends_with($fieldName, '_id'),
+            'index' => in_array($fieldName, ["slug"]) or str_ends_with($fieldName, "_id"),
         ];
     }
 }

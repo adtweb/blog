@@ -1,17 +1,17 @@
-<?php
-
-namespace Backend\Controllers;
+<?php namespace Backend\Controllers;
 
 use Backend;
+use Redirect;
+use BackendMenu;
 use Backend\Classes\Controller;
 use Backend\Widgets\ReportContainer;
-use BackendMenu;
-use Redirect;
 
 /**
  * Dashboard controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class Index extends Controller
 {
@@ -19,7 +19,6 @@ class Index extends Controller
 
     /**
      * @var array Permissions required to view this page.
-     *
      * @see checkPermissionRedirect()
      */
     public $requiredPermissions = [];
@@ -58,8 +57,7 @@ class Index extends Controller
 
     /**
      * Prepare the report widget used by the dashboard
-     *
-     * @param  Model  $model
+     * @param Model $model
      * @return void
      */
     protected function initReportContainer()
@@ -73,14 +71,13 @@ class Index extends Controller
      */
     protected function checkPermissionRedirect()
     {
-        if (! $this->user->hasAccess('backend.access_dashboard')) {
+        if (!$this->user->hasAccess('backend.access_dashboard')) {
             $true = function () {
                 return true;
             };
             if ($first = array_first(BackendMenu::listMainMenuItems(), $true)) {
                 return Redirect::intended($first->url);
             }
-
             return Backend::redirect('backend/users/myaccount');
         }
     }

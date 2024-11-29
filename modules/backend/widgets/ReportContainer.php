@@ -1,22 +1,21 @@
-<?php
+<?php namespace Backend\Widgets;
 
-namespace Backend\Widgets;
-
-use ApplicationException;
+use File;
+use Lang;
+use Flash;
+use Request;
+use BackendAuth;
 use Backend\Classes\WidgetBase;
 use Backend\Classes\WidgetManager;
 use Backend\Models\UserPreference;
-use BackendAuth;
-use File;
-use Flash;
-use Lang;
-use Request;
 use System\Models\Parameter as SystemParameters;
+use ApplicationException;
 
 /**
  * Report Container Widget
  * Creates an area hosting report widgets.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ReportContainer extends WidgetBase
@@ -27,11 +26,11 @@ class ReportContainer extends WidgetBase
 
     /**
      * @var string The unique report context name
-     *             Defines the context where the container is used.
-     *             Widget settings are saved in a specific context. This allows to
-     *             have multiple report containers on different pages that have
-     *             different widgets and widget settings. Context names can contain
-     *             only Latin letters.
+     * Defines the context where the container is used.
+     * Widget settings are saved in a specific context. This allows to
+     * have multiple report containers on different pages that have
+     * different widgets and widget settings. Context names can contain
+     * only Latin letters.
      */
     public $context = 'dashboard';
 
@@ -42,8 +41,8 @@ class ReportContainer extends WidgetBase
 
     /**
      * @var array A list of default widgets to load.
-     *            This structure could be defined in the widget configuration file (for example config_report_container.yaml).
-     *            Example YAML structure:
+     * This structure could be defined in the widget configuration file (for example config_report_container.yaml).
+     * Example YAML structure:
      *
      * defaultWidgets:
      *     trafficOverview:
@@ -60,7 +59,7 @@ class ReportContainer extends WidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'reportContainer';
 
@@ -70,7 +69,7 @@ class ReportContainer extends WidgetBase
     protected $reportWidgets = [];
 
     /**
-     * @var bool Determines if report widgets have been created.
+     * @var boolean Determines if report widgets have been created.
      */
     protected $reportsDefined = false;
 
@@ -79,7 +78,7 @@ class ReportContainer extends WidgetBase
      */
     public function __construct($controller, $configuration = null)
     {
-        if (! $configuration) {
+        if (!$configuration) {
             $configuration = 'config_report_container.yaml';
         }
 
@@ -87,7 +86,8 @@ class ReportContainer extends WidgetBase
             $path = $controller->getConfigPath($configuration);
             if (File::isFile($path)) {
                 $configuration = $this->makeConfig($path);
-            } else {
+            }
+            else {
                 $configuration = [];
             }
         }
@@ -101,7 +101,6 @@ class ReportContainer extends WidgetBase
     /**
      * Ensure report widgets are registered so they can also be bound to
      * the controller this allows their AJAX features to operate.
-     *
      * @return void
      */
     public function bindToController()
@@ -117,12 +116,11 @@ class ReportContainer extends WidgetBase
     {
         $this->defineReportWidgets();
         $this->vars['widgets'] = $this->reportWidgets;
-
         return $this->makePartial('container');
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {
@@ -148,8 +146,8 @@ class ReportContainer extends WidgetBase
 
     public function onMakeLayoutDefault()
     {
-        if (! BackendAuth::getUser()->hasAccess('backend.manage_default_dashboard')) {
-            throw new ApplicationException('You do not have permission to do that.');
+        if (!BackendAuth::getUser()->hasAccess('backend.manage_default_dashboard')) {
+            throw new ApplicationException("You do not have permission to do that.");
         }
 
         $widgets = $this->getWidgetsFromUserPreferences();
@@ -170,7 +168,7 @@ class ReportContainer extends WidgetBase
         $this->saveWidgetProperties($alias, $widget->getProperties());
 
         return [
-            '#'.$alias => $widget->render(),
+            '#'.$alias => $widget->render()
         ];
     }
 
@@ -185,7 +183,7 @@ class ReportContainer extends WidgetBase
     {
         $sizes = [];
         for ($i = 1; $i <= 12; $i++) {
-            $sizes[$i] = $i < 12 ? $i : $i.' ('.Lang::get('backend::lang.dashboard.full_width').')';
+            $sizes[$i] = $i < 12 ? $i : $i.' (' . Lang::get('backend::lang.dashboard.full_width') . ')';
         }
 
         $this->vars['sizes'] = $sizes;
@@ -199,16 +197,16 @@ class ReportContainer extends WidgetBase
         $className = trim(Request::input('className'));
         $size = trim(Request::input('size'));
 
-        if (! $className) {
+        if (!$className) {
             throw new ApplicationException('Please select a widget to add.');
         }
 
-        if (! class_exists($className)) {
+        if (!class_exists($className)) {
             throw new ApplicationException('The selected class doesn\'t exist.');
         }
 
         $widget = new $className($this->controller);
-        if (! ($widget instanceof \Backend\Classes\ReportWidgetBase)) {
+        if (!($widget instanceof \Backend\Classes\ReportWidgetBase)) {
             throw new ApplicationException('The selected class is not a report widget.');
         }
 
@@ -216,16 +214,16 @@ class ReportContainer extends WidgetBase
 
         return [
             '@#'.$this->getId('container-list') => $this->makePartial('widget', [
-                'widget' => $widget,
+                'widget'      => $widget,
                 'widgetAlias' => $widgetInfo['alias'],
-                'sortOrder' => $widgetInfo['sortOrder'],
-            ]),
+                'sortOrder'   => $widgetInfo['sortOrder']
+            ])
         ];
     }
 
     public function addWidget($widget, $size)
     {
-        if (! $this->canAddAndDelete) {
+        if (!$this->canAddAndDelete) {
             throw new ApplicationException('Access denied.');
         }
 
@@ -235,7 +233,8 @@ class ReportContainer extends WidgetBase
         do {
             $num++;
             $alias = 'report_container_'.$this->context.'_'.$num;
-        } while (array_key_exists($alias, $widgets));
+        }
+        while (array_key_exists($alias, $widgets));
 
         // Ensure that the widget's alias is correctly set for this request
         $widget->alias = $alias;
@@ -250,16 +249,16 @@ class ReportContainer extends WidgetBase
         $widget->setProperty('ocWidgetWidth', $size);
 
         $widgets[$alias] = [
-            'class' => get_class($widget),
+            'class'         => get_class($widget),
             'configuration' => $widget->getProperties(),
-            'sortOrder' => $sortOrder,
+            'sortOrder'     => $sortOrder
         ];
 
         $this->setWidgetsToUserPreferences($widgets);
 
         return [
-            'alias' => $alias,
-            'sortOrder' => $widgets[$alias]['sortOrder'],
+            'alias'     => $alias,
+            'sortOrder' => $widgets[$alias]['sortOrder']
         ];
     }
 
@@ -268,11 +267,11 @@ class ReportContainer extends WidgetBase
         $aliases = trim(Request::input('aliases'));
         $orders = trim(Request::input('orders'));
 
-        if (! $aliases) {
+        if (!$aliases) {
             throw new ApplicationException('Invalid aliases string.');
         }
 
-        if (! $orders) {
+        if (!$orders) {
             throw new ApplicationException('Invalid orders string.');
         }
 
@@ -330,8 +329,8 @@ class ReportContainer extends WidgetBase
      * - widget: The widget object (Backend\Classes\ReportWidgetBase)
      * - sortOrder: The current sort order
      *
-     * @param  string  $alias
-     * @param  array  $widgetInfo
+     * @param  string $alias
+     * @param  array $widgetInfo
      * @return array
      */
     protected function makeReportWidget($alias, $widgetInfo)
@@ -341,7 +340,7 @@ class ReportContainer extends WidgetBase
 
         $className = $widgetInfo['class'];
         $availableReportWidgets = array_keys(WidgetManager::instance()->listReportWidgets());
-        if (! class_exists($className) || ! in_array($className, $availableReportWidgets)) {
+        if (!class_exists($className) || !in_array($className, $availableReportWidgets)) {
             return;
         }
 
@@ -362,7 +361,7 @@ class ReportContainer extends WidgetBase
 
     protected function removeWidget($alias)
     {
-        if (! $this->canAddAndDelete) {
+        if (!$this->canAddAndDelete) {
             throw new ApplicationException('Access denied.');
         }
 
@@ -380,7 +379,7 @@ class ReportContainer extends WidgetBase
         $this->defineReportWidgets();
 
         $widgets = $this->reportWidgets;
-        if (! isset($widgets[$alias])) {
+        if (!isset($widgets[$alias])) {
             throw new ApplicationException('The specified widget is not found.');
         }
 
@@ -392,42 +391,42 @@ class ReportContainer extends WidgetBase
         $properties = $widget->defineProperties();
 
         $property = [
-            'property' => 'ocWidgetWidth',
-            'title' => Lang::get('backend::lang.dashboard.widget_columns_label', ['columns' => '(1-12)']),
-            'description' => Lang::get('backend::lang.dashboard.widget_columns_description'),
-            'type' => 'dropdown',
+            'property'          => 'ocWidgetWidth',
+            'title'             => Lang::get('backend::lang.dashboard.widget_columns_label', ['columns' => '(1-12)']),
+            'description'       => Lang::get('backend::lang.dashboard.widget_columns_description'),
+            'type'              => 'dropdown',
             'validationPattern' => '^[0-9]+$',
             'validationMessage' => Lang::get('backend::lang.dashboard.widget_columns_error'),
-            'options' => [
-                1 => '1 '.Lang::choice('backend::lang.dashboard.columns', 1),
-                2 => '2 '.Lang::choice('backend::lang.dashboard.columns', 2),
-                3 => '3 '.Lang::choice('backend::lang.dashboard.columns', 3),
-                4 => '4 '.Lang::choice('backend::lang.dashboard.columns', 4),
-                5 => '5 '.Lang::choice('backend::lang.dashboard.columns', 5),
-                6 => '6 '.Lang::choice('backend::lang.dashboard.columns', 6),
-                7 => '7 '.Lang::choice('backend::lang.dashboard.columns', 7),
-                8 => '8 '.Lang::choice('backend::lang.dashboard.columns', 8),
-                9 => '9 '.Lang::choice('backend::lang.dashboard.columns', 9),
-                10 => '10 '.Lang::choice('backend::lang.dashboard.columns', 10),
-                11 => '11 '.Lang::choice('backend::lang.dashboard.columns', 11),
-                12 => '12 '.Lang::choice('backend::lang.dashboard.columns', 12),
-            ],
+            'options'           => [
+                1  => '1 ' . Lang::choice('backend::lang.dashboard.columns', 1),
+                2  => '2 ' . Lang::choice('backend::lang.dashboard.columns', 2),
+                3  => '3 ' . Lang::choice('backend::lang.dashboard.columns', 3),
+                4  => '4 ' . Lang::choice('backend::lang.dashboard.columns', 4),
+                5  => '5 ' . Lang::choice('backend::lang.dashboard.columns', 5),
+                6  => '6 ' . Lang::choice('backend::lang.dashboard.columns', 6),
+                7  => '7 ' . Lang::choice('backend::lang.dashboard.columns', 7),
+                8  => '8 ' . Lang::choice('backend::lang.dashboard.columns', 8),
+                9  => '9 ' . Lang::choice('backend::lang.dashboard.columns', 9),
+                10 => '10 ' . Lang::choice('backend::lang.dashboard.columns', 10),
+                11 => '11 ' . Lang::choice('backend::lang.dashboard.columns', 11),
+                12 => '12 ' . Lang::choice('backend::lang.dashboard.columns', 12)
+            ]
         ];
         $result[] = $property;
 
         $property = [
-            'property' => 'ocWidgetNewRow',
-            'title' => Lang::get('backend::lang.dashboard.widget_new_row_label'),
+            'property'    => 'ocWidgetNewRow',
+            'title'       => Lang::get('backend::lang.dashboard.widget_new_row_label'),
             'description' => Lang::get('backend::lang.dashboard.widget_new_row_description'),
-            'type' => 'checkbox',
+            'type'        => 'checkbox'
         ];
 
         $result[] = $property;
         foreach ($properties as $name => $params) {
             $property = [
                 'property' => $name,
-                'title' => isset($params['title']) ? Lang::get($params['title']) : $name,
-                'type' => $params['type'] ?? 'string',
+                'title'    => isset($params['title']) ? Lang::get($params['title']) : $name,
+                'type'     => $params['type'] ?? 'string'
             ];
 
             foreach ($params as $name => $value) {
@@ -435,7 +434,7 @@ class ReportContainer extends WidgetBase
                     continue;
                 }
 
-                $property[$name] = ! is_array($value) ? Lang::get($value) : $value;
+                $property[$name] = !is_array($value) ? Lang::get($value) : $value;
             }
 
             $result[] = $property;
@@ -474,7 +473,7 @@ class ReportContainer extends WidgetBase
         $widgets = UserPreference::forUser()
             ->get($this->getUserPreferencesKey(), $defaultWidgets);
 
-        if (! is_array($widgets)) {
+        if (!is_array($widgets)) {
             return [];
         }
 

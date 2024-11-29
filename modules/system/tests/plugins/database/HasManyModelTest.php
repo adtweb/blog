@@ -2,20 +2,20 @@
 
 namespace System\Tests\Plugins\Database;
 
+use System\Tests\Bootstrap\PluginTestCase;
 use Database\Tester\Models\Author;
 use Database\Tester\Models\Post;
-use Model;
-use System\Tests\Bootstrap\PluginTestCase;
 use Winter\Storm\Database\Collection;
+use Model;
 
 class HasManyModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -24,10 +24,10 @@ class HasManyModelTest extends PluginTestCase
     {
         Model::unguard();
         $author = Author::create(['name' => 'Stevie', 'email' => 'stevie@example.com']);
-        $post1 = Post::create(['title' => 'First post', 'description' => 'Yay!!']);
-        $post2 = Post::create(['title' => 'Second post', 'description' => 'Woohoo!!']);
-        $post3 = Post::create(['title' => 'Third post', 'description' => 'Yipiee!!']);
-        $post4 = Post::make(['title' => 'Fourth post', 'description' => 'Hooray!!']);
+        $post1 = Post::create(['title' => "First post", 'description' => "Yay!!"]);
+        $post2 = Post::create(['title' => "Second post", 'description' => "Woohoo!!"]);
+        $post3 = Post::create(['title' => "Third post", 'description' => "Yipiee!!"]);
+        $post4 = Post::make(['title' => "Fourth post", 'description' => "Hooray!!"]);
         Model::reguard();
 
         // Set by Model object
@@ -37,7 +37,7 @@ class HasManyModelTest extends PluginTestCase
         $this->assertEquals($author->id, $post2->author_id);
         $this->assertEquals([
             'First post',
-            'Second post',
+            'Second post'
         ], $author->posts->lists('title'));
 
         // Set by primary key
@@ -47,7 +47,7 @@ class HasManyModelTest extends PluginTestCase
         $post3 = Post::find($postId);
         $this->assertEquals($author->id, $post3->author_id);
         $this->assertEquals([
-            'Third post',
+            'Third post'
         ], $author->posts->lists('title'));
 
         // Nullify
@@ -61,7 +61,7 @@ class HasManyModelTest extends PluginTestCase
         $author->posts = $post4;
         $this->assertEquals($author->id, $post4->author_id);
         $this->assertEquals([
-            'Fourth post',
+            'Fourth post'
         ], $author->posts->lists('title'));
     }
 
@@ -69,8 +69,8 @@ class HasManyModelTest extends PluginTestCase
     {
         Model::unguard();
         $author = Author::create(['name' => 'Stevie']);
-        $post1 = Post::create(['title' => 'First post', 'author_id' => $author->id]);
-        $post2 = Post::create(['title' => 'Second post', 'author_id' => $author->id]);
+        $post1 = Post::create(['title' => "First post", 'author_id' => $author->id]);
+        $post2 = Post::create(['title' => "Second post", 'author_id' => $author->id]);
         Model::reguard();
 
         $this->assertEquals([$post1->id, $post2->id], $author->getRelationValue('posts'));
@@ -82,7 +82,7 @@ class HasManyModelTest extends PluginTestCase
 
         Model::unguard();
         $author = Author::create(['name' => 'Stevie']);
-        $post = Post::create(['title' => 'First post', 'description' => 'Yay!!']);
+        $post = Post::create(['title' => "First post", 'description' => "Yay!!"]);
         Model::reguard();
 
         $postId = $post->id;
@@ -101,7 +101,7 @@ class HasManyModelTest extends PluginTestCase
         $this->assertEquals(1, $author->posts()->count());
         $this->assertEquals($author->id, $post->author_id);
         $this->assertEquals([
-            'First post',
+            'First post'
         ], $author->posts->lists('title'));
 
         // New session
@@ -113,7 +113,7 @@ class HasManyModelTest extends PluginTestCase
         $this->assertEquals(0, $author->posts()->withDeferred($sessionKey)->count());
         $this->assertEquals($author->id, $post->author_id);
         $this->assertEquals([
-            'First post',
+            'First post'
         ], $author->posts->lists('title'));
 
         // Commit deferred

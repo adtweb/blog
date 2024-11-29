@@ -1,15 +1,14 @@
-<?php
+<?php namespace Backend\Classes;
 
-namespace Backend\Classes;
-
-use Config;
 use File;
+use Config;
 use Winter\Storm\Router\Helper as RouterHelper;
 
 /**
  * Skin Base class
  * Used for defining skins.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 abstract class Skin
@@ -40,7 +39,7 @@ abstract class Skin
     public $defaultPublicSkinPath;
 
     /**
-     * @var self Cache of the active skin.
+     * @var Self Cache of the active skin.
      */
     private static $skinCache;
 
@@ -49,7 +48,7 @@ abstract class Skin
      */
     public function __construct()
     {
-        $this->defaultSkinPath = base_path().'/modules/backend';
+        $this->defaultSkinPath = base_path() . '/modules/backend';
 
         /*
          * Guess the skin path
@@ -58,7 +57,7 @@ abstract class Skin
         $classFolder = strtolower(class_basename($class));
         $classFile = realpath(dirname(File::fromClass($class)));
         $this->skinPath = $classFile
-            ? $classFile.'/'.$classFolder
+            ? $classFile . '/' . $classFolder
             : $this->defaultSkinPath;
 
         $this->publicSkinPath = File::localToPublic($this->skinPath);
@@ -67,30 +66,28 @@ abstract class Skin
 
     /**
      * Looks up a path to a skin-based file, if it doesn't exist, the default path is used.
-     *
      * @param  string  $path
-     * @param  bool  $isPublic
+     * @param  boolean $isPublic
      * @return string
      */
     public function getPath($path = null, $isPublic = false)
     {
         $path = RouterHelper::normalizeUrl($path);
-        $assetFile = $this->skinPath.$path;
+        $assetFile = $this->skinPath . $path;
 
         if (File::isFile($assetFile)) {
             return $isPublic
-                ? $this->publicSkinPath.$path
-                : $this->skinPath.$path;
+                ? $this->publicSkinPath . $path
+                : $this->skinPath . $path;
         }
 
         return $isPublic
-            ? $this->defaultPublicSkinPath.$path
-            : $this->defaultSkinPath.$path;
+            ? $this->defaultPublicSkinPath . $path
+            : $this->defaultSkinPath . $path;
     }
 
     /**
      * Returns an array of paths where skin layouts can be found.
-     *
      * @return array
      */
     public function getLayoutPaths()
@@ -108,8 +105,7 @@ abstract class Skin
         }
 
         $skinClass = Config::get('cms.backendSkin');
-        $skinObject = new $skinClass;
-
+        $skinObject = new $skinClass();
         return self::$skinCache = $skinObject;
     }
 }

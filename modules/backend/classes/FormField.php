@@ -12,6 +12,7 @@ use Winter\Storm\Support\Str;
  * Form Field definition
  * A translation of the form field configuration
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class FormField
@@ -180,9 +181,8 @@ class FormField
 
     /**
      * Constructor.
-     *
-     * @param  string  $fieldName  The name of the field
-     * @param  string  $label  The label of the field
+     * @param string $fieldName The name of the field
+     * @param string $label The label of the field
      */
     public function __construct($fieldName, $label)
     {
@@ -196,38 +196,32 @@ class FormField
     public function tab($value)
     {
         $this->tab = $value;
-
         return $this;
     }
 
     /**
      * Sets a side of the field on a form.
-     *
-     * @param  string  $value  Specifies a side. Possible values: left, right, full
+     * @param string $value Specifies a side. Possible values: left, right, full
      */
     public function span($value = 'full')
     {
         $this->span = $value;
-
         return $this;
     }
 
     /**
      * Sets a side of the field on a form.
-     *
-     * @param  string  $value  Specifies a size. Possible values: tiny, small, large, huge, giant
+     * @param string $value Specifies a size. Possible values: tiny, small, large, huge, giant
      */
     public function size($value = 'large')
     {
         $this->size = $value;
-
         return $this;
     }
 
     /**
      * Sets field options, for dropdowns, radio lists and checkbox lists.
-     *
-     * @param  array  $value
+     * @param  array $value
      * @return self
      */
     public function options($value = null)
@@ -235,9 +229,9 @@ class FormField
         if ($value === null) {
             if (is_array($this->options)) {
                 return $this->options;
-            } elseif (is_callable($this->options)) {
+            }
+            elseif (is_callable($this->options)) {
                 $callable = $this->options;
-
                 return $callable();
             }
 
@@ -258,9 +252,8 @@ class FormField
      * - checkbox - creates a single checkbox.
      * - checkboxlist - creates a checkbox list.
      * - switch - creates a switch field.
-     *
-     * @param  string  $type  Specifies a render mode as described above
-     * @param  array  $config  A list of render mode specific config.
+     * @param string $type Specifies a render mode as described above
+     * @param array $config A list of render mode specific config.
      */
     public function displayAs($type, $config = [])
     {
@@ -272,8 +265,7 @@ class FormField
 
     /**
      * Process options and apply them to this object.
-     *
-     * @param  array  $config
+     * @param array $config
      * @return array
      */
     protected function evalConfig($config)
@@ -343,7 +335,8 @@ class FormField
 
         if (isset($config['valueFrom'])) {
             $this->valueFrom = $config['valueFrom'];
-        } else {
+        }
+        else {
             $this->valueFrom = $this->fieldName;
         }
 
@@ -352,11 +345,10 @@ class FormField
 
     /**
      * Adds a text comment above or below the field.
-     *
-     * @param  string  $text  Specifies a comment text.
-     * @param  string  $position  Specifies a comment position.
-     * @param  bool  $isHtml  Set to true if you use HTML formatting in the comment
-     *                        Supported values are 'below' and 'above'
+     * @param string $text Specifies a comment text.
+     * @param string $position Specifies a comment position.
+     * @param bool $isHtml Set to true if you use HTML formatting in the comment
+     * Supported values are 'below' and 'above'
      */
     public function comment($text, $position = 'below', $isHtml = null)
     {
@@ -372,8 +364,7 @@ class FormField
 
     /**
      * Determine if the provided value matches this field's value.
-     *
-     * @param  string  $value
+     * @param string $value
      * @return bool
      */
     public function isSelected($value = true)
@@ -392,21 +383,19 @@ class FormField
      * Sets the attributes for this field in a given position.
      * - field: Attributes are added to the form field element (input, select, textarea, etc)
      * - container: Attributes are added to the form field container (div.form-group)
-     *
-     * @param  array  $items
-     * @param  string  $position
+     * @param  array $items
+     * @param  string $position
      * @return void
      */
     public function attributes($items, $position = 'field')
     {
-        if (! is_array($items)) {
+        if (!is_array($items)) {
             return;
         }
 
         $multiArray = array_filter($items, 'is_array');
-        if (! $multiArray) {
+        if (!$multiArray) {
             $this->attributes[$position] = $items;
-
             return;
         }
 
@@ -419,14 +408,13 @@ class FormField
 
     /**
      * Checks if the field has the supplied [unfiltered] attribute.
-     *
-     * @param  string  $name
-     * @param  string  $position
+     * @param  string $name
+     * @param  string $position
      * @return bool
      */
     public function hasAttribute($name, $position = 'field')
     {
-        if (! isset($this->attributes[$position])) {
+        if (!isset($this->attributes[$position])) {
             return false;
         }
 
@@ -435,8 +423,7 @@ class FormField
 
     /**
      * Returns the attributes for this field at a given position.
-     *
-     * @param  string  $position
+     * @param  string $position
      * @return array
      */
     public function getAttributes($position = 'field', $htmlBuild = true)
@@ -445,11 +432,11 @@ class FormField
         $result = $this->filterAttributes($result, $position);
 
         // Field is required, so add the "required" attribute
-        if ($position === 'field' && $this->required && (! isset($result['required']) || $result['required'])) {
+        if ($position === 'field' && $this->required && (!isset($result['required']) || $result['required'])) {
             $result['required'] = '';
         }
         // The "required" attribute is set and falsy, so unset it
-        elseif ($position === 'field' && isset($result['required']) && ! $result['required']) {
+        elseif ($position === 'field' && isset($result['required']) && !$result['required']) {
             unset($result['required']);
         }
 
@@ -459,9 +446,8 @@ class FormField
     /**
      * Adds any circumstantial attributes to the field based on other
      * settings, such as the 'disabled' option.
-     *
-     * @param  array  $attributes
-     * @param  string  $position
+     * @param  array $attributes
+     * @param  string $position
      * @return array
      */
     protected function filterAttributes($attributes, $position = 'field')
@@ -488,14 +474,13 @@ class FormField
 
     /**
      * Adds attributes used specifically by the Trigger API
-     *
-     * @param  array  $attributes
-     * @param  string  $position
+     * @param  array $attributes
+     * @param  string $position
      * @return array
      */
     protected function filterTriggerAttributes($attributes, $position = 'field')
     {
-        if (! $this->trigger || ! is_array($this->trigger)) {
+        if (!$this->trigger || !is_array($this->trigger)) {
             return $attributes;
         }
 
@@ -532,7 +517,8 @@ class FormField
         // Final compilation
         if ($this->arrayName) {
             $fullTriggerField = $triggerForm.'['.implode('][', HtmlHelper::nameToArray($triggerField)).']'.$triggerMulti;
-        } else {
+        }
+        else {
             $fullTriggerField = $triggerField.$triggerMulti;
         }
 
@@ -540,7 +526,7 @@ class FormField
             'data-trigger' => '[name="'.$fullTriggerField.'"]',
             'data-trigger-action' => $triggerAction,
             'data-trigger-condition' => $triggerCondition,
-            'data-trigger-closest-parent' => 'form, div[data-control="formwidget"]',
+            'data-trigger-closest-parent' => 'form, div[data-control="formwidget"]'
         ];
 
         return $attributes + $newAttributes;
@@ -548,18 +534,17 @@ class FormField
 
     /**
      * Adds attributes used specifically by the Input Preset API
-     *
-     * @param  array  $attributes
-     * @param  string  $position
+     * @param  array $attributes
+     * @param  string $position
      * @return array
      */
     protected function filterPresetAttributes($attributes, $position = 'field')
     {
-        if (! $this->preset || $position != 'field') {
+        if (!$this->preset || $position != 'field') {
             return $attributes;
         }
 
-        if (! is_array($this->preset)) {
+        if (!is_array($this->preset)) {
             $this->preset = ['field' => $this->preset, 'type' => 'slug'];
         }
 
@@ -568,14 +553,15 @@ class FormField
 
         if ($this->arrayName) {
             $fullPresetField = $this->arrayName.'['.implode('][', HtmlHelper::nameToArray($presetField)).']';
-        } else {
+        }
+        else {
             $fullPresetField = $presetField;
         }
 
         $newAttributes = [
             'data-input-preset' => '[name="'.$fullPresetField.'"]',
             'data-input-preset-type' => $presetType,
-            'data-input-preset-closest-parent' => 'form',
+            'data-input-preset-closest-parent' => 'form'
         ];
 
         if ($prefixInput = array_get($this->preset, 'prefixInput')) {
@@ -587,8 +573,7 @@ class FormField
 
     /**
      * Returns a value suitable for the field name property.
-     *
-     * @param  string  $arrayName  Specify a custom array name
+     * @param  string $arrayName Specify a custom array name
      * @return string
      */
     public function getName($arrayName = null)
@@ -606,8 +591,7 @@ class FormField
 
     /**
      * Returns a value suitable for the field id property.
-     *
-     * @param  string  $suffix  Specify a suffix string
+     * @param  string $suffix Specify a suffix string
      * @return string
      */
     public function getId($suffix = null)
@@ -624,7 +608,7 @@ class FormField
         }
 
         if ($this->idPrefix) {
-            $id = $this->idPrefix.'-'.$id;
+            $id = $this->idPrefix . '-' . $id;
         }
 
         return HtmlHelper::nameToId($id);
@@ -632,9 +616,8 @@ class FormField
 
     /**
      * Returns a raw config item value.
-     *
-     * @param  string  $value
-     * @param  string  $default
+     * @param  string $value
+     * @param  string $default
      * @return mixed
      */
     public function getConfig($value, $default = null)
@@ -645,23 +628,20 @@ class FormField
     /**
      * Returns this fields value from a supplied data set, which can be
      * an array or a model or another generic collection.
-     *
-     * @param  mixed  $data
-     * @param  mixed  $default
+     * @param mixed $data
+     * @param mixed $default
      * @return mixed
      */
     public function getValueFromData($data, $default = null)
     {
         $fieldName = $this->valueFrom ?: $this->fieldName;
-
         return $this->getFieldNameFromData($fieldName, $data, $default);
     }
 
     /**
      * Returns the default value for this field, the supplied data is used
      * to source data when defaultFrom is specified.
-     *
-     * @param  mixed  $data
+     * @param mixed $data
      * @return mixed
      */
     public function getDefaultFromData($data)
@@ -682,7 +662,7 @@ class FormField
      *
      *     list($model, $attribute) = $this->resolveAttribute('person[phone]');
      *
-     * @param  string  $attribute.
+     * @param  string $attribute.
      * @return array
      */
     public function resolveModelAttribute($model, $attribute = null)
@@ -703,10 +683,9 @@ class FormField
 
     /**
      * Internal method to extract the value of a field name from a data set.
-     *
-     * @param  string  $fieldName
-     * @param  mixed  $data
-     * @param  mixed  $default
+     * @param string $fieldName
+     * @param mixed $data
+     * @param mixed $default
      * @return mixed
      */
     protected function getFieldNameFromData($fieldName, $data, $default = null)
@@ -731,12 +710,12 @@ class FormField
                     $result = $result->{$key};
                 }
             } elseif (is_array($result)) {
-                if (! array_key_exists($key, $result)) {
+                if (!array_key_exists($key, $result)) {
                     return $default;
                 }
                 $result = $result[$key];
             } else {
-                if (! isset($result->{$key})) {
+                if (!isset($result->{$key})) {
                     return $default;
                 }
                 $result = $result->{$key};

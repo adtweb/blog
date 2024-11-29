@@ -321,7 +321,7 @@ return [
         'invalid_action_single' => 'Dieser Vorgang kann nicht auf eine Einwege-Verbindung (singular) angewendet werden.',
         'invalid_action_multi' => 'Dieser Vorgang kann nicht auf eine Mehrwege-Verbindung (multiple) angewendet werden.',
         'relationwidget_unsupported_type' => 'Der ":type"-Beziehungstyp wird nicht vom Relation-Widget unterstützt.',
-        'help' => 'Zum Hinzufügen auf einen Eintrag klicken',
+        'help'  => 'Zum Hinzufügen auf einen Eintrag klicken',
         'related_data' => 'Verwandte :name Daten',
         'add' => 'Hinzufügen',
         'add_selected' => 'Auswahl hinzufügen',
@@ -364,7 +364,7 @@ return [
     'warnings' => [
         'tips' => 'System-Konfigurationstipps',
         'tips_description' => 'Es gibt Probleme, welche Sie beachten müssen, um das System korrekt zu konfigurieren.',
-        'permissions' => 'Das Verzeichnis :name oder ein Unterverzeichnis kann nicht von PHP beschrieben werden. Bitte setzen Sie die korrekten Rechte für den Webserver in diesem Verzeichnis.',
+        'permissions'  => 'Das Verzeichnis :name oder ein Unterverzeichnis kann nicht von PHP beschrieben werden. Bitte setzen Sie die korrekten Rechte für den Webserver in diesem Verzeichnis.',
         'extension' => 'Die PHP-Erweiterung :name ist nicht installiert. Bitte installieren und aktivieren Sie diese Erweiterung.',
         'plugin_missing' => 'Das Plugin :name hat eine Abhängigkeit, die nicht installiert ist. Bitte installieren Sie alle benötigten Plugins.',
         'debug' => 'Der Debug-Modus ist aktiviert. Dies wird für Produktionsinstallationen nicht empfohlen.',
@@ -435,7 +435,7 @@ return [
         'paragraph_formats_comment' => 'Die Optionen, welche in der Dropdown-Liste für Absatzformatierungen angezeigt werden.',
     ],
     'tooltips' => [
-        'preview_website' => 'Vorschau der Webseite',
+        'preview_website' => 'Vorschau der Webseite'
     ],
     'mysettings' => [
         'menu_label' => 'Meine Einstellungen',
@@ -500,10 +500,10 @@ return [
         'email' => 'E-Mail',
     ],
     'filter' => [
-        'all' => 'Alle',
-        'options_method_not_exists' => 'Die Modelklasse :model muss eine Methode :method() definiert haben, welche die Optionen für den Filter ":filter" zurückgibt.',
-        'date_all' => 'Ganzen Zeitraum',
-        'number_all' => 'Alle Zahlen',
+      'all' => 'Alle',
+      'options_method_not_exists' => 'Die Modelklasse :model muss eine Methode :method() definiert haben, welche die Optionen für den Filter ":filter" zurückgibt.',
+      'date_all' => 'Ganzen Zeitraum',
+      'number_all' => 'Alle Zahlen',
     ],
     'import_export' => [
         'upload_csv_file' => '1. CSV-Datei hochladen',

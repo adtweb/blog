@@ -1,17 +1,16 @@
-<?php
+<?php namespace Cms\Controllers;
 
-namespace Cms\Controllers;
-
-use Backend\Classes\Controller;
-use BackendMenu;
-use Cms\Models\ThemeLog;
-use Flash;
 use Lang;
+use Flash;
+use BackendMenu;
+use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
+use Cms\Models\ThemeLog;
 
 /**
  * Request Logs controller
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeLogs extends Controller
@@ -49,7 +48,6 @@ class ThemeLogs extends Controller
     {
         ThemeLog::truncate();
         Flash::success(Lang::get('cms::lang.theme_log.empty_success'));
-
         return $this->listRefresh();
     }
 
@@ -57,14 +55,15 @@ class ThemeLogs extends Controller
     {
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $recordId) {
-                if (! $record = ThemeLog::find($recordId)) {
+                if (!$record = ThemeLog::find($recordId)) {
                     continue;
                 }
                 $record->delete();
             }
 
             Flash::success(Lang::get('backend::lang.list.delete_selected_success'));
-        } else {
+        }
+        else {
             Flash::error(Lang::get('backend::lang.list.delete_selected_empty'));
         }
 

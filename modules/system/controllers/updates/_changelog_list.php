@@ -4,21 +4,21 @@
 </div>
 <div class="modal-body">
 
-    <?php if ($this->fatalError) { ?>
+    <?php if ($this->fatalError): ?>
         <p class="flash-message static error"><?= e($fatalError) ?></p>
-    <?php } else { ?>
+    <?php else: ?>
         <div class="control-updatelist">
             <div class="control-scrollbar" style="height:400px" data-control="scrollbar">
                 <div class="update-item">
                     <dl>
-                        <?php foreach ($changelog as $item) { ?>
+                        <?php foreach ($changelog as $item): ?>
                             <?php
                                 $description = array_get($item, 'description');
-                            $build = array_get($item, 'build');
-                            $linkUrl = array_get($item, 'link_url');
+                                $build = array_get($item, 'build');
+                                $linkUrl = array_get($item, 'link_url');
                             ?>
                             <dt><?= e($build) ?></dt>
-                            <?php if ($linkUrl) { ?>
+                            <?php if ($linkUrl): ?>
                                 <dd>
                                     <?= e($description) ?>
                                     <br>
@@ -27,15 +27,15 @@
                                         <i class="icon-external-link"></i>
                                     </a>
                                 </dd>
-                            <?php } else { ?>
+                            <?php else: ?>
                                 <dd><?= e($description) ?></dd>
-                            <?php } ?>
-                        <?php } ?>
+                            <?php endif ?>
+                        <?php endforeach ?>
                     </dl>
                 </div>
             </div>
         </div>
-    <?php } ?>
+    <?php endif ?>
 </div>
 
 <div class="modal-footer">

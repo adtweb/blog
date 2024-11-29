@@ -2,7 +2,7 @@
     <?= Form::open(['data-request-parent' => "#{$parentElementId}"]) ?>
         <input type="hidden" name="file_id" value="<?= $file->id ?>" />
 
-        <?php if (starts_with($displayMode, 'image')) { ?>
+        <?php if (starts_with($displayMode, 'image')): ?>
             <div class="file-upload-modal-image-header">
                 <button type="button" class="close" data-dismiss="popup">&times;</button>
                 <img
@@ -12,12 +12,12 @@
                     title="<?= e(trans('backend::lang.fileupload.attachment')) ?>: <?= e($file->file_name) ?>"
                     style="<?= $cssDimensions ?>" />
             </div>
-        <?php } else { ?>
+        <?php else: ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="popup">&times;</button>
                 <h4 class="modal-title"><?= e(trans('backend::lang.fileupload.attachment')) ?>: <?= $file->file_name ?></h4>
             </div>
-        <?php } ?>
+        <?php endif ?>
         <div class="modal-body">
             <p><?= e(trans('backend::lang.fileupload.help')) ?></p>
 

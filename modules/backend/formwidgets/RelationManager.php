@@ -10,7 +10,7 @@ use SystemException;
 class RelationManager extends FormWidgetBase
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'relationmanager';
 
@@ -43,14 +43,14 @@ class RelationManager extends FormWidgetBase
             'relation',
         ]);
 
-        if (! isset($this->readOnly)) {
+        if (!isset($this->readOnly)) {
             $this->readOnly = $this->config->previewMode;
         }
     }
 
     public function render()
     {
-        if (! $this->controller->isClassExtendedWith(\Backend\Behaviors\RelationController::class)) {
+        if (!$this->controller->isClassExtendedWith(\Backend\Behaviors\RelationController::class)) {
             $error = Lang::get('backend::lang.relation.missing_behavior', [
                 'field' => $this->formField->fieldName,
                 'controller' => get_class($this->controller),

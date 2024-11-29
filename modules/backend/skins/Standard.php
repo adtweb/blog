@@ -1,9 +1,7 @@
-<?php
+<?php namespace Backend\Skins;
 
-namespace Backend\Skins;
-
-use Backend\Classes\Skin;
 use File;
+use Backend\Classes\Skin;
 use Winter\Storm\Router\Helper as RouterHelper;
 
 /**
@@ -11,43 +9,46 @@ use Winter\Storm\Router\Helper as RouterHelper;
  *
  * This skin uses the default paths always, there is no lookup required.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
+
 class Standard extends Skin
 {
+
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function __construct()
     {
-        $this->skinPath = $this->defaultSkinPath = base_path().'/modules/backend';
+        $this->skinPath = $this->defaultSkinPath = base_path() . '/modules/backend';
         $this->publicSkinPath = $this->defaultPublicSkinPath = File::localToPublic($this->skinPath);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function skinDetails()
     {
         return [
-            'name' => 'Default Skin',
+            'name' => 'Default Skin'
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getPath($path = null, $isPublic = false)
     {
         $path = RouterHelper::normalizeUrl($path);
 
         return $isPublic
-            ? $this->defaultPublicSkinPath.$path
-            : $this->defaultSkinPath.$path;
+            ? $this->defaultPublicSkinPath . $path
+            : $this->defaultSkinPath . $path;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getLayoutPaths()
     {

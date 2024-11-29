@@ -2,10 +2,10 @@
 
 namespace Cms\Tests\Classes;
 
+use System\Tests\Bootstrap\TestCase;
 use Cms\Classes\Controller;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
-use System\Tests\Bootstrap\TestCase;
 
 class PageTest extends TestCase
 {
@@ -22,7 +22,7 @@ class PageTest extends TestCase
         // Check to make sure that resolved menuItems for the provided URL are considered active
         // with or without a trailing slash
         $url = $controller->pageUrl($item->reference);
-        $trailingUrl = $url.'/';
+        $trailingUrl = $url . '/';
 
         $result = Page::resolveMenuItem($item, $url, $theme);
         $this->assertTrue($result['isActive']);

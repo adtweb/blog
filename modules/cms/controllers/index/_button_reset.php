@@ -2,9 +2,9 @@
     type="button"
     class="
         btn btn-danger wn-icon-bomb
-        <?php if (! $canReset) { ?>
+        <?php if (!$canReset): ?>
             hide
-        <?php } ?>
+        <?php endif ?>
     "
     data-request="onReset"
     data-request-confirm="<?= e(trans('cms::lang.editor.reset_confirm')) ?>"

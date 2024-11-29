@@ -6,10 +6,10 @@
             <div class="btn-group">
                 <button
                     type="button"
-                    class="btn btn-default wn-icon-plus <?= ! $this->sortingProperties ? 'last' : null ?>"
+                    class="btn btn-default wn-icon-plus <?= !$this->sortingProperties ? 'last' : null ?>"
                     data-control="create-template"><?= e(trans('cms::lang.sidebar.add')) ?></button>
 
-                <?php if ($this->sortingProperties) { ?>
+                <?php if ($this->sortingProperties): ?>
                     <div class="dropdown">
                         <button
                             type="button"
@@ -23,7 +23,7 @@
                             <?= $this->makePartial('sorting-options') ?>
                         </ul>
                     </div>
-                <?php }?>
+                <?php endif?>
 
                 <button type="button" class="btn btn-danger empty wn-icon-trash-o hide"
                     id="<?= $this->getId('delete-button') ?>"

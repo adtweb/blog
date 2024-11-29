@@ -1,24 +1,21 @@
-<?php
+<?php namespace Backend\Classes;
 
-namespace Backend\Classes;
-
-use ArrayAccess;
-use ArrayIterator;
 use IteratorAggregate;
+use ArrayIterator;
+use ArrayAccess;
 use Traversable;
 
 /**
  * Form Tabs definition
  * A translation of the form field tab configuration
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
-class FormTabs implements ArrayAccess, IteratorAggregate
+class FormTabs implements IteratorAggregate, ArrayAccess
 {
     const SECTION_OUTSIDE = 'outside';
-
     const SECTION_PRIMARY = 'primary';
-
     const SECTION_SECONDARY = 'secondary';
 
     /**
@@ -52,7 +49,7 @@ class FormTabs implements ArrayAccess, IteratorAggregate
     public $stretch;
 
     /**
-     * @var bool If set to TRUE, fields will not be displayed in tabs.
+     * @var boolean If set to TRUE, fields will not be displayed in tabs.
      */
     public $suppressTabs = false;
 
@@ -77,9 +74,8 @@ class FormTabs implements ArrayAccess, IteratorAggregate
      * - outside - stores a section of "tabless" fields.
      * - primary - tabs section for primary fields.
      * - secondary - tabs section for secondary fields.
-     *
-     * @param  string  $section  Specifies a section as described above.
-     * @param  array  $config  A list of render mode specific config.
+     * @param string $section Specifies a section as described above.
+     * @param array $config A list of render mode specific config.
      */
     public function __construct($section, $config = [])
     {
@@ -93,8 +89,7 @@ class FormTabs implements ArrayAccess, IteratorAggregate
 
     /**
      * Process options and apply them to this object.
-     *
-     * @param  array  $config
+     * @param array $config
      * @return array
      */
     protected function evalConfig($config)
@@ -134,13 +129,13 @@ class FormTabs implements ArrayAccess, IteratorAggregate
 
     /**
      * Add a field to the collection of tabs.
-     *
-     * @param  string  $name
-     * @param  string  $tab
+     * @param string    $name
+     * @param FormField $field
+     * @param string    $tab
      */
     public function addField($name, FormField $field, $tab = null)
     {
-        if (! $tab) {
+        if (!$tab) {
             $tab = $this->defaultTab;
         }
 
@@ -149,9 +144,8 @@ class FormTabs implements ArrayAccess, IteratorAggregate
 
     /**
      * Remove a field from all tabs by name.
-     *
-     * @param  string  $name
-     * @return bool
+     * @param string    $name
+     * @return boolean
      */
     public function removeField($name)
     {
@@ -163,7 +157,7 @@ class FormTabs implements ArrayAccess, IteratorAggregate
                     /*
                      * Remove empty tabs from collection
                      */
-                    if (! count($this->fields[$tab])) {
+                    if (!count($this->fields[$tab])) {
                         unset($this->fields[$tab]);
                     }
 
@@ -177,8 +171,7 @@ class FormTabs implements ArrayAccess, IteratorAggregate
 
     /**
      * Returns true if any fields have been registered for these tabs
-     *
-     * @return bool
+     * @return boolean
      */
     public function hasFields()
     {
@@ -187,7 +180,6 @@ class FormTabs implements ArrayAccess, IteratorAggregate
 
     /**
      * Returns an array of the registered fields, including tabs.
-     *
      * @return array
      */
     public function getFields()
@@ -197,7 +189,6 @@ class FormTabs implements ArrayAccess, IteratorAggregate
 
     /**
      * Returns an array of the registered fields, without tabs.
-     *
      * @return array
      */
     public function getAllFields()
@@ -213,22 +204,20 @@ class FormTabs implements ArrayAccess, IteratorAggregate
 
     /**
      * Returns an icon for the tab based on the tab's name.
-     *
-     * @param  string  $name
+     * @param string $name
      * @return string
      */
     public function getIcon($name)
     {
-        if (! empty($this->icons[$name])) {
+        if (!empty($this->icons[$name])) {
             return $this->icons[$name];
         }
     }
 
     /**
      * Returns a tab pane CSS class.
-     *
-     * @param  string  $index
-     * @param  string  $label
+     * @param string $index
+     * @param string $label
      * @return string
      */
     public function getPaneCssClass($index = null, $label = null)

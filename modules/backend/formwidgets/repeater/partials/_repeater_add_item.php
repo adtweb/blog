@@ -1,19 +1,19 @@
-<?php if (! $this->previewMode) { ?>
+<?php if (!$this->previewMode): ?>
     <li
         id="<?= $this->getId('add-item') ?>"
         class="field-repeater-add-item loading-indicator-container indicator-center"
-        <?php if ($mode === 'grid') { ?>
+        <?php if ($mode === 'grid'): ?>
         style="min-height: <?= $rowHeight ?>px"
-        <?php } ?>
+        <?php endif ?>
     >
-        <?php if ($useGroups) { ?>
+        <?php if ($useGroups): ?>
             <a
                 href="javascript:;"
                 data-repeater-add-group
                 data-load-indicator>
                 <span><?= e(trans($prompt)) ?></span>
             </a>
-        <?php } else { ?>
+        <?php else: ?>
             <a
                 href="javascript:;"
                 data-repeater-add
@@ -21,6 +21,6 @@
                 data-load-indicator>
                 <span><?= e(trans($prompt)) ?></span>
             </a>
-        <?php } ?>
+        <?php endif ?>
     </li>
-<?php } ?>
+<?php endif ?>

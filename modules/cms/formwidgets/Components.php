@@ -1,10 +1,8 @@
-<?php
-
-namespace Cms\FormWidgets;
+<?php namespace Cms\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
-use Cms\Classes\ComponentHelpers;
 use Cms\Classes\ComponentManager;
+use Cms\Classes\ComponentHelpers;
 use Cms\Components\SoftComponent;
 use Cms\Components\UnknownComponent;
 use Exception;
@@ -13,12 +11,13 @@ use Exception;
  * Component Builder
  * Builds a collection of Cms components and configures them.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Components extends FormWidgetBase
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
@@ -31,7 +30,7 @@ class Components extends FormWidgetBase
     {
         $result = [];
 
-        if (! isset($this->model->settings['components'])) {
+        if (!isset($this->model->settings['components'])) {
             return $result;
         }
 
@@ -39,11 +38,11 @@ class Components extends FormWidgetBase
         $manager->listComponents();
 
         foreach ($this->model->settings['components'] as $name => $properties) {
-            [$name, $alias] = strpos($name, ' ') ? explode(' ', $name) : [$name, $name];
+            list($name, $alias) = strpos($name, ' ') ? explode(' ', $name) : [$name, $name];
 
             try {
                 $componentObj = $manager->makeComponent($name, null, $properties);
-                $componentObj->alias = ((starts_with($name, '@') && $alias !== $name) ? '@' : '').$alias;
+                $componentObj->alias = ((starts_with($name, '@') && $alias !== $name) ? '@' : '') . $alias;
                 $componentObj->pluginIcon = 'icon-puzzle-piece';
 
                 /*
@@ -56,11 +55,12 @@ class Components extends FormWidgetBase
                         $componentObj->pluginIcon = $pluginDetails['icon'];
                     }
                 }
-            } catch (Exception $ex) {
+            }
+            catch (Exception $ex) {
                 if (starts_with($name, '@')) {
                     $componentObj = new SoftComponent($properties);
                     $componentObj->name = $name;
-                    $componentObj->alias = (($alias !== $name) ? '@' : '').$alias;
+                    $componentObj->alias = (($alias !== $name) ? '@' : '') . $alias;
                     $componentObj->pluginIcon = 'icon-flag';
                 } else {
                     $componentObj = new UnknownComponent(null, $properties, $ex->getMessage());

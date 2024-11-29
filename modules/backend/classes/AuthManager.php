@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Classes;
+<?php namespace Backend\Classes;
 
 use Config;
 use System\Classes\PluginManager;
@@ -10,6 +8,7 @@ use Winter\Storm\Exception\SystemException;
 /**
  * Back-end authentication manager.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class AuthManager extends StormAuthManager
@@ -31,11 +30,11 @@ class AuthManager extends StormAuthManager
     //
 
     protected static $permissionDefaults = [
-        'code' => null,
-        'label' => null,
+        'code'    => null,
+        'label'   => null,
         'comment' => null,
-        'roles' => null,
-        'order' => 500,
+        'roles'   => null,
+        'order'   => 500
     ];
 
     /**
@@ -79,7 +78,7 @@ class AuthManager extends StormAuthManager
      *         $manager->registerPermissions([...]);
      *     });
      *
-     * @param  callable  $callback  A callable function.
+     * @param callable $callback A callable function.
      */
     public function registerCallback(callable $callback)
     {
@@ -95,9 +94,8 @@ class AuthManager extends StormAuthManager
      * - order - a position of the item in the menu, optional.
      * - comment - a brief comment that describes the permission, optional.
      * - tab - assign this permission to a tabbed group, optional.
-     *
-     * @param  string  $owner  Specifies the permissions' owner plugin or module in the format Author.Plugin
-     * @param  array  $definitions  An array of the menu item definitions.
+     * @param string $owner Specifies the permissions' owner plugin or module in the format Author.Plugin
+     * @param array $definitions An array of the menu item definitions.
      */
     public function registerPermissions($owner, array $definitions)
     {
@@ -107,7 +105,7 @@ class AuthManager extends StormAuthManager
         foreach ($definitions as $code => $definition) {
             $permission = (object) array_merge(self::$permissionDefaults, array_merge($definition, [
                 'code' => $code,
-                'owner' => $owner,
+                'owner' => $owner
             ]));
 
             $this->permissions[] = $permission;
@@ -120,8 +118,8 @@ class AuthManager extends StormAuthManager
     /**
      * Register a permission owner alias
      *
-     * @param  string  $owner  The owner to register an alias for. Example: Real.Owner
-     * @param  string  $alias  The alias to register. Example: Aliased.Owner
+     * @param string $owner The owner to register an alias for. Example: Real.Owner
+     * @param string $alias The alias to register. Example: Aliased.Owner
      * @return void
      */
     public function registerPermissionOwnerAlias(string $owner, string $alias)
@@ -131,14 +129,13 @@ class AuthManager extends StormAuthManager
 
     /**
      * Removes a single back-end permission
-     *
-     * @param  string  $owner  Specifies the permissions' owner plugin or module in the format Author.Plugin
-     * @param  string  $code  The code of the permission to remove
+     * @param string $owner Specifies the permissions' owner plugin or module in the format Author.Plugin
+     * @param string $code The code of the permission to remove
      * @return void
      */
     public function removePermission($owner, $code)
     {
-        if (! $this->permissions) {
+        if (!$this->permissions) {
             throw new SystemException('Unable to remove permissions before they are loaded.');
         }
 
@@ -161,7 +158,6 @@ class AuthManager extends StormAuthManager
 
     /**
      * Returns a list of the registered permissions items.
-     *
      * @return array
      */
     public function listPermissions()
@@ -184,7 +180,7 @@ class AuthManager extends StormAuthManager
 
         foreach ($plugins as $id => $plugin) {
             $items = $plugin->registerPermissions();
-            if (! is_array($items)) {
+            if (!is_array($items)) {
                 continue;
             }
 
@@ -207,7 +203,6 @@ class AuthManager extends StormAuthManager
 
     /**
      * Returns an array of registered permissions, grouped by tabs.
-     *
      * @return array
      */
     public function listTabbedPermissions()
@@ -217,7 +212,7 @@ class AuthManager extends StormAuthManager
         foreach ($this->listPermissions() as $permission) {
             $tab = $permission->tab ?? 'backend::lang.form.undefined_tab';
 
-            if (! array_key_exists($tab, $tabs)) {
+            if (!array_key_exists($tab, $tabs)) {
                 $tabs[$tab] = [];
             }
 
@@ -235,12 +230,13 @@ class AuthManager extends StormAuthManager
         return parent::createUserModelQuery()->withTrashed();
     }
 
+
     /**
      * {@inheritdoc}
      */
     protected function validateUserModel($user)
     {
-        if (! $user instanceof $this->userModel) {
+        if ( ! $user instanceof $this->userModel) {
             return false;
         }
 
@@ -256,9 +252,8 @@ class AuthManager extends StormAuthManager
 
     /**
      * Returns an array of registered permissions belonging to a given role code
-     *
-     * @param  string  $role
-     * @param  bool  $includeOrphans  Include any permissons that do not have a default role specified
+     * @param string $role
+     * @param bool $includeOrphans Include any permissons that do not have a default role specified
      * @return array
      */
     public function listPermissionsForRole($role, $includeOrphans = true)
@@ -271,7 +266,8 @@ class AuthManager extends StormAuthManager
                     foreach ((array) $permission->roles as $_role) {
                         $this->permissionRoles[$_role][$permission->code] = 1;
                     }
-                } else {
+                }
+                else {
                     $this->permissionRoles['*'][$permission->code] = 1;
                 }
             }
@@ -288,6 +284,6 @@ class AuthManager extends StormAuthManager
 
     public function hasPermissionsForRole($role)
     {
-        return (bool) $this->listPermissionsForRole($role, false);
+        return !!$this->listPermissionsForRole($role, false);
     }
 }

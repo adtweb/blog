@@ -2,9 +2,9 @@
 
 namespace Cms\Tests\Classes;
 
+use System\Tests\Bootstrap\TestCase;
 use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
-use System\Tests\Bootstrap\TestCase;
 
 class TestCmsObject extends CmsObject
 {
@@ -28,7 +28,7 @@ class CmsObjectTest extends TestCase
         $this->assertEquals('<p>This is a test HTML content file.</p>', $obj->getContent());
         $this->assertEquals('plain.html', $obj->getFileName());
 
-        $path = str_replace('/', DIRECTORY_SEPARATOR, $theme->getPath().'/testobjects/plain.html');
+        $path = str_replace('/', DIRECTORY_SEPARATOR, $theme->getPath() . '/testobjects/plain.html');
         $this->assertEquals($path, $obj->getFilePath());
         $this->assertEquals(filemtime($path), $obj->mtime);
     }
@@ -41,7 +41,7 @@ class CmsObjectTest extends TestCase
         $this->assertEquals('<p>This is an object in a subdirectory.</p>', $obj->getContent());
         $this->assertEquals('subdir/obj.html', $obj->getFileName());
 
-        $path = str_replace('/', DIRECTORY_SEPARATOR, $theme->getPath().'/testobjects/subdir/obj.html');
+        $path = str_replace('/', DIRECTORY_SEPARATOR, $theme->getPath() . '/testobjects/subdir/obj.html');
         $this->assertEquals($path, $obj->getFilePath());
         $this->assertEquals(filemtime($path), $obj->mtime);
     }
@@ -132,7 +132,7 @@ class CmsObjectTest extends TestCase
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
             'fileName' => 'mytestobj',
-            'content' => $testContents,
+            'content' => $testContents
         ]);
 
         $this->assertEquals($testContents, $obj->getContent());
@@ -147,7 +147,7 @@ class CmsObjectTest extends TestCase
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
             'something' => 'mytestobj',
-            'content' => $testContents,
+            'content' => $testContents
         ]);
 
         $this->assertNull($obj->something);
@@ -163,7 +163,7 @@ class CmsObjectTest extends TestCase
         $testContents = 'mytestcontent';
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
-            'fileName' => '@name',
+            'fileName' => '@name'
         ]);
         $obj->save();
     }
@@ -178,7 +178,7 @@ class CmsObjectTest extends TestCase
         $testContents = 'mytestcontent';
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
-            'fileName' => '../somefile',
+            'fileName' => '../somefile'
         ]);
         $obj->save();
     }
@@ -193,7 +193,7 @@ class CmsObjectTest extends TestCase
         $testContents = 'mytestcontent';
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
-            'fileName' => '/somefile',
+            'fileName' => '/somefile'
         ]);
         $obj->save();
     }
@@ -208,7 +208,7 @@ class CmsObjectTest extends TestCase
         $testContents = 'mytestcontent';
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
-            'fileName' => ' ',
+            'fileName' => ' '
         ]);
         $obj->save();
     }
@@ -217,7 +217,7 @@ class CmsObjectTest extends TestCase
     {
         $theme = Theme::load('apitest');
 
-        $destFilePath = $theme->getPath().'/testobjects/mytestobj.htm';
+        $destFilePath = $theme->getPath() . '/testobjects/mytestobj.htm';
         if (file_exists($destFilePath)) {
             unlink($destFilePath);
         }
@@ -228,7 +228,7 @@ class CmsObjectTest extends TestCase
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
             'fileName' => 'mytestobj',
-            'content' => $testContents,
+            'content' => $testContents
         ]);
         $obj->save();
 
@@ -243,10 +243,10 @@ class CmsObjectTest extends TestCase
     {
         $theme = Theme::load('apitest');
 
-        $srcFilePath = $theme->getPath().'/testobjects/mytestobj.htm';
+        $srcFilePath = $theme->getPath() . '/testobjects/mytestobj.htm';
         $this->assertFileExists($srcFilePath);
 
-        $destFilePath = $theme->getPath().'/testobjects/anotherobj.htm';
+        $destFilePath = $theme->getPath() . '/testobjects/anotherobj.htm';
         if (file_exists($destFilePath)) {
             unlink($destFilePath);
         }
@@ -256,7 +256,7 @@ class CmsObjectTest extends TestCase
         $this->assertEquals($testContents, $obj->getContent());
 
         $obj->fill([
-            'fileName' => 'anotherobj',
+            'fileName' => 'anotherobj'
         ]);
         $obj->save();
 
@@ -272,7 +272,7 @@ class CmsObjectTest extends TestCase
     {
         $theme = Theme::load('apitest');
 
-        $filePath = $theme->getPath().'/testobjects/anotherobj.htm';
+        $filePath = $theme->getPath() . '/testobjects/anotherobj.htm';
         $this->assertFileExists($filePath);
 
         $testContents = 'new content';
@@ -280,7 +280,7 @@ class CmsObjectTest extends TestCase
 
         $obj->fill([
             'fileName' => 'anotherobj',
-            'content' => $testContents,
+            'content' => $testContents
         ]);
         $obj->save();
 
@@ -298,11 +298,11 @@ class CmsObjectTest extends TestCase
 
         $theme = Theme::load('apitest');
 
-        $srcFilePath = $theme->getPath().'/testobjects/anotherobj.htm';
+        $srcFilePath = $theme->getPath() . '/testobjects/anotherobj.htm';
         $this->assertFileExists($srcFilePath);
 
-        $destFilePath = $theme->getPath().'/testobjects/existingobj.htm';
-        if (! file_exists($destFilePath)) {
+        $destFilePath = $theme->getPath() . '/testobjects/existingobj.htm';
+        if (!file_exists($destFilePath)) {
             file_put_contents($destFilePath, 'str');
         }
         $this->assertFileExists($destFilePath);
@@ -316,7 +316,7 @@ class CmsObjectTest extends TestCase
     {
         $theme = Theme::load('apitest');
 
-        $destFilePath = $theme->getPath().'/testobjects/testsubdir/mytestobj.htm';
+        $destFilePath = $theme->getPath() . '/testobjects/testsubdir/mytestobj.htm';
         if (file_exists($destFilePath)) {
             unlink($destFilePath);
         }
@@ -333,7 +333,7 @@ class CmsObjectTest extends TestCase
         $obj = TestCmsObject::inTheme($theme);
         $obj->fill([
             'fileName' => 'testsubdir/mytestobj.htm',
-            'content' => $testContents,
+            'content' => $testContents
         ]);
         $obj->save();
 

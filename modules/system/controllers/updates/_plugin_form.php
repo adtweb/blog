@@ -5,9 +5,9 @@
     </div>
     <div class="modal-body">
 
-        <?php if ($this->fatalError) { ?>
+        <?php if ($this->fatalError): ?>
             <p class="flash-message static error"><?= e($fatalError) ?></p>
-        <?php } ?>
+        <?php endif ?>
 
         <div class="form-group">
             <label for="pluginCode"><?= e(trans('system::lang.plugin.name.label')) ?></label>

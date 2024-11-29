@@ -6,12 +6,12 @@
     data-template="#<?= $this->getId('template') ?>"
     data-error-template="#<?= $this->getId('errorTemplate') ?>"
     data-max-filesize="<?= $maxFilesize ?>"
-    <?php if ($useCaption) { ?>
+    <?php if ($useCaption): ?>
         data-config-handler="<?= $this->getEventHandler('onLoadAttachmentConfig') ?>"
-    <?php } ?>
-    <?php if ($acceptedFileTypes) { ?>
+    <?php endif ?>
+    <?php if ($acceptedFileTypes): ?>
         data-file-types="<?= $acceptedFileTypes ?>"
-    <?php } ?>
+    <?php endif ?>
     <?= $this->formField->getAttributes() ?>
 >
 
@@ -22,7 +22,7 @@
 
     <!-- Existing file -->
     <div class="upload-files-container">
-        <?php if ($singleFile) { ?>
+        <?php if ($singleFile): ?>
             <div class="upload-object is-success" data-id="<?= $singleFile->id ?>" data-path="<?= $singleFile->pathUrl ?>">
                 <div class="icon-container">
                     <i class="icon-file"></i>
@@ -43,7 +43,7 @@
                         ><i class="icon-times"></i></a>
                 </div>
             </div>
-        <?php } ?>
+        <?php endif ?>
     </div>
 
     <!-- Empty message -->

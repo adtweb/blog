@@ -1,15 +1,14 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use System\Classes\UpdateManager;
 use Winter\Storm\Console\Command;
+use System\Classes\UpdateManager;
 
 /**
  * Console command to tear down the database.
  *
  * This destroys all database tables that are registered for Winter and all plugins.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterDown extends Command
@@ -48,9 +47,9 @@ class WinterDown extends Command
      */
     public function handle(): int
     {
-        if (! $this->confirmWithInput(
-            'This will completely delete all database tables in use with your Winter installation.',
-            'DELETE'
+        if (!$this->confirmWithInput(
+            "This will completely delete all database tables in use with your Winter installation.",
+            "DELETE"
         )) {
             return 1;
         }

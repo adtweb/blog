@@ -1,24 +1,22 @@
-<?php
+<?php namespace Backend\Helpers;
 
-namespace Backend\Helpers;
-
-use Backend\Classes\Skin;
-use Backend\Helpers\Exception\DecompileException;
-use Config;
-use Exception;
+use Url;
 use File;
 use Html;
-use Redirect;
+use Config;
 use Request;
-use System\Helpers\DateTime as DateTimeHelper;
-use Url;
+use Redirect;
+use Exception;
 use Winter\Storm\Router\Helper as RouterHelper;
+use System\Helpers\DateTime as DateTimeHelper;
+use Backend\Classes\Skin;
+use Backend\Helpers\Exception\DecompileException;
 
 /**
  * Backend Helper
  *
+ * @package winter\wn-backend-module
  * @see \Backend\Facades\Backend
- *
  * @author Alexey Bobkov, Samuel Georges
  */
 class Backend
@@ -36,7 +34,7 @@ class Backend
      */
     public function url($path = null, $parameters = [], $secure = null)
     {
-        return Url::to($this->uri().'/'.$path, $parameters, $secure);
+        return Url::to($this->uri() . '/' . $path, $parameters, $secure);
     }
 
     /**
@@ -48,12 +46,11 @@ class Backend
         $baseUrl = Request::getBaseUrl();
 
         if ($path === null) {
-            return $baseUrl.'/'.$backendUri;
+            return $baseUrl . '/' . $backendUri;
         }
 
         $path = RouterHelper::normalizeUrl($path);
-
-        return $baseUrl.'/'.$backendUri.$path;
+        return $baseUrl . '/' . $backendUri . $path;
     }
 
     /**
@@ -62,7 +59,6 @@ class Backend
     public function skinAsset($path = null)
     {
         $skinPath = Skin::getActive()->getPath($path, true);
-
         return Url::asset($skinPath);
     }
 
@@ -71,7 +67,7 @@ class Backend
      */
     public function redirect($path, $status = 302, $headers = [], $secure = null)
     {
-        return Redirect::to($this->uri().'/'.$path, $status, $headers, $secure);
+        return Redirect::to($this->uri() . '/' . $path, $status, $headers, $secure);
     }
 
     /**
@@ -79,7 +75,7 @@ class Backend
      */
     public function redirectGuest($path, $status = 302, $headers = [], $secure = null)
     {
-        return Redirect::guest($this->uri().'/'.$path, $status, $headers, $secure);
+        return Redirect::guest($this->uri() . '/' . $path, $status, $headers, $secure);
     }
 
     /**
@@ -87,7 +83,7 @@ class Backend
      */
     public function redirectIntended($path, $status = 302, $headers = [], $secure = null)
     {
-        return Redirect::intended($this->uri().'/'.$path, $status, $headers, $secure);
+        return Redirect::intended($this->uri() . '/' . $path, $status, $headers, $secure);
     }
 
     /**
@@ -112,7 +108,6 @@ class Backend
 
     /**
      * Proxy method for dateTime() using "date" format alias.
-     *
      * @return string
      */
     public function date($dateTime, $options = [])
@@ -133,7 +128,6 @@ class Backend
      *   dateTimeMin      -> Apr 23, 2016 6:28 AM
      *   dateTimeLong     -> Saturday, April 23, 2016 6:28 AM
      *   dateTimeLongMin  -> Sat, Apr 23, 2016 6:29 AM
-     *
      * @return string
      */
     public function dateTime($dateTime, $options = [])
@@ -148,7 +142,7 @@ class Backend
             'ignoreTimezone' => false,
         ], $options));
 
-        if (! $dateTime) {
+        if (!$dateTime) {
             return '';
         }
 
@@ -156,7 +150,8 @@ class Backend
 
         if ($jsFormat !== null) {
             $format = $jsFormat;
-        } else {
+        }
+        else {
             $format = DateTimeHelper::momentFormat($format);
         }
 
@@ -171,11 +166,14 @@ class Backend
 
         if ($timeTense) {
             $attributes['data-time-tense'] = 1;
-        } elseif ($timeSince) {
+        }
+        elseif ($timeSince) {
             $attributes['data-time-since'] = 1;
-        } elseif ($format) {
+        }
+        elseif ($format) {
             $attributes['data-format'] = $format;
-        } elseif ($formatAlias) {
+        }
+        elseif ($formatAlias) {
             $attributes['data-format-alias'] = $formatAlias;
         }
 
@@ -188,17 +186,16 @@ class Backend
      * This is used to load each individual asset file, as opposed to using the compilation assets. This is useful only
      * for development, to allow developers to test changes without having to re-compile assets.
      *
-     * @param  string  $file  The compilation asset file to decompile
-     * @param  bool  $skinAsset  If true, will load decompiled assets from the "skins" directory.
-     * @return array
-     *
+     * @param string $file The compilation asset file to decompile
+     * @param boolean $skinAsset If true, will load decompiled assets from the "skins" directory.
      * @throws DecompileException If the compilation file cannot be decompiled
+     * @return array
      */
     public function decompileAsset(string $file, bool $skinAsset = false)
     {
         $assets = $this->parseAsset($file, $skinAsset);
 
-        if (! $assets) {
+        if (!$assets) {
             // Return URL-based assets as is
             if (starts_with($file, ['https://', 'http://'])) {
                 return [$file];
@@ -231,15 +228,15 @@ class Backend
     /**
      * Parse the provided asset file to get the files that it includes
      *
-     * @param  string  $file  The compilation asset file to parse
-     * @param  bool  $skinAsset  If true, will load decompiled assets from the "skins" directory.
+     * @param string $file The compilation asset file to parse
+     * @param boolean $skinAsset If true, will load decompiled assets from the "skins" directory.
      * @return array
      */
     protected function parseAsset($file, $skinAsset)
     {
         if (starts_with($file, ['https://', 'http://'])) {
             $rootUrl = Url::to('/');
-            if (! starts_with($file, $rootUrl)) {
+            if (!starts_with($file, $rootUrl)) {
                 return false;
             }
 
@@ -254,11 +251,11 @@ class Backend
 
         $results = [$file];
 
-        if (! file_exists($assetFile)) {
-            throw new DecompileException('File '.$file.' does not exist to be decompiled.');
+        if (!file_exists($assetFile)) {
+            throw new DecompileException('File ' . $file . ' does not exist to be decompiled.');
         }
-        if (! is_readable($assetFile)) {
-            throw new DecompileException('File '.$file.' cannot be decompiled. Please allow read access to the file.');
+        if (!is_readable($assetFile)) {
+            throw new DecompileException('File ' . $file . ' cannot be decompiled. Please allow read access to the file.');
         }
 
         $contents = file_get_contents($assetFile);
@@ -271,7 +268,7 @@ class Backend
 
         if (count($matches)) {
             $results = array_map(function ($match) use ($directory) {
-                return str_replace('/', DIRECTORY_SEPARATOR, $directory.$match[1]);
+                return str_replace('/', DIRECTORY_SEPARATOR, $directory . $match[1]);
             }, $matches);
 
             foreach ($results as $i => $result) {

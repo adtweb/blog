@@ -1,22 +1,21 @@
-<?php
-
-namespace Backend\FormWidgets;
+<?php namespace Backend\FormWidgets;
 
 use App;
-use Backend;
-use Backend\Classes\FormWidgetBase;
-use Backend\Models\EditorSetting;
-use BackendAuth;
-use Config;
-use Event;
 use File;
 use Lang;
+use Event;
+use Config;
 use Request;
+use Backend;
+use BackendAuth;
+use Backend\Models\EditorSetting;
+use Backend\Classes\FormWidgetBase;
 
 /**
  * Rich Editor
  * Renders a rich content editor field.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class RichEditor extends FormWidgetBase
@@ -28,17 +27,17 @@ class RichEditor extends FormWidgetBase
     //
 
     /**
-     * @var bool Determines whether content has HEAD and HTML tags.
+     * @var boolean Determines whether content has HEAD and HTML tags.
      */
     public $fullPage = false;
 
     /**
-     * @var bool Determines whether content has HEAD and HTML tags.
+     * @var boolean Determines whether content has HEAD and HTML tags.
      */
     public $toolbarButtons;
 
     /**
-     * @var bool If true, the editor is set to read-only mode
+     * @var boolean If true, the editor is set to read-only mode
      */
     public $readOnly = false;
 
@@ -52,12 +51,12 @@ class RichEditor extends FormWidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'richeditor';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -73,12 +72,11 @@ class RichEditor extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('richeditor');
     }
 
@@ -116,7 +114,6 @@ class RichEditor extends FormWidgetBase
 
     /**
      * Determine the toolbar buttons to use based on config.
-     *
      * @return string
      */
     protected function evalToolbarButtons()
@@ -135,12 +132,11 @@ class RichEditor extends FormWidgetBase
     public function onLoadPageLinksForm()
     {
         $this->vars['links'] = $this->getPageLinksArray();
-
         return $this->makePartial('page_links_form');
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {
@@ -165,7 +161,6 @@ class RichEditor extends FormWidgetBase
 
     /**
      * Returns a valid language code for Redactor.
-     *
      * @return string|mixed
      */
     protected function getValidEditorLang()
@@ -186,7 +181,6 @@ class RichEditor extends FormWidgetBase
     /**
      * Returns a list of registered page link types.
      * This is reserved functionality for separating the links by type.
-     *
      * @return array Returns an array of registered page link types
      */
     protected function getPageLinkTypes()
@@ -204,11 +198,12 @@ class RichEditor extends FormWidgetBase
          *              'my-identifier' => 'author.plugin::lang.richeditor.link_types.my_identifier',
          *          ];
          *     });
+         *
          */
         $apiResult = Event::fire('backend.richeditor.listTypes');
         if (is_array($apiResult)) {
             foreach ($apiResult as $typeList) {
-                if (! is_array($typeList)) {
+                if (!is_array($typeList)) {
                     continue;
                 }
 
@@ -244,11 +239,12 @@ class RichEditor extends FormWidgetBase
          *              ];
          *          }
          *     });
+         *
          */
         $apiResult = Event::fire('backend.richeditor.getTypeInfo', [$type]);
         if (is_array($apiResult)) {
             foreach ($apiResult as $typeInfo) {
-                if (! is_array($typeInfo)) {
+                if (!is_array($typeInfo)) {
                     continue;
                 }
 
@@ -265,7 +261,6 @@ class RichEditor extends FormWidgetBase
      * Returns a single collection of available page links.
      * This implementation has room to place links under
      * different groups based on the link type.
-     *
      * @return array
      */
     protected function getPageLinksArray()

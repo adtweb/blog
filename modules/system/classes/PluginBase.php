@@ -1,20 +1,19 @@
-<?php
+<?php namespace System\Classes;
 
-namespace System\Classes;
-
-use Backend;
-use Composer\Semver\Semver;
+use Str;
 use File;
+use Yaml;
+use Backend;
+use ReflectionClass;
+use SystemException;
+use Composer\Semver\Semver;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider as ServiceProviderBase;
-use ReflectionClass;
-use Str;
-use SystemException;
-use Yaml;
 
 /**
  * Plugin base class
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PluginBase extends ServiceProviderBase
@@ -25,7 +24,7 @@ class PluginBase extends ServiceProviderBase
     protected $app;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $loadedYamlConfiguration = false;
 
@@ -45,12 +44,12 @@ class PluginBase extends ServiceProviderBase
     public $require = [];
 
     /**
-     * @var bool Determine if this plugin should have elevated privileges.
+     * @var boolean Determine if this plugin should have elevated privileges.
      */
     public $elevated = false;
 
     /**
-     * @var bool Determine if this plugin should be loaded (false) or not (true).
+     * @var boolean Determine if this plugin should be loaded (false) or not (true).
      */
     public $disabled = false;
 
@@ -58,7 +57,6 @@ class PluginBase extends ServiceProviderBase
      * Returns information about this plugin, including plugin name and developer name.
      *
      * @return array
-     *
      * @throws SystemException
      */
     public function pluginDetails()
@@ -69,7 +67,7 @@ class PluginBase extends ServiceProviderBase
             'found for the plugin class %s. Create the file or override pluginDetails() '.
             'method in the plugin class.', $thisClass));
 
-        if (! array_key_exists('plugin', $configuration)) {
+        if (!array_key_exists('plugin', $configuration)) {
             throw new SystemException(sprintf(
                 'The plugin configuration file plugin.yaml should contain the "plugin" section: %s.',
                 $thisClass
@@ -84,14 +82,18 @@ class PluginBase extends ServiceProviderBase
      *
      * @return void
      */
-    public function register() {}
+    public function register()
+    {
+    }
 
     /**
      * Boot method, called right before the request route.
      *
      * @return void
      */
-    public function boot() {}
+    public function boot()
+    {
+    }
 
     /**
      * Registers CMS markup tags introduced by this plugin.
@@ -188,10 +190,12 @@ class PluginBase extends ServiceProviderBase
     /**
      * Registers scheduled tasks that are executed on a regular basis.
      *
-     * @param  Schedule  $schedule
+     * @param Schedule $schedule
      * @return void
      */
-    public function registerSchedule($schedule) {}
+    public function registerSchedule($schedule)
+    {
+    }
 
     /**
      * Registers any report widgets provided by this plugin.
@@ -292,8 +296,8 @@ class PluginBase extends ServiceProviderBase
     /**
      * Registers a new console (artisan) command
      *
-     * @param  string  $key  The command name
-     * @param  string|\Closure  $command  The command class or closure
+     * @param string $key The command name
+     * @param string|\Closure $command The command class or closure
      * @return void
      */
     public function registerConsoleCommand($key, $command)
@@ -306,9 +310,8 @@ class PluginBase extends ServiceProviderBase
     /**
      * Read configuration from YAML file
      *
-     * @param  string|null  $exceptionMessage
+     * @param string|null $exceptionMessage
      * @return array|bool
-     *
      * @throws SystemException
      */
     protected function getConfigurationFromYaml($exceptionMessage = null)
@@ -320,15 +323,16 @@ class PluginBase extends ServiceProviderBase
         $reflection = new ReflectionClass(get_class($this));
         $yamlFilePath = dirname($reflection->getFileName()).'/plugin.yaml';
 
-        if (! file_exists($yamlFilePath)) {
+        if (!file_exists($yamlFilePath)) {
             if ($exceptionMessage) {
                 throw new SystemException($exceptionMessage);
             }
 
             $this->loadedYamlConfiguration = [];
-        } else {
+        }
+        else {
             $this->loadedYamlConfiguration = Yaml::parseFile($yamlFilePath);
-            if (! is_array($this->loadedYamlConfiguration)) {
+            if (!is_array($this->loadedYamlConfiguration)) {
                 throw new SystemException(sprintf('Invalid format of the plugin configuration file: %s. The file should define an array.', $yamlFilePath));
             }
         }
@@ -339,7 +343,7 @@ class PluginBase extends ServiceProviderBase
     /**
      * Gets list of plugins replaced by this plugin
      *
-     * @param  bool  $includeConstraints  Include version constraints in the results as the array values
+     * @param bool $includeConstraints Include version constraints in the results as the array values
      * @return array ['Author.Plugin'] or ['Author.Plugin' => 'self.version']
      */
     public function getReplaces($includeConstraints = false): array
@@ -363,6 +367,10 @@ class PluginBase extends ServiceProviderBase
 
     /**
      * Check if the provided plugin & version can be replaced by this plugin
+     *
+     * @param string $pluginIdentifier
+     * @param string $version
+     * @return bool
      */
     public function canReplacePlugin(string $pluginIdentifier, string $version): bool
     {
@@ -437,8 +445,8 @@ class PluginBase extends ServiceProviderBase
     public function getPluginVersions(bool $includeScripts = true): array
     {
         $path = $this->getPluginPath();
-        $versionFile = $path.'/updates/version.yaml';
-        if (! File::isFile($versionFile)) {
+        $versionFile = $path . '/updates/version.yaml';
+        if (!File::isFile($versionFile)) {
             return [];
         }
 
@@ -452,14 +460,14 @@ class PluginBase extends ServiceProviderBase
 
         $versions = [];
         foreach ($updates as $version => $details) {
-            if (! is_array($details)) {
+            if (!is_array($details)) {
                 $details = [$details];
             }
 
-            if (! $includeScripts) {
+            if (!$includeScripts) {
                 // Filter out valid update scripts
                 $details = array_values(array_filter($details, function ($string) use ($path) {
-                    return ! Str::endsWith($string, '.php') || ! File::exists($path.'/updates/'.$string);
+                    return !Str::endsWith($string, '.php') || !File::exists($path . '/updates/' . $string);
                 }));
             }
 
@@ -482,7 +490,7 @@ class PluginBase extends ServiceProviderBase
         foreach ($required as $require) {
             $requiredPlugin = $manager->findByIdentifier($require);
 
-            if (! $requiredPlugin || $manager->isDisabled($requiredPlugin)) {
+            if (!$requiredPlugin || $manager->isDisabled($requiredPlugin)) {
                 return false;
             }
         }

@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Classes;
+<?php namespace Backend\Classes;
 
 use App;
 use Closure;
@@ -25,7 +23,7 @@ use Winter\Storm\Router\Helper as RouterHelper;
  * for the `Posts` controller inside the `Acme.Blog` plugin.
  *
  * @see Backend\Classes\Controller Base class for back-end controllers
- *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class BackendController extends ControllerBase
@@ -48,7 +46,7 @@ class BackendController extends ControllerBase
     public static $params;
 
     /**
-     * @var bool Flag to indicate that the CMS module is handling the current request
+     * @var boolean Flag to indicate that the CMS module is handling the current request
      */
     protected $cmsHandling = false;
 
@@ -70,17 +68,17 @@ class BackendController extends ControllerBase
             $response = $next($request);
 
             // Find requested controller to determine if any middleware has been attached
-            $pathParts = explode('/', str_replace(Request::root().'/', '', Request::url()));
+            $pathParts = explode('/', str_replace(Request::root() . '/', '', Request::url()));
             if (count($pathParts)) {
                 // Drop off preceding backend URL part if needed
-                if (! empty(Config::get('cms.backendUri', 'backend'))) {
+                if (!empty(Config::get('cms.backendUri', 'backend'))) {
                     array_shift($pathParts);
                 }
                 $path = implode('/', $pathParts);
 
                 $requestedController = $this->getRequestedController($path);
                 if (
-                    ! is_null($requestedController)
+                    !is_null($requestedController)
                     && is_array($requestedController)
                     && count($requestedController['controller']->getMiddleware())
                 ) {
@@ -106,7 +104,7 @@ class BackendController extends ControllerBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function callAction($method, $parameters)
     {
@@ -116,7 +114,7 @@ class BackendController extends ControllerBase
     /**
      * Pass unhandled URLs to the CMS Controller, if it exists
      *
-     * @param  string  $url
+     * @param string $url
      * @return Response
      */
     protected function passToCmsController($url)
@@ -126,7 +124,6 @@ class BackendController extends ControllerBase
             class_exists('\Cms\Classes\Controller')
         ) {
             $this->cmsHandling = true;
-
             return App::make('Cms\Classes\Controller')->run($url);
         } else {
             return Response::make(View::make('backend::404'), 404);
@@ -137,16 +134,15 @@ class BackendController extends ControllerBase
      * Finds and serves the requested backend controller.
      * If the controller cannot be found, returns the Cms page with the URL /404.
      * If the /404 page doesn't exist, returns the system 404 page.
-     *
-     * @param  string  $url  Specifies the requested page URL.
-     *                       If the parameter is omitted, the current URL used.
+     * @param string $url Specifies the requested page URL.
+     * If the parameter is omitted, the current URL used.
      * @return string Returns the processed page content.
      */
     public function run($url = null)
     {
         // Handle NotFoundHttpExceptions in the backend (usually triggered by abort(404))
         Event::listen('exception.beforeRender', function ($exception, $httpCode, $request) {
-            if (! $this->cmsHandling && $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            if (!$this->cmsHandling && $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
                 return View::make('backend::404');
             }
         }, 1);
@@ -154,14 +150,14 @@ class BackendController extends ControllerBase
         /*
          * Database check
          */
-        if (! App::hasDatabase()) {
+        if (!App::hasDatabase()) {
             return Config::get('app.debug', false)
                 ? Response::make(View::make('backend::no_database'), 200)
                 : $this->passToCmsController($url);
         }
 
         $controllerRequest = $this->getRequestedController($url);
-        if (! is_null($controllerRequest)) {
+        if (!is_null($controllerRequest)) {
             return $controllerRequest['controller']->run(
                 $controllerRequest['action'],
                 $controllerRequest['params']
@@ -181,7 +177,7 @@ class BackendController extends ControllerBase
      * action to call as a string and an array of parameters. If a suitable controller and action cannot be found,
      * this method will return null.
      *
-     * @param  string  $url  A URL to determine the requested controller and action for
+     * @param string $url A URL to determine the requested controller and action for
      * @return array|null A suitable controller, action and parameters in an array if found, otherwise null.
      */
     protected function getRequestedController($url)
@@ -204,7 +200,7 @@ class BackendController extends ControllerBase
             return [
                 'controller' => $controllerObj,
                 'action' => $action,
-                'params' => $controllerParams,
+                'params' => $controllerParams
             ];
         }
 
@@ -212,9 +208,9 @@ class BackendController extends ControllerBase
          * Look for a Plugin controller
          */
         if (count($params) >= 2) {
-            [$author, $plugin] = $params;
+            list($author, $plugin) = $params;
 
-            $pluginCode = ucfirst($author).'.'.ucfirst($plugin);
+            $pluginCode = ucfirst($author) . '.' . ucfirst($plugin);
             if (PluginManager::instance()->isDisabled($pluginCode)) {
                 return Response::make(View::make('backend::404'), 404);
             }
@@ -231,7 +227,7 @@ class BackendController extends ControllerBase
                 return [
                     'controller' => $controllerObj,
                     'action' => $action,
-                    'params' => $controllerParams,
+                    'params' => $controllerParams
                 ];
             }
         }
@@ -242,10 +238,9 @@ class BackendController extends ControllerBase
     /**
      * This method is used internally.
      * Finds a backend controller with a callable action method.
-     *
-     * @param  string  $controller  Specifies a method name to execute.
-     * @param  string  $action  Specifies a method name to execute.
-     * @param  string  $inPath  Base path for class file location.
+     * @param string $controller Specifies a method name to execute.
+     * @param string $action Specifies a method name to execute.
+     * @param string $inPath Base path for class file location.
      * @return ControllerBase Returns the backend controller object
      */
     protected function findController($controller, $action, $inPath)
@@ -257,15 +252,15 @@ class BackendController extends ControllerBase
         /*
          * Workaround: Composer does not support case insensitivity.
          */
-        if (! class_exists($controller)) {
+        if (!class_exists($controller)) {
             $controller = Str::normalizeClassName($controller);
-            $controllerFile = $inPath.strtolower(str_replace('\\', '/', $controller)).'.php';
+            $controllerFile = $inPath.strtolower(str_replace('\\', '/', $controller)) . '.php';
             if ($controllerFile = File::existsInsensitive($controllerFile)) {
                 include_once $controllerFile;
             }
         }
 
-        if (! class_exists($controller)) {
+        if (!class_exists($controller)) {
             return $this->requestedController = null;
         }
 
@@ -280,8 +275,7 @@ class BackendController extends ControllerBase
 
     /**
      * Process the action name, since dashes are not supported in PHP methods.
-     *
-     * @param  string  $actionName
+     * @param  string $actionName
      * @return string
      */
     protected function parseAction($actionName)
@@ -297,24 +291,24 @@ class BackendController extends ControllerBase
      * Determine if the given options exclude a particular method.
      *
      * @param  string  $method
+     * @param  array  $options
      * @return bool
      */
     protected static function methodExcludedByOptions($method, array $options)
     {
-        return (isset($options['only']) && ! in_array($method, (array) $options['only'])) ||
-            (! empty($options['except']) && in_array($method, (array) $options['except']));
+        return (isset($options['only']) && !in_array($method, (array) $options['only'])) ||
+            (!empty($options['except']) && in_array($method, (array) $options['except']));
     }
 
     public function __call($name, $params)
     {
         if ($name === 'extend') {
-            if (empty($params[0]) || ! is_callable($params[0])) {
+            if (empty($params[0]) || !is_callable($params[0])) {
                 throw new \InvalidArgumentException('The extend() method requires a callback parameter or closure.');
             }
             if ($params[0] instanceof Closure) {
                 return $params[0]->call($this, $params[1] ?? $this);
             }
-
             return Closure::fromCallable($params[0])->call($this, $params[1] ?? $this);
         }
 
@@ -328,7 +322,6 @@ class BackendController extends ControllerBase
                 throw new \InvalidArgumentException('The extend() method requires a callback parameter or closure.');
             }
             self::extendableExtendCallback($params[0], $params[1] ?? false, $params[2] ?? null);
-
             return;
         }
 

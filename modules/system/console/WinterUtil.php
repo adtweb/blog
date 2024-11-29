@@ -1,18 +1,16 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use Config;
+use Lang;
 use File;
+use Config;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Lang;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use System\Classes\CombineAssets;
+use Symfony\Component\Console\Input\InputArgument;
 use System\Classes\UpdateManager;
-use System\Models\File as FileModel;
+use System\Classes\CombineAssets;
 use System\Models\Parameter;
+use System\Models\File as FileModel;
 
 /**
  * Console command for other utility commands.
@@ -31,6 +29,7 @@ use System\Models\Parameter;
  * - compile lang: Compile registered Language files only.
  * - set project --projectId=<id>: Set the projectId for this winter instance.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterUtil extends Command
@@ -68,12 +67,12 @@ class WinterUtil extends Command
 
         $methods = preg_grep('/^util/', get_class_methods(get_called_class()));
         $list = array_map(function ($item) {
-            return 'winter:'.snake_case($item, ' ');
+            return "winter:".snake_case($item, " ");
         }, $methods);
 
-        if (! $this->argument('name')) {
+        if (!$this->argument('name')) {
             $message = 'There are no commands defined in the "util" namespace.';
-            if (count($list) == 1) {
+            if (1 == count($list)) {
                 $message .= "\n\nDid you mean this?\n    ";
             } else {
                 $message .= "\n\nDid you mean one of these?\n    ";
@@ -83,9 +82,8 @@ class WinterUtil extends Command
             throw new \InvalidArgumentException($message);
         }
 
-        if (! method_exists($this, $method)) {
+        if (!method_exists($this, $method)) {
             $this->error(sprintf('Utility command "%s" does not exist!', $command));
-
             return;
         }
 
@@ -94,7 +92,6 @@ class WinterUtil extends Command
 
     /**
      * Get the console command arguments.
-     *
      * @return array
      */
     protected function getArguments()
@@ -106,7 +103,6 @@ class WinterUtil extends Command
 
     /**
      * Get the console command options.
-     *
      * @return array
      */
     protected function getOptions()
@@ -150,13 +146,12 @@ class WinterUtil extends Command
     {
         $this->comment('Compiling registered asset bundles...');
 
-        Config::set('cms.enableAssetMinify', ! $this->option('debug'));
+        Config::set('cms.enableAssetMinify', !$this->option('debug'));
         $combiner = CombineAssets::instance();
         $bundles = $combiner->getBundles($type);
 
-        if (! $bundles) {
+        if (!$bundles) {
             $this->comment('Nothing to compile!');
-
             return;
         }
 
@@ -167,7 +162,7 @@ class WinterUtil extends Command
         foreach ($bundles as $bundleType) {
             foreach ($bundleType as $destination => $assets) {
                 $destination = File::symbolizePath($destination);
-                $publicDest = File::localToPublic(realpath(dirname($destination))).'/'.basename($destination);
+                $publicDest = File::localToPublic(realpath(dirname($destination))) . '/' . basename($destination);
 
                 $combiner->combineToFile($assets, $destination);
                 $shortAssets = implode(', ', array_map('basename', $assets));
@@ -183,21 +178,21 @@ class WinterUtil extends Command
 
     protected function utilCompileLang()
     {
-        if (! $locales = Lang::get('system::lang.locale')) {
+        if (!$locales = Lang::get('system::lang.locale')) {
             return;
         }
 
         $this->comment('Compiling client-side language files...');
 
         $locales = array_keys($locales);
-        $stub = base_path().'/modules/system/assets/js/lang/lang.stub';
+        $stub = base_path() . '/modules/system/assets/js/lang/lang.stub';
 
         foreach ($locales as $locale) {
             /*
              * Generate messages
              */
-            $fallbackPath = base_path().'/modules/system/lang/en/client.php';
-            $srcPath = base_path().'/modules/system/lang/'.$locale.'/client.php';
+            $fallbackPath = base_path() . '/modules/system/lang/en/client.php';
+            $srcPath = base_path() . '/modules/system/lang/'.$locale.'/client.php';
 
             $messages = require $fallbackPath;
 
@@ -211,15 +206,15 @@ class WinterUtil extends Command
             $overrides = [];
             $parentOverrides = [];
 
-            $overridePath = base_path().'/lang/'.$locale.'/system/client.php';
+            $overridePath = base_path() . '/lang/'.$locale.'/system/client.php';
             if (File::isFile($overridePath)) {
                 $overrides = require $overridePath;
             }
 
             if (str_contains($locale, '-')) {
-                [$parentLocale, $country] = explode('-', $locale);
+                list($parentLocale, $country) = explode('-', $locale);
 
-                $parentOverridePath = base_path().'/lang/'.$parentLocale.'/system/client.php';
+                $parentOverridePath = base_path() . '/lang/'.$parentLocale.'/system/client.php';
                 if (File::isFile($parentOverridePath)) {
                     $parentOverrides = require $parentOverridePath;
                 }
@@ -230,7 +225,7 @@ class WinterUtil extends Command
             /*
              * Compile from stub and save file
              */
-            $destPath = base_path().'/modules/system/assets/js/lang/lang.'.$locale.'.js';
+            $destPath = base_path() . '/modules/system/assets/js/lang/lang.'.$locale.'.js';
 
             $contents = str_replace(
                 ['{{locale}}', '{{messages}}'],
@@ -241,7 +236,7 @@ class WinterUtil extends Command
             /*
              * Include the moment localization data
              */
-            $momentPath = base_path().'/modules/system/assets/ui/vendor/moment/locale/'.$locale.'.js';
+            $momentPath = base_path() . '/modules/system/assets/ui/vendor/moment/locale/'.$locale.'.js';
             if (File::exists($momentPath)) {
                 $contents .= PHP_EOL.PHP_EOL.File::get($momentPath).PHP_EOL;
             }
@@ -251,7 +246,7 @@ class WinterUtil extends Command
             /*
              * Output notes
              */
-            $publicDest = File::localToPublic(realpath(dirname($destPath))).'/'.basename($destPath);
+            $publicDest = File::localToPublic(realpath(dirname($destPath))) . '/' . basename($destPath);
 
             $this->comment($locale.'/'.basename($srcPath));
             $this->comment(sprintf(' -> %s', $publicDest));
@@ -260,7 +255,7 @@ class WinterUtil extends Command
 
     protected function utilPurgeThumbs()
     {
-        if (! $this->confirmToProceed('This will PERMANENTLY DELETE all thumbs in the uploads directory.')) {
+        if (!$this->confirmToProceed('This will PERMANENTLY DELETE all thumbs in the uploads directory.')) {
             return;
         }
 
@@ -275,7 +270,7 @@ class WinterUtil extends Command
         $purgeFunc = function ($targetDir) use (&$purgeFunc, &$totalCount) {
             if ($files = File::glob($targetDir.'/thumb_*')) {
                 foreach ($files as $file) {
-                    $this->info('Purged: '.basename($file));
+                    $this->info('Purged: '. basename($file));
                     $totalCount++;
                     @unlink($file);
                 }
@@ -292,14 +287,15 @@ class WinterUtil extends Command
 
         if ($totalCount > 0) {
             $this->comment(sprintf('Successfully deleted %s thumbs', $totalCount));
-        } else {
+        }
+        else {
             $this->comment('No thumbs found to delete');
         }
     }
 
     protected function utilPurgeUploads()
     {
-        if (! $this->confirmToProceed('This will PERMANENTLY DELETE files in the uploads directory that do not exist in the "system_files" table.')) {
+        if (!$this->confirmToProceed('This will PERMANENTLY DELETE files in the uploads directory that do not exist in the "system_files" table.')) {
             return;
         }
 
@@ -319,10 +315,10 @@ class WinterUtil extends Command
                 continue;
             }
             // Purge invalid files
-            if (! in_array($fileName, $validFiles)) {
+            if (!in_array($fileName, $validFiles)) {
                 // Purge invalid upload file
                 Storage::disk($uploadsDisk)->delete($filePath);
-                $this->info('Purged: '.$filePath);
+                $this->info('Purged: ' . $filePath);
                 // Purge parent directories
                 $currentDir = dirname($filePath);
                 while ($currentDir !== $uploadsFolder) {
@@ -331,7 +327,7 @@ class WinterUtil extends Command
                     // Parent directory is empty
                     if (count($children) === 0) {
                         Storage::disk($uploadsDisk)->deleteDirectory($currentDir);
-                        $this->info('Removed folder: '.$currentDir);
+                        $this->info('Removed folder: ' . $currentDir);
                     } else {
                         // Parent directory is not empty
                         // stop the iteration
@@ -352,7 +348,7 @@ class WinterUtil extends Command
 
     protected function utilPurgeOrphans()
     {
-        if (! $this->confirmToProceed('This will PERMANENTLY DELETE files in "system_files" that do not belong to any other model.')) {
+        if (!$this->confirmToProceed('This will PERMANENTLY DELETE files in "system_files" that do not belong to any other model.')) {
             return;
         }
 
@@ -361,12 +357,12 @@ class WinterUtil extends Command
         $isLocalStorage = Config::get('cms.storage.uploads.disk', 'local') === 'local';
 
         $files = FileModel::whereDoesntHaveMorph('attachment', '*')
-            ->orWhereNull('attachment_id')
-            ->orWhereNull('attachment_type')
-            ->get();
+                    ->orWhereNull('attachment_id')
+                    ->orWhereNull('attachment_type')
+                    ->get();
 
         foreach ($files as $file) {
-            if (! $isDebug) {
+            if (!$isDebug) {
                 $file->delete();
             }
             $orphanedFiles += 1;
@@ -374,8 +370,8 @@ class WinterUtil extends Command
 
         if ($this->option('missing-files') && $isLocalStorage) {
             foreach (FileModel::all() as $file) {
-                if (! File::exists($file->getLocalPath())) {
-                    if (! $isDebug) {
+                if (!File::exists($file->getLocalPath())) {
+                    if (!$isDebug) {
                         $file->delete();
                     }
                     $orphanedFiles += 1;
@@ -397,25 +393,25 @@ class WinterUtil extends Command
     {
         foreach (File::directories(plugins_path()) as $authorDir) {
             foreach (File::directories($authorDir) as $pluginDir) {
-                if (! File::exists($pluginDir.'/.git')) {
+                if (!File::exists($pluginDir.'/.git')) {
                     continue;
                 }
 
-                $exec = 'cd '.$pluginDir.' && ';
+                $exec = 'cd ' . $pluginDir . ' && ';
                 $exec .= 'git pull 2>&1';
-                echo 'Updating plugin: '.basename(dirname($pluginDir)).'.'.basename($pluginDir).PHP_EOL;
+                echo 'Updating plugin: '. basename(dirname($pluginDir)) .'.'. basename($pluginDir) . PHP_EOL;
                 echo shell_exec($exec);
             }
         }
 
         foreach (File::directories(themes_path()) as $themeDir) {
-            if (! File::exists($themeDir.'/.git')) {
+            if (!File::exists($themeDir.'/.git')) {
                 continue;
             }
 
-            $exec = 'cd '.$themeDir.' && ';
+            $exec = 'cd ' . $themeDir . ' && ';
             $exec .= 'git pull 2>&1';
-            echo 'Updating theme: '.basename($themeDir).PHP_EOL;
+            echo 'Updating theme: '. basename($themeDir) . PHP_EOL;
             echo shell_exec($exec);
         }
     }
@@ -425,8 +421,7 @@ class WinterUtil extends Command
         $projectId = $this->option('projectId');
 
         if (empty($projectId)) {
-            $this->error('No projectId defined, use --projectId=<id> to set a projectId');
-
+            $this->error("No projectId defined, use --projectId=<id> to set a projectId");
             return;
         }
 
@@ -434,8 +429,8 @@ class WinterUtil extends Command
         $result = $manager->requestProjectDetails($projectId);
 
         Parameter::set([
-            'system::project.id' => $projectId,
-            'system::project.name' => $result['name'],
+            'system::project.id'    => $projectId,
+            'system::project.name'  => $result['name'],
             'system::project.owner' => $result['owner'],
         ]);
     }

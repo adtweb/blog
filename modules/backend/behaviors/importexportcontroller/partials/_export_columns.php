@@ -1,7 +1,7 @@
 <div class="export-columns" id="exportColumns">
     <div class="control-simplelist with-checkboxes is-sortable" data-control="simplelist">
         <ul>
-            <?php foreach ($exportColumns as $key => $column) { ?>
+            <?php foreach ($exportColumns as $key => $column): ?>
                 <li>
                     <div class="checkbox custom-checkbox">
                         <input
@@ -21,7 +21,7 @@
                         </label>
                     </div>
                 </li>
-            <?php } ?>
+            <?php endforeach ?>
         </ul>
     </div>
 </div>

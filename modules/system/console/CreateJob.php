@@ -1,6 +1,6 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
+use System\Console\BaseScaffoldCommand;
 
 class CreateJob extends BaseScaffoldCommand
 {
@@ -45,7 +45,7 @@ class CreateJob extends BaseScaffoldCommand
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function prepareVars(): array
     {

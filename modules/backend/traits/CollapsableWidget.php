@@ -1,13 +1,13 @@
-<?php
-
-namespace Backend\Traits;
+<?php namespace Backend\Traits;
 
 /**
  * Collapsable Widget Trait
  * Adds collapse/expand item features to back-end widgets
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
+
 trait CollapsableWidget
 {
     /**
@@ -45,7 +45,7 @@ trait CollapsableWidget
 
         $groups = $this->getSession($this->collapseSessionKey, []);
 
-        if (! is_array($groups)) {
+        if (!is_array($groups)) {
             return $this->collapseGroupStatusCache = [];
         }
 
@@ -55,8 +55,8 @@ trait CollapsableWidget
     /**
      * Sets a collapsed state.
      *
-     * @param  string  $group
-     * @param  string  $status
+     * @param string $group
+     * @param string $status
      */
     protected function setCollapseStatus($group, $status)
     {
@@ -72,8 +72,8 @@ trait CollapsableWidget
     /**
      * Gets a collapsed state.
      *
-     * @param  string  $group
-     * @param  bool  $default
+     * @param string $group
+     * @param bool $default
      * @return bool|string
      */
     protected function getCollapseStatus($group, $default = true)
@@ -106,7 +106,6 @@ trait CollapsableWidget
     protected function getGroupStatuses()
     {
         traceLog('getGroupStatuses is deprecated. Please update getCollapseStatuses instead. Class: '.get_class($this));
-
         return $this->getCollapseStatuses();
     }
 
@@ -116,7 +115,6 @@ trait CollapsableWidget
     protected function setGroupStatus($group, $status)
     {
         traceLog('setGroupStatus is deprecated. Please update setCollapseStatus instead. Class: '.get_class($this));
-
         return $this->setCollapseStatus($group, $status);
     }
 
@@ -126,7 +124,6 @@ trait CollapsableWidget
     protected function getGroupStatus($group, $default = true)
     {
         traceLog('getGroupStatus is deprecated. Please update getCollapseStatus instead. Class: '.get_class($this));
-
         return $this->getCollapseStatus($group, $default);
     }
 }

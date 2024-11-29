@@ -1,11 +1,9 @@
-<?php
+<?php namespace Backend\FormWidgets;
 
-namespace Backend\FormWidgets;
-
-use Backend\Classes\FormField;
-use Backend\Classes\FormWidgetBase;
 use BackendAuth;
+use Backend\Classes\FormField;
 use System\Classes\MediaLibrary;
+use Backend\Classes\FormWidgetBase;
 
 /**
  * Media Finder
@@ -16,6 +14,7 @@ use System\Classes\MediaLibrary;
  *        type: media
  *        prompt: Click the %s button to find a user
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MediaFinder extends FormWidgetBase
@@ -49,12 +48,12 @@ class MediaFinder extends FormWidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'media';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -62,22 +61,22 @@ class MediaFinder extends FormWidgetBase
             'mode',
             'prompt',
             'imageWidth',
-            'imageHeight',
+            'imageHeight'
         ]);
 
         $user = BackendAuth::getUser();
 
         if ($this->formField->disabled
             || $this->formField->readOnly
-            || ! $user
-            || ! $user->hasAccess('media.manage_media')
+            || !$user
+            || !$user->hasAccess('media.manage_media')
         ) {
             $this->previewMode = true;
         }
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
@@ -105,7 +104,7 @@ class MediaFinder extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
@@ -117,7 +116,7 @@ class MediaFinder extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function loadAssets()
     {

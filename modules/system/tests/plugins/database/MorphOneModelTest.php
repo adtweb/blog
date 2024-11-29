@@ -2,22 +2,22 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\Author;
-use Database\Tester\Models\Meta;
-use Database\Tester\Models\Post;
-use Model;
 use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\Author;
+use Database\Tester\Models\Post;
+use Database\Tester\Models\Meta;
+use Model;
 
 class MorphOneModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Phone.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Meta.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Phone.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Meta.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -25,7 +25,7 @@ class MorphOneModelTest extends PluginTestCase
     public function testSetRelationValue()
     {
         Model::unguard();
-        $post = Post::create(['title' => 'First post', 'description' => 'Yay!!']);
+        $post = Post::create(['title' => "First post", 'description' => "Yay!!"]);
         $author = Author::create(['name' => 'Stevie', 'email' => 'stevie@example.com']);
         $meta1 = Meta::create([
             'meta_title' => 'Question',

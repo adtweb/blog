@@ -1,6 +1,6 @@
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
-    <?php if ($hasUpdates) { ?>
+    <?php if ($hasUpdates): ?>
 
         <div class="modal-body">
             <p>
@@ -10,10 +10,10 @@
 
             <div class="control-updatelist">
                 <div class="control-scrollbar" style="height:400px" data-control="scrollbar">
-                    <?php if ($core) { ?>
+                    <?php if ($core): ?>
                         <div class="update-item <?= $core['isImportant'] ? 'item-danger' : '' ?>">
                             <div class="item-header">
-                                <?php if ($core['isImportant']) { ?>
+                                <?php if ($core['isImportant']): ?>
                                     <div class="important-update form-group form-group-sm">
                                         <select
                                             name="core_action"
@@ -23,16 +23,16 @@
                                             <option value="confirm"><?= e(trans('system::lang.updates.important_action.confirm')) ?></option>
                                         </select>
                                     </div>
-                                <?php } ?>
+                                <?php endif ?>
                                 <h5>
                                     <i class="icon-cube"></i>
                                     <?= e(trans('system::lang.system.name')) ?>
                                 </h5>
                             </div>
                             <dl>
-                                <?php foreach (array_get($core, 'updates', []) as $build => $description) { ?>
-                                    <dt><?= e(trans('system::lang.updates.core_build', ['build' => $build])) ?></dt>
-                                    <?php if (is_array($description)) { ?>
+                                <?php foreach (array_get($core, 'updates', []) as $build => $description): ?>
+                                    <dt><?= e(trans('system::lang.updates.core_build', ['build'=>$build])) ?></dt>
+                                    <?php if (is_array($description)): ?>
                                         <dd>
                                             <span class="important-update-label">
                                                 <?= e(trans('system::lang.updates.important_action_required')) ?>
@@ -43,21 +43,21 @@
                                                 <i class="icon-external-link"></i>
                                             </a>
                                         </dd>
-                                    <?php } else { ?>
+                                    <?php else: ?>
                                         <dd><?= e($description) ?></dd>
-                                    <?php } ?>
-                                <?php } ?>
-                                <?php if ($core['old_build']) { ?>
-                                    <dt class="text-muted"><?= e(trans('system::lang.updates.core_build', ['build' => $core['old_build']])) ?></dt>
+                                    <?php endif ?>
+                                <?php endforeach ?>
+                                <?php if ($core['old_build']): ?>
+                                    <dt class="text-muted"><?= e(trans('system::lang.updates.core_build', ['build'=>$core['old_build']])) ?></dt>
                                     <dd class="text-muted"><?= e(trans('system::lang.updates.core_current_build')) ?></dd>
-                                <?php } ?>
+                                <?php endif ?>
                             </dl>
                             <input type="hidden" name="hash" value="<?= e($core['hash']) ?>" />
                             <input type="hidden" name="build" value="<?= e($core['build']) ?>" />
                         </div>
-                    <?php } ?>
+                    <?php endif ?>
 
-                    <?php foreach ($themeList as $code => $theme) { ?>
+                    <?php foreach ($themeList as $code => $theme): ?>
                         <div class="update-item">
                             <div class="item-header">
                                 <h5>
@@ -72,12 +72,12 @@
 
                             <input type="hidden" name="themes[<?= e($this->encodeCode($code)) ?>]" value="<?= e($theme['hash']) ?>" />
                         </div>
-                    <?php } ?>
+                    <?php endforeach ?>
 
-                    <?php foreach ($pluginList as $code => $plugin) { ?>
+                    <?php foreach ($pluginList as $code => $plugin): ?>
                         <div class="update-item <?= $plugin['isImportant'] ? 'item-danger' : '' ?>">
                             <div class="item-header">
-                                <?php if ($plugin['isImportant']) { ?>
+                                <?php if ($plugin['isImportant']): ?>
                                     <div class="important-update form-group form-group-sm">
                                         <select
                                             name="plugin_actions[<?= e($this->encodeCode($code)) ?>]"
@@ -89,24 +89,24 @@
                                             <option value="ignore"><?= e(trans('system::lang.updates.important_action.ignore')) ?></option>
                                         </select>
                                     </div>
-                                <?php } ?>
+                                <?php endif ?>
                                 <h5>
                                     <i class="<?= e($plugin['icon'] ?: 'icon-puzzle-piece') ?>"></i>
                                     <?= e($plugin['name']) ?>
                                 </h5>
                             </div>
                             <dl>
-                                <?php if (! $plugin['old_version']) { ?>
+                                <?php if (!$plugin['old_version']): ?>
                                     <dt>
                                         <?= $plugin['version'] ?>
                                     </dt>
                                     <dd>
                                         <?= e(trans('system::lang.updates.plugin_version_none')) ?>
                                     </dd>
-                                <?php } else { ?>
-                                    <?php foreach (array_get($plugin, 'updates', []) as $version => $description) { ?>
+                                <?php else: ?>
+                                    <?php foreach (array_get($plugin, 'updates', []) as $version => $description): ?>
                                         <dt><?= e($version) ?></dt>
-                                        <?php if (is_array($description)) { ?>
+                                        <?php if (is_array($description)): ?>
                                             <dd>
                                                 <span class="important-update-label">
                                                     <?= e(trans('system::lang.updates.important_action_required')) ?>
@@ -117,10 +117,10 @@
                                                     <i class="icon-external-link"></i>
                                                 </a>
                                             </dd>
-                                        <?php } else { ?>
+                                        <?php else: ?>
                                             <dd><?= e($description) ?></dd>
-                                        <?php } ?>
-                                    <?php } ?>
+                                        <?php endif ?>
+                                    <?php endforeach ?>
 
                                     <dt class="text-muted">
                                         <?= e($plugin['old_version']) ?>
@@ -128,12 +128,12 @@
                                     <dd class="text-muted">
                                         <?= e(trans('system::lang.updates.plugin_current_version')) ?>
                                     </dd>
-                                <?php } ?>
+                                <?php endif ?>
                             </dl>
 
                             <input type="hidden" name="plugins[<?= e($this->encodeCode($code)) ?>]" value="<?= e($plugin['hash']) ?>" />
                         </div>
-                    <?php } ?>
+                    <?php endforeach ?>
 
                 </div>
             </div>
@@ -141,11 +141,11 @@
         </div>
 
         <div class="modal-footer">
-            <?php if ($hasImportantUpdates) { ?>
+            <?php if ($hasImportantUpdates): ?>
                 <p class="text-danger pull-left wn-icon-exclamation important-update-label" id="updateListImportantLabel">
                     <?= e(trans('system::lang.updates.important_alert_text')) ?>
                 </p>
-            <?php } ?>
+            <?php endif ?>
             <button
                 type="button"
                 id="updateListUpdateButton"
@@ -164,7 +164,7 @@
             </button>
         </div>
 
-    <?php } else { ?>
+    <?php else: ?>
 
         <div class="modal-body">
             <p><?= e(trans('system::lang.updates.none.help')) ?></p>
@@ -187,9 +187,9 @@
             </button>
         </div>
 
-    <?php } ?>
+    <?php endif ?>
 
-<?php } else { ?>
+<?php else: ?>
 
     <div class="modal-body">
         <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
@@ -203,4 +203,4 @@
         </button>
     </div>
 
-<?php } ?>
+<?php endif ?>

@@ -16,10 +16,10 @@ class AssetMakerTest extends TestCase
 {
     private $stub;
 
-    public function setUp(): void
+    public function setUp() : void
     {
         $this->createApplication();
-        $this->stub = new AssetMakerStub;
+        $this->stub = new AssetMakerStub();
     }
 
     //
@@ -68,7 +68,7 @@ class AssetMakerTest extends TestCase
 
         // assetPath is used since we use a relative path without pathSymbol
         $path = $this->stub->getAssetPath('js/myAsset.js', $assetPath);
-        $this->assertEquals('http://localhost/'.$assetPath.'/js/myAsset.js', $path);
+        $this->assertEquals('http://localhost/' . $assetPath . '/js/myAsset.js', $path);
 
         // assetPath is ignored since we use an absolute path
         $path = $this->stub->getAssetPath('/js/myAsset.js', $assetPath);

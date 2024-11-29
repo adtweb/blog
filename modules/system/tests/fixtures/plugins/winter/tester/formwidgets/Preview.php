@@ -1,7 +1,7 @@
-<?php
-
-namespace Winter\Tester\FormWidgets;
+<?php namespace Winter\Tester\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 
-class Preview extends FormWidgetBase {}
+class Preview extends FormWidgetBase
+{
+}

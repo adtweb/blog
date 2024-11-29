@@ -18,7 +18,6 @@ class ViewMakerStub
 class ViewMakerTest extends TestCase
 {
     private $stub;
-
     private $relativePath;
 
     protected function normalizePath(string $path): string
@@ -26,10 +25,10 @@ class ViewMakerTest extends TestCase
         return str_replace('/', DIRECTORY_SEPARATOR, $path);
     }
 
-    public function setUp(): void
+    public function setUp() : void
     {
         $this->createApplication();
-        $this->stub = new ViewMakerStub;
+        $this->stub = new ViewMakerStub();
         $this->relativePath = $this->normalizePath('modules/system/tests/traits/viewmakerstub');
     }
 
@@ -70,10 +69,10 @@ class ViewMakerTest extends TestCase
         // Test getViewPath()
         $paths = [
             'non_existant' => 'non_existant',
-            'view.php' => base_path($this->relativePath.'/view.php'),
-            '_overridden.php' => base_path($this->relativePath.'override/_overridden.php'),
-            '_can_override_php_with_htm.php' => base_path($this->relativePath.'override/_can_override_php_with_htm.htm'),
-            "~/{$this->relativePath}/symbols.php" => base_path($this->relativePath.'/symbols.php'),
+            'view.php' => base_path($this->relativePath . '/view.php'),
+            '_overridden.php' => base_path($this->relativePath . 'override/_overridden.php'),
+            '_can_override_php_with_htm.php' => base_path($this->relativePath . 'override/_can_override_php_with_htm.htm'),
+            "~/{$this->relativePath}/symbols.php" => base_path($this->relativePath . '/symbols.php'),
         ];
 
         foreach ($paths as $path => $expected) {
@@ -83,12 +82,12 @@ class ViewMakerTest extends TestCase
 
     public function testMakePartial()
     {
-        $sectionContent = '<!-- Section -->'.PHP_EOL
-        .'<div class="field-section">'.PHP_EOL
-        .'            <h4>label</h4>'.PHP_EOL
-        .'    '.PHP_EOL
-        .'            <p class="help-block">comment</p>'.PHP_EOL
-        .'    </div>';
+        $sectionContent = '<!-- Section -->' . PHP_EOL
+        . '<div class="field-section">' . PHP_EOL
+        . '            <h4>label</h4>' . PHP_EOL
+        . '    ' . PHP_EOL
+        . '            <p class="help-block">comment</p>' . PHP_EOL
+        . '    </div>';
 
         // Test various paths that are accepted when rendering a partial
         $partials = [
@@ -108,7 +107,7 @@ class ViewMakerTest extends TestCase
                 'field' => (object) [
                     'label' => 'label',
                     'comment' => 'comment',
-                    'commentHtml' => false,
+                    'commentHtml' => false
                 ],
             ]);
             $this->assertEquals($expected, trim($contents));

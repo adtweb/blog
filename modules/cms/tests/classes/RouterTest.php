@@ -2,10 +2,10 @@
 
 namespace Cms\Tests\Classes;
 
+use System\Tests\Bootstrap\TestCase;
 use Cms\Classes\Router;
 use Cms\Classes\Theme;
 use ReflectionClass;
-use System\Tests\Bootstrap\TestCase;
 
 class RouterTest extends TestCase
 {
@@ -23,7 +23,6 @@ class RouterTest extends TestCase
         $class = new ReflectionClass('\Cms\Classes\Router');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
-
         return $method;
     }
 
@@ -32,7 +31,6 @@ class RouterTest extends TestCase
         $class = new ReflectionClass('\Cms\Classes\Router');
         $property = $class->getProperty($name);
         $property->setAccessible(true);
-
         return $property;
     }
 

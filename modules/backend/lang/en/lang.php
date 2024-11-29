@@ -31,7 +31,7 @@ return [
         ],
         'no_database' => [
             'label' => 'Database missing',
-            'help' => 'A database is required to access the back-end. Check the database is configured and migrated before trying again.',
+            'help' => "A database is required to access the back-end. Check the database is configured and migrated before trying again.",
             'cms_link' => 'Return to the homepage',
         ],
     ],

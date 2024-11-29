@@ -1,23 +1,23 @@
-<?php
+<?php namespace Backend\Controllers;
 
-namespace Backend\Controllers;
-
-use Backend;
-use Backend\Classes\Controller;
-use Backend\Models\UserGroup;
-use BackendAuth;
-use BackendMenu;
-use Flash;
-use Lang;
 use Mail;
+use Lang;
+use Flash;
+use Backend;
 use Redirect;
 use Response;
+use BackendMenu;
+use BackendAuth;
+use Backend\Models\UserGroup;
+use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
 
 /**
  * Backend user controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class Users extends Controller
 {
@@ -59,7 +59,7 @@ class Users extends Controller
      */
     public function listExtendQuery($query)
     {
-        if (! $this->user->isSuperUser()) {
+        if (!$this->user->isSuperUser()) {
             $query->where('is_superuser', false);
         }
     }
@@ -69,7 +69,7 @@ class Users extends Controller
      */
     public function listFilterExtendScopes($filterWidget)
     {
-        if (! $this->user->isSuperUser()) {
+        if (!$this->user->isSuperUser()) {
             $filterWidget->removeScope('is_superuser');
         }
     }
@@ -89,7 +89,7 @@ class Users extends Controller
      */
     public function formExtendQuery($query)
     {
-        if (! $this->user->isSuperUser()) {
+        if (!$this->user->isSuperUser()) {
             $query->where('is_superuser', false);
         }
 
@@ -127,7 +127,7 @@ class Users extends Controller
      */
     public function update_onImpersonateUser($recordId)
     {
-        if (! $this->user->hasAccess('backend.impersonate_users')) {
+        if (!$this->user->hasAccess('backend.impersonate_users')) {
             return Response::make(Lang::get('backend::lang.page.access_denied.label'), 403);
         }
 
@@ -162,7 +162,6 @@ class Users extends Controller
         SettingsManager::setContext('Winter.Backend', 'myaccount');
 
         $this->pageTitle = 'backend::lang.myaccount.menu_label';
-
         return $this->update($this->user->id, 'myaccount');
     }
 
@@ -195,7 +194,7 @@ class Users extends Controller
             return;
         }
 
-        if (! $this->user->isSuperUser()) {
+        if (!$this->user->isSuperUser()) {
             $form->removeField('is_superuser');
         }
 
@@ -207,7 +206,7 @@ class Users extends Controller
         /*
          * Mark default groups
          */
-        if (! $form->model->exists) {
+        if (!$form->model->exists) {
             $defaultGroupIds = UserGroup::where('is_new_user_default', true)->lists('id');
 
             $groupField = $form->getField('groups');
@@ -219,7 +218,6 @@ class Users extends Controller
 
     /**
      * Adds the permissions editor widget to the form.
-     *
      * @return array
      */
     protected function generatePermissionsField()
@@ -231,9 +229,9 @@ class Users extends Controller
                 'trigger' => [
                     'action' => 'disable',
                     'field' => 'is_superuser',
-                    'condition' => 'checked',
-                ],
-            ],
+                    'condition' => 'checked'
+                ]
+            ]
         ];
     }
 
@@ -246,7 +244,7 @@ class Users extends Controller
 
         if ($user) {
             $code = $user->getResetPasswordCode();
-            $link = Backend::url('backend/auth/reset/'.$user->id.'/'.$code);
+            $link = Backend::url('backend/auth/reset/' . $user->id . '/' . $code);
 
             $data = [
                 'name' => $user->full_name,

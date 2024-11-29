@@ -3,9 +3,9 @@
 <ul class="nav nav-stacked selector-group">
     <li
         role="presentation"
-        <?php if ($currentFilter == Backend\Widgets\MediaManager::FILTER_ALL) { ?>
+        <?php if ($currentFilter == Backend\Widgets\MediaManager::FILTER_ALL): ?>
             class="active"
-        <?php } ?>
+        <?php endif ?>
     >
         <a href="#" data-command="set-filter" data-filter="<?= Backend\Widgets\MediaManager::FILTER_ALL ?>">
             <i class="icon-recycle"></i>
@@ -15,9 +15,9 @@
     </li>
     <li
         role="presentation"
-        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_IMAGE) { ?>
+        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_IMAGE): ?>
             class="active"
-        <?php } ?>
+        <?php endif ?>
     >
         <a href="#" data-command="set-filter" data-filter="<?= System\Classes\MediaLibraryItem::FILE_TYPE_IMAGE ?>">
             <i class="icon-picture-o"></i>
@@ -27,9 +27,9 @@
     </li>
     <li
         role="presentation"
-        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_VIDEO) { ?>
+        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_VIDEO): ?>
             class="active"
-        <?php } ?>
+        <?php endif ?>
     >
         <a href="#" data-command="set-filter" data-filter="<?= System\Classes\MediaLibraryItem::FILE_TYPE_VIDEO ?>">
             <i class="icon-video-camera"></i>
@@ -39,9 +39,9 @@
     </li>
     <li
         role="presentation"
-        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_AUDIO) { ?>
+        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_AUDIO): ?>
             class="active"
-        <?php } ?>
+        <?php endif ?>
     >
         <a href="#" data-command="set-filter" data-filter="<?= System\Classes\MediaLibraryItem::FILE_TYPE_AUDIO ?>">
             <i class="icon-volume-up"></i>
@@ -51,9 +51,9 @@
     </li>
     <li
         role="presentation"
-        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_DOCUMENT) { ?>
+        <?php if ($currentFilter == System\Classes\MediaLibraryItem::FILE_TYPE_DOCUMENT): ?>
             class="active"
-        <?php } ?>
+        <?php endif ?>
     >
         <a href="#" data-command="set-filter" data-filter="<?= System\Classes\MediaLibraryItem::FILE_TYPE_DOCUMENT ?>">
             <i class="icon-file"></i>

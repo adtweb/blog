@@ -1,11 +1,10 @@
-<?php
-
-namespace Database\Tester\Models;
+<?php namespace Database\Tester\Models;
 
 use Model;
 
 class Author extends Model
 {
+
     /**
      * @var string The database table used by the model.
      */
@@ -36,12 +35,12 @@ class Author extends Model
     public $belongsToMany = [
         'roles' => [
             'Database\Tester\Models\Role',
-            'table' => 'database_tester_authors_roles',
+            'table' => 'database_tester_authors_roles'
         ],
         'executive_authors' => [
             'Database\Tester\Models\Role',
             'table' => 'database_tester_authors_roles',
-            'conditions' => 'is_executive = 1',
+            'conditions' => 'is_executive = 1'
         ],
     ];
 
@@ -56,9 +55,9 @@ class Author extends Model
     public $morphToMany = [
         'tags' => [
             'Database\Tester\Models\Tag',
-            'name' => 'taggable',
+            'name'  => 'taggable',
             'table' => 'database_tester_taggables',
-            'pivot' => ['added_by'],
+            'pivot' => ['added_by']
         ],
     ];
 }

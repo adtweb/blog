@@ -1,17 +1,16 @@
-<?php
-
-namespace Cms\Twig;
+<?php namespace Cms\Twig;
 
 use Block;
-use Cms\Classes\Controller;
 use Event;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Twig\TwigFilter as TwigSimpleFilter;
 use Twig\TwigFunction as TwigSimpleFunction;
+use Cms\Classes\Controller;
 
 /**
  * The CMS Twig extension class implements the basic CMS Twig functions and filters.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Extension extends TwigExtension
@@ -126,7 +125,7 @@ class Extension extends TwigExtension
     /**
      * Renders registered assets of a given type or all types if $type not provided
      */
-    public function assetsFunction(?string $type = null): ?string
+    public function assetsFunction(string $type = null): ?string
     {
         return $this->controller->makeAssets($type);
     }
@@ -134,23 +133,22 @@ class Extension extends TwigExtension
     /**
      * Renders placeholder content, without removing the block, must be called before the placeholder tag itself
      */
-    public function placeholderFunction(string $name, ?string $default = null): ?string
+    public function placeholderFunction(string $name, string $default = null): ?string
     {
         if (($result = Block::get($name)) === null) {
             return null;
         }
 
         $result = str_replace('<!-- X_WINTER_DEFAULT_BLOCK_CONTENT -->', trim($default), $result);
-
         return $result;
     }
 
     /**
      * Returns the relative URL for the provided page
      *
-     * @param  mixed  $name  Specifies the Cms Page file name.
-     * @param  array|bool  $parameters  Route parameters to consider in the URL. If boolean will be used as the value for $routePersistence
-     * @param  bool  $routePersistence  Set to false to exclude the existing routing parameters from the generated URL
+     * @param mixed $name Specifies the Cms Page file name.
+     * @param array|bool $parameters Route parameters to consider in the URL. If boolean will be used as the value for $routePersistence
+     * @param bool $routePersistence Set to false to exclude the existing routing parameters from the generated URL
      */
     public function pageFilter($name, $parameters = [], $routePersistence = true): ?string
     {
@@ -161,7 +159,7 @@ class Extension extends TwigExtension
      * Converts supplied URL to a theme URL relative to the website root. If the URL provided is an
      * array then the files will be combined.
      *
-     * @param  mixed  $url  Specifies the input to be turned into a URL (arrays will be passed to the AssetCombiner)
+     * @param mixed $url Specifies the input to be turned into a URL (arrays will be passed to the AssetCombiner)
      */
     public function themeFilter($url): string
     {
@@ -179,7 +177,7 @@ class Extension extends TwigExtension
     /**
      * Returns a layout block contents (or null if it doesn't exist) and removes the block.
      */
-    public function displayBlock(string $name, ?string $default = null): ?string
+    public function displayBlock(string $name, string $default = null): ?string
     {
         if (($result = Block::placeholder($name)) === null) {
             return $default;
@@ -196,13 +194,13 @@ class Extension extends TwigExtension
          *             return 'my custom content';
          *         }
          *     });
+         *
          */
         if ($event = Event::fire('cms.block.render', [$name, $result], true)) {
             $result = $event;
         }
 
         $result = str_replace('<!-- X_WINTER_DEFAULT_BLOCK_CONTENT -->', trim($default), $result);
-
         return $result;
     }
 

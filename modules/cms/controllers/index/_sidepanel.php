@@ -1,10 +1,10 @@
 <?php
-$visibleCount = 0;
+    $visibleCount = 0;
 ?>
 <div class="layout control-scrollpanel" id="cms-side-panel">
     <div class="layout-cell">
         <div class="layout-relative fix-button-container">
-            <?php if ($this->user->hasAccess('cms.manage_pages')) { ?>
+            <?php if ($this->user->hasAccess('cms.manage_pages')): ?>
                 <!-- Pages -->
                 <form
                     role="form"
@@ -15,8 +15,8 @@ $visibleCount = 0;
                     onsubmit="return false">
                     <?= $this->widget->pageList->render() ?>
                 </form>
-            <?php } ?>
-            <?php if ($this->user->hasAccess('cms.manage_partials')) { ?>
+            <?php endif ?>
+            <?php if ($this->user->hasAccess('cms.manage_partials')): ?>
                 <!-- Partials -->
                 <form
                     role="form"
@@ -27,8 +27,8 @@ $visibleCount = 0;
                     onsubmit="return false">
                     <?= $this->widget->partialList->render() ?>
                 </form>
-            <?php } ?>
-            <?php if ($this->user->hasAccess('cms.manage_layouts')) { ?>
+            <?php endif ?>
+            <?php if ($this->user->hasAccess('cms.manage_layouts')): ?>
                 <!-- Layouts -->
                 <form
                     role="form"
@@ -39,8 +39,8 @@ $visibleCount = 0;
                     onsubmit="return false">
                     <?= $this->widget->layoutList->render() ?>
                 </form>
-            <?php } ?>
-            <?php if ($this->user->hasAccess('cms.manage_content')) { ?>
+            <?php endif ?>
+            <?php if ($this->user->hasAccess('cms.manage_content')): ?>
                 <!-- Content -->
                 <form
                     role="form"
@@ -51,8 +51,8 @@ $visibleCount = 0;
                     onsubmit="return false">
                     <?= $this->widget->contentList->render() ?>
                 </form>
-            <?php } ?>
-            <?php if ($this->user->hasAccess('cms.manage_assets')) { ?>
+            <?php endif ?>
+            <?php if ($this->user->hasAccess('cms.manage_assets')): ?>
                 <!-- Assets -->
                 <form
                     role="form"
@@ -63,8 +63,8 @@ $visibleCount = 0;
                     onsubmit="return false">
                     <?= $this->widget->assetList->render() ?>
                 </form>
-            <?php } ?>
-            <?php if ($this->user->hasAccess(['cms.manage_pages', 'cms.manage_layouts', 'cms.manage_partials'])) { ?>
+            <?php endif ?>
+            <?php if ($this->user->hasAccess(['cms.manage_pages', 'cms.manage_layouts', 'cms.manage_partials'])): ?>
                 <!-- Components -->
                 <form
                     role="form"
@@ -74,7 +74,7 @@ $visibleCount = 0;
                     id="cms-component-list">
                     <?= $this->widget->componentList->render() ?>
                 </form>
-            <?php } ?>
+            <?php endif ?>
         </div>
     </div>
 </div>

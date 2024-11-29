@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Widgets\Table;
+<?php namespace Backend\Widgets\Table;
 
 /**
  * Base class for the Table widget data sources.
@@ -13,14 +11,13 @@ abstract class DataSourceBase
     protected $keyColumn;
 
     /**
-     * @var int Internal record offset
+     * @var integer Internal record offset
      */
     protected $offset = 0;
 
     /**
      * Class constructor.
-     *
-     * @param  string  $keyColumn  Specifies a name of the key column.
+     * @param string $keyColumn Specifies a name of the key column.
      */
     public function construct($keyColumn = 'id')
     {
@@ -32,15 +29,13 @@ abstract class DataSourceBase
      * The method doesn't replace existing records and
      * could be called multiple times in order to fill
      * the data source.
-     *
-     * @param  array  $records  Records to initialize in the data source.
+     * @param array $records Records to initialize in the data source.
      */
     abstract public function initRecords($records);
 
     /**
      * Returns a total number of records in the data source.
-     *
-     * @return int
+     * @return integer
      */
     abstract public function getCount();
 
@@ -51,11 +46,10 @@ abstract class DataSourceBase
 
     /**
      * Return records from the data source.
-     *
-     * @param  int  $offset  Specifies the offset of the first record to return, zero-based.
-     * @param  int  $count  Specifies the number of records to return.
+     * @param integer $offset Specifies the offset of the first record to return, zero-based.
+     * @param integer $count Specifies the number of records to return.
      * @return array Returns the records.
-     *               If there are no more records, returns an empty array.
+     * If there are no more records, returns an empty array.
      */
     abstract public function getRecords($offset, $count);
 
@@ -78,10 +72,9 @@ abstract class DataSourceBase
 
     /**
      * Returns a set of records from the data source.
-     *
-     * @param  int  $count  Specifies the number of records to return.
+     * @param integer $count Specifies the number of records to return.
      * @return array Returns the records.
-     *               If there are no more records, returns an empty array.
+     * If there are no more records, returns an empty array.
      */
     public function readRecords($count = 10)
     {

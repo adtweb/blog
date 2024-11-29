@@ -3,9 +3,10 @@
 namespace System\Tests\Classes;
 
 use ReflectionClass;
-use System\Classes\FileManifest;
+
 use System\Tests\Bootstrap\TestCase;
 use Winter\Storm\Exception\ApplicationException;
+use System\Classes\FileManifest;
 
 class FileManifestTest extends TestCase
 {
@@ -72,6 +73,6 @@ class FileManifestTest extends TestCase
 
         $filename = '/modules/test/file1.php';
 
-        $this->assertEquals($filename, $method->invoke($this->fileManifest, $this->root.$filename));
+        $this->assertEquals($filename, $method->invoke($this->fileManifest, $this->root . $filename));
     }
 }

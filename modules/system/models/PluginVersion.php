@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Models;
+<?php namespace System\Models;
 
 use Lang;
 use Model;
@@ -9,6 +7,7 @@ use System\Classes\PluginManager;
 /**
  * Stores information about current plugin versions.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PluginVersion extends Model
@@ -72,7 +71,6 @@ class PluginVersion extends Model
 
     /**
      * The accessors to append to the model's array form.
-     *
      * @var array
      */
     protected $appends = ['slug'];
@@ -98,7 +96,7 @@ class PluginVersion extends Model
             }
 
             $activeFlags = $manager->getPluginFlags($pluginObj);
-            if (! empty($activeFlags)) {
+            if (!empty($activeFlags)) {
                 foreach ($activeFlags as $flag => $enabled) {
                     if (in_array($flag, [
                         PluginManager::DISABLED_MISSING,
@@ -114,7 +112,8 @@ class PluginVersion extends Model
                     }
                 }
             }
-        } else {
+        }
+        else {
             $this->name = $this->code;
             $this->description = Lang::get('system::lang.plugins.unknown_plugin');
             $this->orphaned = true;
@@ -126,12 +125,12 @@ class PluginVersion extends Model
      */
     public function getIsUpdatableAttribute(): bool
     {
-        return ! $this->is_disabled && ! $this->disabledBySystem && ! $this->disabledByConfig;
+        return !$this->is_disabled && !$this->disabledBySystem && !$this->disabledByConfig;
     }
 
     /**
      * Only include enabled plugins
-     *
+     * @param $query
      * @return QueryBuilder
      */
     public function scopeApplyEnabled($query)

@@ -2,20 +2,20 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\Author;
-use Database\Tester\Models\Post;
-use Model;
 use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\Post;
+use Database\Tester\Models\Author;
 use Winter\Storm\Database\Models\DeferredBinding;
+use Model;
 
 class DeferredBindingTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -27,8 +27,8 @@ class DeferredBindingTest extends PluginTestCase
 
         Model::unguard();
         $author = Author::make(['name' => 'Stevie']);
-        $post = Post::create(['title' => 'First post']);
-        $post2 = Post::create(['title' => 'Second post']);
+        $post = Post::create(['title' => "First post"]);
+        $post2 = Post::create(['title' => "Second post"]);
         Model::reguard();
 
         $author->posts()->add($post, $sessionKey);
@@ -83,7 +83,7 @@ class DeferredBindingTest extends PluginTestCase
 
         Model::unguard();
         $author = Author::make(['name' => 'Stevie']);
-        $post = Post::create(['title' => 'First post']);
+        $post = Post::create(['title' => "First post"]);
         Model::reguard();
 
         $author->posts()->add($post, $sessionKey);
@@ -100,7 +100,7 @@ class DeferredBindingTest extends PluginTestCase
 
         Model::unguard();
         $author = Author::make(['name' => 'Stevie']);
-        $post = Post::create(['title' => 'First post']);
+        $post = Post::create(['title' => "First post"]);
         Model::reguard();
 
         $author->posts()->add($post, $sessionKey);

@@ -19,17 +19,17 @@ return [
         'untitled' => 'Bez naziva',
         '404' => [
             'label' => 'Stranica nije pronađena',
-            'help' => 'Traženi URL nije pronađen. Možda tražiš nešto drugo?',
+            'help' => "Traženi URL nije pronađen. Možda tražiš nešto drugo?",
             'back_link' => 'Nazad na prošlu stranicu',
         ],
         'access_denied' => [
             'label' => 'Pristup odbijen',
-            'help' => 'Nemaš odgovarajuće dozvole za pristup ovoj stranici.',
+            'help' => "Nemaš odgovarajuće dozvole za pristup ovoj stranici.",
             'cms_link' => 'Nazad na pozadinski sistem',
         ],
         'no_database' => [
             'label' => 'Baza podataka nedostaje',
-            'help' => 'Baza podataka je neophodna za pristup pozadinskom sistemu. Proveri da li je baza podataka konfigurisana kako treba i pokušaj ponovo.',
+            'help' => "Baza podataka je neophodna za pristup pozadinskom sistemu. Proveri da li je baza podataka konfigurisana kako treba i pokušaj ponovo.",
             'cms_link' => 'Nazad na početnu stranicu',
         ],
     ],
@@ -301,7 +301,7 @@ return [
         'insert_row_below' => 'Ubaci red ispod',
         'delete_row' => 'Izbriši red',
         'concurrency_file_changed_title' => 'Fajl je izmenjen',
-        'concurrency_file_changed_description' => 'Fajl nad kojim je rađeno je u međuvremenu promenjen od strane drugog korisnika. Možeš ponovo da ga učitaš i izgubiš svoje promene, ili ga jednostavno pregaziš.',
+        'concurrency_file_changed_description' => "Fajl nad kojim je rađeno je u međuvremenu promenjen od strane drugog korisnika. Možeš ponovo da ga učitaš i izgubiš svoje promene, ili ga jednostavno pregaziš.",
         'return_to_list' => 'Nazad na listu',
     ],
     'recordfinder' => [

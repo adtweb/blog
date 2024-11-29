@@ -1,10 +1,8 @@
-<?php
+<?php namespace Backend\FormWidgets;
 
-namespace Backend\FormWidgets;
-
+use Db;
 use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
-use Db;
 use Lang;
 use Winter\Storm\Database\Relations\Relation as RelationBase;
 use Winter\Storm\Exception\SystemException;
@@ -13,6 +11,7 @@ use Winter\Storm\Exception\SystemException;
  * Form Relationship
  * Renders a field prepopulated with a belongsTo and belongsToHasMany relation.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Relation extends FormWidgetBase
@@ -53,7 +52,7 @@ class Relation extends FormWidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'relation';
 
@@ -63,7 +62,7 @@ class Relation extends FormWidgetBase
     public $renderFormField;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -80,12 +79,11 @@ class Relation extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('relation');
     }
 
@@ -99,7 +97,6 @@ class Relation extends FormWidgetBase
 
     /**
      * Makes the form object used for rendering a simple field type
-     *
      * @throws SystemException if an unsupported relation type is used.
      */
     protected function makeRenderFormField()
@@ -110,7 +107,7 @@ class Relation extends FormWidgetBase
             $relationObject = $this->getRelationObject();
             $query = $relationObject->newQuery();
 
-            [$model, $attribute] = $this->resolveModelAttribute($this->valueFrom);
+            list($model, $attribute) = $this->resolveModelAttribute($this->valueFrom);
             $relationType = $model->getRelationType($attribute);
             $relationModel = $model->makeRelation($attribute);
 
@@ -121,7 +118,7 @@ class Relation extends FormWidgetBase
             } else {
                 throw new SystemException(
                     Lang::get('backend::lang.relation.relationwidget_unsupported_type', [
-                        'type' => $relationType,
+                        'type' => $relationType
                     ])
                 );
             }
@@ -156,8 +153,9 @@ class Relation extends FormWidgetBase
             if ($this->sqlSelect) {
                 $nameFrom = 'selection';
                 $selectColumn = $usesTree ? '*' : $relationModel->getKeyName();
-                $result = $query->select($selectColumn, Db::raw($this->sqlSelect.' AS '.$nameFrom));
-            } else {
+                $result = $query->select($selectColumn, Db::raw($this->sqlSelect . ' AS ' . $nameFrom));
+            }
+            else {
                 $nameFrom = $this->nameFrom;
                 $result = $query->getQuery()->get();
             }
@@ -177,7 +175,7 @@ class Relation extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
@@ -185,11 +183,11 @@ class Relation extends FormWidgetBase
             return FormField::NO_SAVE_DATA;
         }
 
-        if (is_string($value) && ! strlen($value)) {
+        if (is_string($value) && !strlen($value)) {
             return null;
         }
 
-        if (is_array($value) && ! count($value)) {
+        if (is_array($value) && !count($value)) {
             return null;
         }
 

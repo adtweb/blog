@@ -1,14 +1,14 @@
-<?php
+<?php namespace Backend\Controllers;
 
-namespace Backend\Controllers;
-
-use Backend\Classes\Controller;
+use Backend;
 use BackendMenu;
+use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
 
 /**
  * Access Logs controller
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class AccessLogs extends Controller

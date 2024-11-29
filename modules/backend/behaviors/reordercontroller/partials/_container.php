@@ -1,9 +1,9 @@
-<?php if ($reorderToolbarWidget) { ?>
+<?php if ($reorderToolbarWidget): ?>
     <!-- Reorder Toolbar -->
     <div id="<?= $this->getId('reorderToolbar') ?>" class="reorder-toolbar">
         <?= $reorderToolbarWidget->render() ?>
     </div>
-<?php } ?>
+<?php endif ?>
 
 <!-- Reorder List -->
 <?= Form::open() ?>
@@ -14,13 +14,13 @@
         <?= $reorderShowTree ? '' : 'data-nested="0"' ?>
         data-handle="<?= $reorderShowTree ? 'a.move' : '> li > .record > a.move' ?>"
         data-stripe-load-indicator>
-        <?php if ($reorderRecords) { ?>
+        <?php if ($reorderRecords): ?>
             <ol id="reorderRecords">
                 <?= $this->reorderMakePartial('records', ['records' => $reorderRecords]) ?>
             </ol>
-        <?php } else { ?>
+        <?php else: ?>
             <p><?= Lang::get('backend::lang.reorder.no_records') ?></p>
-        <?php } ?>
+        <?php endif ?>
     </div>
 <?= Form::close() ?>
 

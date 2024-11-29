@@ -5,7 +5,7 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <div class="control-tabs content-tabs tabs-flush" data-control="tab">
         <ul class="nav nav-tabs">
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-<?php } else { ?>
+<?php else: ?>
 
     <div class="padded-container">
         <p class="flash-message static error"><?= e($this->fatalError) ?></p>
@@ -46,4 +46,4 @@
         <p><a href="<?= Backend::url('cms/themes') ?>" class="btn btn-default"><?= e(trans('cms::lang.theme.return')) ?></a></p>
     </div>
 
-<?php } ?>
+<?php endif ?>

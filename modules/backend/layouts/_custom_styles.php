@@ -1,15 +1,14 @@
 <?php
-use Backend\Models\BrandSetting;
-use Backend\Models\EditorSetting;
-
+    use Backend\Models\BrandSetting;
+    use Backend\Models\EditorSetting;
 ?>
-<?php if (BrandSetting::isConfigured() || BrandSetting::isBaseConfigured()) { ?>
+<?php if (BrandSetting::isConfigured() || BrandSetting::isBaseConfigured()): ?>
     <style>
         <?= BrandSetting::renderCss() ?>
     </style>
-<?php } ?>
-<?php if (EditorSetting::isConfigured()) { ?>
+<?php endif ?>
+<?php if (EditorSetting::isConfigured()): ?>
     <style>
         <?= strip_tags(EditorSetting::renderCss()) ?>
     </style>
-<?php } ?>
+<?php endif ?>

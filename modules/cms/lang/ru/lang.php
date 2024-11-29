@@ -139,7 +139,7 @@ return [
         'file_name' => 'Имя файла страницы',
     ],
     'layout' => [
-        'not_found_name' => 'Не удалось найти шаблон с именем :name.',
+        'not_found_name' => "Не удалось найти шаблон с именем :name.",
         'menu_label' => 'Шаблоны',
         'unsaved_label' => 'Несохранённый(е) шаблон(ы)',
         'no_list_records' => 'Шаблонов не найдено',
@@ -148,7 +148,7 @@ return [
         'delete_confirm_single' => 'Удалить этот шаблон?',
     ],
     'partial' => [
-        'not_found_name' => 'Не удалось найти фрагмент с именем :name.',
+        'not_found_name' => "Не удалось найти фрагмент с именем :name.",
         'invalid_name' => 'Ошибка в имени фрагмента :name.',
         'menu_label' => 'Фрагменты',
         'unsaved_label' => 'Несохранённый(е) фрагмент(ы)',

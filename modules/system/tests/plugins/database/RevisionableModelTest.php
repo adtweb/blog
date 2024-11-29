@@ -2,18 +2,18 @@
 
 namespace System\Tests\Plugins\Database;
 
+use System\Tests\Bootstrap\PluginTestCase;
 use Carbon\Carbon;
 use Database\Tester\Models\RevisionablePost;
 use DateTime;
-use System\Tests\Bootstrap\PluginTestCase;
 
 class RevisionableModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -55,13 +55,13 @@ class RevisionableModelTest extends PluginTestCase
             'slug' => 'hello-world',
             'description' => 'Good day, Commander',
             'is_published' => true,
-            'published_at' => new DateTime,
+            'published_at' => new DateTime
         ]);
 
         $this->assertEquals(0, $post->revision_history()->count());
 
-        $post->title = 'Gday mate';
-        $post->slug = 'gday-mate';
+        $post->title = "Gday mate";
+        $post->slug = "gday-mate";
         $post->description = 'Wazzaaaaaaaaaaaaap';
         $post->is_published = false;
         $post->published_at = Carbon::now()->addDays(1);
@@ -75,7 +75,7 @@ class RevisionableModelTest extends PluginTestCase
             'slug',
             'description',
             'is_published',
-            'published_at',
+            'published_at'
         ], $history->lists('field'));
     }
 
@@ -86,13 +86,13 @@ class RevisionableModelTest extends PluginTestCase
             'slug' => 'hello-world',
             'description' => 'Good day, Commander',
             'is_published' => true,
-            'published_at' => new DateTime,
+            'published_at' => new DateTime
         ]);
 
         $this->assertEquals(0, $post->revision_history()->count());
 
-        $post->title = 'Gday mate';
-        $post->slug = 'gday-mate';
+        $post->title = "Gday mate";
+        $post->slug = "gday-mate";
         $post->description = 'Wazzaaaaaaaaaaaaap';
         $post->is_published = false;
         $post->published_at = Carbon::now()->addDays(1);
@@ -127,7 +127,7 @@ class RevisionableModelTest extends PluginTestCase
     {
         $post = RevisionablePost::create([
             'title' => 'Hello World!',
-            'published_at' => Carbon::now(),
+            'published_at' => Carbon::now()
         ]);
         $this->assertEquals(0, $post->revision_history()->count());
 

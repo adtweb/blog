@@ -2,8 +2,8 @@
 
 namespace System\Tests\Bootstrap;
 
-use PHPUnit\Framework\Assert;
 use ReflectionClass;
+use PHPUnit\Framework\Assert;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
@@ -14,7 +14,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
      */
     public function createApplication()
     {
-        $app = require __DIR__.'/../../../../bootstrap/app.php';
+        $app = require __DIR__ . '/../../../../bootstrap/app.php';
 
         $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
@@ -37,7 +37,6 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $class = new ReflectionClass($className);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
-
         return $method->invokeArgs($object, $params);
     }
 
@@ -47,7 +46,6 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $class = new ReflectionClass($className);
         $property = $class->getProperty($name);
         $property->setAccessible(true);
-
         return $property->getValue($object);
     }
 
@@ -57,18 +55,20 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $class = new ReflectionClass($className);
         $property = $class->getProperty($name);
         $property->setAccessible(true);
-
         return $property->setValue($object, $value);
     }
 
     /**
      * Stub for `assertFileNotExists` to allow compatibility with both PHPUnit 8 and 9.
+     *
+     * @param string $filename
+     * @param string $message
+     * @return void
      */
     public static function assertFileNotExists(string $filename, string $message = ''): void
     {
         if (method_exists(Assert::class, 'assertFileDoesNotExist')) {
             Assert::assertFileDoesNotExist($filename, $message);
-
             return;
         }
 
@@ -78,13 +78,14 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     /**
      * Stub for `assertRegExp` to allow compatibility with both PHPUnit 8 and 9.
      *
-     * @param  string  $filename
+     * @param string $filename
+     * @param string $message
+     * @return void
      */
     public static function assertRegExp(string $pattern, string $string, string $message = ''): void
     {
         if (method_exists(Assert::class, 'assertMatchesRegularExpression')) {
             Assert::assertMatchesRegularExpression($pattern, $string, $message);
-
             return;
         }
 

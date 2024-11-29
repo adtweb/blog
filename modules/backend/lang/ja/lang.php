@@ -36,10 +36,10 @@ return [
     ],
     'partial' => [
         'not_found_name' => "':name'パーシャルは見つかりません。",
-        'invalid_name' => '無効なパーシャル名: :name',
+        'invalid_name' => "無効なパーシャル名: :name",
     ],
-    'ajax_handler' => [
-        'invalid_name' => '無効なAJAXハンドラ名: :name',
+    'ajax_handler' =>[
+        'invalid_name' => "無効なAJAXハンドラ名: :name",
         'not_found' => "AJAXハンドラ ':name' が見つかりませんでした。",
     ],
     'account' => [
@@ -67,13 +67,13 @@ return [
         'impersonate_confirm' => '本当にこのユーザーになりすましますか？ログアウトすれば、元の状態に戻せます。',
         'impersonate_success' => 'あなたは今、このユーザーになりすましています',
         'impersonate_working' => 'なりすまし中...',
-        'impersonating' => 'あなたは一時的に :impersonatee としてログインしています。ログからはまだ :impersonator として識別することができます。',
+        'impersonating' => "あなたは一時的に :impersonatee としてログインしています。ログからはまだ :impersonator として識別することができます。",
         'stop_impersonating' => 'なりすましをやめる',
         'unsuspend' => '利用停止',
         'unsuspend_confirm' => '本当にこのユーザーの利用停止を解除しますか?',
         'unsuspend_success' => 'ユーザーが利用可能になりました。',
         'unsuspend_working' => '利用停止解除中...',
-        'signed_in_as' => 'サインイン名 :full_name',
+        'signed_in_as' => "サインイン名 :full_name",
         'remember_me' => 'ログインしたままにする',
     ],
     'dashboard' => [
@@ -365,7 +365,7 @@ return [
     'warnings' => [
         'tips' => 'システム構成のチップス',
         'tips_description' => 'あなたが、システムを適切に設定するために注意を払う必要がある問題があります。',
-        'permissions' => 'ディレクトリ":name"またはそのサブディレクトリは、PHPから書き込みできません。このディレクトリのパーミッションを設定してください。',
+        'permissions'  => 'ディレクトリ":name"またはそのサブディレクトリは、PHPから書き込みできません。このディレクトリのパーミッションを設定してください。',
         'extension' => 'PHP拡張":name"はインストールされていません。PHP拡張をインストールして有効にしてください。',
         'plugin_missing' => 'プラグイン :name は依存関係にありますが、インストールされていません。このプラグインをインストールしてください。',
         'debug' => 'デバッグモードが有効です。これは、実稼働環境でのインストールにはお勧めしません。',
@@ -501,10 +501,10 @@ return [
         'email' => 'メール',
     ],
     'filter' => [
-        'all' => 'すべて',
-        'options_method_not_exists' => "モデルクラス :model は ':filter' フィルタのオプションを返すメソッド :method() を定義する必要があります。",
-        'date_all' => '全期間',
-        'number_all' => '全数',
+      'all' => 'すべて',
+      'options_method_not_exists' => "モデルクラス :model は ':filter' フィルタのオプションを返すメソッド :method() を定義する必要があります。",
+      'date_all' => '全期間',
+      'number_all' => '全数',
     ],
     'import_export' => [
         'upload_csv_file' => '1.CSVファイルをアップロードする',
@@ -632,7 +632,7 @@ return [
         'folder_or_file_exist' => '指定された名前のフォルダまたはファイルはすでに存在しています',
         'move_empty' => '移動するアイテムを選択してください。',
         'move_popup_title' => 'ファイルまたはフォルダの移動',
-        'move_popup_title' => 'ファイルまたはフォルダの移動',
+         'move_popup_title' => 'ファイルまたはフォルダの移動',
         'move_destination' => '移動先フォルダ',
         'please_select_move_dest' => '保存先フォルダを選択してください',
         'move_dest_src_match' => '他の保存先フォルダを選択してください',
@@ -656,5 +656,5 @@ return [
         'rename_new_name' => '新しい名前',
         'move_please_select' => '選択してください',
         'move_button' => '移動',
-    ],
+    ]
 ];

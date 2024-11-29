@@ -1,11 +1,11 @@
-<?php if ($this->previewMode) { ?>
+<?php if ($this->previewMode): ?>
     <div class="form-control">
         <pre><?= e($value) ?></pre>
     </div>
-<?php } else { ?>
+<?php else: ?>
     <div
         id="<?= $this->getId() ?>"
-        class="field-codeeditor size-<?= $size ?> <?= $stretch ? 'layout-relative' : '' ?>"
+        class="field-codeeditor size-<?= $size ?> <?= $stretch?'layout-relative':'' ?>"
         data-control="codeeditor"
         data-font-size="<?= $fontSize ?>"
         data-word-wrap="<?= $wordWrap ?>"
@@ -69,4 +69,4 @@
         </div>
         <textarea name="<?= $name ?>" id="<?= $this->getId('textarea') ?>"><?= e($value) ?></textarea>
     </div>
-<?php } ?>
+<?php endif ?>

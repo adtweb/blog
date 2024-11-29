@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use System\Classes\UpdateManager;
 
@@ -12,6 +10,7 @@ use System\Classes\UpdateManager;
  *
  * To get a list of modified files, simply add the "--changes" parameter.
  *
+ * @package winter\wn-system-module
  * @author Ben Thomson
  * @author Winter CMS
  */
@@ -49,7 +48,7 @@ class WinterVersion extends \Winter\Storm\Console\Command
     {
         $this->comment('*** Detecting Winter CMS build...');
 
-        if (! $this->laravel->hasDatabase()) {
+        if (!$this->laravel->hasDatabase()) {
             $build = UpdateManager::instance()->getBuildNumberManually($this->option('changes'));
 
             // Skip setting the build number if no database is detected to set it within
@@ -58,15 +57,15 @@ class WinterVersion extends \Winter\Storm\Console\Command
             $build = UpdateManager::instance()->setBuildNumberManually($this->option('changes'));
         }
 
-        if (! $build['confident']) {
-            $this->warn('*** We could not accurately determine your Winter CMS build due to the number of modifications. The closest detected build is Winter CMS build '.$build['build'].'.');
-        } elseif ($build['modified']) {
-            $this->info('*** Detected a modified version of Winter CMS build '.$build['build'].'.');
+        if (!$build['confident']) {
+            $this->warn('*** We could not accurately determine your Winter CMS build due to the number of modifications. The closest detected build is Winter CMS build ' . $build['build'] . '.');
+        } else if ($build['modified']) {
+            $this->info('*** Detected a modified version of Winter CMS build ' . $build['build'] . '.');
         } else {
-            $this->info('*** Detected Winter CMS build '.$build['build'].'.');
+            $this->info('*** Detected Winter CMS build ' . $build['build'] . '.');
         }
 
-        if (! empty($build['changes']) && $this->option('changes')) {
+        if (!empty($build['changes']) && $this->option('changes')) {
             $this->line('');
             $this->comment('We have detected the following modifications:');
 
@@ -75,7 +74,7 @@ class WinterVersion extends \Winter\Storm\Console\Command
                 $this->info('Files added:');
 
                 foreach (array_keys($build['changes']['added']) as $file) {
-                    $this->line(' - '.$file);
+                    $this->line(' - ' . $file);
                 }
             }
 
@@ -84,7 +83,7 @@ class WinterVersion extends \Winter\Storm\Console\Command
                 $this->info('Files modified:');
 
                 foreach (array_keys($build['changes']['modified']) as $file) {
-                    $this->line(' - '.$file);
+                    $this->line(' - ' . $file);
                 }
             }
 
@@ -93,7 +92,7 @@ class WinterVersion extends \Winter\Storm\Console\Command
                 $this->info('Files removed:');
 
                 foreach (array_keys($build['changes']['removed']) as $file) {
-                    $this->line(' - '.$file);
+                    $this->line(' - ' . $file);
                 }
             }
         }

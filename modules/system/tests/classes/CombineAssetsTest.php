@@ -2,12 +2,13 @@
 
 namespace System\Tests\Classes;
 
-use System\Classes\CombineAssets;
 use System\Tests\Bootstrap\TestCase;
+use Cms\Classes\Theme;
+use System\Classes\CombineAssets;
 
 class CombineAssetsTest extends TestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
@@ -45,9 +46,9 @@ class CombineAssetsTest extends TestCase
         $url = $combiner->combine(
             [
                 'assets/css/style1.css',
-                'assets/css/style2.css',
+                'assets/css/style2.css'
             ],
-            base_path().'/modules/system/tests/fixtures/themes/test'
+            base_path() . '/modules/system/tests/fixtures/themes/test'
         );
         $this->assertNotNull($url);
         $this->assertRegExp('/\w+[-]\d+/i', $url); // Must contain hash-number
@@ -55,9 +56,9 @@ class CombineAssetsTest extends TestCase
         $url = $combiner->combine(
             [
                 'assets/js/script1.js',
-                'assets/js/script2.js',
+                'assets/js/script2.js'
             ],
-            base_path().'/modules/system/tests/fixtures/themes/test'
+            base_path() . '/modules/system/tests/fixtures/themes/test'
         );
         $this->assertNotNull($url);
         $this->assertRegExp('/\w+[-]\d+/i', $url); // Must contain hash-number
@@ -89,7 +90,7 @@ class CombineAssetsTest extends TestCase
     public function testMakeCacheId()
     {
         $sampleResources = ['assets/css/style1.css', 'assets/css/style2.css'];
-        $samplePath = base_path().'/modules/system/tests/fixtures/cms/themes/test';
+        $samplePath = base_path() . '/modules/system/tests/fixtures/cms/themes/test';
 
         $combiner = CombineAssets::instance();
         self::setProtectedProperty($combiner, 'localPath', $samplePath);

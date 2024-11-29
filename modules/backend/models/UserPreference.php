@@ -1,13 +1,13 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use BackendAuth;
+use SystemException;
 use Winter\Storm\Auth\Models\Preferences as PreferencesBase;
 
 /**
  * All preferences for the backend user
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class UserPreference extends PreferencesBase
@@ -23,8 +23,7 @@ class UserPreference extends PreferencesBase
 
     /**
      * Checks for a supplied user or uses the default logged in. You should override this method.
-     *
-     * @param  mixed  $user  An optional back-end user object.
+     * @param mixed $user An optional back-end user object.
      * @return User object
      */
     public function resolveUser($user)

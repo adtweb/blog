@@ -1,4 +1,4 @@
-<?php if ($formModel->isSuspended()) { ?>
+<?php if ($formModel->isSuspended()): ?>
     <div class="loading-indicator-container">
         <button
             type="button"
@@ -11,4 +11,4 @@
             <?= e(trans('backend::lang.account.unsuspend')) ?>
         </button>
     </div>
-<?php } ?>
+<?php endif ?>

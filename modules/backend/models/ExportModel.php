@@ -1,19 +1,18 @@
-<?php
+<?php namespace Backend\Models;
 
-namespace Backend\Models;
-
-use ApplicationException;
 use File;
 use Lang;
-use League\Csv\EscapeFormula as CsvEscapeFormula;
-use League\Csv\Writer as CsvWriter;
 use Model;
 use Response;
+use League\Csv\Writer as CsvWriter;
+use League\Csv\EscapeFormula as CsvEscapeFormula;
+use ApplicationException;
 use SplTempFileObject;
 
 /**
  * Model used for exporting data
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 abstract class ExportModel extends Model
@@ -27,6 +26,7 @@ abstract class ExportModel extends Model
      *       'db_name2' => 'Another attribute value'
      *   ],
      *   [...]
+     *
      */
     abstract public function exportData($columns, $sessionKey = null);
 
@@ -39,28 +39,27 @@ abstract class ExportModel extends Model
      *       'db_name2' => 'Another label',
      *       ...
      *   ]
+     *
      */
     public function export($columns, $options)
     {
         $sessionKey = array_get($options, 'sessionKey');
         $data = $this->exportData(array_keys($columns), $sessionKey);
-
         return $this->processExportData($columns, $data, $options);
     }
 
     /**
      * Download a previously compiled export file.
-     *
      * @return void
      */
     public function download($name, $outputName = null)
     {
-        if (! preg_match('/^oc[0-9a-z]*$/i', $name)) {
+        if (!preg_match('/^oc[0-9a-z]*$/i', $name)) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.file_not_found_error'));
         }
 
-        $csvPath = temp_path().'/'.$name;
-        if (! file_exists($csvPath)) {
+        $csvPath = temp_path() . '/' . $name;
+        if (!file_exists($csvPath)) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.file_not_found_error'));
         }
 
@@ -75,7 +74,7 @@ abstract class ExportModel extends Model
         /*
          * Validate
          */
-        if (! $results) {
+        if (!$results) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.empty_error'));
         }
 
@@ -88,7 +87,7 @@ abstract class ExportModel extends Model
             'fileName' => 'export.csv',
             'delimiter' => null,
             'enclosure' => null,
-            'escape' => null,
+            'escape' => null
         ];
 
         $options = array_merge($defaultOptions, $options);
@@ -113,7 +112,7 @@ abstract class ExportModel extends Model
             $csv->setEscape($options['escape']);
         }
 
-        $csv->addFormatter(new CsvEscapeFormula);
+        $csv->addFormatter(new CsvEscapeFormula());
 
         /*
          * Add headers
@@ -189,7 +188,6 @@ abstract class ExportModel extends Model
     /**
      * Implodes a single dimension array using pipes (|)
      * Multi dimensional arrays are not allowed.
-     *
      * @return string
      */
     protected function encodeArrayValue($data, $delimeter = '|')

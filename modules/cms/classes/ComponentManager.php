@@ -1,15 +1,14 @@
-<?php
+<?php namespace Cms\Classes;
 
-namespace Cms\Classes;
-
-use Illuminate\Support\Facades\App;
 use Str;
 use System\Classes\PluginManager;
 use SystemException;
+use Illuminate\Support\Facades\App;
 
 /**
  * Component manager
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ComponentManager
@@ -43,7 +42,6 @@ class ComponentManager
 
     /**
      * Scans each plugin an loads it's components.
-     *
      * @return void
      */
     protected function loadComponents()
@@ -63,7 +61,7 @@ class ComponentManager
 
         foreach ($plugins as $plugin) {
             $components = $plugin->registerComponents();
-            if (! is_array($components)) {
+            if (!is_array($components)) {
                 continue;
             }
 
@@ -80,6 +78,7 @@ class ComponentManager
      *         $manager->registerComponent('Winter\Demo\Components\Test', 'testComponent');
      *     });
      *
+     * @param callable $definitions
      * @return array Array values are class names.
      */
     public function registerComponents(callable $definitions)
@@ -92,15 +91,15 @@ class ComponentManager
      */
     public function registerComponent($className, $code = null, $plugin = null)
     {
-        if (! $this->classMap) {
+        if (!$this->classMap) {
             $this->classMap = [];
         }
 
-        if (! $this->codeMap) {
+        if (!$this->codeMap) {
             $this->codeMap = [];
         }
 
-        if (! $code) {
+        if (!$code) {
             $code = Str::getClassId($className);
         }
 
@@ -121,7 +120,6 @@ class ComponentManager
 
     /**
      * Returns a list of registered components.
-     *
      * @return array Array keys are codes, values are class names.
      */
     public function listComponents()
@@ -135,7 +133,6 @@ class ComponentManager
 
     /**
      * Returns an array of all component detail definitions.
-     *
      * @return array Array keys are component codes, values are the details defined in the component.
      */
     public function listComponentDetails()
@@ -155,7 +152,6 @@ class ComponentManager
     /**
      * Returns a class name from a component code
      * Normalizes a class name or converts an code to it's class name.
-     *
      * @return string The class name resolved, or null.
      */
     public function resolve($name)
@@ -176,14 +172,13 @@ class ComponentManager
 
     /**
      * Checks to see if a component has been registered.
-     *
-     * @param  string  $name  A component class name or code.
+     * @param string $name A component class name or code.
      * @return bool Returns true if the component is registered, otherwise false.
      */
     public function hasComponent($name)
     {
         $className = $this->resolve($name);
-        if (! $className) {
+        if (!$className) {
             return false;
         }
 
@@ -193,26 +188,26 @@ class ComponentManager
     /**
      * Makes a component object with properties set.
      *
-     * @param  string  $name  A component class name or code.
-     * @param  CmsObject  $cmsObject  The Cms object that spawned this component.
-     * @param  array  $properties  The properties set by the Page or Layout.
-     * @param  bool  $isSoftComponent  Defines if this is a soft component.
-     * @return ComponentBase The component object.
+     * @param string $name A component class name or code.
+     * @param CmsObject $cmsObject The Cms object that spawned this component.
+     * @param array $properties The properties set by the Page or Layout.
+     * @param bool $isSoftComponent Defines if this is a soft component.
      *
+     * @return ComponentBase The component object.
      * @throws SystemException If the (hard) component cannot be found or is not registered.
      */
     public function makeComponent($name, $cmsObject = null, $properties = [], $isSoftComponent = false)
     {
         $className = $this->resolve(ltrim($name, '@'));
 
-        if (! $className && ! $isSoftComponent) {
+        if (!$className && !$isSoftComponent) {
             throw new SystemException(sprintf(
                 'Class name is not registered for the component "%s". Check the component plugin.',
                 $name
             ));
         }
 
-        if (! class_exists($className) && ! $isSoftComponent) {
+        if (!class_exists($className) && !$isSoftComponent) {
             throw new SystemException(sprintf(
                 'Component class not found "%s". Check the component plugin.',
                 $className
@@ -229,8 +224,7 @@ class ComponentManager
 
     /**
      * Returns a parent plugin for a specific component object.
-     *
-     * @param  mixed  $component  A component to find the plugin for.
+     * @param mixed $component A component to find the plugin for.
      * @return mixed Returns the plugin object or null.
      */
     public function findComponentPlugin($component)

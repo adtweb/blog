@@ -1,19 +1,19 @@
-<?php
+<?php namespace Backend\Controllers;
 
-namespace Backend\Controllers;
-
-use Backend;
-use Backend\Classes\Controller;
-use Backend\Models\Preference as PreferenceModel;
-use BackendMenu;
-use Flash;
 use Lang;
+use Flash;
+use Backend;
+use BackendMenu;
+use Backend\Classes\Controller;
 use System\Classes\SettingsManager;
+use Backend\Models\Preference as PreferenceModel;
 
 /**
  * Editor Settings controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class Preferences extends Controller
 {
@@ -52,7 +52,7 @@ class Preferences extends Controller
      */
     public function formExtendFields($form)
     {
-        if (! $this->user->hasAccess('backend.manage_own_editor')) {
+        if (!$this->user->hasAccess('backend.manage_own_editor')) {
             $form->removeTab('backend::lang.backend_preferences.code_editor');
         }
     }

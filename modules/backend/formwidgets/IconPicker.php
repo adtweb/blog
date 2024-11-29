@@ -1,15 +1,15 @@
-<?php
-
-namespace Backend\FormWidgets;
+<?php namespace Backend\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 use File;
+use Url;
 use Yaml;
 
 /**
  * Icon picker
  * Renders an icon picker field.
  *
+ * @package winter\wn-backend-module
  * @author Robert Alexa, Jack Wilkinson
  */
 class IconPicker extends FormWidgetBase
@@ -17,17 +17,16 @@ class IconPicker extends FormWidgetBase
     public const DEFAULT_LIBRARIES = '~/modules/backend/formwidgets/iconpicker/meta/libraries.yaml';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'iconpicker';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('iconpicker');
     }
 
@@ -40,7 +39,7 @@ class IconPicker extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function loadAssets(): void
     {

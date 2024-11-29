@@ -2,11 +2,11 @@
 
 namespace System\Tests\Console;
 
+use System\Tests\Bootstrap\TestCase;
+use Winter\Storm\Foundation\Bootstrap\LoadConfiguration;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use System\Console\WinterEnv;
-use System\Tests\Bootstrap\TestCase;
-use Winter\Storm\Foundation\Bootstrap\LoadConfiguration;
 
 class WinterEnvTest extends TestCase
 {
@@ -28,14 +28,14 @@ class WinterEnvTest extends TestCase
 
     public function testCommand()
     {
-        $output = new BufferedOutput;
-        $command = new WinterEnv;
+        $output = new BufferedOutput();
+        $command = new WinterEnv();
         $command->setLaravel($this->app);
         $result = $command->run(new ArrayInput([]), $output);
 
         // Ensure that the command actually succeeded
         if ($result !== 0) {
-            throw new \Exception("Command failed: \r\n".$output->fetch());
+            throw new \Exception("Command failed: \r\n" . $output->fetch());
         }
 
         // Check environment file
@@ -76,16 +76,16 @@ class WinterEnvTest extends TestCase
     protected function setUpConfigFixtures()
     {
         // Mock config path and copy fixtures
-        if (! is_dir(storage_path('temp/tests/config'))) {
+        if (!is_dir(storage_path('temp/tests/config'))) {
             mkdir(storage_path('temp/tests/config'), 0777, true);
         }
-        if (! is_dir(storage_path('temp/tests/env'))) {
+        if (!is_dir(storage_path('temp/tests/env'))) {
             mkdir(storage_path('temp/tests/env'), 0777, true);
         }
 
         foreach (glob(base_path('modules/system/tests/fixtures/config/*.php')) as $file) {
             $path = pathinfo($file);
-            copy($file, storage_path('temp/tests/config/'.$path['basename']));
+            copy($file, storage_path('temp/tests/config/' . $path['basename']));
         }
 
         static::$fixturesCopied = true;

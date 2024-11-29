@@ -2,16 +2,16 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\ValidationPost;
 use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\ValidationPost;
 
 class ValidationModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -23,7 +23,7 @@ class ValidationModelTest extends PluginTestCase
         $post = ValidationPost::create([
             'title' => 'This is a new post',
             'slug' => 'post-1',
-            'description' => 'Testing...',
+            'description' => 'Testing...'
         ]);
 
         $this->assertNotFalse($post);
@@ -31,7 +31,7 @@ class ValidationModelTest extends PluginTestCase
         $post2 = ValidationPost::create([
             'title' => 'this is another post with the same slug',
             'slug' => 'post-1',
-            'description' => 'testing....',
+            'description' => 'testing....'
         ]);
     }
 }

@@ -1,13 +1,11 @@
-<?php
-
-namespace System\Behaviors;
+<?php namespace System\Behaviors;
 
 use App;
 use Artisan;
 use Cache;
+use Log;
 use Exception;
 use Illuminate\Database\QueryException;
-use Log;
 use System\Classes\ModelBehavior;
 
 /**
@@ -22,19 +20,18 @@ use System\Classes\ModelBehavior;
  * Optionally:
  *
  *     public $settingsCacheTtl = 1440;
+ *
  */
 class SettingsModel extends ModelBehavior
 {
     use \System\Traits\ConfigMaker;
 
     protected $recordCode;
-
     protected $fieldConfig;
-
     protected $fieldValues = [];
 
     /**
-     * @var int Settings cache TTL, in seconds.
+     * @var integer Settings cache TTL, in seconds.
      */
     protected int $cacheTtl = 1440;
 
@@ -44,7 +41,7 @@ class SettingsModel extends ModelBehavior
     private static $instances = [];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $requiredProperties = ['settingsFields', 'settingsCode'];
 
@@ -90,7 +87,7 @@ class SettingsModel extends ModelBehavior
             return self::$instances[$this->recordCode];
         }
 
-        if (! $item = $this->getSettingsRecord()) {
+        if (!$item = $this->getSettingsRecord()) {
             $this->model->initSettingsData();
             $item = $this->model;
         }
@@ -120,7 +117,6 @@ class SettingsModel extends ModelBehavior
 
     /**
      * Returns the raw Model record that stores the settings.
-     *
      * @return Model
      */
     public function getSettingsRecord()
@@ -152,7 +148,6 @@ class SettingsModel extends ModelBehavior
         $data = is_array($key) ? $key : [$key => $value];
         $obj = self::instance();
         $obj->fill($data);
-
         return $obj->save();
     }
 
@@ -191,7 +186,9 @@ class SettingsModel extends ModelBehavior
     /**
      * Default values to set for this model, override
      */
-    public function initSettingsData() {}
+    public function initSettingsData()
+    {
+    }
 
     /**
      * Populate the field values from the database record.
@@ -204,7 +201,6 @@ class SettingsModel extends ModelBehavior
 
     /**
      * Internal save method for the model
-     *
      * @return void
      */
     public function saveModelInternal()
@@ -228,7 +224,6 @@ class SettingsModel extends ModelBehavior
     /**
      * After the model is saved, clear the cached query entry
      * and restart queue workers so they have the latest settings
-     *
      * @return void
      */
     public function afterModelSave()
@@ -287,7 +282,6 @@ class SettingsModel extends ModelBehavior
 
     /**
      * Clears the internal memory cache of model instances.
-     *
      * @return void
      */
     public static function clearInternalCache()

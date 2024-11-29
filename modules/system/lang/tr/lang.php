@@ -51,10 +51,10 @@ return [
         'vn' => 'Tiếng việt',
     ],
     'directory' => [
-        'create_fail' => 'Klasör oluşturulamıyor: :name',
+        'create_fail' => "Klasör oluşturulamıyor: :name",
     ],
     'file' => [
-        'create_fail' => 'Dosya oluşturulamıyor: :name',
+        'create_fail' => "Dosya oluşturulamıyor: :name",
     ],
     'combiner' => [
         'not_found' => "Kombine dosyası: ':name' bulunamadı.",
@@ -102,7 +102,7 @@ return [
             'label' => 'Eklenti Adı',
             'help' => 'Eklenti adı eşsiz olmalıdır. Örneğin, Winter.Blog',
         ],
-        'by_author' => ':name ile filtrele',
+        'by_author' => ':name ile filtrele'
     ],
     'plugins' => [
         'manage' => 'Eklentileri yönet',
@@ -112,7 +112,7 @@ return [
         'installed' => 'Yüklü eklentiler',
         'no_plugins' => 'Mağazadan yüklenmiş bir eklenti bulunmamaktadır.',
         'recommended' => 'Tavsiye edilen',
-        'plugin_label' => 'Eklenti',
+        'plugin_label'  => 'Eklenti',
         'unknown_plugin' => 'Eklenti sistemden kaldırıldı.',
         'select_label' => 'Eylem Seçin...',
         'bulk_actions_label' => 'Toplu eylemler',
@@ -455,8 +455,8 @@ return [
             'label' => 'Geçersiz güvenlik anahtarı',
         ],
         'maintenance' => [
-            'label' => 'Hemen geri döneceğiz!',
-            'help' => 'Şu anda bakım aşamasındayız, kısa süre sonra tekrar kontrol edin!',
+            'label' => "Hemen geri döneceğiz!",
+            'help' => "Şu anda bakım aşamasındayız, kısa süre sonra tekrar kontrol edin!",
             'message' => 'Mesaj:',
             'available_at' => 'Şu süreden sonra tekrar deneyin:',
         ],

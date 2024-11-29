@@ -77,7 +77,7 @@ return [
             'customers' => 'Klienti',
             'my_settings' => 'Mani iestatījumi',
             'notifications' => 'Paziņojumi',
-        ],
+        ]
     ],
     'theme' => [
         'label' => 'Tēma',
@@ -455,8 +455,8 @@ return [
             'label' => 'Nederīga drošības atslēga',
         ],
         'maintenance' => [
-            'label' => 'Mēs drīz būsim atpakaļ!',
-            'help' => 'Šobrīd tiek veikti sistēmas uzturēšanas darbi, drīz mēģiniet vēlreiz!',
+            'label' => "Mēs drīz būsim atpakaļ!",
+            'help' => "Šobrīd tiek veikti sistēmas uzturēšanas darbi, drīz mēģiniet vēlreiz!",
             'message' => 'Ziņa:',
             'available_at' => 'Mēģiniet vēlreiz pēc:',
         ],

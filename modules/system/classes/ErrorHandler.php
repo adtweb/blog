@@ -1,24 +1,24 @@
-<?php
+<?php namespace System\Classes;
 
-namespace System\Classes;
-
-use Cms\Classes\Controller as CmsController;
-use Cms\Classes\Router;
-use Cms\Classes\Theme;
-use Config;
-use Symfony\Component\HttpFoundation\Response;
 use View;
+use Config;
+use Cms\Classes\Theme;
+use Cms\Classes\Router;
+use Cms\Classes\Controller as CmsController;
 use Winter\Storm\Exception\ErrorHandler as ErrorHandlerBase;
+use Winter\Storm\Exception\SystemException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * System Error Handler, this class handles application exception events.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ErrorHandler extends ErrorHandlerBase
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     // public function handleException(Exception $proposedException)
     // {
@@ -37,7 +37,6 @@ class ErrorHandler extends ErrorHandlerBase
     /**
      * Looks up an error page using the CMS route "/error". If the route does not
      * exist, this function will use the error view found in the Cms module.
-     *
      * @return mixed Error page contents.
      */
     public function handleCustomError()
@@ -51,7 +50,7 @@ class ErrorHandler extends ErrorHandlerBase
             $router = new Router($theme);
 
             // Use the default view if no "/error" URL is found.
-            if (! $router->findByUrl('/error')) {
+            if (!$router->findByUrl('/error')) {
                 return View::make('cms::error');
             }
 
@@ -72,7 +71,6 @@ class ErrorHandler extends ErrorHandlerBase
 
     /**
      * Displays the detailed system exception page.
-     *
      * @return View Object containing the error page.
      */
     public function handleDetailedError($exception)

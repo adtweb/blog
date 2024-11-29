@@ -1,7 +1,7 @@
 <!-- Email -->
-<?php if ($this->previewMode) { ?>
+<?php if ($this->previewMode): ?>
     <span class="form-control"><?= $field->value ? e($field->value) : '&nbsp;' ?></span>
-<?php } else { ?>
+<?php else: ?>
     <input
         type="email"
         name="<?= $field->getName() ?>"
@@ -11,4 +11,4 @@
         class="form-control"
         <?= $field->getAttributes() ?>
     />
-<?php } ?>
+<?php endif ?>

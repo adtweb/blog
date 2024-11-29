@@ -1,17 +1,16 @@
-<?php
+<?php namespace Cms\Models;
 
-namespace Cms\Models;
-
-use ApplicationException;
+use Model;
 use Cms\Classes\Page;
 use Cms\Classes\Theme;
-use Model;
-use Symfony\Component\HttpFoundation\IpUtils;
 use Winter\Storm\Support\Arr;
+use Symfony\Component\HttpFoundation\IpUtils;
+use ApplicationException;
 
 /**
  * Maintenance mode settings
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MaintenanceSetting extends Model
@@ -22,7 +21,7 @@ class MaintenanceSetting extends Model
      * @var array Behaviors implemented by this model.
      */
     public $implement = [
-        \System\Behaviors\SettingsModel::class,
+        \System\Behaviors\SettingsModel::class
     ];
 
     /**
@@ -43,7 +42,6 @@ class MaintenanceSetting extends Model
     /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
-     *
      * @return void
      */
     public function initSettingsData()
@@ -53,7 +51,7 @@ class MaintenanceSetting extends Model
 
     public function getCmsPageOptions()
     {
-        if (! $theme = Theme::getEditTheme()) {
+        if (!$theme = Theme::getEditTheme()) {
             throw new ApplicationException('Unable to find the active theme.');
         }
 
@@ -62,12 +60,11 @@ class MaintenanceSetting extends Model
 
     /**
      * Ensure each theme has its own CMS page, store it inside a mapping array.
-     *
      * @return void
      */
     public function beforeValidate()
     {
-        if (! $theme = Theme::getEditTheme()) {
+        if (!$theme = Theme::getEditTheme()) {
             throw new ApplicationException('Unable to find the active theme.');
         }
 
@@ -79,7 +76,6 @@ class MaintenanceSetting extends Model
     /**
      * Restore the CMS page found in the mapping array, or disable the
      * maintenance mode.
-     *
      * @return void
      */
     public function afterFetch()
@@ -90,13 +86,17 @@ class MaintenanceSetting extends Model
             && ($cmsPage = array_get($themeMap, $theme->getDirName()))
         ) {
             $this->cms_page = $cmsPage;
-        } else {
+        }
+        else {
             $this->is_enabled = false;
         }
     }
 
     /**
      * Check if the provided IP is in the allowed IP list.
+     *
+     * @param string $ip
+     * @return bool
      */
     public static function isAllowedIp(string $ip): bool
     {

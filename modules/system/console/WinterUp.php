@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use Illuminate\Console\Command;
 use System\Classes\UpdateManager;
@@ -10,6 +8,7 @@ use System\Classes\UpdateManager;
  *
  * This builds up all database tables that are registered for Winter and all plugins.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterUp extends Command

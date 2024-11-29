@@ -3,6 +3,7 @@
 namespace System\Tests\Classes;
 
 use System\Tests\Bootstrap\TestCase;
+use System\Classes\PluginManager;
 use Validator;
 
 class CoreLangTest extends TestCase
@@ -37,8 +38,8 @@ class CoreLangTest extends TestCase
         foreach ($modules as $module) {
             foreach ($locales as $locale) {
                 foreach ($files as $file) {
-                    $srcPath = base_path().'/modules/'.$module.'/lang/'.$locale.'/'.$file;
-                    if (! file_exists($srcPath)) {
+                    $srcPath = base_path() . '/modules/'.$module.'/lang/'.$locale.'/'.$file;
+                    if (!file_exists($srcPath)) {
                         continue;
                     }
                     $messages = require $srcPath;

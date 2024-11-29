@@ -1,16 +1,14 @@
-<?php
+<?php namespace Cms\Helpers;
 
-namespace Cms\Helpers;
-
-use Config;
-use Route;
 use Url;
+use Route;
+use Config;
 
 /**
  * CMS Helper
  *
+ * @package winter\wn-cms-module
  * @see \Cms\Facades\Cms
- *
  * @author Alexey Bobkov, Samuel Georges
  */
 class Cms
@@ -43,9 +41,8 @@ class Cms
     {
         $safeMode = Config::get('cms.enableSafeMode', null);
         if ($safeMode === null) {
-            $safeMode = ! Config::get('app.debug', false);
+            $safeMode = !Config::get('app.debug', false);
         }
-
         return $safeMode;
     }
 }

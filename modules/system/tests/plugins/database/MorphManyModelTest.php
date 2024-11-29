@@ -2,24 +2,24 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\Author;
-use Database\Tester\Models\EventLog;
-use Database\Tester\Models\Post;
-use Database\Tester\Models\Tag;
-use Model;
 use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\Author;
+use Database\Tester\Models\Tag;
+use Database\Tester\Models\Post;
+use Database\Tester\Models\EventLog;
 use Winter\Storm\Database\Collection;
+use Model;
 
 class MorphManyModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/EventLog.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Tag.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/EventLog.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Tag.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -28,10 +28,10 @@ class MorphManyModelTest extends PluginTestCase
     {
         Model::unguard();
         $author = Author::create(['name' => 'Stevie', 'email' => 'stevie@example.com']);
-        $event1 = EventLog::create(['action' => 'user-created']);
-        $event2 = EventLog::create(['action' => 'user-updated']);
-        $event3 = EventLog::create(['action' => 'user-deleted']);
-        $event4 = EventLog::make(['action' => 'user-restored']);
+        $event1 = EventLog::create(['action' => "user-created"]);
+        $event2 = EventLog::create(['action' => "user-updated"]);
+        $event3 = EventLog::create(['action' => "user-deleted"]);
+        $event4 = EventLog::make(['action' => "user-restored"]);
         Model::reguard();
 
         // Set by Model object
@@ -43,7 +43,7 @@ class MorphManyModelTest extends PluginTestCase
         $this->assertEquals('Database\Tester\Models\Author', $event2->related_type);
         $this->assertEquals([
             'user-created',
-            'user-updated',
+            'user-updated'
         ], $author->event_log->lists('action'));
 
         // Set by primary key
@@ -54,7 +54,7 @@ class MorphManyModelTest extends PluginTestCase
         $this->assertEquals($author->id, $event3->related_id);
         $this->assertEquals('Database\Tester\Models\Author', $event3->related_type);
         $this->assertEquals([
-            'user-deleted',
+            'user-deleted'
         ], $author->event_log->lists('action'));
 
         // Nullify
@@ -70,7 +70,7 @@ class MorphManyModelTest extends PluginTestCase
         $this->assertEquals($author->id, $event4->related_id);
         $this->assertEquals('Database\Tester\Models\Author', $event4->related_type);
         $this->assertEquals([
-            'user-restored',
+            'user-restored'
         ], $author->event_log->lists('action'));
     }
 
@@ -78,8 +78,8 @@ class MorphManyModelTest extends PluginTestCase
     {
         Model::unguard();
         $author = Author::create(['name' => 'Stevie']);
-        $event1 = EventLog::create(['action' => 'user-created', 'related_id' => $author->id, 'related_type' => 'Database\Tester\Models\Author']);
-        $event2 = EventLog::create(['action' => 'user-updated', 'related_id' => $author->id, 'related_type' => 'Database\Tester\Models\Author']);
+        $event1 = EventLog::create(['action' => "user-created", 'related_id' => $author->id, 'related_type' => 'Database\Tester\Models\Author']);
+        $event2 = EventLog::create(['action' => "user-updated", 'related_id' => $author->id, 'related_type' => 'Database\Tester\Models\Author']);
         Model::reguard();
 
         $this->assertEquals([$event1->id, $event2->id], $author->getRelationValue('event_log'));
@@ -91,7 +91,7 @@ class MorphManyModelTest extends PluginTestCase
 
         Model::unguard();
         $author = Author::create(['name' => 'Stevie']);
-        $event = EventLog::create(['action' => 'user-created']);
+        $event = EventLog::create(['action' => "user-created"]);
         $post = Post::create(['title' => 'Hello world!']);
         $tagForAuthor = Tag::create(['name' => 'ForAuthor']);
         $tagForPost = Tag::create(['name' => 'ForPost']);
@@ -125,7 +125,7 @@ class MorphManyModelTest extends PluginTestCase
         $this->assertEquals(1, $author->event_log()->count());
         $this->assertEquals($author->id, $event->related_id);
         $this->assertEquals([
-            'user-created',
+            'user-created'
         ], $author->event_log->lists('action'));
 
         $this->assertEquals(1, $author->tags()->count());
@@ -146,7 +146,7 @@ class MorphManyModelTest extends PluginTestCase
         $this->assertEquals(0, $author->event_log()->withDeferred($sessionKey)->count());
         $this->assertEquals($author->id, $event->related_id);
         $this->assertEquals([
-            'user-created',
+            'user-created'
         ], $author->event_log->lists('action'));
 
         $author->tags()->remove($tagForAuthor, $sessionKey);

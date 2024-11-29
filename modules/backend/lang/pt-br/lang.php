@@ -3,14 +3,14 @@
 return [
     'auth' => [
         'title' => 'Área Administrativa',
-        'invalid_login' => 'Os dados digitados não correspondem aos nossos registros. Por favor, verifique e tente novamente.',
+        'invalid_login' => 'Os dados digitados não correspondem aos nossos registros. Por favor, verifique e tente novamente.'
     ],
     'field' => [
         'invalid_type' => 'Tipo de campo inválido :type.',
         'options_method_invalid_model' => 'O atributo ":field" não resolve a classe. Tente especificar as opções do método para o modelo :model.',
         'options_method_not_exists' => 'A classe :model deve definir um método :method() retornando opções para o campo ":field".',
         'options_static_method_invalid_value' => "O método estático ':method()' na :class não retornou um array de opções válidas.",
-        'colors_method_not_exists' => 'A classe de modelo :model deve definir um método :method() retornando códigos HEX de cor html para o campo de formulário ":field".',
+        'colors_method_not_exists' => 'A classe de modelo :model deve definir um método :method() retornando códigos HEX de cor html para o campo de formulário ":field".'
     ],
     'widget' => [
         'not_registered' => 'Uma classe de widget com o nome ":name" não foi definida',
@@ -19,8 +19,8 @@ return [
     'page' => [
         'untitled' => 'Sem Título',
         '404' => [
-            'label' => 'Página não encontrada',
-            'help' => 'Pesquisamos e pesquisamos, mas a URL solicitada simplesmente não foi encontrada. Será que você estava procurando outra coisa?',
+            'label'     => 'Página não encontrada',
+            'help'      => "Pesquisamos e pesquisamos, mas a URL solicitada simplesmente não foi encontrada. Será que você estava procurando outra coisa?",
             'back_link' => 'Volte para a página anterior',
         ],
         'access_denied' => [
@@ -30,7 +30,7 @@ return [
         ],
         'no_database' => [
             'label' => 'Banco de dados ausente',
-            'help' => 'Um banco de dados é necessário para acessar o back-end. Verifique se o banco de dados está configurado e migrou antes de tentar novamente.',
+            'help' => "Um banco de dados é necessário para acessar o back-end. Verifique se o banco de dados está configurado e migrou antes de tentar novamente.",
             'cms_link' => 'Retornar para a página inicial',
         ],
     ],
@@ -40,7 +40,7 @@ return [
     ],
     'ajax_handler' => [
         'invalid_name' => 'Nome do manipulador AJAX inválido: :name.',
-        'not_found' => "Manipulador AJAX ':name' não foi encontrado.",
+        'not_found' => "Manipulador AJAX ':name' não foi encontrado."
     ],
     'account' => [
         'impersonate' => 'Representar usuário',
@@ -123,7 +123,7 @@ return [
             'last_sign_in' => 'Seu último acesso foi em',
             'view_access_logs' => 'Visualizar registros de acesso',
             'nice_message' => 'Tenha um excelente dia!',
-        ],
+        ]
     ],
     'user' => [
         'name' => 'Administrador',
@@ -174,7 +174,7 @@ return [
             'new' => 'Novo grupo administrador',
             'delete_confirm' => 'Você realmente deseja excluir este grupo?',
             'return' => 'Voltar para a lista de grupos',
-            'users_count' => 'Usuários',
+            'users_count' => 'Usuários'
         ],
         'role' => [
             'name' => 'Função',
@@ -188,7 +188,7 @@ return [
             'new' => 'Nova Função',
             'delete_confirm' => 'Excluir esta função de administrador?',
             'return' => 'Retornar para lista de funções',
-            'users_count' => 'Usuários',
+            'users_count' => 'Usuários'
         ],
         'preferences' => [
             'not_authenticated' => 'Nenhum usuário autenticado para carregar as preferências.',
@@ -225,7 +225,7 @@ return [
         'delete_selected_confirm' => 'Excluir os registros selecionados?',
         'delete_selected_success' => 'Registros selecionados excluídos com sucesso.',
         'column_switch_true' => 'Sim',
-        'column_switch_false' => 'Não',
+        'column_switch_false' => 'Não'
     ],
     'fileupload' => [
         'attachment' => 'Anexo',
@@ -237,7 +237,7 @@ return [
         'upload_file' => 'Enviar arquivo',
         'upload_error' => 'Erro ao enviar',
         'remove_confirm' => 'Você tem certeza?',
-        'remove_file' => 'Remover arquivo',
+        'remove_file' => 'Remover arquivo'
     ],
     'repeater' => [
         'add_new_item' => 'Adicionar novo item',
@@ -363,7 +363,7 @@ return [
     'warnings' => [
         'tips' => 'Dicas de configuração do sistema',
         'tips_description' => 'Há itens que demandam atenção para configurar o sistema corretamente.',
-        'permissions' => 'Diretório :name ou seus subdiretórios não são graváveis pelo PHP. Por favor, defina permissões de escrita para o servidor neste diretório.',
+        'permissions'  => 'Diretório :name ou seus subdiretórios não são graváveis pelo PHP. Por favor, defina permissões de escrita para o servidor neste diretório.',
         'extension' => 'A extensão PHP :name não está instalada. Por favor, instale esta biblioteca para ativar a extensão.',
         'plugin_missing' => 'O plugin :name é uma dependência, mas não está instalado. Por favor, instale este plugin.',
         'debug' => 'O modo de depuração está ativado. Isso não é recomendado para instalações de produção.',
@@ -385,11 +385,11 @@ return [
         'auto_closing' => 'Auto completar tags e caracteres especiais',
         'show_invisibles' => 'Mostrar caracteres invisíveis',
         'show_gutter' => 'Mostrar numeração de linhas',
-        'basic_autocompletion' => 'Autocompletar básico (Ctrl + Espaço)',
-        'live_autocompletion' => 'Autocompletar em tempo real',
-        'enable_snippets' => 'Habilitar trechos de códigos (Tab)',
-        'display_indent_guides' => 'Exibir guias de indentação',
-        'show_print_margin' => 'Exibir margem de impressão',
+        'basic_autocompletion'=> 'Autocompletar básico (Ctrl + Espaço)',
+        'live_autocompletion'=> 'Autocompletar em tempo real',
+        'enable_snippets'=> 'Habilitar trechos de códigos (Tab)',
+        'display_indent_guides'=> 'Exibir guias de indentação',
+        'show_print_margin'=> 'Exibir margem de impressão',
         'mode_off' => 'Desligado',
         'mode_fluid' => 'Fluido',
         '40_characters' => '40 caracteres',
@@ -431,7 +431,7 @@ return [
         'paragraph_formats_comment' => 'As opções que aparecerão na lista de Formatos do parágrafo.',
     ],
     'tooltips' => [
-        'preview_website' => 'Visualizar a página',
+        'preview_website' => 'Visualizar a página'
     ],
     'mysettings' => [
         'menu_label' => 'Minhas Configurações',
@@ -440,7 +440,7 @@ return [
     'myaccount' => [
         'menu_label' => 'Minha Conta',
         'menu_description' => 'Atualizar detalhes da sua conta, como nome, e-mail e senha.',
-        'menu_keywords' => 'login de segurança',
+        'menu_keywords' => 'login de segurança'
     ],
     'branding' => [
         'menu_label' => 'Personalização',
@@ -465,7 +465,7 @@ return [
         'menu_mode_inline' => 'Em linha',
         'menu_mode_inline_no_icons' => 'Em linha (sem ícones)',
         'menu_mode_tile' => 'Blocos',
-        'menu_mode_collapsed' => 'Colapsados',
+        'menu_mode_collapsed' => 'Colapsados'
     ],
     'backend_preferences' => [
         'menu_label' => 'Preferências da Administração',
@@ -567,8 +567,8 @@ return [
             'iso_8859_15' => 'ISO-8859-15 (Latin-9, Western European revision with euro sign)',
             'windows_1250' => 'Windows-1250 (CP1250, Central and Eastern European)',
             'windows_1251' => 'Windows-1251 (CP1251)',
-            'windows_1252' => 'Windows-1252 (CP1252)',
-        ],
+            'windows_1252' => 'Windows-1252 (CP1252)'
+        ]
     ],
     'permissions' => [
         'manage_media' => 'Gerenciar mídias',
@@ -577,7 +577,7 @@ return [
     'mediafinder' => [
         'label' => 'Localizador de Mídia',
         'default_prompt' => 'Clique no botão %s para localizar um arquivo de mídia',
-        'no_image' => 'A imagem não foi encontrada',
+        'no_image' => 'A imagem não foi encontrada'
     ],
     'media' => [
         'menu_label' => 'Mídias',
@@ -645,5 +645,5 @@ return [
         'rename_new_name' => 'Novo nome',
         'move_please_select' => 'por favor selecione',
         'move_button' => 'Mover',
-    ],
+    ]
 ];

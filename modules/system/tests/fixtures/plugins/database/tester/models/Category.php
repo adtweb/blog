@@ -1,6 +1,4 @@
-<?php
-
-namespace Database\Tester\Models;
+<?php namespace Database\Tester\Models;
 
 use Model;
 
@@ -15,8 +13,8 @@ class Category extends Model
         'posts' => [
             'Database\Tester\Models\Post',
             'table' => 'database_tester_categories_posts',
-            'pivot' => ['category_name', 'post_name'],
-        ],
+            'pivot' => ['category_name', 'post_name']
+        ]
     ];
 
     public function getCustomNameAttribute()
@@ -24,6 +22,7 @@ class Category extends Model
         return $this->name.' (#'.$this->id.')';
     }
 }
+
 
 class CategorySimple extends Category
 {

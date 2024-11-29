@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Console;
+<?php namespace Cms\Console;
 
 use Cms\Classes\Theme;
 use Cms\Classes\ThemeManager;
@@ -12,6 +10,7 @@ use Winter\Storm\Console\Command;
  *
  * This lists all the available themes in the system. It also shows the active theme.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeList extends Command
@@ -45,7 +44,7 @@ class ThemeList extends Command
         foreach (Theme::all() as $theme) {
             $results[] = [
                 'code' => $theme->getId(),
-                'is_active' => $theme->isActiveTheme() ? '<info>Yes</info>' : '<fg=red>No</>',
+                'is_active' => $theme->isActiveTheme() ? '<info>Yes</info>': '<fg=red>No</>',
                 'is_installed' => '<info>Yes</info>',
             ];
         }
@@ -57,7 +56,7 @@ class ThemeList extends Command
                 $results[] = [
                     'code' => $popularTheme['code'],
                     'is_active' => '<fg=red>No</>',
-                    'is_installed' => $themeManager->isInstalled($popularTheme['code']) ? '<info>Yes</info>' : '<fg=red>No</>',
+                    'is_installed' => $themeManager->isInstalled($popularTheme['code']) ? '<info>Yes</info>': '<fg=red>No</>',
                 ];
             }
         }

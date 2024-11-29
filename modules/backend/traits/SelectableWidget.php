@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Traits;
+<?php namespace Backend\Traits;
 
 use Input;
 
@@ -8,8 +6,10 @@ use Input;
  * Selectable Widget Trait
  * Adds item selection features to back-end widgets
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
+
 trait SelectableWidget
 {
     protected $selectedItemsCache = false;
@@ -28,7 +28,7 @@ trait SelectableWidget
         }
 
         $items = $this->getSession('selected', []);
-        if (! is_array($items)) {
+        if (!is_array($items)) {
             return $this->selectedItemsCache = [];
         }
 
@@ -60,7 +60,7 @@ trait SelectableWidget
     protected function isItemSelected($itemId)
     {
         $selectedItems = $this->getSelectedItems();
-        if (! is_array($selectedItems) || ! isset($selectedItems[$itemId])) {
+        if (!is_array($selectedItems) || !isset($selectedItems[$itemId])) {
             return false;
         }
 

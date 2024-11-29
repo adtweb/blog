@@ -1,10 +1,10 @@
 <?php
-$listElementId = $this->getId('item-list');
+    $listElementId = $this->getId('item-list');
 ?>
 
 <ul class="media-list <?= $listClass ?>">
-    <?php if (count($items) > 0 || ! $isRootFolder) { ?>
-        <?php if (! $isRootFolder && ! $searchMode) { ?>
+    <?php if (count($items) > 0 || !$isRootFolder): ?>
+        <?php if (!$isRootFolder && !$searchMode): ?>
             <li tabindex="0" data-type="media-item" data-item-type="folder" data-root data-path="<?= e(dirname($currentFolder)) ?>">
                 <div class="icon-container folder">
                     <div class="icon-wrapper"><i class="icon-arrow-turn-up"></i></div>
@@ -13,9 +13,9 @@ $listElementId = $this->getId('item-list');
                     <h4 title="<?= e(trans('backend::lang.media.return_to_parent')) ?>"><?= e(trans('backend::lang.media.return_to_parent_label')) ?></h4>
                 </div>
             </li>
-        <?php } ?>
+        <?php endif ?>
 
-        <?php foreach ($items as $item) { ?>
+        <?php foreach ($items as $item): ?>
             <?php
                 $itemType = $item->getFileType();
             ?>
@@ -32,13 +32,13 @@ $listElementId = $this->getId('item-list');
                 data-folder="<?= e(dirname($item->path)) ?>"
                 tabindex="0"
             >
-                <?= $this->makePartial('item-icon', ['itemType' => $itemType, 'item' => $item]) ?>
+                <?= $this->makePartial('item-icon', ['itemType'=>$itemType, 'item'=>$item]) ?>
 
                 <div class="info">
                     <h4 title="<?= e(basename($item->path)) ?>">
                         <?= e(basename($item->path)) ?>
 
-                        <?php if (! $this->readOnly) { ?>
+                        <?php if (!$this->readOnly): ?>
                             <a
                                 href="#"
                                 data-rename
@@ -47,17 +47,17 @@ $listElementId = $this->getId('item-list');
                                 data-request-data="path: '<?= e($item->path) ?>', listId: '<?= $listElementId ?>', type: '<?= $item->type ?>'"
                                 data-handler="<?= $this->getEventHandler('onLoadRenamePopup') ?>"
                             ><i data-rename-control class="icon-terminal"></i></a>
-                        <?php } ?>
+                        <?php endif; ?>
                     </h4>
                     <p class="size"><?= e($item->sizeToString()) ?></p>
                 </div>
             </li>
-        <?php } ?>
-    <?php } ?>
+        <?php endforeach ?>
+    <?php endif ?>
 
-    <?php if (count($items) == 0 && $searchMode) { ?>
+    <?php if (count($items) == 0 && $searchMode): ?>
         <li class="no-data">
             <?= e(trans('backend::lang.media.no_files_found')) ?>
         </li>
-    <?php } ?>
+    <?php endif ?>
 </ul>

@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Console;
+<?php namespace Backend\Console;
 
 use System\Console\BaseScaffoldCommand;
 
@@ -50,9 +48,9 @@ class CreateFormWidget extends BaseScaffoldCommand
      * @var array
      */
     protected $stubs = [
-        'scaffold/formwidget/formwidget.stub' => 'formwidgets/{{studly_name}}.php',
-        'scaffold/formwidget/partial.stub' => 'formwidgets/{{lower_name}}/partials/_{{lower_name}}.php',
-        'scaffold/formwidget/stylesheet.stub' => 'formwidgets/{{lower_name}}/assets/css/{{lower_name}}.css',
-        'scaffold/formwidget/javascript.stub' => 'formwidgets/{{lower_name}}/assets/js/{{lower_name}}.js',
+        'scaffold/formwidget/formwidget.stub'      => 'formwidgets/{{studly_name}}.php',
+        'scaffold/formwidget/partial.stub'         => 'formwidgets/{{lower_name}}/partials/_{{lower_name}}.php',
+        'scaffold/formwidget/stylesheet.stub'      => 'formwidgets/{{lower_name}}/assets/css/{{lower_name}}.css',
+        'scaffold/formwidget/javascript.stub'      => 'formwidgets/{{lower_name}}/assets/js/{{lower_name}}.js',
     ];
 }

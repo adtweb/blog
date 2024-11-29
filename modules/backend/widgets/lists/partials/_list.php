@@ -4,26 +4,26 @@
             <?= $this->makePartial('list_head_row') ?>
         </thead>
         <tbody>
-            <?php if (count($records)) { ?>
+            <?php if (count($records)): ?>
                 <?= $this->makePartial('list_body_rows') ?>
-            <?php } else { ?>
+            <?php else: ?>
                 <tr class="no-data">
                     <td colspan="<?= $columnTotal ?>" class="nolink">
                         <p class="no-data"><?= $noRecordsMessage ?></p>
                     </td>
                 </tr>
-            <?php } ?>
+            <?php endif ?>
         </tbody>
     </table>
-    <?php if ($showPagination) { ?>
+    <?php if ($showPagination): ?>
         <div class="list-footer">
             <div class="list-pagination">
-                <?php if ($showPageNumbers) { ?>
+                <?php if ($showPageNumbers): ?>
                     <?= $this->makePartial('list_pagination') ?>
-                <?php } else { ?>
+                <?php else: ?>
                     <?= $this->makePartial('list_pagination_simple') ?>
-                <?php } ?>
+                <?php endif ?>
             </div>
         </div>
-    <?php } ?>
+    <?php endif ?>
 </div>

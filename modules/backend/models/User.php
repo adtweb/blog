@@ -1,16 +1,15 @@
-<?php
+<?php namespace Backend\Models;
 
-namespace Backend\Models;
-
+use Mail;
+use Event;
 use Backend;
 use BackendAuth;
-use Event;
-use Mail;
 use Winter\Storm\Auth\Models\User as UserBase;
 
 /**
  * Administrator user model
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class User extends UserBase
@@ -29,7 +28,7 @@ class User extends UserBase
         'email' => 'required|between:6,255|email|unique:backend_users',
         'login' => 'required|between:2,255|unique:backend_users',
         'password' => 'required:create|min:4|confirmed',
-        'password_confirmation' => 'required_with:password|min:4',
+        'password_confirmation' => 'required_with:password|min:4'
     ];
 
     /**
@@ -47,15 +46,15 @@ class User extends UserBase
      * Relations
      */
     public $belongsToMany = [
-        'groups' => [UserGroup::class, 'table' => 'backend_users_groups', 'softDelete' => true],
+        'groups' => [UserGroup::class, 'table' => 'backend_users_groups', 'softDelete' => true]
     ];
 
     public $belongsTo = [
-        'role' => UserRole::class,
+        'role' => UserRole::class
     ];
 
     public $attachOne = [
-        'avatar' => \System\Models\File::class,
+        'avatar' => \System\Models\File::class
     ];
 
     /**
@@ -78,12 +77,11 @@ class User extends UserBase
      */
     public function getFullNameAttribute()
     {
-        return trim($this->first_name.' '.$this->last_name);
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 
     /**
      * Gets a code for when the user is persisted to a cookie or session which identifies the user.
-     *
      * @return string
      */
     public function getPersistCode()
@@ -92,7 +90,7 @@ class User extends UserBase
         // return parent::getPersistCode();
 
         // Option B:
-        if (! $this->persist_code) {
+        if (!$this->persist_code) {
             return parent::getPersistCode();
         }
 
@@ -106,7 +104,8 @@ class User extends UserBase
     {
         if (is_string($options)) {
             $options = ['default' => $options];
-        } elseif (! is_array($options)) {
+        }
+        elseif (!is_array($options)) {
             $options = [];
         }
 
@@ -117,15 +116,14 @@ class User extends UserBase
             return $this->avatar->getThumb($size, $size, $options);
         }
 
-        return '//www.gravatar.com/avatar/'.
-            md5(strtolower(trim($this->email))).
-            '?s='.$size.
-            '&d='.urlencode($default);
+        return '//www.gravatar.com/avatar/' .
+            md5(strtolower(trim($this->email))) .
+            '?s='. $size .
+            '&d='. urlencode($default);
     }
 
     /**
      * After create event
-     *
      * @return void
      */
     public function afterCreate()
@@ -139,7 +137,6 @@ class User extends UserBase
 
     /**
      * After login event
-     *
      * @return void
      */
     public function afterLogin()
@@ -155,13 +152,13 @@ class User extends UserBase
          *     Event::listen('backend.user.login', function ((\Backend\Models\User) $user) {
          *         Flash::success(sprintf('Welcome %s!', $user->getFullNameAttribute()));
          *     });
+         *
          */
         Event::fire('backend.user.login', [$this]);
     }
 
     /**
      * Sends an invitation to the user using template "backend::mail.invite".
-     *
      * @return void
      */
     public function sendInvitation()
@@ -202,7 +199,6 @@ class User extends UserBase
 
     /**
      * Check if the user is suspended.
-     *
      * @return bool
      */
     public function isSuspended()
@@ -212,7 +208,6 @@ class User extends UserBase
 
     /**
      * Remove the suspension on this user.
-     *
      * @return void
      */
     public function unsuspend()
@@ -233,7 +228,7 @@ class User extends UserBase
      */
     public function getMergedPermissions()
     {
-        if (! $this->mergedPermissions) {
+        if (!$this->mergedPermissions) {
             $permissions = parent::getMergedPermissions();
 
             // If the user is being impersonated filter out any permissions the impersonator doesn't have access to already
@@ -241,7 +236,7 @@ class User extends UserBase
                 $impersonator = BackendAuth::getImpersonator();
                 if ($impersonator && $impersonator !== $this) {
                     foreach ($permissions as $permission => $status) {
-                        if (! $impersonator->hasAccess($permission)) {
+                        if (!$impersonator->hasAccess($permission)) {
                             unset($permissions[$permission]);
                         }
                     }
@@ -259,16 +254,16 @@ class User extends UserBase
      * present and the impersonator has access to `backend.impersonate_users`, and the impersonator is not the
      * user being impersonated
      *
-     * @param  \Winter\Storm\Auth\Models\User|false  $impersonator  The user attempting to impersonate this user, false when not available
-     * @return bool
+     * @param \Winter\Storm\Auth\Models\User|false $impersonator The user attempting to impersonate this user, false when not available
+     * @return boolean
      */
     public function canBeImpersonated($impersonator = false)
     {
         if (
             $this->isSuperUser() ||
-            ! $impersonator ||
-            ! ($impersonator instanceof static) ||
-            ! $impersonator->hasAccess('backend.impersonate_users') ||
+            !$impersonator ||
+            !($impersonator instanceof static) ||
+            !$impersonator->hasAccess('backend.impersonate_users') ||
             $impersonator === $this
         ) {
             return false;

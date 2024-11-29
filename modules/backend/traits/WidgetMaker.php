@@ -1,9 +1,7 @@
-<?php
+<?php namespace Backend\Traits;
 
-namespace Backend\Traits;
-
-use Backend\Classes\FormField;
 use Lang;
+use Backend\Classes\FormField;
 use SystemException;
 
 /**
@@ -12,15 +10,15 @@ use SystemException;
  * Adds widget based methods to a controller class, or a class that
  * contains a `$controller` property referencing a controller.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 trait WidgetMaker
 {
     /**
      * Makes a widget object with the supplied configuration file.
-     *
-     * @param  string  $class  Widget class name
-     * @param  array  $widgetConfig  An array of config.
+     * @param string $class Widget class name
+     * @param array $widgetConfig An array of config.
      * @return mixed|\Backend\Classes\WidgetBase The widget object
      */
     public function makeWidget($class, $widgetConfig = [])
@@ -29,9 +27,9 @@ trait WidgetMaker
             ? $this->controller
             : $this;
 
-        if (! class_exists($class)) {
+        if (!class_exists($class)) {
             throw new SystemException(Lang::get('backend::lang.widget.not_registered', [
-                'name' => $class,
+                'name' => $class
             ]));
         }
 
@@ -40,10 +38,9 @@ trait WidgetMaker
 
     /**
      * Makes a form widget object with the supplied form field and widget configuration.
-     *
-     * @param  string  $class  Widget class name
-     * @param  mixed  $fieldConfig  A field name, an array of config or a FormField object.
-     * @param  array  $widgetConfig  An array of config.
+     * @param string $class Widget class name
+     * @param mixed $fieldConfig A field name, an array of config or a FormField object.
+     * @param array $widgetConfig An array of config.
      * @return \Backend\Classes\FormWidgetBase The widget object
      */
     public function makeFormWidget($class, $fieldConfig = [], $widgetConfig = [])
@@ -52,9 +49,9 @@ trait WidgetMaker
             ? $this->controller
             : $this;
 
-        if (! class_exists($class)) {
+        if (!class_exists($class)) {
             throw new SystemException(Lang::get('backend::lang.widget.not_registered', [
-                'name' => $class,
+                'name' => $class
             ]));
         }
 
@@ -68,7 +65,8 @@ trait WidgetMaker
                 array_get($fieldConfig, 'label')
             );
             $formField->displayAs('widget', $fieldConfig);
-        } else {
+        }
+        else {
             $formField = $fieldConfig;
         }
 

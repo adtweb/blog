@@ -1,23 +1,22 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use App;
-use ApplicationException;
-use Cache;
-use Cms\Components\ViewBag;
-use Cms\Helpers\Cms as CmsHelpers;
-use Config;
 use Ini;
 use Lang;
-use Twig\Source as TwigSource;
+use Cache;
+use Config;
+use Cms\Components\ViewBag;
+use Cms\Helpers\Cms as CmsHelpers;
 use Winter\Storm\Halcyon\Processors\SectionParser;
+use Twig\Source as TwigSource;
+use ApplicationException;
 
 /**
  * This is a base class for CMS objects that have multiple sections - pages, partials and layouts.
  * The class implements functionality for the compound object file parsing. It also provides a way
  * to access parameters defined in the INI settings section as the object properties.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class CmsCompoundObject extends CmsObject
@@ -29,16 +28,16 @@ class CmsCompoundObject extends CmsObject
 
     /**
      * @var array INI settings defined in the template file. Not to be confused
-     *            with the attribute called settings. In this array, components are bumped
-     *            to their own array inside the 'components' key.
+     * with the attribute called settings. In this array, components are bumped
+     * to their own array inside the 'components' key.
      */
     public $settings = [
-        'components' => [],
+        'components' => []
     ];
 
     /**
      * @var array Contains the view bag properties.
-     *            This property is used by the page editor internally.
+     * This property is used by the page editor internally.
      */
     public $viewBag = [];
 
@@ -48,7 +47,7 @@ class CmsCompoundObject extends CmsObject
     protected $fillable = [
         'markup',
         'settings',
-        'code',
+        'code'
     ];
 
     /**
@@ -61,7 +60,7 @@ class CmsCompoundObject extends CmsObject
         'where',
         'sortBy',
         'whereComponent',
-        'withComponent',
+        'withComponent'
     ];
 
     /**
@@ -81,7 +80,6 @@ class CmsCompoundObject extends CmsObject
 
     /**
      * Triggered after the object is loaded.
-     *
      * @return void
      */
     public function afterFetch()
@@ -93,7 +91,6 @@ class CmsCompoundObject extends CmsObject
 
     /**
      * Triggered when the model is saved.
-     *
      * @return void
      */
     public function beforeSave()
@@ -114,6 +111,7 @@ class CmsCompoundObject extends CmsObject
     /**
      * Create a new Collection instance.
      *
+     * @param  array  $models
      * @return \Winter\Storm\Halcyon\Collection
      */
     public function newCollection(array $models = [])
@@ -124,7 +122,6 @@ class CmsCompoundObject extends CmsObject
     /**
      * If the model is loaded with an invalid INI section, the invalid content will be
      * passed as a special attribute. Look for it, then locate the failure reason.
-     *
      * @return void
      */
     protected function validateSettings()
@@ -140,7 +137,6 @@ class CmsCompoundObject extends CmsObject
      * Parses the settings array.
      * Child classes can override this method in order to update the content
      * of the $settings property after the object is loaded from a file.
-     *
      * @return void
      */
     protected function parseSettings()
@@ -151,7 +147,6 @@ class CmsCompoundObject extends CmsObject
     /**
      * This method checks if safe mode is enabled by config, and the code
      * attribute is modified and populated. If so an exception is thrown.
-     *
      * @return void
      */
     protected function checkSafeMode()
@@ -168,7 +163,6 @@ class CmsCompoundObject extends CmsObject
     /**
      * Runs components defined in the settings
      * Process halts if a component returns a value
-     *
      * @return void
      */
     public function runComponents()
@@ -192,7 +186,6 @@ class CmsCompoundObject extends CmsObject
      * Parse component sections.
      * Replace the multiple component sections with a single "components"
      * element in the $settings property.
-     *
      * @return void
      */
     protected function parseComponentSettings()
@@ -202,7 +195,7 @@ class CmsCompoundObject extends CmsObject
         $manager = ComponentManager::instance();
         $components = [];
         foreach ($this->settings as $setting => $value) {
-            if (! is_array($value)) {
+            if (!is_array($value)) {
                 continue;
             }
 
@@ -220,13 +213,12 @@ class CmsCompoundObject extends CmsObject
      * Returns a component by its name.
      * This method is used only in the back-end and for internal system needs when
      * the standard way to access components is not an option.
-     *
-     * @param  string  $componentName  Specifies the component name.
+     * @param string $componentName Specifies the component name.
      * @return \Cms\Classes\ComponentBase Returns the component instance or null.
      */
     public function getComponent($componentName)
     {
-        if (! ($componentSection = $this->hasComponent($componentName))) {
+        if (!($componentSection = $this->hasComponent($componentName))) {
             return null;
         }
 
@@ -239,8 +231,7 @@ class CmsCompoundObject extends CmsObject
 
     /**
      * Checks if the object has a component with the specified name.
-     *
-     * @param  string  $componentName  Specifies the component name.
+     * @param string $componentName Specifies the component name.
      * @return mixed Return false or the full component name used on the page (it could include the alias).
      */
     public function hasComponent($componentName)
@@ -276,8 +267,7 @@ class CmsCompoundObject extends CmsObject
     /**
      * Returns component property names and values.
      * This method implements caching and can be used in the run-time on the front-end.
-     *
-     * @param  string  $componentName  Specifies the component name.
+     * @param string $componentName Specifies the component name.
      * @return array Returns an associative array with property names in the keys and property values in the values.
      */
     public function getComponentProperties($componentName)
@@ -286,7 +276,8 @@ class CmsCompoundObject extends CmsObject
 
         if (self::$objectComponentPropertyMap !== null) {
             $objectComponentMap = self::$objectComponentPropertyMap;
-        } else {
+        }
+        else {
             $cached = Cache::get($key, false);
             $unserialized = $cached ? @unserialize(@base64_decode($cached)) : false;
             $objectComponentMap = $unserialized ?: [];
@@ -307,9 +298,10 @@ class CmsCompoundObject extends CmsObject
             $objectComponentMap[$objectCode] = [];
         }
 
-        if (! isset($this->settings['components'])) {
+        if (!isset($this->settings['components'])) {
             $objectComponentMap[$objectCode] = [];
-        } else {
+        }
+        else {
             foreach ($this->settings['components'] as $name => $settings) {
                 $nameParts = explode(' ', $name);
                 if (count($nameParts) > 1) {
@@ -317,7 +309,7 @@ class CmsCompoundObject extends CmsObject
                 }
 
                 $component = $this->getComponent($name);
-                if (! $component) {
+                if (!$component) {
                     continue;
                 }
 
@@ -345,8 +337,7 @@ class CmsCompoundObject extends CmsObject
 
     /**
      * Clears the object cache.
-     *
-     * @param  \Cms\Classes\Theme  $theme  Specifies a parent theme.
+     * @param \Cms\Classes\Theme $theme Specifies a parent theme.
      * @return void
      */
     public static function clearCache($theme)
@@ -363,7 +354,6 @@ class CmsCompoundObject extends CmsObject
      * Returns the configured view bag component.
      * This method is used only in the back-end and for internal system needs when
      * the standard way to access components is not an option.
-     *
      * @return \Cms\Components\ViewBag Returns the view bag component instance.
      */
     public function getViewBag()
@@ -374,7 +364,7 @@ class CmsCompoundObject extends CmsObject
 
         $componentName = 'viewBag';
 
-        if (! isset($this->settings['components'][$componentName])) {
+        if (!isset($this->settings['components'][$componentName])) {
             $viewBag = new ViewBag(null, []);
             $viewBag->name = $componentName;
 
@@ -387,7 +377,6 @@ class CmsCompoundObject extends CmsObject
     /**
      * Copies view bag properties to the view bag array.
      * This is required for the back-end editors.
-     *
      * @return void
      */
     protected function fillViewBagArray()
@@ -406,7 +395,6 @@ class CmsCompoundObject extends CmsObject
 
     /**
      * Returns the Twig content string
-     *
      * @return string
      */
     public function getTwigContent()
@@ -418,18 +406,15 @@ class CmsCompoundObject extends CmsObject
      * Returns Twig node tree generated from the object's markup.
      * This method is used by the system internally and shouldn't
      * participate in the front-end request processing.
-     *
      * @link http://twig.sensiolabs.org/doc/internals.html Twig internals
-     *
-     * @param  mixed  $markup  Specifies the markup content.
-     *                         Use FALSE to load the content from the markup section.
+     * @param mixed $markup Specifies the markup content.
+     * Use FALSE to load the content from the markup section.
      * @return Twig\Node\ModuleNode A node tree
      */
     public function getTwigNodeTree($markup = false)
     {
         $twig = App::make('twig.environment.cms');
         $stream = $twig->tokenize(new TwigSource($markup === false ? $this->markup : $markup, 'getTwigNodeTree'));
-
         return $twig->parse($stream);
     }
 
@@ -493,14 +478,13 @@ class CmsCompoundObject extends CmsObject
      * Dynamically handle calls into the query instance.
      *
      * @param  string  $method
-     * @param  array  $parameters
+     * @param  array   $parameters
      * @return mixed
      */
     public function __call($method, $parameters)
     {
         if (in_array($method, $this->passthru)) {
             $collection = $this->get();
-
             return call_user_func_array([$collection, $method], $parameters);
         }
 

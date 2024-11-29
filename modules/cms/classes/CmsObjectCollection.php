@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use ApplicationException;
 use Winter\Storm\Support\Collection as CollectionBase;
@@ -8,15 +6,15 @@ use Winter\Storm\Support\Collection as CollectionBase;
 /**
  * This class represents a collection of Cms Objects.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class CmsObjectCollection extends CollectionBase
 {
     /**
      * Returns objects that use the supplied component.
-     *
-     * @param  string|array  $components
-     * @param  null|callable  $callback
+     * @param  string|array $components
+     * @param null|callback $callback
      * @return static
      */
     public function withComponent($components, $callback = null)
@@ -25,7 +23,7 @@ class CmsObjectCollection extends CollectionBase
             $hasComponent = false;
 
             foreach ((array) $components as $componentName) {
-                if (! $callback && $object->hasComponent($componentName)) {
+                if (!$callback && $object->hasComponent($componentName)) {
                     $hasComponent = true;
                 }
 
@@ -56,17 +54,17 @@ class CmsObjectCollection extends CollectionBase
      */
     public function where($property, $value = null, $strict = null)
     {
-        if (empty($value) || ! is_string($value)) {
+        if (empty($value) || !is_string($value)) {
             throw new ApplicationException('You must provide a string value to compare with when executing a "where" '
-             .'query for CMS object collections.');
+             . 'query for CMS object collections.');
         }
 
-        if (! isset($strict) || ! is_bool($strict)) {
+        if (!isset($strict) || !is_bool($strict)) {
             $strict = true;
         }
 
         return $this->filter(function ($object) use ($property, $value, $strict) {
-            if (! array_key_exists($property, $object->settings)) {
+            if (!array_key_exists($property, $object->settings)) {
                 return false;
             }
 
@@ -78,11 +76,10 @@ class CmsObjectCollection extends CollectionBase
 
     /**
      * Returns objects whose component properties match the supplied value.
-     *
-     * @param  mixed  $components
-     * @param  string  $property
-     * @param  string  $value
-     * @param  bool  $strict
+     * @param mixed $components
+     * @param string $property
+     * @param string $value
+     * @param bool $strict
      * @return static
      */
     public function whereComponent($components, $property, $value, $strict = false)
@@ -92,25 +89,25 @@ class CmsObjectCollection extends CollectionBase
             $hasComponent = false;
 
             foreach ((array) $components as $componentName) {
-                if (! $componentAlias = $object->hasComponent($componentName)) {
+                if (!$componentAlias = $object->hasComponent($componentName)) {
                     continue;
                 }
 
                 $componentSettings = array_get($object->settings, 'components', []);
 
-                if (! array_key_exists($componentAlias, $componentSettings)) {
+                if (!array_key_exists($componentAlias, $componentSettings)) {
                     continue;
                 }
 
                 $settings = $componentSettings[$componentAlias];
 
-                if (! array_key_exists($property, $settings)) {
+                if (!array_key_exists($property, $settings)) {
                     continue;
                 }
 
                 if (
                     ($strict && $settings[$property] === $value) ||
-                    (! $strict && $settings[$property] == $value)
+                    (!$strict && $settings[$property] == $value)
                 ) {
                     $hasComponent = true;
                 }

@@ -11,18 +11,18 @@ if ($this->previewMode || $field->readOnly) {
     data-refresh-handler="<?= $this->getEventHandler('onRefresh') ?>"
     data-data-locker="#<?= $field->getId() ?>">
     <span class="form-control" <?= $previewMode ? 'disabled="disabled"' : '' ?>>
-        <?php if ($value) { ?>
+        <?php if ($value): ?>
             <span class="primary"><?= e($nameValue) ?: 'Undefined' ?></span>
-            <?php if ($descriptionValue) { ?>
+            <?php if ($descriptionValue): ?>
                 <span class="secondary"> - <?= e($descriptionValue) ?></span>
-            <?php } ?>
-        <?php } else { ?>
+            <?php endif ?>
+        <?php else: ?>
             <span class="text-muted"><?= $prompt ?></span>
-        <?php } ?>
+        <?php endif ?>
     </span>
 
-    <?php if (! $previewMode) { ?>
-        <?php if ($value) { ?>
+    <?php if (!$previewMode): ?>
+        <?php if ($value): ?>
             <button
                 type="button"
                 class="btn clear-record"
@@ -32,7 +32,7 @@ if ($this->previewMode || $field->readOnly) {
                 aria-label="Remove">
                 <i class="icon-times"></i>
             </button>
-        <?php } ?>
+        <?php endif ?>
         <button
             id="<?= $this->getId('popupTrigger') ?>"
             class="btn btn-default find-record"
@@ -43,7 +43,7 @@ if ($this->previewMode || $field->readOnly) {
             type="button">
             <i class="icon-th-list"></i>
         </button>
-    <?php } ?>
+    <?php endif ?>
 
     <input
         type="hidden"

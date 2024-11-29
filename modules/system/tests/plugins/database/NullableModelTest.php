@@ -2,16 +2,16 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\NullablePost;
 use System\Tests\Bootstrap\PluginTestCase;
+use Database\Tester\Models\NullablePost;
 
 class NullableModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Post.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }

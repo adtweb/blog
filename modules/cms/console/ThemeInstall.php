@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Console;
+<?php namespace Cms\Console;
 
 use Cms\Classes\Theme;
 use Cms\Classes\ThemeManager;
@@ -13,13 +11,13 @@ use Winter\Storm\Console\Command;
  *
  * This adds a new theme by requesting it from the Winter marketplace.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeInstall extends Command
 {
     /**
      * The console command name.
-     *
      * @var string
      */
     protected $name = 'theme:install';
@@ -34,14 +32,12 @@ class ThemeInstall extends Command
 
     /**
      * The console command description.
-     *
      * @var string
      */
     protected $description = 'Install a theme from the Winter marketplace.';
 
     /**
      * Execute the console command.
-     *
      * @return void
      */
     public function handle()
@@ -54,7 +50,7 @@ class ThemeInstall extends Command
         }
 
         if ($argDirName) {
-            if (! preg_match('/^[a-z0-9\_\-]+$/i', $argDirName)) {
+            if (!preg_match('/^[a-z0-9\_\-]+$/i', $argDirName)) {
                 return $this->error('Invalid destination directory name.');
             }
 
@@ -87,7 +83,7 @@ class ThemeInstall extends Command
                 $themeDetails['product_url']
             ));
 
-            if (! $this->confirm('Do you wish to continue? [Y|n]', true)) {
+            if (!$this->confirm('Do you wish to continue? [Y|n]', true)) {
                 return;
             }
 
@@ -124,7 +120,7 @@ class ThemeInstall extends Command
     /**
      * Theme code to dir.
      *
-     * @param  string  $themeCode
+     * @param string $themeCode
      * @return string
      */
     protected function themeCodeToDir($themeCode)

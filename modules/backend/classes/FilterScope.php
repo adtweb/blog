@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Classes;
+<?php namespace Backend\Classes;
 
 use Winter\Storm\Html\Helper as HtmlHelper;
 
@@ -8,6 +6,7 @@ use Winter\Storm\Html\Helper as HtmlHelper;
  * Filter scope definition
  * A translation of the filter scope configuration
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class FilterScope
@@ -102,22 +101,19 @@ class FilterScope
      * Specifies a scope control rendering mode. Supported modes are:
      * - group - filter by a group of IDs. Default.
      * - checkbox - filter by a simple toggle switch.
-     *
-     * @param  string  $type  Specifies a render mode as described above
-     * @param  array  $config  A list of render mode specific config.
+     * @param string $type Specifies a render mode as described above
+     * @param array $config A list of render mode specific config.
      */
     public function displayAs($type, $config = [])
     {
         $this->type = strtolower($type) ?: $this->type;
         $this->config = $this->evalConfig($config);
-
         return $this;
     }
 
     /**
      * Process options and apply them to this object.
-     *
-     * @param  array  $config
+     * @param array $config
      * @return array
      */
     protected function evalConfig($config)
@@ -164,7 +160,7 @@ class FilterScope
         }
 
         if ($this->idPrefix) {
-            $id = $this->idPrefix.'-'.$id;
+            $id = $this->idPrefix . '-' . $id;
         }
 
         return HtmlHelper::nameToId($id);

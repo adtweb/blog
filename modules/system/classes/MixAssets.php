@@ -1,13 +1,12 @@
-<?php
+<?php namespace System\Classes;
 
-namespace System\Classes;
-
-use Cms\Classes\Theme;
-use Config;
 use File;
+use Config;
 use SystemException;
-use Winter\Storm\Filesystem\PathResolver;
+use Cms\Classes\Theme;
 use Winter\Storm\Support\Str;
+use System\Classes\PluginManager;
+use Winter\Storm\Filesystem\PathResolver;
 
 /**
  * Mix assets using Laravel Mix for Node.js compilation and processing.
@@ -15,6 +14,7 @@ use Winter\Storm\Support\Str;
  * This works similar to the `System\Classes\CombineAssets` class in that it allows modules, plugins and themes to
  * register configurations that will be passed on to Laravel Mix and Node.js for compilation and processing.
  *
+ * @package winter\wn-system-module
  * @author Ben Thomson <git@alfreido.com>, Jack Wilkinson <jax@jaxwilko.com>
  * @author Winter CMS
  */
@@ -67,12 +67,12 @@ class MixAssets
         $packages = PluginManager::instance()->getRegistrationMethodValues('registerMixPackages');
         if (count($packages)) {
             foreach ($packages as $pluginCode => $packageArray) {
-                if (! is_array($packageArray)) {
+                if (!is_array($packageArray)) {
                     continue;
                 }
 
                 foreach ($packageArray as $name => $package) {
-                    $this->registerPackage($name, PluginManager::instance()->getPluginPath($pluginCode).'/'.$package);
+                    $this->registerPackage($name, PluginManager::instance()->getPluginPath($pluginCode) . '/' . $package);
                 }
             }
         }
@@ -84,12 +84,12 @@ class MixAssets
             // Allow current theme to define mix assets
             $theme = Theme::getActiveTheme();
 
-            if (! is_null($theme)) {
+            if (!is_null($theme)) {
                 $mix = $theme->getConfigValue('mix', []);
 
                 if (count($mix)) {
                     foreach ($mix as $name => $file) {
-                        $this->registerPackage($name, $theme->getPath().'/'.$file);
+                        $this->registerPackage($name, $theme->getPath() . '/' . $file);
                     }
                 }
             }
@@ -100,7 +100,7 @@ class MixAssets
         // Search modules for Mix packages to autoregister
         foreach ($enabledModules as $module) {
             $module = strtolower($module);
-            $path = base_path('modules'.DIRECTORY_SEPARATOR.$module).DIRECTORY_SEPARATOR.$this->mixJs;
+            $path = base_path('modules' . DIRECTORY_SEPARATOR . $module) . DIRECTORY_SEPARATOR . $this->mixJs;
             if (File::exists($path)) {
                 $packagePaths["module-$module"] = $path;
             }
@@ -109,7 +109,7 @@ class MixAssets
         // Search plugins for Mix packages to autoregister
         $plugins = PluginManager::instance()->getPlugins();
         foreach ($plugins as $plugin) {
-            $path = $plugin->getPluginPath().'/'.$this->mixJs;
+            $path = $plugin->getPluginPath() . '/' . $this->mixJs;
             if (File::exists($path)) {
                 $packagePaths[$plugin->getPluginIdentifier()] = $path;
             }
@@ -119,9 +119,9 @@ class MixAssets
         if (in_array('Cms', $enabledModules)) {
             $themes = Theme::all();
             foreach ($themes as $theme) {
-                $path = $theme->getPath().'/'.$this->mixJs;
+                $path = $theme->getPath() . '/' . $this->mixJs;
                 if (File::exists($path)) {
-                    $packagePaths['theme-'.$theme->getId()] = $path;
+                    $packagePaths["theme-" . $theme->getId()] = $path;
                 }
             }
         }
@@ -171,9 +171,9 @@ class MixAssets
     {
         ksort($this->packages);
 
-        if (! $includeIgnored) {
+        if (!$includeIgnored) {
             return array_filter($this->packages, function ($package) {
-                return ! ($package['ignored'] ?? false);
+                return !($package['ignored'] ?? false);
             });
         }
 
@@ -191,9 +191,9 @@ class MixAssets
      * By default, the MixAssets class will look for a `package.json` file for Node dependencies, and a `winter.mix.js`
      * file for the Laravel Mix configuration
      *
-     * @param  string  $name  The name of the package being registered
-     * @param  string  $path  The path to the Mix JS configuration file. If there is a related package.json file then it is
-     *                        required to be present in the same directory as the winter.mix.js file
+     * @param string $name The name of the package being registered
+     * @param string $path The path to the Mix JS configuration file. If there is a related package.json file then it is
+     *                      required to be present in the same directory as the winter.mix.js file
      */
     public function registerPackage(string $name, string $path): void
     {
@@ -204,7 +204,7 @@ class MixAssets
         $name = strtolower($name);
         $resolvedPath = PathResolver::resolve($path);
         $pinfo = pathinfo($resolvedPath);
-        $path = Str::after($pinfo['dirname'], base_path().DIRECTORY_SEPARATOR);
+        $path = Str::after($pinfo['dirname'], base_path() . DIRECTORY_SEPARATOR);
         $mixJs = $pinfo['basename'];
 
         // Require $mixJs to be a JS file
@@ -216,7 +216,7 @@ class MixAssets
         }
 
         // Check that the package path exists
-        if (! File::exists($path)) {
+        if (!File::exists($path)) {
             throw new SystemException(
                 sprintf('Cannot register "%s" as a Mix package; the "%s" path does not exist.', $name, $path)
             );
@@ -230,7 +230,7 @@ class MixAssets
         }
 
         $package = "$path/{$this->packageJson}";
-        $mix = $path.DIRECTORY_SEPARATOR.$mixJs;
+        $mix = $path . DIRECTORY_SEPARATOR . $mixJs;
 
         // Check for any existing package that already registers the given Mix path
         foreach ($this->packages as $packageName => $config) {
@@ -263,7 +263,6 @@ class MixAssets
         }
         $included = $packageJson['workspaces']['packages'] ?? [];
         $ignored = $packageJson['workspaces']['ignoredPackages'] ?? [];
-
         return in_array($packagePath, $ignored);
     }
 }

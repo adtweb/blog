@@ -3,10 +3,11 @@
 namespace System\Tests\Console;
 
 use File;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use System\Classes\MixAssets;
 use System\Console\MixCompile;
 use System\Tests\Bootstrap\TestCase;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class MixCompileTest extends TestCase
 {
@@ -14,7 +15,7 @@ class MixCompileTest extends TestCase
     {
         parent::setUp();
 
-        if (! File::exists(base_path('node_modules'))) {
+        if (!File::exists(base_path('node_modules'))) {
             $this->markTestSkipped('This test requires node_modules to be installed');
         }
     }
@@ -25,7 +26,7 @@ class MixCompileTest extends TestCase
 
         $result = $command->run(new ArrayInput([
             '--manifest' => 'modules/system/tests/fixtures/npm/package-ac.json',
-            '--silent' => true,
+            '--silent' => true
         ]), $output);
 
         $this->assertIsInt($result);
@@ -40,7 +41,7 @@ class MixCompileTest extends TestCase
 
         $result = $command->run(new ArrayInput([
             '--manifest' => 'modules/system/tests/fixtures/npm/package-abc.json',
-            '--silent' => true,
+            '--silent' => true
         ]), $output);
 
         $this->assertIsInt($result);
@@ -57,7 +58,7 @@ class MixCompileTest extends TestCase
         $result = $command->run(new ArrayInput([
             '--manifest' => 'modules/system/tests/fixtures/npm/package-abc.json',
             '--package' => 'mix.testa',
-            '--silent' => true,
+            '--silent' => true
         ]), $output);
 
         $this->assertIsInt($result);
@@ -74,7 +75,7 @@ class MixCompileTest extends TestCase
         $result = $command->run(new ArrayInput([
             '--manifest' => 'modules/system/tests/fixtures/npm/package-abc.json',
             '--package' => 'mix.testb',
-            '--silent' => true,
+            '--silent' => true
         ]), $output);
 
         $this->assertIsInt($result);
@@ -91,7 +92,7 @@ class MixCompileTest extends TestCase
         $result = $command->run(new ArrayInput([
             '--manifest' => 'modules/system/tests/fixtures/npm/package-abc.json',
             '--stop-on-error' => true,
-            '--silent' => true,
+            '--silent' => true
         ]), $output);
 
         $this->assertIsInt($result);
@@ -103,10 +104,9 @@ class MixCompileTest extends TestCase
 
     protected function makeCommand(): array
     {
-        $output = new BufferedOutput;
-        $command = new MixCompile;
+        $output = new BufferedOutput();
+        $command = new MixCompile();
         $command->setLaravel($this->app);
-
         return [$command, $output];
     }
 

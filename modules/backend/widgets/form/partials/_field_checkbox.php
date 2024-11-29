@@ -17,7 +17,7 @@
     <label for="<?= $field->getId() ?>">
         <?= e(trans($field->label)) ?>
     </label>
-    <?php if ($field->comment) { ?>
+    <?php if ($field->comment): ?>
         <p class="help-block"><?= $field->commentHtml ? trans($field->comment) : e(trans($field->comment)) ?></p>
-    <?php } ?>
+    <?php endif ?>
 </div>

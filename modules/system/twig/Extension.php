@@ -1,18 +1,17 @@
-<?php
+<?php namespace System\Twig;
 
-namespace System\Twig;
-
+use Url;
 use System\Classes\ImageResizer;
-use System\Classes\MarkupManager;
 use System\Classes\MediaLibrary;
-use Twig\Extension\AbstractExtension as TwigExtension;
+use System\Classes\MarkupManager;
 use Twig\TwigFilter as TwigSimpleFilter;
 use Twig\TwigFunction as TwigSimpleFunction;
-use Url;
+use Twig\Extension\AbstractExtension as TwigExtension;
 
 /**
  * The System Twig extension class implements common Twig functions and filters.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Extension extends TwigExtension
@@ -100,8 +99,7 @@ class Extension extends TwigExtension
 
     /**
      * Converts supplied URL to one relative to the website root.
-     *
-     * @param  mixed  $url  Specifies the application-relative URL
+     * @param mixed $url Specifies the application-relative URL
      * @return string
      */
     public function appFilter($url)
@@ -111,8 +109,7 @@ class Extension extends TwigExtension
 
     /**
      * Converts supplied file to a URL relative to the media library.
-     *
-     * @param  string  $file  Specifies the media-relative file
+     * @param string $file Specifies the media-relative file
      * @return string
      */
     public function mediaFilter($file)
@@ -122,8 +119,7 @@ class Extension extends TwigExtension
 
     /**
      * Converts supplied file to a URL relative to the `app.asset_url` config.
-     *
-     * @param  string  $file  Specifies the asset-relative file
+     * @param string $file Specifies the asset-relative file
      * @return string
      */
     public function assetFilter($file)
@@ -134,16 +130,15 @@ class Extension extends TwigExtension
     /**
      * Converts supplied input into a URL that will return the desired resized image
      *
-     * @param  mixed  $image  Supported values below:
-     *                        ['disk' => Illuminate\Filesystem\FilesystemAdapter, 'path' => string, 'source' => string, 'fileModel' => FileModel|void],
-     *                        instance of Winter\Storm\Database\Attach\File,
-     *                        string containing URL or path accessible to the application's filesystem manager
-     * @param  int|bool|null  $width  Desired width of the resized image
-     * @param  int|bool|null  $height  Desired height of the resized image
-     * @param  array|null  $options  Array of options to pass to the resizer
-     * @return string
-     *
+     * @param mixed $image Supported values below:
+     *              ['disk' => Illuminate\Filesystem\FilesystemAdapter, 'path' => string, 'source' => string, 'fileModel' => FileModel|void],
+     *              instance of Winter\Storm\Database\Attach\File,
+     *              string containing URL or path accessible to the application's filesystem manager
+     * @param integer|bool|null $width Desired width of the resized image
+     * @param integer|bool|null $height Desired height of the resized image
+     * @param array|null $options Array of options to pass to the resizer
      * @throws Exception If the provided image was unable to be processed
+     * @return string
      */
     public function resizeFilter($image, $width = null, $height = null, $options = [])
     {
@@ -153,10 +148,10 @@ class Extension extends TwigExtension
     /**
      * Gets the width in pixels of the provided image source
      *
-     * @param  mixed  $image  Supported values below:
-     *                        ['disk' => Illuminate\Filesystem\FilesystemAdapter, 'path' => string, 'source' => string, 'fileModel' => FileModel|void],
-     *                        instance of Winter\Storm\Database\Attach\File,
-     *                        string containing URL or path accessible to the application's filesystem manager
+     * @param mixed $image Supported values below:
+     *              ['disk' => Illuminate\Filesystem\FilesystemAdapter, 'path' => string, 'source' => string, 'fileModel' => FileModel|void],
+     *              instance of Winter\Storm\Database\Attach\File,
+     *              string containing URL or path accessible to the application's filesystem manager
      * @return int
      */
     public function imageWidthFilter($image)
@@ -167,10 +162,10 @@ class Extension extends TwigExtension
     /**
      * Gets the height in pixels of the provided image source
      *
-     * @param  mixed  $image  Supported values below:
-     *                        ['disk' => Illuminate\Filesystem\FilesystemAdapter, 'path' => string, 'source' => string, 'fileModel' => FileModel|void],
-     *                        instance of Winter\Storm\Database\Attach\File,
-     *                        string containing URL or path accessible to the application's filesystem manager
+     * @param mixed $image Supported values below:
+     *              ['disk' => Illuminate\Filesystem\FilesystemAdapter, 'path' => string, 'source' => string, 'fileModel' => FileModel|void],
+     *              instance of Winter\Storm\Database\Attach\File,
+     *              string containing URL or path accessible to the application's filesystem manager
      * @return int
      */
     public function imageHeightFilter($image)

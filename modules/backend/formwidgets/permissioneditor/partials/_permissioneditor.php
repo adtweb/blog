@@ -2,27 +2,27 @@
     <table>
         <?php
             $firstTab = true;
-$globalIndex = 0;
-$checkboxMode = ! ($this->mode === 'radio');
-?>
-        <?php foreach ($permissions as $tab => $tabPermissions) { ?>
+            $globalIndex = 0;
+            $checkboxMode = !($this->mode === 'radio');
+        ?>
+        <?php foreach ($permissions as $tab => $tabPermissions): ?>
             <tr class="section">
                 <th class="tab"><?= e(trans($tab)) ?></th>
 
                 <th class="permission-type"><?= $firstTab ? e(trans('backend::lang.user.allow')) : '' ?></th>
 
-                <?php if ($this->mode === 'radio') { ?>
+                <?php if ($this->mode === 'radio'): ?>
                     <th class="permission-type"><?= $firstTab ? e(trans('backend::lang.user.inherit')) : '' ?></th>
                     <th class="permission-type"><?= $firstTab ? e(trans('backend::lang.user.deny')) : '' ?></th>
-                <?php } ?>
+                <?php endif; ?>
 
                 <th></th>
             </tr>
 
             <?php
-        $lastIndex = count($tabPermissions) - 1;
+                $lastIndex = count($tabPermissions) - 1;
             ?>
-            <?php foreach ($tabPermissions as $index => $permission) { ?>
+            <?php foreach ($tabPermissions as $index => $permission): ?>
 
                 <?php
                 $globalIndex++;
@@ -34,7 +34,7 @@ $checkboxMode = ! ($this->mode === 'radio');
                             : 0;
                         break;
                     case 'switch':
-                        $isChecked = ! ((int) @$permissionsData[$permission->code] === -1);
+                        $isChecked = !((int) @$permissionsData[$permission->code] === -1);
                         break;
                     case 'checkbox':
                     default:
@@ -42,15 +42,15 @@ $checkboxMode = ! ($this->mode === 'radio');
                         break;
                 }
 
-                $allowId = $this->getId('permission-'.$globalIndex.'-allow');
-                $inheritId = $this->getId('permission-'.$globalIndex.'-inherit');
-                $denyId = $this->getId('permission-'.$globalIndex.'-deny');
+                $allowId = $this->getId('permission-' . $globalIndex . '-allow');
+                $inheritId = $this->getId('permission-' . $globalIndex . '-inherit');
+                $denyId = $this->getId('permission-' . $globalIndex . '-deny');
                 ?>
 
                 <tr class="<?= $lastIndex == $index ? 'last-section-row' : '' ?>
                         <?= $checkboxMode ? 'mode-checkbox' : 'mode-radio' ?>
-                        <?= $checkboxMode && ! $isChecked ? 'disabled' : '' ?>
-                        <?= ! $checkboxMode && $permissionValue == -1 ? 'disabled' : '' ?>
+                        <?= $checkboxMode && !$isChecked ? 'disabled' : '' ?>
+                        <?= !$checkboxMode && $permissionValue == -1 ? 'disabled' : '' ?>
                     ">
 
                     <td class="permission-name">
@@ -58,7 +58,7 @@ $checkboxMode = ! ($this->mode === 'radio');
                         <p class="comment"><?= e(trans($permission->comment)) ?></p>
                     </td>
 
-                    <?php if ($this->mode === 'radio') { ?>
+                    <?php if ($this->mode === 'radio'): ?>
                         <td class="permission-value">
                             <div class="radio custom-radio">
                                  <input
@@ -100,7 +100,7 @@ $checkboxMode = ! ($this->mode === 'radio');
                                 <label for="<?= $denyId ?>"><span>Deny</span></label>
                             </div>
                         </td>
-                    <?php } elseif ($this->mode === 'switch') { ?>
+                    <?php elseif ($this->mode === 'switch'): ?>
                         <td class="permission-value">
                             <input
                                 type="hidden"
@@ -120,7 +120,7 @@ $checkboxMode = ! ($this->mode === 'radio');
                                 <a class="slide-button"></a>
                             </label>
                         </td>
-                    <?php } else { ?>
+                    <?php else: ?>
                         <td class="permission-value">
                             <div class="checkbox custom-checkbox">
                                  <input
@@ -134,14 +134,14 @@ $checkboxMode = ! ($this->mode === 'radio');
                                 <label for="<?= $allowId ?>"><span>Allow</span></label>
                             </div>
                         </td>
-                    <?php } ?>
+                    <?php endif; ?>
 
                     <td></td>
                 </tr>
-            <?php } ?>
+            <?php endforeach ?>
 
             <?php $firstTab = false; ?>
-        <?php } ?>
+        <?php endforeach ?>
     </table>
     <div class="permissions-overlay"></div>
 </div>

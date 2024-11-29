@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console\Traits;
+<?php namespace System\Console\Traits;
 
 use InvalidArgumentException;
 use System\Classes\PluginBase;
@@ -9,6 +7,7 @@ use System\Classes\PluginManager;
 /**
  * Console Command Trait that provides autocompletion for the "plugin" argument
  *
+ * @package winter\wn-system-module
  * @author Luke Towers
  */
 trait HasPluginArgument
@@ -38,7 +37,7 @@ trait HasPluginArgument
                 $disabled = $manager->isDisabled($identifier);
 
                 if (
-                    (! $disabled && $filter === 'disabled')
+                    (!$disabled && $filter === 'disabled')
                     || ($disabled && $filter === 'enabled')
                 ) {
                     unset($plugins[$i]);
@@ -51,7 +50,6 @@ trait HasPluginArgument
 
     /**
      * Get the desired plugin name from the input.
-     *
      * @throws InvalidArgumentException if the provided plugin name is invalid
      */
     public function getPluginIdentifier($identifier = null): string
@@ -62,7 +60,7 @@ trait HasPluginArgument
 
         if (
             (isset($this->validatePluginInput) && $this->validatePluginInput !== false)
-            && ! $pluginManager->hasPlugin($pluginName)
+            && !$pluginManager->hasPlugin($pluginName)
         ) {
             throw new InvalidArgumentException(sprintf('Plugin "%s" could not be found.', $pluginName));
         }
@@ -72,7 +70,6 @@ trait HasPluginArgument
 
     /**
      * Get the plugin instance for the input.
-     *
      * @throws InvalidArgumentException if the provided plugin name is invalid
      */
     public function getPlugin($identifier = null): ?PluginBase

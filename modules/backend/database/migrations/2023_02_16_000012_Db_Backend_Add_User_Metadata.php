@@ -7,7 +7,7 @@ class DbBackendAddUserMetadata extends Migration
 {
     public function up()
     {
-        if (! Schema::hasColumn('backend_users', 'metadata')) {
+        if (!Schema::hasColumn('backend_users', 'metadata')) {
             Schema::table('backend_users', function (Blueprint $table) {
                 $table->mediumText('metadata')->nullable()->after('permissions');
             });

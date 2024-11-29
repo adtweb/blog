@@ -32,7 +32,7 @@ return [
         'edit' => [
             'not_set' => 'Tema za izmenu nije postavljena.',
             'not_found' => 'Tema za izmenu nije pronađena.',
-            'not_match' => 'Objekat kojem pokušavaš da pristupiš ne pripada temi koju menjaš. Osveži stranicu.',
+            'not_match' => "Objekat kojem pokušavaš da pristupiš ne pripada temi koju menjaš. Osveži stranicu.",
         ],
         'settings_menu' => 'Teme',
         'settings_menu_description' => 'Upravljaj temama i opcijama prilagođavanja.',
@@ -109,7 +109,7 @@ return [
         ],
         'custom_error' => [
             'label' => 'Greška sa stranom',
-            'help' => 'Žao nam je, nešto je pošlo po zlu pa strana ne može biti prikazana.',
+            'help' => "Žao nam je, nešto je pošlo po zlu pa strana ne može biti prikazana.",
         ],
         'menu_label' => 'Strane',
         'unsaved_label' => 'Nesačuvana strana(e)',

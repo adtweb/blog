@@ -1,4 +1,4 @@
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <div id="executePopup">
 
@@ -53,7 +53,7 @@
         })
     </script>
 
-<?php } else { ?>
+<?php else: ?>
 
     <div class="modal-body modal-no-header">
         <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
@@ -67,4 +67,4 @@
         </button>
     </div>
 
-<?php } ?>
+<?php endif ?>

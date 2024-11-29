@@ -1,15 +1,14 @@
-<?php
+<?php namespace Cms\Classes;
 
-namespace Cms\Classes;
-
-use ApplicationException;
-use BackendAuth;
 use Lang;
+use BackendAuth;
+use ApplicationException;
 use Winter\Storm\Filesystem\Definitions as FileDefinitions;
 
 /**
  * The CMS page class.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Page extends CmsCompoundObject
@@ -32,12 +31,12 @@ class Page extends CmsCompoundObject
         'meta_description',
         'markup',
         'settings',
-        'code',
+        'code'
     ];
 
     /**
      * @var array The API bag allows the API handler code to bind arbitrary
-     *            data to the page object.
+     * data to the page object.
      */
     public $apiBag = [];
 
@@ -46,11 +45,12 @@ class Page extends CmsCompoundObject
      */
     public $rules = [
         'title' => 'required',
-        'url' => ['required', 'regex:/^\/[a-z0-9\/\:_\-\*\[\]\+\?\|\.\^\\\$]*$/i'],
+        'url'   => ['required', 'regex:/^\/[a-z0-9\/\:_\-\*\[\]\+\?\|\.\^\\\$]*$/i']
     ];
 
     /**
      * Creates an instance of the object and associates it with a CMS theme.
+     * @param array $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -63,7 +63,6 @@ class Page extends CmsCompoundObject
 
     /**
      * Returns name of a PHP class to us a parent for the PHP class created for the object's PHP section.
-     *
      * @return mixed Returns the class name or null.
      */
     public function getCodeClassParent()
@@ -74,12 +73,11 @@ class Page extends CmsCompoundObject
     /**
      * Returns a list of layouts available in the theme.
      * This method is used by the form widget.
-     *
      * @return array Returns an array of strings.
      */
     public function getLayoutOptions()
     {
-        if (! ($theme = Theme::getEditTheme())) {
+        if (!($theme = Theme::getEditTheme())) {
             throw new ApplicationException(Lang::get('cms::lang.theme.edit.not_found'));
         }
 
@@ -102,7 +100,6 @@ class Page extends CmsCompoundObject
 
     /**
      * Helper that returns a nicer list of pages for use in dropdowns.
-     *
      * @return array
      */
     public static function getNameList()
@@ -110,7 +107,7 @@ class Page extends CmsCompoundObject
         $result = [];
         $pages = self::sortBy('baseFileName')->all();
         foreach ($pages as $page) {
-            $result[$page->baseFileName] = $page->title.' ('.$page->baseFileName.')';
+            $result[$page->baseFileName] = $page->title . ' (' . $page->baseFileName . ')';
         }
 
         return $result;
@@ -118,9 +115,8 @@ class Page extends CmsCompoundObject
 
     /**
      * Helper that makes a URL for a page in the active theme.
-     *
-     * @param  mixed  $page  Specifies the Cms Page file name.
-     * @param  array  $params  Route parameters to consider in the URL.
+     * @param mixed $page Specifies the Cms Page file name.
+     * @param array $params Route parameters to consider in the URL.
      * @return string|null
      */
     public static function url($page, array $params = [])
@@ -149,8 +145,7 @@ class Page extends CmsCompoundObject
      *   Optional, false if omitted.
      * - cmsPages - a list of CMS pages (objects of the Cms\Classes\Page class), if the item type requires
      *   a CMS page reference to resolve the item URL.
-     *
-     * @param  string  $type  Specifies the menu item type
+     * @param string $type Specifies the menu item type
      * @return array Returns an array
      */
     public static function getMenuTypeInfo(string $type)
@@ -163,13 +158,13 @@ class Page extends CmsCompoundObject
             $references = [];
 
             foreach ($pages as $page) {
-                $references[$page->getBaseFileName()] = $page->title.' ['.$page->getBaseFileName().']';
+                $references[$page->getBaseFileName()] = $page->title . ' [' . $page->getBaseFileName() . ']';
             }
 
             $result = [
-                'references' => $references,
-                'nesting' => false,
-                'dynamicItems' => false,
+                'references'   => $references,
+                'nesting'      => false,
+                'dynamicItems' => false
             ];
         }
 
@@ -188,21 +183,21 @@ class Page extends CmsCompoundObject
      * - items - an array of arrays with the same keys (url, isActive, items) + the title key.
      *   The items array should be added only if the $item's $nesting property value is TRUE.
      *
-     * @param  \Winter\Sitemap\Classes\DefinitionItem|\Winter\Pages\Classes\MenuItem  $item  Specifies the menu item.
+     * @param \Winter\Sitemap\Classes\DefinitionItem|\Winter\Pages\Classes\MenuItem $item Specifies the menu item.
      */
     public static function resolveMenuItem(object $item, string $url, Theme $theme): ?array
     {
         $result = null;
 
         if ($item->type === 'cms-page') {
-            if (! $item->reference) {
+            if (!$item->reference) {
                 return null;
             }
 
             $page = self::loadCached($theme, $item->reference);
 
             // Remove hidden CMS pages from menus when backend user is logged out
-            if ($page && $page->is_hidden && ! BackendAuth::getUser()) {
+            if ($page && $page->is_hidden && !BackendAuth::getUser()) {
                 return null;
             }
 
@@ -221,8 +216,7 @@ class Page extends CmsCompoundObject
     /**
      * Handler for the backend.richeditor.getTypeInfo event.
      * Returns a menu item type information. The type information is returned as array
-     *
-     * @param  string  $type  Specifies the page link type
+     * @param string $type Specifies the page link type
      * @return array
      */
     public static function getRichEditorTypeInfo(string $type)

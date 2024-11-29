@@ -2,10 +2,10 @@
 
 namespace Cms\Tests\Classes;
 
+use System\Tests\Bootstrap\TestCase;
 use Cms\Classes\Theme;
 use Config;
 use Event;
-use System\Tests\Bootstrap\TestCase;
 
 class ThemeTest extends TestCase
 {
@@ -28,7 +28,7 @@ class ThemeTest extends TestCase
         $it->rewind();
 
         while ($it->valid()) {
-            if (! $it->isDot() && ! $it->isDir() && $it->getExtension() == 'htm') {
+            if (!$it->isDot() && !$it->isDir() && $it->getExtension() == 'htm') {
                 $result++;
             }
 
@@ -57,7 +57,7 @@ class ThemeTest extends TestCase
         $pages = array_values($pageCollection->all());
         $this->assertIsArray($pages);
 
-        $expectedPageNum = $this->countThemePages(base_path().'/modules/cms/tests/fixtures/themes/test/pages');
+        $expectedPageNum = $this->countThemePages(base_path() . '/modules/cms/tests/fixtures/themes/test/pages');
         $this->assertCount($expectedPageNum, $pages);
 
         $this->assertInstanceOf('\Cms\Classes\Page', $pages[0]);

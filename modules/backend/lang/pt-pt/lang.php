@@ -18,8 +18,8 @@ return [
     'page' => [
         'untitled' => 'Sem título',
         '404' => [
-            'label' => 'Página não encontrada',
-            'help' => 'Por muito que procuremos, o URL pedido não existe. Talvez esteja à procura de outra coisa?',
+            'label'     => 'Página não encontrada',
+            'help'      => "Por muito que procuremos, o URL pedido não existe. Talvez esteja à procura de outra coisa?",
             'back_link' => 'Voltar à página anterior',
         ],
         'access_denied' => [
@@ -29,7 +29,7 @@ return [
         ],
         'no_database' => [
             'label' => 'Base de dados não existente',
-            'help' => 'Uma base de dados é necessária para acesso ao back-end. Verifique se a base dados se encontra configurada e migrada antes de tentar novamente.',
+            'help' => "Uma base de dados é necessária para acesso ao back-end. Verifique se a base dados se encontra configurada e migrada antes de tentar novamente.",
             'cms_link' => 'Regressar á página inicial',
         ],
     ],
@@ -118,7 +118,7 @@ return [
             'last_sign_in' => 'O último acesso foi em',
             'view_access_logs' => 'Visualizar registos de acesso',
             'nice_message' => 'Tenha um excelente dia!',
-        ],
+        ]
     ],
     'user' => [
         'name' => 'Administrador',
@@ -357,7 +357,7 @@ return [
     'warnings' => [
         'tips' => 'Dicas de configuração do sistema',
         'tips_description' => 'Há itens que requerem atenção para configurar o sistema corretamente.',
-        'permissions' => 'Diretoria :name ou suas subdiretorias não são graváveis pelo PHP. Por favor, defina permissões de escrita para o servidor nesta diretoria.',
+        'permissions'  => 'Diretoria :name ou suas subdiretorias não são graváveis pelo PHP. Por favor, defina permissões de escrita para o servidor nesta diretoria.',
         'extension' => 'A extensão PHP :name não está instalada. Por favor, instale esta biblioteca para activar a extensão.',
         'plugin_missing' => 'A extensão :name é uma dependência mas não está instalada. Por favor instale esta extensão.',
         'debug' => 'O modo de depuração está activo. Isto não é recomendado em abientes de produção.',
@@ -378,11 +378,11 @@ return [
         'auto_closing' => 'Fechar etiquetas automáticamente',
         'show_invisibles' => 'Mostrar caracteres invisíveis',
         'show_gutter' => 'Mostrar guias',
-        'basic_autocompletion' => 'Autocompletar básico (Ctrl + Espaço)',
-        'live_autocompletion' => 'Autocompletar em tempo real',
-        'enable_snippets' => 'Activar trechos de códigos (Tab)',
-        'display_indent_guides' => 'Mostrar guias de indentação',
-        'show_print_margin' => 'Mostrar margem de impressão',
+        'basic_autocompletion'=> 'Autocompletar básico (Ctrl + Espaço)',
+        'live_autocompletion'=> 'Autocompletar em tempo real',
+        'enable_snippets'=> 'Activar trechos de códigos (Tab)',
+        'display_indent_guides'=> 'Mostrar guias de indentação',
+        'show_print_margin'=> 'Mostrar margem de impressão',
         'mode_off' => 'Desligado',
         'mode_fluid' => 'Fluido',
         '40_characters' => '40 caracteres',

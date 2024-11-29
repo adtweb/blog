@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Widgets;
+<?php namespace Backend\Widgets;
 
 use Backend\Classes\WidgetBase;
 
@@ -8,6 +6,7 @@ use Backend\Classes\WidgetBase;
  * Toolbar Widget
  * Used for building a toolbar, renders a toolbar.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Toolbar extends WidgetBase
@@ -31,7 +30,7 @@ class Toolbar extends WidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'toolbar';
 
@@ -61,11 +60,12 @@ class Toolbar extends WidgetBase
         if (isset($this->search)) {
             if (is_string($this->search)) {
                 $searchConfig = $this->makeConfig(['partial' => $this->search]);
-            } else {
+            }
+            else {
                 $searchConfig = $this->makeConfig($this->search);
             }
 
-            $searchConfig->alias = $this->alias.'Search';
+            $searchConfig->alias = $this->alias . 'Search';
             $this->searchWidget = $this->makeWidget('Backend\Widgets\Search', $searchConfig);
             $this->searchWidget->bindToController();
         }
@@ -77,7 +77,6 @@ class Toolbar extends WidgetBase
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('toolbar');
     }
 
@@ -98,7 +97,7 @@ class Toolbar extends WidgetBase
 
     public function makeControlPanel()
     {
-        if (! isset($this->buttons)) {
+        if (!isset($this->buttons)) {
             return false;
         }
 

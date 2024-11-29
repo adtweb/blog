@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\Console;
+<?php namespace Backend\Console;
 
 use System\Console\BaseScaffoldCommand;
 use Winter\Storm\Support\Str;
@@ -47,13 +45,13 @@ class CreateController extends BaseScaffoldCommand
      */
     protected $stubs = [
         'scaffold/controller/_list_toolbar.stub' => 'controllers/{{lower_name}}/_list_toolbar.php',
-        'scaffold/controller/config_form.stub' => 'controllers/{{lower_name}}/config_form.yaml',
-        'scaffold/controller/config_list.stub' => 'controllers/{{lower_name}}/config_list.yaml',
-        'scaffold/controller/create.stub' => 'controllers/{{lower_name}}/create.php',
-        'scaffold/controller/index.stub' => 'controllers/{{lower_name}}/index.php',
-        'scaffold/controller/preview.stub' => 'controllers/{{lower_name}}/preview.php',
-        'scaffold/controller/update.stub' => 'controllers/{{lower_name}}/update.php',
-        'scaffold/controller/controller.stub' => 'controllers/{{studly_name}}.php',
+        'scaffold/controller/config_form.stub'   => 'controllers/{{lower_name}}/config_form.yaml',
+        'scaffold/controller/config_list.stub'   => 'controllers/{{lower_name}}/config_list.yaml',
+        'scaffold/controller/create.stub'        => 'controllers/{{lower_name}}/create.php',
+        'scaffold/controller/index.stub'         => 'controllers/{{lower_name}}/index.php',
+        'scaffold/controller/preview.stub'       => 'controllers/{{lower_name}}/preview.php',
+        'scaffold/controller/update.stub'        => 'controllers/{{lower_name}}/update.php',
+        'scaffold/controller/controller.stub'    => 'controllers/{{studly_name}}.php',
     ];
 
     /**
@@ -67,7 +65,7 @@ class CreateController extends BaseScaffoldCommand
          * either supplied or singular from the controller name.
          */
         $model = $this->option('model');
-        if (! $model) {
+        if (!$model) {
             $model = Str::singular($vars['name']);
         }
         $vars['model'] = $model;

@@ -1,16 +1,14 @@
-<?php
+<?php namespace Winter\Tester\Components;
 
-namespace Winter\Tester\Components;
-
-use Cms\Classes\CodeBase;
 use Cms\Classes\ComponentBase;
+use Cms\Classes\CodeBase;
 use Winter\Tester\Classes\Users;
 
 class Comments extends ComponentBase
 {
     private $users;
 
-    public function __construct(?CodeBase $cmsObject = null, $properties = [], ?Users $users = null)
+    public function __construct(CodeBase $cmsObject = null, $properties = [], Users $users = null)
     {
         parent::__construct($cmsObject, $properties);
         $this->users = $users;
@@ -20,7 +18,7 @@ class Comments extends ComponentBase
     {
         return [
             'name' => 'Blog Comments Dummy Component',
-            'description' => 'Displays the list of comments on a post.',
+            'description' => 'Displays the list of comments on a post.'
         ];
     }
 
@@ -28,7 +26,7 @@ class Comments extends ComponentBase
     {
         return [
             ['title' => 'Lorum ipsum', 'content' => 'Post Content #1'],
-            ['title' => 'La Playa Nudista', 'content' => 'Second Post Content'],
+            ['title' => 'La Playa Nudista', 'content' => 'Second Post Content']
         ];
     }
 

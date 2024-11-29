@@ -1,8 +1,8 @@
 <?= Form::open([
-    'class' => 'layout',
-    'data-change-monitor' => 'true',
-    'data-window-close-confirm' => e(trans('backend::lang.form.confirm_tab_close')),
-    'data-inspector-external-parameters' => true,
+        'class' => 'layout',
+        'data-change-monitor' => 'true',
+        'data-window-close-confirm' => e(trans('backend::lang.form.confirm_tab_close')),
+        'data-inspector-external-parameters' => true
 ]) ?>
     <?= $form->render() ?>
 

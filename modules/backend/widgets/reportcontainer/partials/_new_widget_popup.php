@@ -1,7 +1,7 @@
 <?= Form::open([
     'data-request' => $this->getEventHandler('onAddWidget'),
     'data-request-success' => "\$(this).trigger('close.oc.popup'); \$(window).trigger('oc.reportWidgetAdded')",
-    'data-popup-load-indicator' => 1,
+    'data-popup-load-indicator' => 1
 ]) ?>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="popup">&times;</button>
@@ -12,18 +12,18 @@
             <label><?= e(trans('backend::lang.dashboard.widget_label')) ?></label>
             <select class="form-control custom-select" name="className" data-placeholder="<?= e(trans('backend::lang.form.select_placeholder')) ?>">
                 <option></option>
-                <?php foreach ($widgets as $className => $widgetInfo) { ?>
+                <?php foreach ($widgets as $className => $widgetInfo):?>
                     <option value="<?= e($className) ?>"><?= isset($widgetInfo['label']) ? e(trans($widgetInfo['label'])) : $className ?></option>
-                <?php } ?>
+                <?php endforeach ?>
             </select>
         </div>
 
         <div class="form-group">
             <label><?= e(trans('backend::lang.dashboard.widget_width')) ?></label>
             <select class="form-control custom-select" name="size">
-                <?php foreach ($sizes as $size => $name) { ?>
+                <?php foreach ($sizes as $size => $name):?>
                     <option value="<?= e($size) ?>" <?= $size == 12 ? 'selected' : null ?>><?= e($name) ?></option>
-                <?php } ?>
+                <?php endforeach ?>
             </select>
         </div>
     </div>

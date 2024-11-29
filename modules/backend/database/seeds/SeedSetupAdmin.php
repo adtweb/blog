@@ -1,27 +1,21 @@
-<?php
+<?php namespace Backend\Database\Seeds;
 
-namespace Backend\Database\Seeds;
-
-use Backend\Models\User;
-use Backend\Models\UserGroup;
-use Backend\Models\UserRole;
 use Seeder;
+use Backend\Models\User;
+use Backend\Models\UserRole;
+use Backend\Models\UserGroup;
 
 class SeedSetupAdmin extends Seeder
 {
     public static $email = 'admin@example.com';
-
     public static $login = 'admin';
-
     public static $password = '';
-
     public static $firstName = 'Admin';
-
     public static $lastName = 'Person';
 
     public function setDefaults($values)
     {
-        if (! is_array($values)) {
+        if (!is_array($values)) {
             return;
         }
         foreach ($values as $attribute => $value) {
@@ -47,20 +41,20 @@ class SeedSetupAdmin extends Seeder
             'name' => 'Owners',
             'code' => UserGroup::CODE_OWNERS,
             'description' => 'Default group for website owners.',
-            'is_new_user_default' => false,
+            'is_new_user_default' => false
         ]);
 
         $user = User::create([
-            'email' => static::$email,
-            'login' => static::$login,
-            'password' => static::$password,
+            'email'                 => static::$email,
+            'login'                 => static::$login,
+            'password'              => static::$password,
             'password_confirmation' => static::$password,
-            'first_name' => static::$firstName,
-            'last_name' => static::$lastName,
-            'permissions' => [],
-            'is_superuser' => true,
-            'is_activated' => true,
-            'role_id' => $role->id,
+            'first_name'            => static::$firstName,
+            'last_name'             => static::$lastName,
+            'permissions'           => [],
+            'is_superuser'          => true,
+            'is_activated'          => true,
+            'role_id'               => $role->id
         ]);
 
         $user->addGroup($group);

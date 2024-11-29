@@ -2,12 +2,12 @@
     <h4><?= e(trans('cms::lang.theme_log.id_label')) ?></h4>
     <p>#<?= e($formModel->id) ?></p>
 </div>
-<?php if ($formModel->user) { ?>
+<?php if ($formModel->user): ?>
     <div class="scoreboard-item title-value">
         <h4><?= e(trans('cms::lang.theme_log.user')) ?></h4>
         <p><?= e($formModel->user->full_name) ?></p>
     </div>
-<?php } ?>
+<?php endif ?>
 <div class="scoreboard-item title-value">
     <h4><?= e(trans('cms::lang.theme_log.created_at')) ?></h4>
     <p><?= Backend::dateTime($formModel->created_at) ?></p>

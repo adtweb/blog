@@ -1,16 +1,15 @@
-<?php
+<?php namespace System\Models;
 
-namespace System\Models;
-
-use Backend\Controllers\Files;
+use Url;
 use Config;
 use Storage;
-use Url;
 use Winter\Storm\Database\Attach\File as FileBase;
+use Backend\Controllers\Files;
 
 /**
  * File attachment model
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class File extends FileBase
@@ -26,10 +25,10 @@ class File extends FileBase
     public function getThumb($width, $height, $options = [])
     {
         $url = '';
-        $width = ! empty($width) ? $width : 0;
-        $height = ! empty($height) ? $height : 0;
+        $width = !empty($width) ? $width : 0;
+        $height = !empty($height) ? $height : 0;
 
-        if (! $this->isPublic() && class_exists(Files::class)) {
+        if (!$this->isPublic() && class_exists(Files::class)) {
             $options = $this->getDefaultThumbOptions($options);
             // Ensure that the thumb exists first
             parent::getThumb($width, $height, $options);
@@ -49,7 +48,7 @@ class File extends FileBase
     public function getPath($fileName = null)
     {
         $url = '';
-        if (! $this->isPublic() && class_exists(Files::class)) {
+        if (!$this->isPublic() && class_exists(Files::class)) {
             $url = Files::getDownloadUrl($this);
         } else {
             $url = parent::getPath($fileName);
@@ -67,11 +66,12 @@ class File extends FileBase
 
         if ($this->isPublic()) {
             $uploadsPath .= '/public';
-        } else {
+        }
+        else {
             $uploadsPath .= '/protected';
         }
 
-        return Url::asset($uploadsPath).'/';
+        return Url::asset($uploadsPath) . '/';
     }
 
     /**
@@ -82,15 +82,14 @@ class File extends FileBase
         $uploadsFolder = Config::get('cms.storage.uploads.folder');
 
         if ($this->isPublic()) {
-            return $uploadsFolder.'/public/';
+            return $uploadsFolder . '/public/';
         }
 
-        return $uploadsFolder.'/protected/';
+        return $uploadsFolder . '/protected/';
     }
 
     /**
      * Returns the storage disk the file is stored on
-     *
      * @return FilesystemAdapter
      */
     public function getDisk()

@@ -2,9 +2,9 @@
     <div class="icon-wrapper">
         <?php
             $itemIconClass = $this->itemTypeToIconClass($item, $itemType);
-$extension = substr(strtolower(pathinfo($item->path, PATHINFO_EXTENSION)), 0, 4) ?? '???';
+            $extension = substr(strtolower(pathinfo($item->path, PATHINFO_EXTENSION)), 0, 4) ?? '???';
 
-if ($itemIconClass == 'icon-file') { ?>
+        if ($itemIconClass == 'icon-file'): ?>
             <svg class="file-icon" viewBox="0 0 250 250" xml:space="preserve">
                 <path d="M62.5,0c-8.594,0 -15.625,7.031 -15.625,15.625l0,218.75c0,8.594 7.031,15.625 15.625,15.625l156.25,0c8.594,0 15.625,-7.031 15.625,-15.625l0,-171.875l-62.5,-62.5l-109.375,0Z" style="fill:#e2e5e7;fill-rule:nonzero;"/>
                 <path d="M187.5,62.5l46.875,0l-62.5,-62.5l0,46.875c0,8.594 7.031,15.625 15.625,15.625Z" style="fill:#b0b7bd;fill-rule:nonzero;"/>
@@ -15,16 +15,16 @@ if ($itemIconClass == 'icon-file') { ?>
                 <!-- Extension text node -->
                 <text class="file-icon-extension" x="43%" y="170px" dominant-baseline="middle" text-anchor="middle"><?= strtoupper($extension) ?></text>
             </svg>
-        <?php } else { ?>
+        <?php else :?>
             <i class="<?= $itemIconClass ?>"></i>
-        <?php } ?>
+        <?php endif ?>
     </div>
     <?php if (
         $itemType == System\Classes\MediaLibraryItem::FILE_TYPE_IMAGE
         && $thumbnailUrl = $this->getResizedImageUrl($item->path, $thumbnailParams)
-    ) { ?>
+    ): ?>
         <div>
-            <?php if (! $thumbnailUrl) { ?>
+            <?php if (!$thumbnailUrl): ?>
                 <div
                     class="image-placeholder"
                     data-width="<?= $thumbnailParams['width'] ?>"
@@ -35,11 +35,11 @@ if ($itemIconClass == 'icon-file') { ?>
                 >
                     <div class="icon-wrapper"><i class="<?= $this->itemTypeToIconClass($item, $itemType) ?>"></i></div>
                 </div>
-            <?php } else { ?>
+            <?php else: ?>
                 <?= $this->makePartial('thumbnail-image', [
                     'imageUrl' => $thumbnailUrl,
                 ]) ?>
-            <?php } ?>
+            <?php endif ?>
         </div>
-    <?php } ?>
+    <?php endif ?>
 </div>

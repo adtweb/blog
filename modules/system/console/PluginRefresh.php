@@ -1,9 +1,7 @@
-<?php
+<?php namespace System\Console;
 
-namespace System\Console;
-
-use System\Classes\UpdateManager;
 use Winter\Storm\Console\Command;
+use System\Classes\UpdateManager;
 
 /**
  * Console command to refresh a plugin.
@@ -11,12 +9,13 @@ use Winter\Storm\Console\Command;
  * This destroys all database tables for a specific plugin, then builds them up again.
  * It is a great way for developers to debug and develop new plugins.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PluginRefresh extends Command
 {
-    use Traits\HasPluginArgument;
     use \Winter\Storm\Console\Traits\ConfirmsWithInput;
+    use Traits\HasPluginArgument;
 
     /**
      * @var string|null The default command name for lazy loading.
@@ -42,7 +41,7 @@ class PluginRefresh extends Command
     {
         $pluginName = $this->getPluginIdentifier();
 
-        if (! $this->confirmWithInput(
+        if (!$this->confirmWithInput(
             "This will completely remove and reinstall $pluginName. This may result in potential data loss.",
             $pluginName
         )) {

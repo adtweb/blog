@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Twig;
+<?php namespace Cms\Twig;
 
 use Twig\Node\Node as TwigNode;
 use Twig\Token as TwigToken;
@@ -9,6 +7,7 @@ use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
 /**
  * Parser for the {% flash %} Twig tag.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class FlashTokenParser extends TwigTokenParser
@@ -16,7 +15,8 @@ class FlashTokenParser extends TwigTokenParser
     /**
      * Parses a token and returns a node.
      *
-     * @param  TwigToken  $token  A TwigToken instance
+     * @param TwigToken $token A TwigToken instance
+     *
      * @return TwigNode A TwigNode instance
      */
     public function parse(TwigToken $token)
@@ -26,7 +26,8 @@ class FlashTokenParser extends TwigTokenParser
 
         if ($token = $stream->nextIf(TwigToken::NAME_TYPE)) {
             $name = $token->getValue();
-        } else {
+        }
+        else {
             $name = 'all';
         }
         $stream->expect(TwigToken::BLOCK_END_TYPE);

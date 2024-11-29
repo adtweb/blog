@@ -5,10 +5,10 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
-    <?php if ($hasCustomData) { ?>
-        <?= Form::open(['class' => 'layout']) ?>
+    <?php if ($hasCustomData): ?>
+        <?= Form::open(['class'=>'layout']) ?>
 
             <div class="layout-row">
                 <?= $this->formRender() ?>
@@ -54,17 +54,17 @@
 
         <?= Form::close() ?>
 
-    <?php } else { ?>
+    <?php else: ?>
         <div class="callout callout-info">
             <div class="content">
                 <p>There are no theme options available to customize.</p>
             </div>
         </div>
-    <?php } ?>
+    <?php endif ?>
 
-<?php } else { ?>
+<?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
     <p><a href="<?= Backend::url('cms/themes') ?>" class="btn btn-default"><?= e(trans('cms::lang.theme.return')) ?></a></p>
 
-<?php } ?>
+<?php endif ?>

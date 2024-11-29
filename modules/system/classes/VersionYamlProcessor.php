@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Classes;
+<?php namespace System\Classes;
 
 use Winter\Storm\Parse\Processor\YamlProcessor;
 
@@ -16,7 +14,7 @@ use Winter\Storm\Parse\Processor\YamlProcessor;
 class VersionYamlProcessor extends YamlProcessor
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function preprocess($text)
     {
@@ -25,7 +23,7 @@ class VersionYamlProcessor extends YamlProcessor
         foreach ($lines as $num => &$line) {
             // Surround array keys with quotes if not already
             $line = preg_replace_callback('/^\s*([\'"]{0}[^\'"\n\r\-:]+[\'"]{0})\s*:/m', function ($matches) {
-                return '"'.trim($matches[1]).'":';
+                return '"' . trim($matches[1]) . '":';
             }, rtrim($line));
 
             // Add quotes around any unquoted text following an array key
@@ -33,8 +31,7 @@ class VersionYamlProcessor extends YamlProcessor
             $line = preg_replace_callback('/^\s*([^\n\r\-:]+)\s*: +(?![\'"\s])(.*)/m', function ($matches) {
                 $key = $matches[1];
                 $value = str_replace('"', '\\"', $matches[2]);
-
-                return $key.': "'.$value.'"';
+                return $key . ': "' . $value . '"';
             }, $line);
 
             // If this line is the continuance of a multi-line string, remove the quote from the previous line and
@@ -51,8 +48,7 @@ class VersionYamlProcessor extends YamlProcessor
             $line = preg_replace_callback('/^(\s*-\s*)(?![\'" ])(.*)/m', function ($matches) {
                 $array = $matches[1];
                 $value = str_replace('"', '\\"', $matches[2]);
-
-                return $array.'"'.$value.'"';
+                return $array . '"' . $value . '"';
             }, $line);
         }
 
@@ -62,7 +58,7 @@ class VersionYamlProcessor extends YamlProcessor
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function process($parsed)
     {

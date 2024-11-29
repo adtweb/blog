@@ -1,3 +1,3 @@
-<?php foreach ($scopes as $scope) { ?>
+<?php foreach ($scopes as $scope): ?>
     <?= $this->renderScopeElement($scope) ?>
-<?php } ?>
+<?php endforeach ?>

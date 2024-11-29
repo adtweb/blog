@@ -1,11 +1,9 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use File;
-use System\Classes\PluginManager;
-use System\Classes\UpdateManager;
 use Winter\Storm\Console\Command;
+use System\Classes\UpdateManager;
+use System\Classes\PluginManager;
 
 /**
  * Console command to remove a plugin.
@@ -13,12 +11,13 @@ use Winter\Storm\Console\Command;
  * This completely deletes an existing plugin, including database tables, files
  * and directories.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PluginRemove extends Command
 {
-    use Traits\HasPluginArgument;
     use \Winter\Storm\Console\Traits\ConfirmsWithInput;
+    use Traits\HasPluginArgument;
 
     /**
      * @var string Suggest all plugins
@@ -52,18 +51,18 @@ class PluginRemove extends Command
         $pluginManager = PluginManager::instance();
 
         $confirmQuestion = sprintf('This will remove the files for the "%s" plugin.', $pluginName);
-        if (! $this->option('no-rollback')) {
+        if (!$this->option('no-rollback')) {
             $confirmQuestion = sprintf('This will remove the database tables and files for the "%s" plugin.', $pluginName);
         }
 
-        if (! $this->confirmWithInput(
+        if (!$this->confirmWithInput(
             $confirmQuestion,
             $pluginName
         )) {
             return 1;
         }
 
-        if (! $this->option('no-rollback')) {
+        if (!$this->option('no-rollback')) {
             /*
             * Rollback plugin
             */

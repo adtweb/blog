@@ -14,6 +14,7 @@ Event::listen('system.route', function () {
      *     Event::listen('cms.beforeRoute', function () {
      *         // your code here
      *     });
+     *
      */
     $result = Event::fire('cms.beforeRoute', [], true);
     if ($result === false) {
@@ -34,6 +35,7 @@ Event::listen('system.route', function () {
      *     Event::listen('cms.route', function () {
      *         // your code here
      *     });
+     *
      */
     Event::fire('cms.route');
 }, PHP_INT_MIN);

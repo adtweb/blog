@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Console;
+<?php namespace Cms\Console;
 
 use InvalidArgumentException;
 use Winter\Storm\Scaffold\GeneratorCommand;
@@ -94,8 +92,8 @@ class CreateTheme extends GeneratorCommand
     {
         $scaffold = $this->argument('scaffold') ?? 'less';
         $validOptions = $this->suggestScaffoldValues();
-        if (! in_array($scaffold, $validOptions)) {
-            throw new InvalidArgumentException("$scaffold is not an available theme scaffold type (Available types: ".implode(', ', $validOptions).')');
+        if (!in_array($scaffold, $validOptions)) {
+            throw new InvalidArgumentException("$scaffold is not an available theme scaffold type (Available types: " . implode(', ', $validOptions) . ')');
         }
         $this->stubs = $this->themeScaffolds[$scaffold];
 
@@ -123,15 +121,15 @@ class CreateTheme extends GeneratorCommand
     /**
      * Make a single stub.
      *
-     * @param  string  $stubName  The source filename for the stub.
+     * @param string $stubName The source filename for the stub.
      */
     public function makeStub($stubName)
     {
-        if (! isset($this->stubs[$stubName])) {
+        if (!isset($this->stubs[$stubName])) {
             return;
         }
 
-        $sourceFile = $this->getSourcePath().'/'.$stubName;
+        $sourceFile = $this->getSourcePath() . '/' . $stubName;
         $destinationFile = $this->getDestinationForStub($stubName);
         $destinationContent = $this->files->get($sourceFile);
 
@@ -140,8 +138,8 @@ class CreateTheme extends GeneratorCommand
          * @NOTE: CANNOT USE TWIG AS IT WOULD CONFLICT WITH THE TWIG TEMPLATES THEMSELVES
          */
         foreach ($this->vars as $key => $var) {
-            $destinationContent = str_replace('{{'.$key.'}}', $var, $destinationContent);
-            $destinationFile = str_replace('{{'.$key.'}}', $var, $destinationFile);
+            $destinationContent = str_replace('{{' . $key . '}}', $var, $destinationContent);
+            $destinationFile = str_replace('{{' . $key . '}}', $var, $destinationFile);
         }
 
         $this->makeDirectory($destinationFile);

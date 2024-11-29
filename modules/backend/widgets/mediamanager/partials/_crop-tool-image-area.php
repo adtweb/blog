@@ -1,9 +1,9 @@
 <div class="layout" 
     data-control="media-manager-crop-tool"
-    <?php if ($dimensions) { ?>
+    <?php if ($dimensions): ?>
     data-image-width="<?= $dimensions[0] ?>"
     data-image-height="<?= $dimensions[1] ?>"
-    <?php } ?>
+    <?php endif ?>
 >
     <div class="layout-row min-size ruler-container horizontal hide">
         <div class="layout-cell">

@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Twig;
+<?php namespace Cms\Twig;
 
 use Twig\Token as TwigToken;
 use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
@@ -8,12 +6,13 @@ use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
 /**
  * Parser for the `{% snowboard %}` Twig tag.
  *
+ * @package winter\wn-cms-module
  * @author Winter CMS
  */
 class SnowboardTokenParser extends TwigTokenParser
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function parse(TwigToken $token)
     {
@@ -52,7 +51,7 @@ class SnowboardTokenParser extends TwigTokenParser
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getTag()
     {

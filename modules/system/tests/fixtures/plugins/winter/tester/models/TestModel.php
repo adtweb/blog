@@ -1,6 +1,4 @@
-<?php
-
-namespace Winter\Tester\Models;
+<?php namespace Winter\Tester\Models;
 
 use Model;
 
@@ -15,15 +13,15 @@ class TestModel extends Model
     ];
 
     public $belongsTo = [
-        'user' => TestUser::class,
+        'user' => TestUser::class
     ];
 
     public $hasOne = [
-        'phone' => TestPhone::class,
+        'phone' => TestPhone::class
     ];
 
     public $morphTo = [
-        'taggable' => [],
+        'taggable' => []
     ];
 
     public $rules = [
@@ -32,6 +30,10 @@ class TestModel extends Model
     ];
 }
 
-class TestUser extends Model {}
+class TestUser extends Model
+{
+}
 
-class TestPhone extends Model {}
+class TestPhone extends Model
+{
+}

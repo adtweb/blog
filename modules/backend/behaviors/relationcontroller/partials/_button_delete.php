@@ -1,4 +1,4 @@
-<?php if ($relationViewMode == 'single') { ?>
+<?php if ($relationViewMode == 'single'): ?>
     <button
         class="btn btn-sm btn-secondary wn-icon-trash-o"
         data-request="onRelationButtonDelete"
@@ -7,7 +7,7 @@
         data-stripe-load-indicator>
         <?= e(trans($text)) ?>
     </button>
-<?php } else { ?>
+<?php else: ?>
     <button
         class="btn btn-sm btn-secondary wn-icon-trash-o"
         onclick="$(this).data('request-data', {
@@ -23,4 +23,4 @@
         data-stripe-load-indicator>
         <?= e(trans($text)) ?>
     </button>
-<?php } ?>
+<?php endif ?>

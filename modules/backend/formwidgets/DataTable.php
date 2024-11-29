@@ -1,17 +1,16 @@
-<?php
+<?php namespace Backend\FormWidgets;
 
-namespace Backend\FormWidgets;
-
-use ApplicationException;
-use Backend\Classes\FormWidgetBase;
-use Backend\Widgets\Table;
 use Lang;
+use Backend\Widgets\Table;
+use Backend\Classes\FormWidgetBase;
 use Winter\Storm\Html\Helper as HtmlHelper;
+use ApplicationException;
 
 /**
  * Data Table
  * Renders a table field.
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class DataTable extends FormWidgetBase
@@ -27,7 +26,6 @@ class DataTable extends FormWidgetBase
 
     /**
      * @var bool Allow rows to be sorted
-     *
      * @todo Not implemented...
      */
     public $rowSorting = false;
@@ -37,7 +35,7 @@ class DataTable extends FormWidgetBase
     //
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'datatable';
 
@@ -47,7 +45,7 @@ class DataTable extends FormWidgetBase
     protected $table;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -61,7 +59,7 @@ class DataTable extends FormWidgetBase
     }
 
     /**
-     * @return Backend\Widgets\Table The table to be displayed.
+     * @return Backend\Widgets\Table   The table to be displayed.
      */
     public function getTable()
     {
@@ -69,12 +67,11 @@ class DataTable extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('datatable');
     }
 
@@ -90,7 +87,7 @@ class DataTable extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getLoadValue()
     {
@@ -106,7 +103,7 @@ class DataTable extends FormWidgetBase
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSaveValue($value)
     {
@@ -153,10 +150,10 @@ class DataTable extends FormWidgetBase
 
         $config->dataSource = 'client';
         if (isset($this->getParentForm()->arrayName)) {
-            $config->alias = studly_case(HtmlHelper::nameToId($this->getParentForm()->arrayName.'['.$this->fieldName.']')).'datatable';
-            $config->fieldName = $this->getParentForm()->arrayName.'['.$this->fieldName.']';
+            $config->alias = studly_case(HtmlHelper::nameToId($this->getParentForm()->arrayName . '[' . $this->fieldName . ']')) . 'datatable';
+            $config->fieldName = $this->getParentForm()->arrayName . '[' . $this->fieldName . ']';
         } else {
-            $config->alias = studly_case(HtmlHelper::nameToId($this->fieldName)).'datatable';
+            $config->alias = studly_case(HtmlHelper::nameToId($this->fieldName)) . 'datatable';
             $config->fieldName = $this->fieldName;
         }
 
@@ -173,21 +170,21 @@ class DataTable extends FormWidgetBase
      * Looks at the model for getXXXDataTableOptions or getDataTableOptions methods
      * to obtain values for autocomplete and dropdown column types.
      *
-     * @param  string  $columnName  The name of the column to pass through to the callback.
-     * @param  array  $rowData  The data provided for the current row in the datatable.
+     * @param string $columnName The name of the column to pass through to the callback.
+     * @param array $rowData The data provided for the current row in the datatable.
      * @return array The options to make available to the dropdown or autocomplete, in format ["value" => "label"]
      */
     public function getDataTableOptions($columnName, $rowData)
     {
-        $methodName = 'get'.studly_case($this->fieldName).'DataTableOptions';
+        $methodName = 'get' . studly_case($this->fieldName) . 'DataTableOptions';
 
-        if (! $this->model->methodExists($methodName) && ! $this->model->methodExists('getDataTableOptions')) {
+        if (!$this->model->methodExists($methodName) && !$this->model->methodExists('getDataTableOptions')) {
             throw new ApplicationException(
                 Lang::get(
                     'backend::lang.model.missing_method',
                     [
                         'class' => get_class($this->model),
-                        'method' => 'getDataTableOptions',
+                        'method' => 'getDataTableOptions'
                     ]
                 )
             );
@@ -199,7 +196,7 @@ class DataTable extends FormWidgetBase
             $result = $this->model->getDataTableOptions($this->fieldName, $columnName, $rowData);
         }
 
-        if (! is_array($result)) {
+        if (!is_array($result)) {
             $result = [];
         }
 

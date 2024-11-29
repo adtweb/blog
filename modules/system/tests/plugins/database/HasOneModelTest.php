@@ -2,19 +2,19 @@
 
 namespace System\Tests\Plugins\Database;
 
+use System\Tests\Bootstrap\PluginTestCase;
 use Database\Tester\Models\Author;
 use Database\Tester\Models\Phone;
 use Model;
-use System\Tests\Bootstrap\PluginTestCase;
 
 class HasOneModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/Phone.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Author.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/Phone.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }

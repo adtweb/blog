@@ -1,17 +1,16 @@
-<?php
+<?php namespace System\Models;
 
-namespace System\Models;
-
-use ApplicationException;
-use File as FileHelper;
+use View;
 use Model;
 use System\Classes\MailManager;
-use View;
 use Winter\Storm\Mail\MailParser;
+use ApplicationException;
+use File as FileHelper;
 
 /**
  * Mail layout
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailLayout extends Model
@@ -37,16 +36,16 @@ class MailLayout extends Model
      * @var array Validation rules
      */
     public $rules = [
-        'code' => 'required|unique:system_mail_layouts',
-        'name' => 'required',
-        'content_html' => 'required',
+        'code'                  => 'required|unique:system_mail_layouts',
+        'name'                  => 'required',
+        'content_html'          => 'required',
     ];
 
     /**
      * @var array Options array
      */
     protected $jsonable = [
-        'options',
+        'options'
     ];
 
     public static $codeCache;
@@ -55,7 +54,6 @@ class MailLayout extends Model
      * Fired before the model is deleted.
      *
      * @return void
-     *
      * @throws ApplicationException if the template is locked
      */
     public function beforeDelete()
@@ -82,7 +80,7 @@ class MailLayout extends Model
     /**
      * Return the ID of a MailLayout instance from a defined code.
      *
-     * @param  string  $code
+     * @param string $code
      * @return string
      */
     public static function getIdFromCode($code)
@@ -93,14 +91,14 @@ class MailLayout extends Model
     /**
      * Find a MailLayout instance by its code or create a new instance from the view file.
      *
-     * @param  string  $code
+     * @param string $code
      * @return MailLayout
      */
     public static function findOrMakeLayout($code)
     {
         $layout = self::whereCode($code)->first();
 
-        if (! $layout && View::exists($code)) {
+        if (!$layout && View::exists($code)) {
             $layout = new self;
             $layout->code = $code;
             $layout->fillFromView($code);
@@ -136,9 +134,8 @@ class MailLayout extends Model
     /**
      * Fill model using a view file retrieved by code.
      *
-     * @param  string|null  $code
+     * @param string|null $code
      * @return void
-     *
      * @throws ApplicationException if a layout with the defined code is not registered.
      */
     public function fillFromCode($code = null)
@@ -149,7 +146,7 @@ class MailLayout extends Model
             $code = $this->code;
         }
 
-        if (! $definition = array_get($definitions, $code)) {
+        if (!$definition = array_get($definitions, $code)) {
             throw new ApplicationException('Unable to find a registered layout with code: '.$code);
         }
 
@@ -159,7 +156,7 @@ class MailLayout extends Model
     /**
      * Fill model using a view file retrieved by path.
      *
-     * @param  string  $path
+     * @param string $path
      * @return void
      */
     public function fillFromView($path)
@@ -193,16 +190,15 @@ class MailLayout extends Model
     /**
      * Get section array from a view file retrieved by code.
      *
-     * @param  string  $code
+     * @param string $code
      * @return array|null
      */
     protected static function getTemplateSections($code)
     {
-        if (! View::exists($code)) {
+        if (!View::exists($code)) {
             return null;
         }
         $view = View::make($code);
-
         return MailParser::parse(FileHelper::get($view->getPath()));
     }
 }

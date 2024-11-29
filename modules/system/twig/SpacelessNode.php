@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Twig;
+<?php namespace System\Twig;
 
 use Twig\Compiler;
 use Twig\Node\Node;
@@ -25,7 +23,8 @@ class SpacelessNode extends Node implements NodeOutputInterface
     public function compile(Compiler $compiler)
     {
         $compiler
-            ->addDebugInfo($this);
+            ->addDebugInfo($this)
+        ;
         if ($compiler->getEnvironment()->isDebug()) {
             $compiler->write("ob_start();\n");
         } else {
@@ -33,6 +32,7 @@ class SpacelessNode extends Node implements NodeOutputInterface
         }
         $compiler
             ->subcompile($this->getNode('body'))
-            ->write("echo trim(preg_replace('/>\s+</', '><', ob_get_clean()));\n");
+            ->write("echo trim(preg_replace('/>\s+</', '><', ob_get_clean()));\n")
+        ;
     }
 }

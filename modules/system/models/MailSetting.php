@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Models;
+<?php namespace System\Models;
 
 use App;
 use Model;
@@ -8,25 +6,23 @@ use Model;
 /**
  * Mail settings
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailSetting extends Model
 {
     use \Winter\Storm\Database\Traits\Validation;
 
-    const MODE_LOG = 'log';
-
-    const MODE_MAIL = 'mail';
-
-    const MODE_SENDMAIL = 'sendmail';
-
-    const MODE_SMTP = 'smtp';
+    const MODE_LOG       = 'log';
+    const MODE_MAIL      = 'mail';
+    const MODE_SENDMAIL  = 'sendmail';
+    const MODE_SMTP      = 'smtp';
 
     /**
      * @var array Behaviors implemented by this model.
      */
     public $implement = [
-        \System\Behaviors\SettingsModel::class,
+        \System\Behaviors\SettingsModel::class
     ];
 
     /**
@@ -43,14 +39,13 @@ class MailSetting extends Model
      * Validation rules
      */
     public $rules = [
-        'sender_name' => 'required',
-        'sender_email' => 'required|email',
+        'sender_name'  => 'required',
+        'sender_email' => 'required|email'
     ];
 
     /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
-     *
      * @return void
      */
     public function initSettingsData()
@@ -74,16 +69,16 @@ class MailSetting extends Model
         $this->smtp_port = array_get($mailers['smtp'], 'port', 587);
         $this->smtp_user = array_get($mailers['smtp'], 'username');
         $this->smtp_password = array_get($mailers['smtp'], 'password');
-        $this->smtp_authorization = (bool) strlen($this->smtp_user);
+        $this->smtp_authorization = !!strlen($this->smtp_user);
     }
 
     public function getSendModeOptions()
     {
         return [
-            static::MODE_LOG => 'system::lang.mail.log_file',
-            static::MODE_MAIL => 'system::lang.mail.php_mail',
+            static::MODE_LOG      => 'system::lang.mail.log_file',
+            static::MODE_MAIL     => 'system::lang.mail.php_mail',
             static::MODE_SENDMAIL => 'system::lang.mail.sendmail',
-            static::MODE_SMTP => 'system::lang.mail.smtp',
+            static::MODE_SMTP     => 'system::lang.mail.smtp',
         ];
     }
 
@@ -103,7 +98,8 @@ class MailSetting extends Model
                 if ($settings->smtp_authorization) {
                     $config->set('mail.mailers.smtp.username', $settings->smtp_user);
                     $config->set('mail.mailers.smtp.password', $settings->smtp_password);
-                } else {
+                }
+                else {
                     $config->set('mail.mailers.smtp.username', null);
                     $config->set('mail.mailers.smtp.password', null);
                 }
@@ -120,13 +116,13 @@ class MailSetting extends Model
      *
      * We use this to show smtp credential fields only for smtp mode and when smtp authorization is required.
      *
-     * @param  array  $fields
-     * @param  string|null  $context
+     * @param array $fields
+     * @param string|null $context
      * @return void
      */
     public function filterFields($fields, $context = null)
     {
-        $hideAuth = $fields->send_mode->value !== 'smtp' || ! $fields->smtp_authorization->value;
+        $hideAuth = $fields->send_mode->value !== 'smtp' || !$fields->smtp_authorization->value;
 
         if (isset($fields->smtp_user)) {
             $fields->smtp_user->hidden = $hideAuth;

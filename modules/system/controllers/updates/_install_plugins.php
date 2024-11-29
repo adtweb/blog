@@ -32,13 +32,13 @@
                     <small>(<span class="product-counter"><?= count($installedPlugins) ?></span>)</small>
                 </h4>
 
-                <?php if (! count($installedPlugins)) { ?>
+                <?php if (!count($installedPlugins)): ?>
                     <div class="product-list-empty">
                         <p><?= e(trans('system::lang.plugins.no_plugins')) ?></p>
                     </div>
-                <?php } else { ?>
+                <?php else: ?>
                     <ul class="product-list plugin-list">
-                        <?php foreach ($installedPlugins as $plugin) { ?>
+                        <?php foreach ($installedPlugins as $plugin): ?>
 
                             <li data-code="<?= $plugin['code'] ?>">
                                 <div class="image">
@@ -60,9 +60,9 @@
                                 </button>
                             </li>
 
-                        <?php } ?>
+                        <?php endforeach ?>
                     </ul>
-                <?php } ?>
+                <?php endif ?>
 
             </div>
 

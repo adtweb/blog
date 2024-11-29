@@ -1,10 +1,8 @@
-<?php
+<?php namespace System\Classes;
 
-namespace System\Classes;
-
-use ApplicationException;
-use Config;
 use Http;
+use Config;
+use ApplicationException;
 use Winter\Storm\Argon\Argon;
 
 /**
@@ -17,6 +15,7 @@ use Winter\Storm\Argon\Argon;
  * Since Winter CMS v1.1.1, a forks manifest is also used to determine at which point we forked a branch off to a new
  * major release. This allows us to track concurrent histories - ie. the 1.0.x history vs. the 1.1.x history.
  *
+ * @package winter\wn-system-module
  * @author Ben Thomson
  */
 class SourceManifest
@@ -44,7 +43,7 @@ class SourceManifest
     /**
      * Constructor
      */
-    public function __construct(?string $source = null, ?string $forks = null, bool $autoload = true)
+    public function __construct(string $source = null, string $forks = null, bool $autoload = true)
     {
         $this->setSource($source ?? Config::get(
             'cms.sourceManifestUrl',
@@ -101,12 +100,12 @@ class SourceManifest
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new ApplicationException(
-                'Unable to decode source manifest JSON data. JSON Error: '.json_last_error_msg()
+                'Unable to decode source manifest JSON data. JSON Error: ' . json_last_error_msg()
             );
         }
-        if (! isset($data['manifest']) || ! is_array($data['manifest'])) {
+        if (!isset($data['manifest']) || !is_array($data['manifest'])) {
             throw new ApplicationException(
-                'The source manifest at "'.$this->source.'" does not appear to be a valid source manifest file.'
+                'The source manifest at "' . $this->source . '" does not appear to be a valid source manifest file.'
             );
         }
 
@@ -145,12 +144,12 @@ class SourceManifest
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new ApplicationException(
-                'Unable to decode forked version manifest JSON data. JSON Error: '.json_last_error_msg()
+                'Unable to decode forked version manifest JSON data. JSON Error: ' . json_last_error_msg()
             );
         }
-        if (! isset($data['forks']) || ! is_array($data['forks'])) {
+        if (!isset($data['forks']) || !is_array($data['forks'])) {
             throw new ApplicationException(
-                'The forked version manifest at "'.$this->forksUrl.'" does not appear to be a valid forked version
+                'The forked version manifest at "' . $this->forksUrl . '" does not appear to be a valid forked version
                 manifest file.'
             );
         }
@@ -169,14 +168,14 @@ class SourceManifest
      * Changes between builds are calculated and stored with the build. Builds are stored in order of semantic
      * versioning: ie. 1.1.1 > 1.1.0 > 1.0.468
      *
-     * @param  int  $build  Build number.
-     * @param  FileManifest  $manifest  The file manifest to add as a build.
+     * @param integer $build Build number.
+     * @param FileManifest $manifest The file manifest to add as a build.
      */
     public function addBuild($build, FileManifest $manifest): void
     {
         $parent = $this->determineParent($build);
 
-        if (! is_null($parent)) {
+        if (!is_null($parent)) {
             $parent = $parent['version'];
         }
 
@@ -208,7 +207,7 @@ class SourceManifest
      */
     public function generate(): string
     {
-        if (! count($this->builds)) {
+        if (!count($this->builds)) {
             throw new ApplicationException(
                 'No builds have been added to the manifest.'
             );
@@ -216,7 +215,7 @@ class SourceManifest
 
         $json = [
             '_description' => 'This is the source manifest of changes to Winter CMS for each version. This is used to'
-                .' determine which version of Winter CMS is in use, via the "winter:version" Artisan command.',
+                . ' determine which version of Winter CMS is in use, via the "winter:version" Artisan command.',
             '_created' => Argon::now()->toIso8601String(),
             'manifest' => [],
         ];
@@ -239,8 +238,7 @@ class SourceManifest
      * This method will list all expected files and hashsums at the specified build number. It does this by following
      * the history, switching branches as necessary.
      *
-     * @param  string|int  $build  Build version to get the filelist state for.
-     *
+     * @param string|integer $build Build version to get the filelist state for.
      * @throws ApplicationException If the specified build has not been added to the source manifest.
      */
     public function getState(mixed $build): array
@@ -249,7 +247,7 @@ class SourceManifest
             $build = $this->getVersionInt($build);
         }
 
-        if (! isset($this->builds[$build])) {
+        if (!isset($this->builds[$build])) {
             throw new \Exception('The specified build has not been added.');
         }
 
@@ -297,8 +295,8 @@ class SourceManifest
      *                  to the code = less confidence.
      *  - `changes`: If $detailed is true, this will include the list of files modified, created and deleted.
      *
-     * @param  FileManifest  $manifest  The file manifest to compare against the source.
-     * @param  bool  $detailed  If true, the list of files modified, added and deleted will be included in the result.
+     * @param FileManifest $manifest The file manifest to compare against the source.
+     * @param bool $detailed If true, the list of files modified, added and deleted will be included in the result.
      */
     public function compare(FileManifest $manifest, bool $detailed = false): array
     {
@@ -341,7 +339,7 @@ class SourceManifest
                 // Determine module
                 $module = explode('/', $file)[2];
 
-                if (! in_array($module, $availableModules)) {
+                if (!in_array($module, $availableModules)) {
                     unset($state[$file]);
                 }
             }
@@ -352,9 +350,8 @@ class SourceManifest
 
             foreach ($manifest->getFiles() as $file => $sum) {
                 // Unknown new file
-                if (! isset($state[$file])) {
+                if (!isset($state[$file])) {
                     $filesChanged[] = $file;
-
                     continue;
                 }
 
@@ -362,7 +359,6 @@ class SourceManifest
                 if ($state[$file] !== $sum) {
                     $filesFound[] = $file;
                     $filesChanged[] = $file;
-
                     continue;
                 }
 
@@ -383,7 +379,7 @@ class SourceManifest
         $details = [
             'build' => $likelyBuild,
             'modified' => true,
-            'confident' => ($buildMatch[$likelyBuild] >= 60),
+            'confident' => ($buildMatch[$likelyBuild] >= 60)
         ];
 
         if ($detailed) {
@@ -398,9 +394,9 @@ class SourceManifest
      *
      * Will return an array of added, modified and removed files.
      *
-     * @param  FileManifest  $manifest  The current build's file manifest.
-     * @param  FileManifest|string|int  $previous  Either a previous manifest, or the previous build number as an int
-     *                                             or string, used to determine changes with this build.
+     * @param FileManifest $manifest The current build's file manifest.
+     * @param FileManifest|string|integer $previous Either a previous manifest, or the previous build number as an int
+     *  or string, used to determine changes with this build.
      */
     protected function processChanges(FileManifest $manifest, mixed $previous = null): array
     {
@@ -421,9 +417,8 @@ class SourceManifest
         $modified = [];
 
         foreach ($manifest->getFiles() as $file => $sum) {
-            if (! isset($state[$file])) {
+            if (!isset($state[$file])) {
                 $added[$file] = $sum;
-
                 continue;
             } else {
                 if ($state[$file] !== $sum) {
@@ -465,7 +460,7 @@ class SourceManifest
         // If not a fork, then determine the parent by finding the nearest minor version to the build
         $parent = null;
 
-        for ($i = 1; $i <= 999; $i++) {
+        for ($i = 1; $i <= 999; ++$i) {
             if (array_key_exists($buildInt - $i, $this->builds)) {
                 $parent = $this->builds[$buildInt - $i];
                 break;
@@ -483,7 +478,7 @@ class SourceManifest
     protected function getVersionInt(string $version): int
     {
         // Get major.minor.patch versions
-        if (! preg_match('/^([0-9]+)\.([0-9]+)\.([0-9]+)/', $version, $versionParts)) {
+        if (!preg_match('/^([0-9]+)\.([0-9]+)\.([0-9]+)/', $version, $versionParts)) {
             throw new ApplicationException('Invalid version string - must be of the format "major.minor.path"');
         }
 

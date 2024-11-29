@@ -20,7 +20,7 @@ return [
         'untitled' => 'Naamloos',
         '404' => [
             'label' => 'Sorry, we kunnen deze pagina niet meer vinden.',
-            'help' => 'We hebben ons best gedaan, maar het lijkt erop dat deze pagina niet (meer) bestaat of misschien verhuisd is.',
+            'help' => "We hebben ons best gedaan, maar het lijkt erop dat deze pagina niet (meer) bestaat of misschien verhuisd is.",
             'back_link' => 'Terug naar de homepagina.',
         ],
         'access_denied' => [
@@ -644,6 +644,6 @@ return [
         'rename_popup_title' => 'Hernoemen',
         'rename_new_name' => 'Nieuwe naam',
         'move_please_select' => 'selecteer',
-        'move_button' => 'Verplaats',
+        'move_button' => 'Verplaats'
     ],
 ];

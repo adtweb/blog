@@ -1,5 +1,5 @@
-<?php if ($relationViewFilterWidget) { ?>
+<?php if ($relationViewFilterWidget): ?>
     <?= $relationViewFilterWidget->render() ?>
-<?php } ?>
+<?php endif ?>
 
 <?= $relationViewWidget->render() ?>

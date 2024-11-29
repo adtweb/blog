@@ -1,20 +1,19 @@
-<?php
-
-namespace Backend\Models;
+<?php namespace Backend\Models;
 
 use App;
-use BackendAuth;
-use Config;
-use DateTime;
-use DateTimeZone;
-use DirectoryIterator;
 use Lang;
 use Model;
+use Config;
 use Session;
+use BackendAuth;
+use DirectoryIterator;
+use DateTime;
+use DateTimeZone;
 
 /**
  * Backend preferences for the backend user
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Preference extends Model
@@ -27,7 +26,7 @@ class Preference extends Model
      * @var array Behaviors implemented by this model.
      */
     public $implement = [
-        \Backend\Behaviors\UserPreferencesModel::class,
+        \Backend\Behaviors\UserPreferencesModel::class
     ];
 
     /**
@@ -48,7 +47,6 @@ class Preference extends Model
     /**
      * Initialize the seed data for this model. This only executes when the
      * model is first created or reset to default.
-     *
      * @return void
      */
     public function initSettingsData()
@@ -76,14 +74,14 @@ class Preference extends Model
 
     /**
      * Set the application's locale based on the user preference.
-     *
      * @return void
      */
     public static function setAppLocale()
     {
         if (Session::has('locale')) {
             App::setLocale(Session::get('locale'));
-        } elseif (
+        }
+        elseif (
             ($user = BackendAuth::getUser()) &&
             ($locale = static::get('locale'))
         ) {
@@ -94,14 +92,14 @@ class Preference extends Model
 
     /**
      * Same as setAppLocale except for the fallback definition.
-     *
      * @return void
      */
     public static function setAppFallbackLocale()
     {
         if (Session::has('fallback_locale')) {
             Lang::setFallback(Session::get('fallback_locale'));
-        } elseif (
+        }
+        elseif (
             ($user = BackendAuth::getUser()) &&
             ($locale = static::get('fallback_locale'))
         ) {
@@ -131,7 +129,6 @@ class Preference extends Model
 
     /**
      * Called when this model is reset to default by the user.
-     *
      * @return void
      */
     public function resetDefault()
@@ -143,7 +140,6 @@ class Preference extends Model
 
     /**
      * Overrides the config with the user's preference.
-     *
      * @return void
      */
     public static function applyConfigValues()
@@ -160,7 +156,6 @@ class Preference extends Model
     /**
      * Attempt to extract the language from the locale,
      * otherwise use the configuration.
-     *
      * @return string
      */
     protected function getFallbackLocale($locale)
@@ -178,53 +173,52 @@ class Preference extends Model
 
     /**
      * Returns available options for the "locale" attribute.
-     *
      * @return array
      */
     public function getLocaleOptions()
     {
         $localeOptions = [
-            'ar' => [Lang::get('system::lang.locale.ar'),    'flag-sa'],
-            'be' => [Lang::get('system::lang.locale.be'),    'flag-by'],
-            'bg' => [Lang::get('system::lang.locale.bg'),    'flag-bg'],
-            'ca' => [Lang::get('system::lang.locale.ca'),    'flag-es-ct'],
-            'cs' => [Lang::get('system::lang.locale.cs'),    'flag-cz'],
-            'da' => [Lang::get('system::lang.locale.da'),    'flag-dk'],
-            'de' => [Lang::get('system::lang.locale.de'),    'flag-de'],
-            'el' => [Lang::get('system::lang.locale.el'),    'flag-gr'],
-            'en' => [Lang::get('system::lang.locale.en'),    'flag-us'],
+            'ar'    => [Lang::get('system::lang.locale.ar'),    'flag-sa'],
+            'be'    => [Lang::get('system::lang.locale.be'),    'flag-by'],
+            'bg'    => [Lang::get('system::lang.locale.bg'),    'flag-bg'],
+            'ca'    => [Lang::get('system::lang.locale.ca'),    'flag-es-ct'],
+            'cs'    => [Lang::get('system::lang.locale.cs'),    'flag-cz'],
+            'da'    => [Lang::get('system::lang.locale.da'),    'flag-dk'],
+            'de'    => [Lang::get('system::lang.locale.de'),    'flag-de'],
+            'el'    => [Lang::get('system::lang.locale.el'),    'flag-gr'],
+            'en'    => [Lang::get('system::lang.locale.en'),    'flag-us'],
             'en-au' => [Lang::get('system::lang.locale.en-au'), 'flag-au'],
             'en-ca' => [Lang::get('system::lang.locale.en-ca'), 'flag-ca'],
             'en-gb' => [Lang::get('system::lang.locale.en-gb'), 'flag-gb'],
-            'es' => [Lang::get('system::lang.locale.es'),    'flag-es'],
+            'es'    => [Lang::get('system::lang.locale.es'),    'flag-es'],
             'es-ar' => [Lang::get('system::lang.locale.es-ar'), 'flag-ar'],
-            'et' => [Lang::get('system::lang.locale.et'),    'flag-ee'],
-            'fa' => [Lang::get('system::lang.locale.fa'),    'flag-ir'],
-            'fi' => [Lang::get('system::lang.locale.fi'),    'flag-fi'],
-            'fr' => [Lang::get('system::lang.locale.fr'),    'flag-fr'],
+            'et'    => [Lang::get('system::lang.locale.et'),    'flag-ee'],
+            'fa'    => [Lang::get('system::lang.locale.fa'),    'flag-ir'],
+            'fi'    => [Lang::get('system::lang.locale.fi'),    'flag-fi'],
+            'fr'    => [Lang::get('system::lang.locale.fr'),    'flag-fr'],
             'fr-ca' => [Lang::get('system::lang.locale.fr-ca'), 'flag-ca'],
-            'hu' => [Lang::get('system::lang.locale.hu'),    'flag-hu'],
-            'id' => [Lang::get('system::lang.locale.id'),    'flag-id'],
-            'it' => [Lang::get('system::lang.locale.it'),    'flag-it'],
-            'ja' => [Lang::get('system::lang.locale.ja'),    'flag-jp'],
-            'kr' => [Lang::get('system::lang.locale.kr'),    'flag-kr'],
-            'lt' => [Lang::get('system::lang.locale.lt'),    'flag-lt'],
-            'lv' => [Lang::get('system::lang.locale.lv'),    'flag-lv'],
+            'hu'    => [Lang::get('system::lang.locale.hu'),    'flag-hu'],
+            'id'    => [Lang::get('system::lang.locale.id'),    'flag-id'],
+            'it'    => [Lang::get('system::lang.locale.it'),    'flag-it'],
+            'ja'    => [Lang::get('system::lang.locale.ja'),    'flag-jp'],
+            'kr'    => [Lang::get('system::lang.locale.kr'),    'flag-kr'],
+            'lt'    => [Lang::get('system::lang.locale.lt'),    'flag-lt'],
+            'lv'    => [Lang::get('system::lang.locale.lv'),    'flag-lv'],
             'nb-no' => [Lang::get('system::lang.locale.nb-no'), 'flag-no'],
-            'nl' => [Lang::get('system::lang.locale.nl'),    'flag-nl'],
-            'pl' => [Lang::get('system::lang.locale.pl'),    'flag-pl'],
+            'nl'    => [Lang::get('system::lang.locale.nl'),    'flag-nl'],
+            'pl'    => [Lang::get('system::lang.locale.pl'),    'flag-pl'],
             'pt-br' => [Lang::get('system::lang.locale.pt-br'), 'flag-br'],
             'pt-pt' => [Lang::get('system::lang.locale.pt-pt'), 'flag-pt'],
-            'ro' => [Lang::get('system::lang.locale.ro'),    'flag-ro'],
-            'rs' => [Lang::get('system::lang.locale.rs'),    'flag-rs'],
-            'ru' => [Lang::get('system::lang.locale.ru'),    'flag-ru'],
-            'sk' => [Lang::get('system::lang.locale.sk'),    'flag-sk'],
-            'sl' => [Lang::get('system::lang.locale.sl'),    'flag-si'],
-            'sv' => [Lang::get('system::lang.locale.sv'),    'flag-se'],
-            'th' => [Lang::get('system::lang.locale.th'),    'flag-th'],
-            'tr' => [Lang::get('system::lang.locale.tr'),    'flag-tr'],
-            'uk' => [Lang::get('system::lang.locale.uk'),    'flag-ua'],
-            'vn' => [Lang::get('system::lang.locale.vn'),    'flag-vn'],
+            'ro'    => [Lang::get('system::lang.locale.ro'),    'flag-ro'],
+            'rs'    => [Lang::get('system::lang.locale.rs'),    'flag-rs'],
+            'ru'    => [Lang::get('system::lang.locale.ru'),    'flag-ru'],
+            'sk'    => [Lang::get('system::lang.locale.sk'),    'flag-sk'],
+            'sl'    => [Lang::get('system::lang.locale.sl'),    'flag-si'],
+            'sv'    => [Lang::get('system::lang.locale.sv'),    'flag-se'],
+            'th'    => [Lang::get('system::lang.locale.th'),    'flag-th'],
+            'tr'    => [Lang::get('system::lang.locale.tr'),    'flag-tr'],
+            'uk'    => [Lang::get('system::lang.locale.uk'),    'flag-ua'],
+            'vn'    => [Lang::get('system::lang.locale.vn'),    'flag-vn'],
             'zh-cn' => [Lang::get('system::lang.locale.zh-cn'), 'flag-cn'],
             'zh-tw' => [Lang::get('system::lang.locale.zh-tw'), 'flag-tw'],
         ];
@@ -239,7 +233,6 @@ class Preference extends Model
 
     /**
      * Returns all available timezone options.
-     *
      * @return array
      */
     public function getTimezoneOptions()
@@ -253,7 +246,7 @@ class Preference extends Model
 
             $tempTimezones[] = [
                 'offset' => (int) $currentTimezone->getOffset($utcTime),
-                'identifier' => $timezoneIdentifier,
+                'identifier' => $timezoneIdentifier
             ];
         }
 
@@ -268,7 +261,7 @@ class Preference extends Model
         foreach ($tempTimezones as $tz) {
             $sign = $tz['offset'] > 0 ? '+' : '-';
             $offset = gmdate('H:i', abs($tz['offset']));
-            $timezoneList[$tz['identifier']] = '(UTC '.$sign.$offset.') '.$tz['identifier'];
+            $timezoneList[$tz['identifier']] = '(UTC ' . $sign . $offset . ') ' . $tz['identifier'];
         }
 
         return $timezoneList;
@@ -276,21 +269,20 @@ class Preference extends Model
 
     /**
      * Returns the theme options for the backend editor.
-     *
      * @return array
      */
     public function getEditorThemeOptions()
     {
-        $themeDir = new DirectoryIterator('modules/backend/formwidgets/codeeditor/assets/vendor/ace/');
+        $themeDir = new DirectoryIterator("modules/backend/formwidgets/codeeditor/assets/vendor/ace/");
         $themes = [];
 
         // Iterate through the themes
         foreach ($themeDir as $node) {
             // If this file is a theme (starting by "theme-")
-            if (! $node->isDir() && substr($node->getFileName(), 0, 6) == 'theme-') {
+            if (!$node->isDir() && substr($node->getFileName(), 0, 6) == 'theme-') {
                 // Remove the theme- prefix and the .js suffix, create an user friendly and capitalized name
                 $themeId = substr($node->getFileName(), 6, -3);
-                $themeName = ucwords(str_replace('_', ' ', $themeId));
+                $themeName = ucwords(str_replace("_", " ", $themeId));
 
                 // Add the values to the themes array
                 if ($themeId != static::DEFAULT_THEME) {
@@ -301,7 +293,6 @@ class Preference extends Model
 
         // Sort the theme alphabetically, and push the default theme
         asort($themes);
-
         return [static::DEFAULT_THEME => ucwords(static::DEFAULT_THEME)] + $themes;
     }
 }

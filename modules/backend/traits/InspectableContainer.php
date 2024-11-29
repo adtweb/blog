@@ -1,17 +1,17 @@
-<?php
+<?php namespace Backend\Traits;
 
-namespace Backend\Traits;
-
-use ApplicationException;
 use Lang;
 use Request;
+use ApplicationException;
 
 /**
  * Inspectable Container Trait
  * Extension for controllers that can host inspectable widgets (Components, etc.)
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
  */
+
 trait InspectableContainer
 {
     public function onInspectableGetOptions()
@@ -20,32 +20,31 @@ trait InspectableContainer
         $this->flushAssets();
 
         $property = trim(Request::input('inspectorProperty'));
-        if (! $property) {
+        if (!$property) {
             throw new ApplicationException('The property name is not specified.');
         }
 
         $className = trim(Request::input('inspectorClassName'));
-        if (! $className) {
+        if (!$className) {
             throw new ApplicationException('The inspectable class name is not specified.');
         }
 
         $traitFound = in_array('System\Traits\PropertyContainer', class_uses_recursive($className));
-        if (! $traitFound) {
+        if (!$traitFound) {
             throw new ApplicationException('The options cannot be loaded for the specified class.');
         }
 
         // Determine constructor requirements and pass the default value (or NULL) to all required arguments
         $reflection = new \ReflectionClass($className);
         $constructor = $reflection->getConstructor();
-        if (is_null($constructor) || ! count($constructor->getParameters())) {
-            $obj = new $className;
+        if (is_null($constructor) || !count($constructor->getParameters())) {
+            $obj = new $className();
         } else {
             $args = $constructor->getParameters();
             $passed = [];
             foreach ($args as $arg) {
                 if ($arg->isOptional()) {
                     $passed[] = $arg->getDefaultValue();
-
                     continue;
                 }
                 $passed[] = null;
@@ -60,7 +59,7 @@ trait InspectableContainer
         foreach ($propertyNameParts as $part) {
             $part = trim($part);
 
-            if (! strlen($part)) {
+            if (!strlen($part)) {
                 continue;
             }
 
@@ -70,7 +69,8 @@ trait InspectableContainer
         $methodName = 'get'.$propertyMethodName.'Options';
         if (method_exists($obj, $methodName)) {
             $options = $obj->$methodName();
-        } else {
+        }
+        else {
             $options = $obj->getPropertyOptions($property);
         }
 
@@ -83,7 +83,7 @@ trait InspectableContainer
         }
 
         return [
-            'options' => $optionsArray,
+            'options' => $optionsArray
         ];
     }
 }

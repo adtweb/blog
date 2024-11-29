@@ -3,12 +3,12 @@
     class="
         field-mediafinder
         style-file-single
-        <?php if ($value) { ?>
+        <?php if ($value): ?>
             is-populated
-        <?php } ?>
-        <?php if ($this->previewMode) { ?>
+        <?php endif ?>
+        <?php if ($this->previewMode): ?>
             is-preview
-        <?php } ?>
+        <?php endif ?>
     "
     data-control="mediafinder"
     data-mediafinder-mode="<?= $mode ?? 'all' ?>"

@@ -5,9 +5,9 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if ($this->fatalError) { ?>
+<?php if ($this->fatalError): ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
     <p><a href="<?= Backend::url('cms/themes') ?>" class="btn btn-default"><?= e(trans('cms::lang.theme.return')) ?></a></p>
 
-<?php } ?>
+<?php endif ?>

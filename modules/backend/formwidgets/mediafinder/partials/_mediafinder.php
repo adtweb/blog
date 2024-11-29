@@ -1,8 +1,8 @@
-<?php if ($this->previewMode && ! $value) { ?>
+<?php if ($this->previewMode && !$value): ?>
 
     <span class="form-control" disabled="disabled"><?= e(trans('backend::lang.form.preview_no_media_message')) ?></span>
 
-<?php } else { ?>
+<?php else: ?>
 
     <?php
     switch ($mode) {
@@ -21,4 +21,4 @@
     }
     ?>
 
-<?php } ?>
+<?php endif ?>

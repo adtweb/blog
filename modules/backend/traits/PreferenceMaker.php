@@ -1,9 +1,7 @@
-<?php
+<?php namespace Backend\Traits;
 
-namespace Backend\Traits;
-
-use Backend\Models\UserPreference;
 use Str;
+use Backend\Models\UserPreference;
 
 /**
  * Preference Maker Trait
@@ -22,9 +20,8 @@ trait PreferenceMaker
 
     /**
      * Saves a widget related key/value pair in to the users preferences
-     *
-     * @param  string  $key  Unique key for the data store.
-     * @param  mixed  $value  The value to store.
+     * @param string $key Unique key for the data store.
+     * @param mixed $value The value to store.
      * @return void
      */
     public function putUserPreference(string $key, $value)
@@ -41,11 +38,11 @@ trait PreferenceMaker
     /**
      * Retrieves a widget related key/value pair from the user preferences
      *
-     * @param  string  $key  Unique key for the data store.
-     * @param  mixed  $default  A default value to use when value is not found.
+     * @param string $key Unique key for the data store.
+     * @param mixed $default A default value to use when value is not found.
      * @return mixed
      */
-    public function getUserPreference(?string $key = null, $default = null)
+    public function getUserPreference(string $key = null, $default = null)
     {
         $preferences = $this->getUserPreferences();
 
@@ -74,14 +71,14 @@ trait PreferenceMaker
     /**
      * Clears a single preference key from the user preferences for this controller/widget.
      *
-     * @param  string  $key  Unique key for the data store.
+     * @param string $key Unique key for the data store.
      * @return void
      */
     public function clearUserPreference(string $key)
     {
         $preferences = $this->getUserPreferences();
 
-        if (! isset($preferences[$key])) {
+        if (!isset($preferences[$key])) {
             return;
         }
 
@@ -127,7 +124,7 @@ trait PreferenceMaker
         $rootNamespace = Str::getClassId(Str::getClassNamespace(Str::getClassNamespace($controller)));
 
         // The controller action is intentionally omitted, preferences should be shared for all actions
-        return $rootNamespace.'::'.strtolower(class_basename($controller)).'.'.strtolower($uniqueId);
+        return $rootNamespace . '::' . strtolower(class_basename($controller)) . '.' . strtolower($uniqueId);
     }
 
     /**

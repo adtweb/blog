@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Console;
+<?php namespace System\Console;
 
 use Backend\Database\Seeds\SeedSetupAdmin;
 use Config;
@@ -22,6 +20,7 @@ use Winter\Storm\Console\Command;
  * configuration items, including application URL and database config, and then
  * perform a database migration.
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class WinterInstall extends Command
@@ -69,7 +68,7 @@ class WinterInstall extends Command
 
         if (
             $this->laravel->hasDatabase() &&
-            ! $this->confirm('Application appears to be installed already. Continue anyway?', false)
+            !$this->confirm('Application appears to be installed already. Continue anyway?', false)
         ) {
             return;
         }
@@ -88,18 +87,19 @@ class WinterInstall extends Command
             $this->setupEncryptionKey();
             $this->setupAdvancedValues();
             $chosenToInstall = $this->askToInstallPlugins();
-        } else {
+        }
+        else {
             $this->setupEncryptionKey(true);
         }
 
         $this->setupMigrateDatabase();
 
         foreach ($chosenToInstall as $pluginCode) {
-            $this->output->writeln('<info>Installing plugin '.$pluginCode.'</info>');
+            $this->output->writeln('<info>Installing plugin ' . $pluginCode . '</info>');
             $this->callSilent('plugin:install', [
-                'plugin' => $pluginCode,
+                'plugin' => $pluginCode
             ]);
-            $this->output->writeln('<info>'.$pluginCode.' installed successfully.</info>');
+            $this->output->writeln('<info>' . $pluginCode . ' installed successfully.</info>');
         }
 
         $this->displayOutro();
@@ -107,7 +107,6 @@ class WinterInstall extends Command
 
     /**
      * Get the console command options.
-     *
      * @return array
      */
     protected function getOptions()
@@ -168,7 +167,7 @@ class WinterInstall extends Command
                 $nameParts = explode(') ', $name);
                 $nameParts[0] .= ')';
 
-                $name = str_pad($nameParts[1], $padTo).$nameParts[0];
+                $name = str_pad($nameParts[1], $padTo) . $nameParts[0];
 
                 $timezonesByName[$name] = $timezone;
             }
@@ -215,7 +214,6 @@ class WinterInstall extends Command
         if ($this->confirm('Install the Winter.Builder plugin?', false)) {
             $chosenToInstall[] = 'Winter.Builder';
         }
-
         return $chosenToInstall;
     }
 
@@ -232,13 +230,14 @@ class WinterInstall extends Command
 
         if ($force) {
             $key = $randomKey;
-        } else {
+        }
+        else {
             $this->line(sprintf('Enter a new value of %s characters, or press ENTER to use the generated key', $keyLength));
 
-            while (! $validKey) {
+            while (!$validKey) {
                 $key = $this->ask('Application key', $randomKey);
                 $validKey = Encrypter::supported($key, $cipher);
-                if (! $validKey) {
+                if (!$validKey) {
                     $this->error(sprintf('[ERROR] Invalid key length for "%s" cipher. Supplied key must be %s characters in length.', $cipher, $keyLength));
                 }
             }
@@ -307,7 +306,6 @@ class WinterInstall extends Command
         $result['database'] = $this->ask('Database Name', Config::get('database.connections.mysql.database'));
         $result['username'] = $this->ask('MySQL Login', Config::get('database.connections.mysql.username'));
         $result['password'] = $this->ask('MySQL Password', Config::get('database.connections.mysql.password') ?: false) ?: '';
-
         return $result;
     }
 
@@ -319,7 +317,6 @@ class WinterInstall extends Command
         $result['database'] = $this->ask('Database Name', Config::get('database.connections.pgsql.database'));
         $result['username'] = $this->ask('Postgres Login', Config::get('database.connections.pgsql.username'));
         $result['password'] = $this->ask('Postgres Password', Config::get('database.connections.pgsql.password') ?: false) ?: '';
-
         return $result;
     }
 
@@ -328,15 +325,16 @@ class WinterInstall extends Command
         $filename = $this->ask('Database path', Config::get('database.connections.sqlite.database'));
 
         try {
-            if (! file_exists($filename)) {
+            if (!file_exists($filename)) {
                 $directory = dirname($filename);
-                if (! is_dir($directory)) {
+                if (!is_dir($directory)) {
                     mkdir($directory, 0777, true);
                 }
 
                 new PDO('sqlite:'.$filename);
             }
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             $this->error($ex->getMessage());
             $this->setupDatabaseSqlite();
         }
@@ -352,7 +350,6 @@ class WinterInstall extends Command
         $result['database'] = $this->ask('Database Name', Config::get('database.connections.sqlsrv.database'));
         $result['username'] = $this->ask('SQL Login', Config::get('database.connections.sqlsrv.username'));
         $result['password'] = $this->ask('SQL Password', Config::get('database.connections.sqlsrv.password') ?: false) ?: '';
-
         return $result;
     }
 
@@ -370,7 +367,7 @@ class WinterInstall extends Command
         SeedSetupAdmin::$login = $this->ask('Admin Login', SeedSetupAdmin::$login);
         SeedSetupAdmin::$password = $this->ask('Admin Password', Str::random(22));
 
-        if (! $this->confirm('Is the information correct?', true)) {
+        if (!$this->confirm('Is the information correct?', true)) {
             $this->setupAdminUser();
         }
     }
@@ -384,8 +381,10 @@ class WinterInstall extends Command
 
             UpdateManager::instance()
                 ->setNotesOutput($this->output)
-                ->update();
-        } catch (Exception $ex) {
+                ->update()
+            ;
+        }
+        catch (Exception $ex) {
             $this->error($ex->getMessage());
             $this->setupDatabaseConfig();
             $this->setupMigrateDatabase();
@@ -399,17 +398,17 @@ class WinterInstall extends Command
     protected function displayIntro()
     {
         $message = [
-            '.========================================================================.',
-            '                                                                          ',
+            ".========================================================================.",
+            "                                                                          ",
             " db   d8b   db d888888b d8b   db d888888b d88888b d8888b.       \033[1;34m...\033[0m ",
             " 88   I8I   88   `88'   888o  88 `~~88~~' 88'     88  `8D  \033[1;34m... ..... ...\033[0m ",
             " 88   I8I   88    88    88V8o 88    88    88ooooo 88oobY'    \033[1;34m.. ... ..\033[0m ",
             " Y8   I8I   88    88    88 V8o88    88    88~~~~~ 88`8b      \033[1;34m.. ... ..\033[0m ",
             " `8b d8'8b d8'   .88.   88  V888    88    88.     88 `88.  \033[1;34m... ..... ...\033[0m ",
             "  `8b8' `8d8'  Y888888P VP   V8P    YP    Y88888P 88   YD       \033[1;34m...\033[0m ",
-            '                                                                         ',
-            '`============================= INSTALLATION =============================',
-            '',
+            "                                                                         ",
+            "`============================= INSTALLATION =============================",
+            "",
         ];
 
         $this->line($message);
@@ -419,17 +418,17 @@ class WinterInstall extends Command
     {
         $message = [
             // Sourced from https://www.asciiart.eu/holiday-and-events/christmas/snowmen
-            '.===========================================================.',
-            ' *    *           *.   *   .                      *     .    ',
-            '         .   .               __   *    .     * .     *       ',
-            '      *         *   . .    _|__|_        *    __   .       * ',
+            ".===========================================================.",
+            " *    *           *.   *   .                      *     .    ",
+            "         .   .               __   *    .     * .     *       ",
+            "      *         *   . .    _|__|_        *    __   .       * ",
             "  /\       /\               ('')    *       _|__|_     .     ",
             " /  \   * /  \  *      .  <( . )> *  .       ('')   *   *    ",
             " /  \     /  \   .       _(__.__)_  _   ,--<(  . )>  .    .  ",
             "/    \   /    \      *   |       |  )),`   (   .  )     *    ",
             " `||` ..  `||`   . *... ==========='`   ... '--`-` ... * jb .",
             "`================== INSTALLATION COMPLETE =================='",
-            '',
+            "",
         ];
 
         $this->line($message);

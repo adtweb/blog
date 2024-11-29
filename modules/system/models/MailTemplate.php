@@ -1,16 +1,15 @@
-<?php
+<?php namespace System\Models;
 
-namespace System\Models;
-
-use File as FileHelper;
+use View;
 use Model;
 use System\Classes\MailManager;
-use View;
 use Winter\Storm\Mail\MailParser;
+use File as FileHelper;
 
 /**
  * Mail template
  *
+ * @package winter\wn-system-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class MailTemplate extends Model
@@ -36,14 +35,14 @@ class MailTemplate extends Model
      * @var array Validation rules
      */
     public $rules = [
-        'code' => 'required|unique:system_mail_templates',
-        'subject' => 'required',
-        'description' => 'required',
-        'content_html' => 'required',
+        'code'                  => 'required|unique:system_mail_templates',
+        'subject'               => 'required',
+        'description'           => 'required',
+        'content_html'          => 'required',
     ];
 
     public $belongsTo = [
-        'layout' => MailLayout::class,
+        'layout' => MailLayout::class
     ];
 
     /**
@@ -57,7 +56,6 @@ class MailTemplate extends Model
         $dbTemplates = (array) self::lists('code', 'code');
         $templates = $fileTemplates + $dbTemplates;
         ksort($templates);
-
         return $templates;
     }
 
@@ -102,7 +100,7 @@ class MailTemplate extends Model
                 continue;
             }
 
-            if (! array_key_exists($code, $templates)) {
+            if (!array_key_exists($code, $templates)) {
                 self::whereCode($code)->delete();
             }
         }
@@ -131,7 +129,7 @@ class MailTemplate extends Model
      */
     public function afterFetch()
     {
-        if (! $this->is_custom) {
+        if (!$this->is_custom) {
             $this->fillFromView($this->code);
         }
     }
@@ -139,7 +137,7 @@ class MailTemplate extends Model
     /**
      * Fill model using provided content.
      *
-     * @param  string  $content
+     * @param string $content
      * @return void
      */
     public function fillFromContent($content)
@@ -150,7 +148,7 @@ class MailTemplate extends Model
     /**
      * Fill model using a view file path.
      *
-     * @param  string  $path
+     * @param string $path
      * @return void
      */
     public function fillFromView($path)
@@ -161,7 +159,7 @@ class MailTemplate extends Model
     /**
      * Fill model using provided section array.
      *
-     * @param  array  $sections
+     * @param array $sections
      * @return void
      */
     protected function fillFromSections($sections)
@@ -177,30 +175,29 @@ class MailTemplate extends Model
     /**
      * Get section array from a view file retrieved by code.
      *
-     * @param  string  $code
+     * @param string $code
      * @return array|null
      */
     protected static function getTemplateSections($code)
     {
-        if (! View::exists($code)) {
+        if (!View::exists($code)) {
             return null;
         }
         $view = View::make($code);
-
         return MailParser::parse(FileHelper::get($view->getPath()));
     }
 
     /**
      * Find a MailTemplate record by code or create one from a view file.
      *
-     * @param  string  $code
+     * @param string $code
      * @return MailTemplate model
      */
     public static function findOrMakeTemplate($code)
     {
         $template = self::whereCode($code)->first();
 
-        if (! $template && View::exists($code)) {
+        if (!$template && View::exists($code)) {
             $template = new self;
             $template->code = $code;
             $template->fillFromView($code);
@@ -215,7 +212,7 @@ class MailTemplate extends Model
      */
     public static function registerCallback(callable $callback)
     {
-        traceLog('MailTemplate::registerCallback is deprecated, use '.MailManager::class.'::registerCallback instead');
+        traceLog('MailTemplate::registerCallback is deprecated, use ' . MailManager::class . '::registerCallback instead');
         MailManager::instance()->registerCallback($callback);
     }
 }

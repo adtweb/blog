@@ -1,6 +1,4 @@
-<?php
-
-namespace Database\Tester\Models;
+<?php namespace Database\Tester\Models;
 
 use Model;
 
@@ -24,13 +22,13 @@ class Tag extends Model
     public $morphedByMany = [
         'authors' => [
             'Database\Tester\Models\Author',
-            'name' => 'taggable',
+            'name'  => 'taggable',
             'table' => 'database_tester_taggables',
             'pivot' => ['added_by'],
         ],
-        'posts' => [
+        'posts'   => [
             'Database\Tester\Models\Post',
-            'name' => 'taggable',
+            'name'  => 'taggable',
             'table' => 'database_tester_taggables',
             'pivot' => ['added_by'],
         ],

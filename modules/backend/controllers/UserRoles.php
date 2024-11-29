@@ -1,17 +1,17 @@
-<?php
+<?php namespace Backend\Controllers;
 
-namespace Backend\Controllers;
-
-use Backend\Classes\Controller;
-use BackendMenu;
-use Response;
-use System\Classes\SettingsManager;
 use View;
+use Response;
+use BackendMenu;
+use Backend\Classes\Controller;
+use System\Classes\SettingsManager;
 
 /**
  * Backend user groups controller
  *
+ * @package winter\wn-backend-module
  * @author Alexey Bobkov, Samuel Georges
+ *
  */
 class UserRoles extends Controller
 {
@@ -43,7 +43,7 @@ class UserRoles extends Controller
          * Only super users can access
          */
         $this->bindEvent('page.beforeDisplay', function () {
-            if (! $this->user->isSuperUser()) {
+            if (!$this->user->isSuperUser()) {
                 return Response::make(View::make('backend::access_denied'), 403);
             }
         });

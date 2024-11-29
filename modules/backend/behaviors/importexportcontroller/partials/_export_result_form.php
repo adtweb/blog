@@ -1,4 +1,4 @@
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
     <div class="modal-body">
         <p>
@@ -17,7 +17,7 @@
 
     <script> window.location = '<?= $fileUrl ?>' </script>
 
-<?php } else { ?>
+<?php else: ?>
 
     <div class="modal-body">
         <p class="flash-message static error"><?= e($this->fatalError) ?></p>
@@ -31,4 +31,4 @@
         </button>
     </div>
 
-<?php } ?>
+<?php endif ?>

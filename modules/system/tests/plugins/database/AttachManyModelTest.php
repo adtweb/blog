@@ -2,18 +2,18 @@
 
 namespace System\Tests\Plugins\Database;
 
+use System\Tests\Bootstrap\PluginTestCase;
+use System\Models\File as FileModel;
 use Database\Tester\Models\User;
 use Model;
-use System\Models\File as FileModel;
-use System\Tests\Bootstrap\PluginTestCase;
 
 class AttachManyModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/User.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/User.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -25,7 +25,7 @@ class AttachManyModelTest extends PluginTestCase
         Model::reguard();
 
         $this->assertEmpty($user->photos);
-        $user->photos()->create(['data' => base_path().'/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
+        $user->photos()->create(['data' => base_path() . '/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
         $user->reloadRelations();
         $this->assertNotEmpty($user->photos);
 
@@ -43,7 +43,7 @@ class AttachManyModelTest extends PluginTestCase
         Model::reguard();
 
         $this->assertEmpty($user->photos);
-        $user->photos()->create(['data' => base_path().'/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
+        $user->photos()->create(['data' => base_path() . '/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
         $user->reloadRelations();
         $this->assertNotEmpty($user->photos);
 

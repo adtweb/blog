@@ -1,9 +1,9 @@
 <div class="layout-cell <?= e($component->componentCssClass) ?> <?= $component->isHidden ? 'hidden' : null ?>">
     <div
         class="<?= 'wn-'.$component->pluginIcon ?> layout-relative"
-        <?php if ($component->inspectorEnabled) { ?>
+        <?php if ($component->inspectorEnabled): ?>
             data-inspectable
-        <?php } ?>
+        <?php endif ?>
         data-inspector-title="<?= $name = e($this->getComponentName($component)) ?>"
         data-inspector-description="<?= $description = e($this->getComponentDescription($component)) ?>"
         data-inspector-config="<?= e($this->getComponentsPropertyConfig($component)) ?>"

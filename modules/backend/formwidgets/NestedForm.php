@@ -1,6 +1,4 @@
-<?php
-
-namespace Backend\FormWidgets;
+<?php namespace Backend\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 use Backend\Widgets\Form;
@@ -9,12 +7,13 @@ use Backend\Widgets\Form;
  * Nested Form
  * Renders a nested form bound to a jsonable field of a model.
  *
+ * @package winter\wn-backend-module
  * @author Sascha Aeppli
  */
 class NestedForm extends FormWidgetBase
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $defaultAlias = 'nestedform';
 
@@ -34,7 +33,7 @@ class NestedForm extends FormWidgetBase
     protected $formWidget;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function init()
     {
@@ -50,7 +49,7 @@ class NestedForm extends FormWidgetBase
         $config = $this->makeConfig($this->form);
         $config->model = $this->model;
         $config->data = $this->getLoadValue();
-        $config->alias = $this->alias.$this->defaultAlias;
+        $config->alias = $this->alias . $this->defaultAlias;
         $config->arrayName = $this->getFieldName();
         $config->isNested = true;
 
@@ -71,12 +70,11 @@ class NestedForm extends FormWidgetBase
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function render()
     {
         $this->prepareVars();
-
         return $this->makePartial('nestedform');
     }
 

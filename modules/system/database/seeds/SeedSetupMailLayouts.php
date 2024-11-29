@@ -1,6 +1,4 @@
-<?php
-
-namespace System\Database\Seeds;
+<?php namespace System\Database\Seeds;
 
 use Seeder;
 use System\Models\MailLayout;

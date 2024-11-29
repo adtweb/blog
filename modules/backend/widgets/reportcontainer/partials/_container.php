@@ -8,9 +8,9 @@
         <?= $this->makePartial('widget_list') ?>
     </ul>
 
-    <?php if ($this->canAddAndDelete) { ?>
+    <?php if ($this->canAddAndDelete): ?>
         <div id="<?= $this->getId('container-toolbar') ?>" data-container-toolbar>
             <?= $this->makePartial('widget_toolbar') ?>
         </div>
-    <?php } ?>
+    <?php endif ?>
 </div>

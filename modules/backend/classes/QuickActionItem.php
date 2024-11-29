@@ -1,9 +1,9 @@
-<?php
-
-namespace Backend\Classes;
+<?php namespace Backend\Classes;
 
 /**
  * Class QuickActionItem
+ *
+ * @package Backend\Classes
  */
 class QuickActionItem
 {
@@ -53,8 +53,8 @@ class QuickActionItem
     public $permissions = [];
 
     /**
-     * @param  null|string|int  $attribute
-     * @param  null|string|array  $value
+     * @param null|string|int $attribute
+     * @param null|string|array $value
      */
     public function addAttribute($attribute, $value)
     {
@@ -66,12 +66,17 @@ class QuickActionItem
         unset($this->attributes[$attribute]);
     }
 
+    /**
+     * @param string $permission
+     * @param array $definition
+     */
     public function addPermission(string $permission, array $definition)
     {
         $this->permissions[$permission] = $definition;
     }
 
     /**
+     * @param string $permission
      * @return void
      */
     public function removePermission(string $permission)
@@ -80,11 +85,12 @@ class QuickActionItem
     }
 
     /**
+     * @param array $data
      * @return static
      */
     public static function createFromArray(array $data)
     {
-        $instance = new static;
+        $instance = new static();
         $instance->code = $data['code'];
         $instance->owner = $data['owner'];
         $instance->label = $data['label'];
@@ -93,8 +99,7 @@ class QuickActionItem
         $instance->iconSvg = $data['iconSvg'] ?? null;
         $instance->attributes = $data['attributes'] ?? $instance->attributes;
         $instance->permissions = $data['permissions'] ?? $instance->permissions;
-        $instance->order = (! empty($data['order']) || @$data['order'] === 0) ? (int) $data['order'] : $instance->order;
-
+        $instance->order = (!empty($data['order']) || @$data['order'] === 0) ? (int) $data['order'] : $instance->order;
         return $instance;
     }
 }

@@ -2,17 +2,19 @@
 
 namespace Cms\Tests\Classes;
 
+use System\Tests\Bootstrap\TestCase;
 use Cms\Classes\CmsCompoundObject;
 use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
-use System\Tests\Bootstrap\TestCase;
 use Winter\Storm\Halcyon\Model;
 
 class TestCmsCompoundObject extends CmsCompoundObject
 {
     protected $dirName = 'testobjects';
 
-    protected function parseSettings() {}
+    protected function parseSettings()
+    {
+    }
 }
 
 class TestParsedCmsCompoundObject extends CmsCompoundObject
@@ -24,7 +26,9 @@ class TestTemporaryCmsCompoundObject extends CmsCompoundObject
 {
     protected $dirName = 'temporary';
 
-    protected function parseSettings() {}
+    protected function parseSettings()
+    {
+    }
 }
 
 class CmsCompoundObjectTest extends TestCase
@@ -34,8 +38,8 @@ class CmsCompoundObjectTest extends TestCase
         parent::setUp();
         Model::clearBootedModels();
         Model::flushEventListeners();
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
-        include_once base_path().'/modules/system/tests/fixtures/plugins/winter/tester/components/Post.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Archive.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/winter/tester/components/Post.php';
     }
 
     public function testLoadFile()
@@ -109,7 +113,7 @@ class CmsCompoundObjectTest extends TestCase
         $notExistingProperties = $obj->getComponentProperties('This\Is\Not\Component');
         $this->assertIsArray($properties);
         $this->assertArrayHasKey('show-featured', $properties);
-        $this->assertTrue((bool) $properties['show-featured']);
+        $this->assertTrue((bool)$properties['show-featured']);
         $this->assertEquals('true', $properties['show-featured']);
         $this->assertCount(1, $properties);
         $this->assertCount(0, $emptyProperties);
@@ -125,7 +129,7 @@ class CmsCompoundObjectTest extends TestCase
          * Prepare the test file
          */
 
-        $srcPath = $themePath.'/testobjects/compound.htm';
+        $srcPath = $themePath . '/testobjects/compound.htm';
         $this->assertFileExists($srcPath);
         $testContent = file_get_contents($srcPath);
         $this->assertNotEmpty($testContent);
@@ -198,7 +202,7 @@ class CmsCompoundObjectTest extends TestCase
     {
         $theme = Theme::load('apitest');
 
-        $destFilePath = $theme->getPath().'/testobjects/compound-markup.htm';
+        $destFilePath = $theme->getPath() . '/testobjects/compound-markup.htm';
         if (file_exists($destFilePath)) {
             unlink($destFilePath);
         }
@@ -208,11 +212,11 @@ class CmsCompoundObjectTest extends TestCase
         $obj = TestCmsCompoundObject::inTheme($theme);
         $obj->fill([
             'markup' => '<p>Hello, world!</p>',
-            'fileName' => 'compound-markup',
+            'fileName' => 'compound-markup'
         ]);
         $obj->save();
 
-        $referenceFilePath = base_path().'/modules/cms/tests/fixtures/reference/compound-markup.htm';
+        $referenceFilePath = base_path() . '/modules/cms/tests/fixtures/reference/compound-markup.htm';
         $this->assertFileExists($referenceFilePath);
 
         $this->assertFileExists($destFilePath);
@@ -223,7 +227,7 @@ class CmsCompoundObjectTest extends TestCase
     {
         $theme = Theme::load('apitest');
 
-        $destFilePath = $theme->getPath().'/testobjects/compound-markup-settings.htm';
+        $destFilePath = $theme->getPath() . '/testobjects/compound-markup-settings.htm';
         if (file_exists($destFilePath)) {
             unlink($destFilePath);
         }
@@ -234,11 +238,11 @@ class CmsCompoundObjectTest extends TestCase
         $obj->fill([
             'settings' => ['var' => 'value'],
             'markup' => '<p>Hello, world!</p>',
-            'fileName' => 'compound-markup-settings',
+            'fileName' => 'compound-markup-settings'
         ]);
         $obj->save();
 
-        $referenceFilePath = base_path().'/modules/cms/tests/fixtures/reference/compound-markup-settings.htm';
+        $referenceFilePath = base_path() . '/modules/cms/tests/fixtures/reference/compound-markup-settings.htm';
         $this->assertFileExists($referenceFilePath);
 
         $this->assertFileExists($destFilePath);
@@ -249,7 +253,7 @@ class CmsCompoundObjectTest extends TestCase
     {
         $theme = Theme::load('apitest');
 
-        $destFilePath = $theme->getPath().'/testobjects/compound.htm';
+        $destFilePath = $theme->getPath() . '/testobjects/compound.htm';
         if (file_exists($destFilePath)) {
             unlink($destFilePath);
         }
@@ -261,11 +265,11 @@ class CmsCompoundObjectTest extends TestCase
             'fileName' => 'compound',
             'settings' => ['var' => 'value'],
             'code' => 'function a() {return true;}',
-            'markup' => '<p>Hello, world!</p>',
+            'markup' => '<p>Hello, world!</p>'
         ]);
         $obj->save();
 
-        $referenceFilePath = base_path().'/modules/cms/tests/fixtures/reference/compound-full.htm';
+        $referenceFilePath = base_path() . '/modules/cms/tests/fixtures/reference/compound-full.htm';
         $this->assertFileExists($referenceFilePath);
 
         $this->assertFileExists($destFilePath);

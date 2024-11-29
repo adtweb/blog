@@ -1,11 +1,9 @@
-<?php
+<?php namespace Cms\Twig;
 
-namespace Cms\Twig;
-
-use Twig\Error\SyntaxError as TwigErrorSyntax;
 use Twig\Node\Node as TwigNode;
 use Twig\Token as TwigToken;
 use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
+use Twig\Error\SyntaxError as TwigErrorSyntax;
 
 /**
  * Parser for the `{% placeholder %}` Twig tag.
@@ -18,6 +16,7 @@ use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
  *         <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"/>
  *     {% endshowblock %}
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class PlaceholderTokenParser extends TwigTokenParser
@@ -25,7 +24,7 @@ class PlaceholderTokenParser extends TwigTokenParser
     /**
      * Parses a token and returns a node.
      *
-     * @param  TwigToken  $token  A TwigToken instance
+     * @param TwigToken $token A TwigToken instance
      * @return TwigNode A TwigNode instance
      */
     public function parse(TwigToken $token)
@@ -41,7 +40,8 @@ class PlaceholderTokenParser extends TwigTokenParser
 
             $body = $this->parser->subparse([$this, 'decidePlaceholderEnd'], true);
             $stream->expect(TwigToken::BLOCK_END_TYPE);
-        } else {
+        }
+        else {
             $params = $this->loadParams($stream);
         }
 
@@ -58,7 +58,7 @@ class PlaceholderTokenParser extends TwigTokenParser
         $params = [];
 
         $end = false;
-        while (! $end) {
+        while (!$end) {
             $current = $stream->next();
 
             switch ($current->getType()) {

@@ -1,18 +1,17 @@
-<?php
+<?php namespace Cms\Models;
 
-namespace Cms\Models;
-
-use ApplicationException;
-use Cms\Classes\Theme as CmsTheme;
-use Exception;
 use File;
-use FilesystemIterator;
 use Model;
+use ApplicationException;
 use Winter\Storm\Filesystem\Zip;
+use Cms\Classes\Theme as CmsTheme;
+use FilesystemIterator;
+use Exception;
 
 /**
  * Theme import model
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeImport extends Model
@@ -40,7 +39,7 @@ class ThemeImport extends Model
     protected $fillable = [];
 
     public $attachOne = [
-        'uploaded_file' => \System\Models\File::class,
+        'uploaded_file' => \System\Models\File::class
     ];
 
     /**
@@ -52,12 +51,12 @@ class ThemeImport extends Model
         'dirName' => null,
         'overwrite' => true,
         'folders' => [
-            'assets' => true,
-            'pages' => true,
-            'layouts' => true,
+            'assets'   => true,
+            'pages'    => true,
+            'layouts'  => true,
             'partials' => true,
-            'content' => true,
-        ],
+            'content'  => true,
+        ]
     ];
 
     /**
@@ -65,25 +64,25 @@ class ThemeImport extends Model
      *
      * @return void
      */
-    public function save(?array $options = null, $sessionKey = null)
+    public function save(array $options = null, $sessionKey = null)
     {
-        throw new ApplicationException(sprintf('The % model is not intended to be saved, please use %s instead', get_class($this), 'ThemeData'));
+        throw new ApplicationException(sprintf("The % model is not intended to be saved, please use %s instead", get_class($this), 'ThemeData'));
     }
 
     public function getFoldersOptions()
     {
         return [
-            'assets' => 'Assets',
-            'pages' => 'Pages',
-            'layouts' => 'Layouts',
+            'assets'   => 'Assets',
+            'pages'    => 'Pages',
+            'layouts'  => 'Layouts',
             'partials' => 'Partials',
-            'content' => 'Content',
+            'content'  => 'Content',
         ];
     }
 
     public function setThemeAttribute($theme)
     {
-        if (! $theme instanceof CmsTheme) {
+        if (!$theme instanceof CmsTheme) {
             return;
         }
 
@@ -101,18 +100,18 @@ class ThemeImport extends Model
 
         try {
             $file = $this->uploaded_file()->withDeferred($sessionKey)->first();
-            if (! $file) {
+            if (!$file) {
                 throw new ApplicationException('There is no file attached to import!');
             }
 
             $themePath = $this->theme->getPath();
-            $tempPath = temp_path().'/'.uniqid('oc');
+            $tempPath = temp_path() . '/'.uniqid('oc');
             $zipName = uniqid('oc');
             $zipPath = temp_path().'/'.$zipName;
 
             File::put($zipPath, $file->getContents());
 
-            if (! File::makeDirectory($tempPath)) {
+            if (!File::makeDirectory($tempPath)) {
                 throw new ApplicationException('Unable to create directory '.$tempPath);
             }
 
@@ -123,7 +122,7 @@ class ThemeImport extends Model
             }
 
             foreach ($this->folders as $folder) {
-                if (! array_key_exists($folder, $this->getFoldersOptions())) {
+                if (!array_key_exists($folder, $this->getFoldersOptions())) {
                     continue;
                 }
 
@@ -133,12 +132,13 @@ class ThemeImport extends Model
             File::deleteDirectory($tempPath);
             File::delete($zipPath);
             $file->delete();
-        } catch (Exception $ex) {
-            if (! empty($tempPath) && File::isDirectory($tempPath)) {
+        }
+        catch (Exception $ex) {
+            if (!empty($tempPath) && File::isDirectory($tempPath)) {
                 File::deleteDirectory($tempPath);
             }
 
-            if (! empty($zipPath) && File::isFile($zipPath)) {
+            if (!empty($zipPath) && File::isFile($zipPath)) {
                 File::delete($zipPath);
             }
 
@@ -161,13 +161,13 @@ class ThemeImport extends Model
             return File::copyDirectory($directory, $destination);
         }
 
-        if (! File::isDirectory($directory)) {
+        if (!File::isDirectory($directory)) {
             return false;
         }
 
         $options = FilesystemIterator::SKIP_DOTS;
 
-        if (! File::isDirectory($destination)) {
+        if (!File::isDirectory($destination)) {
             File::makeDirectory($destination, 0777, true);
         }
 
@@ -179,16 +179,17 @@ class ThemeImport extends Model
             if ($item->isDir()) {
                 $path = $item->getPathname();
 
-                if (! $this->copyDirectory($path, $target)) {
+                if (!$this->copyDirectory($path, $target)) {
                     return false;
                 }
-            } else {
+            }
+            else {
                 // Do not overwrite existing files
                 if (File::isFile($target)) {
                     continue;
                 }
 
-                if (! File::copy($item->getPathname(), $target)) {
+                if (!File::copy($item->getPathname(), $target)) {
                     return false;
                 }
             }

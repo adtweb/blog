@@ -11,7 +11,7 @@ class AliasesTest extends PluginTestCase
         $this->assertTrue(class_exists('Illuminate\Support\Facades\Input'));
         $this->assertInstanceOf(
             \Winter\Storm\Support\Facades\Input::class,
-            new \Illuminate\Support\Facades\Input
+            new \Illuminate\Support\Facades\Input()
         );
     }
 
@@ -20,7 +20,7 @@ class AliasesTest extends PluginTestCase
         $this->assertTrue(class_exists('Illuminate\Support\Debug\HtmlDumper'));
         $this->assertInstanceOf(
             \Symfony\Component\VarDumper\Dumper\HtmlDumper::class,
-            new \Illuminate\Support\Debug\HtmlDumper
+            new \Illuminate\Support\Debug\HtmlDumper()
         );
     }
 }

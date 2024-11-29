@@ -2,8 +2,8 @@
 
     <?= $importUploadFormWidget->render() ?>
 
-    <?php if ($importOptionsFormWidget) { ?>
+    <?php if ($importOptionsFormWidget): ?>
         <?= $importOptionsFormWidget->render() ?>
-    <?php } ?>
+    <?php endif ?>
 
 </div>

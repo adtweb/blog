@@ -2,20 +2,20 @@
 
 namespace System\Tests\Plugins\Database;
 
-use Database\Tester\Models\SoftDeleteUser;
-use Database\Tester\Models\User;
-use Model;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use System\Models\File as FileModel;
 use System\Tests\Bootstrap\PluginTestCase;
+use System\Models\File as FileModel;
+use Database\Tester\Models\User;
+use Database\Tester\Models\SoftDeleteUser;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Model;
 
 class AttachOneModelTest extends PluginTestCase
 {
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
-        include_once base_path().'/modules/system/tests/fixtures/plugins/database/tester/models/User.php';
+        include_once base_path() . '/modules/system/tests/fixtures/plugins/database/tester/models/User.php';
 
         $this->runPluginRefreshCommand('Database.Tester');
     }
@@ -28,7 +28,7 @@ class AttachOneModelTest extends PluginTestCase
         Model::reguard();
 
         // Set by string
-        $user->avatar = base_path().'/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png';
+        $user->avatar = base_path() . '/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png';
 
         // @todo $user->avatar currently sits as a string, not good for validation
         // this should really assert as an UploadedFile instead.
@@ -42,7 +42,7 @@ class AttachOneModelTest extends PluginTestCase
         // Set by Uploaded file
         $sample = $user->avatar;
         $upload = new UploadedFile(
-            base_path().'/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png',
+            base_path() . '/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png',
             $sample->file_name,
             $sample->content_type,
             null,
@@ -69,7 +69,7 @@ class AttachOneModelTest extends PluginTestCase
         Model::reguard();
 
         $this->assertNull($user->avatar);
-        $user->avatar()->create(['data' => base_path().'/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
+        $user->avatar()->create(['data' => base_path() . '/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
         $user->reloadRelations();
         $this->assertNotNull($user->avatar);
 
@@ -87,7 +87,7 @@ class AttachOneModelTest extends PluginTestCase
         Model::reguard();
 
         $this->assertNull($user->avatar);
-        $user->avatar()->create(['data' => base_path().'/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
+        $user->avatar()->create(['data' => base_path() . '/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
         $user->reloadRelations();
         $this->assertNotNull($user->avatar);
 
@@ -102,7 +102,7 @@ class AttachOneModelTest extends PluginTestCase
         $user = SoftDeleteUser::create(['name' => 'Stevie', 'email' => 'stevie@example.com']);
         Model::reguard();
 
-        $user->avatar()->create(['data' => base_path().'/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
+        $user->avatar()->create(['data' => base_path() . '/modules/system/tests/fixtures/plugins/database/tester/assets/images/avatar.png']);
         $this->assertNotNull($user->avatar);
 
         $avatarId = $user->avatar->id;

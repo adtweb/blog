@@ -5,9 +5,9 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
-    <?= Form::open(['class' => 'layout']) ?>
+    <?= Form::open(['class'=>'layout']) ?>
 
         <div class="layout-row min-size">
             <div class="scoreboard">
@@ -50,7 +50,7 @@
                     type="button"
                     data-request="onTest"
                     data-load-indicator="<?= e(trans('system::lang.mail_templates.sending')) ?>"
-                    data-request-confirm="<?= e(trans('system::lang.mail_templates.test_confirm', ['email' => e(BackendAuth::getUser()->email)])) ?>"
+                    data-request-confirm="<?= e(trans('system::lang.mail_templates.test_confirm', [ 'email' => e(BackendAuth::getUser()->email)])) ?>"
                     class="btn btn-info">
                     <?= e(trans('system::lang.mail_templates.test_send')) ?>
                 </button>
@@ -69,9 +69,9 @@
 
     <?= Form::close() ?>
 
-<?php } else { ?>
+<?php else: ?>
 
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
     <p><a href="<?= Backend::url('system/mailtemplates') ?>" class="btn btn-default"><?= e(trans('system::lang.mail_templates.return')) ?></a></p>
 
-<?php } ?>
+<?php endif ?>

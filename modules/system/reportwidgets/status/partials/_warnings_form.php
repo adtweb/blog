@@ -3,16 +3,16 @@
     <h4 class="modal-title"><?= e(trans('backend::lang.warnings.tips')) ?></h4>
 </div>
 <div class="modal-body">
-    <?php if (count($warnings)) { ?>
+    <?php if (count($warnings)): ?>
         <p><?= e(trans('backend::lang.warnings.tips_description')) ?></p>
         <ul>
-            <?php foreach ($warnings as $warning) { ?>
+            <?php foreach ($warnings as $warning): ?>
                 <li><?= $warning ?></li>
-            <?php } ?>
+            <?php endforeach ?>
         </ul>
-    <?php } else { ?>
+    <?php else: ?>
         <p>No warnings to display</p>
-    <?php } ?>
+    <?php endif ?>
 </div>
 <div class="modal-footer">
     <button

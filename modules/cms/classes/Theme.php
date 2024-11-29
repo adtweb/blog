@@ -1,6 +1,4 @@
-<?php
-
-namespace Cms\Classes;
+<?php namespace Cms\Classes;
 
 use App;
 use ApplicationException;
@@ -25,6 +23,7 @@ use Yaml;
  * CMS theme is a directory that contains all CMS objects - pages, layouts, partials and asset files..
  * The theme parameters are specified in the theme.ini file in the theme root directory.
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class Theme extends CmsObject
@@ -60,11 +59,11 @@ class Theme extends CmsObject
     protected $defaultExtension = 'yaml';
 
     const ACTIVE_KEY = 'cms::theme.active';
-
     const EDIT_KEY = 'cms::theme.edit';
 
     /**
      * Loads the theme.
+     * @return self
      */
     public static function load($dirName, $file = null): self
     {
@@ -83,7 +82,7 @@ class Theme extends CmsObject
      */
     public function getPath(?string $dirName = null): string
     {
-        if (! $dirName) {
+        if (!$dirName) {
             $dirName = $this->getDirName();
         }
 
@@ -163,6 +162,7 @@ class Theme extends CmsObject
          *     Event::listen('cms.theme.getActiveTheme', function () {
          *         return 'mytheme';
          *     });
+         *
          */
         $apiResult = Event::fire('cms.theme.getActiveTheme', [], true);
         if ($apiResult !== null) {
@@ -199,7 +199,7 @@ class Theme extends CmsObject
             }
         }
 
-        if (! strlen($activeTheme)) {
+        if (!strlen($activeTheme)) {
             throw new SystemException(Lang::get('cms::lang.theme.active.not_set'));
         }
 
@@ -228,6 +228,7 @@ class Theme extends CmsObject
 
         $theme = static::load(static::getActiveThemeCode());
 
+
         return self::$activeThemeCache = $theme;
     }
 
@@ -251,6 +252,7 @@ class Theme extends CmsObject
          *     Event::listen('cms.theme.setActiveTheme', function ($code) {
          *         \Log::info("Theme has been changed to $code");
          *     });
+         *
          */
         Event::fire('cms.theme.setActiveTheme', compact('code'));
     }
@@ -276,6 +278,7 @@ class Theme extends CmsObject
          *     Event::listen('cms.theme.getEditTheme', function () {
          *         return "the-edit-theme-code";
          *     });
+         *
          */
         $apiResult = Event::fire('cms.theme.getEditTheme', [], true);
         if ($apiResult !== null) {
@@ -283,11 +286,11 @@ class Theme extends CmsObject
         }
 
         $editTheme = Config::get('cms.editTheme');
-        if (! $editTheme) {
+        if (!$editTheme) {
             $editTheme = static::getActiveThemeCode();
         }
 
-        if (! strlen($editTheme)) {
+        if (!strlen($editTheme)) {
             throw new SystemException(Lang::get('cms::lang.theme.edit.not_set'));
         }
 
@@ -305,6 +308,7 @@ class Theme extends CmsObject
 
         $theme = static::load(static::getEditThemeCode());
 
+
         return self::$editThemeCache = $theme;
     }
 
@@ -318,7 +322,7 @@ class Theme extends CmsObject
 
         $result = [];
         foreach ($it as $fileinfo) {
-            if (! $fileinfo->isDir() || $fileinfo->isDot()) {
+            if (!$fileinfo->isDir() || $fileinfo->isDot()) {
                 continue;
             }
 
@@ -341,14 +345,14 @@ class Theme extends CmsObject
 
         // Attempt to load the theme's config file from whatever datasources are available.
         $sources = [
-            'filesystem' => new FileDatasource(themes_path($this->getDirName()), App::make('files')),
+            'filesystem' => new FileDatasource(themes_path($this->getDirName()), App::make('files'))
         ];
         if (static::databaseLayerEnabled()) {
             $sources['database'] = new DbDatasource($this->getDirName(), 'cms_theme_templates');
         }
         $data = (new AutoDatasource($sources))->selectOne('', 'theme', 'yaml');
 
-        if (! $data) {
+        if (!$data) {
             return $this->configCache = [];
         }
 
@@ -367,6 +371,7 @@ class Theme extends CmsObject
          *          $config['name'] = 'Winter Theme';
          *          $config['description'] = 'Another great theme from Winter CMS';
          *     });
+         *
          */
         Event::fire('cms.theme.extendConfig', [$this->getDirName(), &$config]);
 
@@ -400,6 +405,7 @@ class Theme extends CmsObject
          *              'tab'             => 'Global'
          *          ]);
          *     });
+         *
          */
         Event::fire('cms.theme.extendFormConfig', [$this->getDirName(), &$config]);
 
@@ -414,7 +420,6 @@ class Theme extends CmsObject
     {
         $expiresAt = now()->addMinutes(Config::get('cms.urlCacheTtl', 10));
         $key = sprintf('winter.cms.%s.assetUrl.%s.%s', $this->dirName, request()->getSchemeAndHttpHost(), $path);
-
         return Cache::remember($key, $expiresAt, function () use ($path) {
             // Handle symbolized paths
             if ($path && File::isPathSymbol($path)) {
@@ -425,16 +430,16 @@ class Theme extends CmsObject
             $themeDir = $this->getDirName();
 
             // If the active theme does not have a directory, then just check the parent theme
-            if (! File::isDirectory(themes_path($this->getDirName())) && ! empty($config['parent'])) {
+            if (!File::isDirectory(themes_path($this->getDirName())) && !empty($config['parent'])) {
                 $themeDir = $config['parent'];
             }
 
             // Define a helper for constructing the URL
             $urlPath = function ($themeDir, $path) {
-                $_url = Config::get('cms.themesPath', '/themes').'/'.$themeDir;
+                $_url = Config::get('cms.themesPath', '/themes') . '/' . $themeDir;
 
                 if ($path !== null) {
-                    $_url .= '/'.$path;
+                    $_url .= '/' . $path;
                 }
 
                 return $_url;
@@ -443,7 +448,7 @@ class Theme extends CmsObject
             $url = $urlPath($themeDir, $path);
 
             // If the file cannot be found in the theme, generate a url for the parent theme
-            if (! File::exists(base_path($url)) && ! empty($config['parent']) && $themeDir !== $config['parent']) {
+            if (!File::exists(base_path($url)) && !empty($config['parent']) && $themeDir !== $config['parent']) {
                 $parentUrl = $urlPath($config['parent'], $path);
                 // If found in the parent, return it
                 if (File::exists(base_path($parentUrl))) {
@@ -477,11 +482,12 @@ class Theme extends CmsObject
 
             if (File::isLocalPath($fileName)) {
                 $path = $fileName;
-            } else {
+            }
+            else {
                 $path = $this->getPath().'/'.$result;
             }
 
-            if (! File::exists($path)) {
+            if (!File::exists($path)) {
                 throw new ApplicationException('Path does not exist: '.$path);
             }
 
@@ -498,13 +504,13 @@ class Theme extends CmsObject
      */
     public function writeConfig(array $values = [], bool $overwrite = false): void
     {
-        if (! $overwrite) {
+        if (!$overwrite) {
             $values = $values + (array) $this->getConfig();
         }
 
         $path = $this->getPath().'/theme.yaml';
-        if (! File::exists($path)) {
-            throw new ApplicationException('Path does not exist: '.$path);
+        if (!File::exists($path)) {
+            throw new ApplicationException('Path does not exist: ' . $path);
         }
 
         $contents = Yaml::render($values);
@@ -522,8 +528,8 @@ class Theme extends CmsObject
     {
         $previewPath = $this->getConfigValue('previewImage', 'assets/images/theme-preview.png');
 
-        if (File::exists($this->getPath().'/'.$previewPath)) {
-            return Url::asset('themes/'.$this->getDirName().'/'.$previewPath);
+        if (File::exists($this->getPath() . '/' . $previewPath)) {
+            return Url::asset('themes/' . $this->getDirName() . '/' . $previewPath);
         }
 
         return Url::asset('modules/cms/assets/images/default-theme-preview.png');
@@ -538,7 +544,7 @@ class Theme extends CmsObject
         self::$editThemeCache = false;
 
         // Sometimes it may be desired to only clear the local cache of the active / edit themes instead of the persistent cache
-        if (! $memoryOnly) {
+        if (!$memoryOnly) {
             Cache::forget(self::ACTIVE_KEY);
             Cache::forget(self::EDIT_KEY);
         }
@@ -577,18 +583,18 @@ class Theme extends CmsObject
      */
     public function registerBackendLocalization(): void
     {
-        $langPath = $this->getPath().'/lang';
+        $langPath = $this->getPath() . '/lang';
 
         if (File::isDirectory($langPath)) {
-            Lang::addNamespace('themes.'.$this->getDirName(), $langPath);
+            Lang::addNamespace('themes.' . $this->getDirName(), $langPath);
         }
 
         // Check the parent theme if present
         $config = $this->getConfig();
-        if (! empty($config['parent'])) {
-            $langPath = themes_path($config['parent'].'/lang');
+        if (!empty($config['parent'])) {
+            $langPath = themes_path($config['parent'] . '/lang');
             if (File::isDirectory($langPath)) {
-                Lang::addNamespace('themes.'.$config['parent'], $langPath);
+                Lang::addNamespace('themes.' . $config['parent'], $langPath);
             }
         }
     }
@@ -600,7 +606,7 @@ class Theme extends CmsObject
     {
         $enableDbLayer = Config::get('cms.databaseTemplates', false);
         if (is_null($enableDbLayer)) {
-            $enableDbLayer = ! Config::get('app.debug', false);
+            $enableDbLayer = !Config::get('app.debug', false);
         }
 
         $hasDb = Cache::rememberForever('cms.databaseTemplates.hasTables', function () {
@@ -628,7 +634,7 @@ class Theme extends CmsObject
         $sources['filesystem'] = new FileDatasource($this->getPath(), App::make('files'));
 
         $config = $this->getConfig();
-        if (! empty($config['parent'])) {
+        if (!empty($config['parent'])) {
             if (static::databaseLayerEnabled()) {
                 $sources['parent-database'] = new DbDatasource($config['parent'], 'cms_theme_templates');
             }
@@ -637,7 +643,7 @@ class Theme extends CmsObject
         }
 
         $datasource = count($sources) > 1
-            ? new AutoDatasource($sources, 'halcyon-datasource-auto-'.$this->dirName)
+            ? new AutoDatasource($sources, 'halcyon-datasource-auto-' . $this->dirName)
             : array_shift($sources);
 
         $resolver->addDatasource($this->dirName, $datasource);
@@ -657,6 +663,7 @@ class Theme extends CmsObject
          *             'example' => new ExampleDatasource(),
          *         ], 'example-autodatasource'));
          *     });
+         *
          */
         Event::fire('cms.theme.registerHalcyonDatasource', [$this, $resolver]);
     }
@@ -667,7 +674,6 @@ class Theme extends CmsObject
     public function getDatasource(): DatasourceInterface
     {
         $resolver = App::make('halcyon');
-
         return $resolver->datasource($this->getDirName());
     }
 
@@ -690,7 +696,6 @@ class Theme extends CmsObject
     {
         if ($this->hasCustomData()) {
             $theme = $this->getCustomData();
-
             return $theme->offsetExists($key);
         }
 

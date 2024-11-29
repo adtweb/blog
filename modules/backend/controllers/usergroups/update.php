@@ -6,9 +6,9 @@
     </ul>
 <?php Block::endPut() ?>
 
-<?php if (! $this->fatalError) { ?>
+<?php if (!$this->fatalError): ?>
 
-    <?= Form::open(['class' => 'layout']) ?>
+    <?= Form::open(['class'=>'layout']) ?>
 
         <div class="layout-row">
             <?= $this->formRender() ?>
@@ -48,7 +48,7 @@
 
     <?= Form::close() ?>
 
-<?php } else { ?>
+<?php else: ?>
     <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
     <p><a href="<?= Backend::url('backend/usergroups') ?>" class="btn btn-default"><?= e(trans('backend::lang.user.group.return')) ?></a></p>
-<?php } ?>
+<?php endif ?>

@@ -1,15 +1,14 @@
-<?php
+<?php namespace Cms\Classes;
 
-namespace Cms\Classes;
-
-use ApplicationException;
-use Cms\Classes\Theme as CmsTheme;
 use File;
+use ApplicationException;
 use System\Models\Parameter;
+use Cms\Classes\Theme as CmsTheme;
 
 /**
  * Theme manager
  *
+ * @package winter\wn-cms-module
  * @author Alexey Bobkov, Samuel Georges
  */
 class ThemeManager
@@ -22,7 +21,6 @@ class ThemeManager
 
     /**
      * Returns a collection of themes installed via the update gateway
-     *
      * @return array
      */
     public function getInstalled()
@@ -32,9 +30,8 @@ class ThemeManager
 
     /**
      * Checks if a theme has ever been installed before.
-     *
-     * @param  string  $name  Theme code
-     * @return bool
+     * @param  string  $name Theme code
+     * @return boolean
      */
     public function isInstalled($name)
     {
@@ -43,13 +40,12 @@ class ThemeManager
 
     /**
      * Flags a theme as being installed, so it is not downloaded twice.
-     *
-     * @param  string  $code  Theme code
-     * @param  string|null  $dirName
+     * @param string $code Theme code
+     * @param string|null $dirName
      */
     public function setInstalled($code, $dirName = null)
     {
-        if (! $dirName) {
+        if (!$dirName) {
             $dirName = strtolower(str_replace('.', '-', $code));
         }
 
@@ -60,8 +56,7 @@ class ThemeManager
 
     /**
      * Flags a theme as being uninstalled.
-     *
-     * @param  string  $code  Theme code
+     * @param string $code Theme code
      */
     public function setUninstalled($code)
     {
@@ -75,7 +70,6 @@ class ThemeManager
 
     /**
      * Returns an installed theme's code from it's dirname.
-     *
      * @return string
      */
     public function findByDirName($dirName)
@@ -96,13 +90,12 @@ class ThemeManager
 
     /**
      * Completely delete a theme from the system.
-     *
-     * @param  string  $theme  Theme code/namespace
+     * @param string $theme Theme code/namespace
      * @return void
      */
     public function deleteTheme($theme)
     {
-        if (! $theme) {
+        if (!$theme) {
             return false;
         }
 

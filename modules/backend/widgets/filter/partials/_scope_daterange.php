@@ -4,7 +4,7 @@
     href="javascript:;"
     data-scope-name="<?= $scope->scopeName ?>"
     data-scope-data="<?= e(json_encode([
-        'dates' => [isset($after) ? $after : null, isset($before) ? $before : null],
+        'dates' =>  [isset($after) ? $after : null, isset($before) ? $before : null],
         'minDate' => $scope->minDate,
         'maxDate' => $scope->maxDate,
         'firstDay' => $scope->firstDay,
@@ -13,5 +13,5 @@
     <?= $scope->ignoreTimezone ? 'data-ignore-timezone' : ''; ?>
 >
     <span class="filter-label"><?= e(trans($scope->label)) ?>:</span>
-    <span class="filter-setting"><?= isset($afterStr) && isset($beforeStr) ? ($afterStr.' → '.$beforeStr) : e(trans('backend::lang.filter.date_all')) ?></span>
+    <span class="filter-setting"><?= isset($afterStr) && isset($beforeStr) ? ($afterStr . ' → ' . $beforeStr) : e(trans('backend::lang.filter.date_all')) ?></span>
 </a>

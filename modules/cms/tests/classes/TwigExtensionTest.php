@@ -2,8 +2,9 @@
 
 namespace Cms\Tests\Classes;
 
-use Cms\Classes\Controller;
 use Cms\Twig\Extension;
+use Cms\Classes\Controller;
+
 use System\Tests\Bootstrap\TestCase;
 use Winter\Storm\Exception\SystemException;
 
