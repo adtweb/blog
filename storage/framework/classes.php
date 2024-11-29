@@ -141,4 +141,11 @@
   'Winter\\Blog\\Traits\\Urlable' => 'plugins/winter/blog/traits/Urlable.php',
   'Winter\\Blog\\Models\\Post' => 'plugins/winter/blog/models/Post.php',
   'Winter\\Blog\\Models\\Category' => 'plugins/winter/blog/models/Category.php',
+  'Backend\\Traits\\FormModelSaver' => 'modules/backend/traits/FormModelSaver.php',
+  'Backend\\Widgets\\Form' => 'modules/backend/widgets/Form.php',
+  'Backend\\Classes\\FormTabs' => 'modules/backend/classes/FormTabs.php',
+  'Backend\\Classes\\FormField' => 'modules/backend/classes/FormField.php',
+  'Backend\\Classes\\FormWidgetBase' => 'modules/backend/classes/FormWidgetBase.php',
+  'Backend\\FormWidgets\\CodeEditor' => 'modules/backend/formwidgets/CodeEditor.php',
+  'Cms\\FormWidgets\\Components' => 'modules/cms/formwidgets/Components.php',
 );
